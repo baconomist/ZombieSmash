@@ -8,7 +8,6 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -23,10 +22,8 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
-import com.esotericsoftware.spine.attachments.ClippingAttachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
-import com.esotericsoftware.spine.attachments.VertexAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
@@ -179,9 +176,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
 
         this.animScale = height / height2;
-
-
-        Gdx.app.log("calc_anim_scale", ""+this.animScale);
     }
 
     private HashMap<String, Array<BleedablePoint>> create_bleedable_points(RubeScene rubeScene)
@@ -924,7 +918,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void update(float delta)
     {
-        Gdx.app.log("aaa", ""+this.isTouching() + " " + this.isAnimating() + " " + this.isAlive() + " " + this.isGettingUp);
         // Has to be outside of isAlive() because when zombie dies, torso
         // stops updating and freezes otherwise
         if(!this.isAnimating())

@@ -123,8 +123,6 @@ public class Spawner
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 
-            Gdx.app.log("sdada", ""+(Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(positions.get("left").x, 0, 0))).x));
-
             try
             {
                 tempZombie.setInitialGround(data.getInt("depth"));
