@@ -19,8 +19,9 @@ android {
     }
     defaultConfig {
         applicationId "com.fcfruit.zombiesmash"
-        minSdkVersion 9
-        targetSdkVersion 25
+        minSdkVersion 21
+        targetSdkVersion 26
+        multiDexEnabled true
         versionCode 1
         versionName "1.0"
     }
