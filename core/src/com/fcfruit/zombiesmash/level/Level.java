@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -32,6 +33,8 @@ public class Level {
 
     public ArrayList<Zombie> zombies = Environment.physics.getZombies();
 
+    public ArrayList<PowerUp> powerUps = Environment.physics.getPowerUps();
+
     public ArrayList<Part> parts = Environment.physics.getParts();
 
     private float level_timer = 0;
@@ -48,6 +51,10 @@ public class Level {
 
         for(Part p : this.parts){
             p.draw(batch);
+        }
+
+        for(PowerUp pow : this.powerUps){
+            pow.draw(batch);
         }
 
     }

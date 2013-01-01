@@ -21,7 +21,7 @@ public class PowerUp {
 
     Body physicsBody;
 
-    Polygon polygon;
+    public Polygon polygon;
 
     public void draw(Batch batch){
 

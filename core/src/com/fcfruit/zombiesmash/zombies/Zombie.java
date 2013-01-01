@@ -65,7 +65,7 @@ public class Zombie {
     String currentAnimation;
 
 
-    boolean physicsEnabled = false;
+    public boolean physicsEnabled = false;
 
     boolean hasPowerfulPart = false;
 
@@ -167,11 +167,6 @@ public class Zombie {
         else if(System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize){
             optimize = true;
         }
-
-        Gdx.app.log("pos", ""+isAtObjective);
-
-
-
     }
 
 

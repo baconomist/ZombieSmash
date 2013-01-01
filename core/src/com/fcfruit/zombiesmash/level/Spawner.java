@@ -64,7 +64,7 @@ public class Spawner {
         try {
 
             tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.physics.getZombies().size() + 1);
-            tempZombie.setPosition(13, 0);
+            tempZombie.setPosition(15, 0);
 
             tempZombie.setDirection(1);
             Environment.physics.addBody(tempZombie);

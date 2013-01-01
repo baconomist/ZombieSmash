@@ -71,7 +71,10 @@ public class GameStage extends Stage {
         for(Part p : Environment.physics.getParts()){
             //shapeRenderer.polygon(p.polygon.getTransformedVertices());
         }
-        shapeRenderer.polygon(Environment.level.objective.polygon.getTransformedVertices());
+        //shapeRenderer.polygon(Environment.level.objective.polygon.getTransformedVertices());
+        for(PowerUp pow : Environment.physics.getPowerUps()){
+            //shapeRenderer.polygon(pow.polygon.getTransformedVertices());
+        }
         shapeRenderer.end();
 
         Environment.physics.update(Gdx.graphics.getDeltaTime());

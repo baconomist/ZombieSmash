@@ -17,7 +17,7 @@ import com.fcfruit.zombiesmash.screens.GameScreen;
  * Created by Lucas on 2017-09-18.
  */
 
-public class Environment {
+public class    Environment {
 
     // Class to access all important game instances
     // Need to create static methods which catch exceptions which may arise

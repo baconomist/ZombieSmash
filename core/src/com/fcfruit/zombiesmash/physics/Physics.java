@@ -1,5 +1,7 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -165,6 +167,9 @@ public class Physics {
             p.touchDown(x, y, pointer);
         }
 
+        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
+        powerUps.add(new Rock(pos.x, pos.y));
+
     }
 
     public void touchDragged(float x, float y, int pointer){
@@ -210,6 +215,14 @@ public class Physics {
                 }
                 else if(p.getState().equals("waiting_for_destroy")){
                     p.destroy();
+                }
+                for(PowerUp pow : powerUps){
+                    if(Intersector.overlapConvexPolygons(pow.polygon, p.polygon))
+                    {
+                        if(p.body != null){
+                            p.body.physicsEnabled = true;
+                        }
+                    }
                 }
             }
         }
