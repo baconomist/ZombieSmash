@@ -35,18 +35,23 @@ public class SplashScreen implements Screen
     @Override
     public void render(float delta)
     {
+
+        if(this.alpha <= 1f)
+            this.sprite.setAlpha(this.alpha);
+
+        if(Environment.assets.update() && this.alpha >= 1.5f) // When loading finished
+        {
+            Environment.create();
+            Environment.game.setScreen(Environment.screens.mainmenu);
+            return;
+        }
+
         this.spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         this.spriteBatch.begin();
         this.sprite.draw(this.spriteBatch);
         this.spriteBatch.end();
         this.alpha += delta/10f;
-
-        if(this.alpha >= 1.5f)
-            Environment.game.setScreen(Environment.screens.mainmenu);
-
-        if(this.alpha <= 1f)
-            this.sprite.setAlpha(this.alpha);
     }
 
     @Override

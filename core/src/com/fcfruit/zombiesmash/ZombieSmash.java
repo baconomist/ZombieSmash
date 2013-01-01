@@ -42,9 +42,6 @@ public class ZombieSmash extends Game
             Gdx.input.setCatchBackKey(true);
         }
 
-
-        Environment.create();
-
         this.setScreen(new SplashScreen());
 
         //this.setScreen(Environment.screens.mainmenu);
