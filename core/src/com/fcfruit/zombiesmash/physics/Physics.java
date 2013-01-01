@@ -1,22 +1,15 @@
 package com.fcfruit.zombiesmash.physics;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Star;
 import com.fcfruit.zombiesmash.ZombieSmash;
-import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
-import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.zombies.Part;
-import com.fcfruit.zombiesmash.zombies.Zombie;
+
 
 
 import java.util.ArrayList;
@@ -146,12 +139,12 @@ public class Physics
 
         this.ground = this.world.createBody(plane);
         this.ground.createFixture(planeFixture);
-        this.ground.getFixtureList().get(0).setUserData("this.ground");
+        this.ground.getFixtureList().get(0).setUserData("ground");
         this.ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
 
         this.roof = this.world.createBody(plane);
         this.roof.createFixture(planeFixture);
-        this.roof.getFixtureList().get(0).setUserData("this.roof");
+        this.roof.getFixtureList().get(0).setUserData("roof");
         this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
 
         planeShape.dispose();

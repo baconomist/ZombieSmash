@@ -49,7 +49,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     String moveAnimation;
 
     // Identifiers
-    private int id;
+    public int id;
 
     // Composition
     private AnimatableGraphicsEntity animatableGraphicsEntity;
@@ -131,11 +131,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
-            Gdx.app.log("update", "a");
 
             this.handleGetup();
             // May cause problems if running constantly in loop, idk
-            this.checkDirection();
+            //this.checkDirection();
 
             if (this.isTouching())
             {
@@ -213,18 +212,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         float scale = 0;
 
-        for (Body b : rubeScene.getBodies())
+        for (Body body : rubeScene.getBodies())
         {
 
-            if ((Boolean) rubeScene.getCustom(b, "isPart"))
+            if ((Boolean) rubeScene.getCustom(body, "isPart"))
             {
 
-                String bodyName = (String) rubeScene.getCustom(b, "name");
+                String bodyName = (String) rubeScene.getCustom(body, "name");
                 Sprite sprite = new Sprite(this.animatableGraphicsEntity.getAtlas().findRegion(bodyName));
 
                 for (RubeImage i : rubeScene.getImages())
                 {
-                    if (i.body == b)
+                    if (i.body == body)
                     {
                         sprite.flip(flip, false);
                         sprite.setColor(i.color);
@@ -240,21 +239,22 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 Joint joint = null;
                 for (Joint j : rubeScene.getJoints())
                 {
-                    if (j.getBodyA() == b || j.getBodyB() == b)
+                    if (j.getBodyA() == body || j.getBodyB() == body)
                     {
                         joint = j;
                         break;
                     }
                 }
 
-                for (Fixture fixture : b.getFixtureList())
+                for (Fixture fixture : body.getFixtureList())
                 {
                     // Makes different zombies not collide with each other
                     fixture.setUserData(this);
+                    Gdx.app.log("a", "aaa");
                 }
 
                 boolean specialPart = false;
-                for(String name : specialParts.keySet()){
+                /*for(String name : specialParts.keySet()){
                     if(bodyName.equals(name)){
                         try
                         {
@@ -266,10 +266,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                             e.printStackTrace();
                         }
                     }
-                }
+                }*/
                 if(!specialPart)
                 {
-                    NewPart part = new NewPart(bodyName, sprite, b, joint);
+                    body.setUserData("a");
+                    NewPart part = new NewPart(bodyName, sprite, body, joint);
                     this.drawableEntities.put(bodyName, part);
                     this.interactiveEntities.put(bodyName, part);
                     this.detachableEntities.put(bodyName, part);
@@ -286,7 +287,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     }
 
-    private boolean isInLevel()
+    public boolean isInLevel()
     {
         boolean isInLevel = false;
         for (DrawableEntityInterface i : drawableEntities.values())
@@ -384,7 +385,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
             mouseJointDef.bodyA = Environment.physics.getGround();
-            mouseJointDef.bodyB = ((DrawablePhysicsEntity) this.drawableEntities.get("head")).getPhysicsBody();
+            mouseJointDef.bodyB = ((NewPart) this.drawableEntities.get("head")).getPhysicsBody();
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(drawableEntities.get("head").getPosition());
             // The higher the ratio, the slower the movement of body to mousejoint
@@ -662,7 +663,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         });
 
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
-
+        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
     }
 
     private void onAnimationComplete(AnimationState.TrackEntry entry)

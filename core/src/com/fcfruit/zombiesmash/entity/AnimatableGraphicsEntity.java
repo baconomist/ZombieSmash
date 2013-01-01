@@ -15,9 +15,6 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 
-import java.lang.reflect.Method;
-import java.lang.reflect.Parameter;
-
 /**
  * Created by Lucas on 2018-01-13.
  */
@@ -51,6 +48,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
         this.state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
 
         this.skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+
     }
 
     @Override

@@ -121,6 +121,10 @@ public class GameScreen implements Screen{
 
     }
 
+    public void set_ui_stage(Stage s){
+        ui_stage = s;
+    }
+
     @Override
     public void resize(int width, int height) {
         // Resize viewport to screen size.

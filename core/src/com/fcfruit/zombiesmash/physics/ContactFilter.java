@@ -3,10 +3,8 @@ package com.fcfruit.zombiesmash.physics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.fcfruit.zombiesmash.level.House;
-import com.fcfruit.zombiesmash.level.Objective;
-import com.fcfruit.zombiesmash.power_ups.PowerUp;
-import com.fcfruit.zombiesmash.zombies.Zombie;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
+
 
 /**
  * Created by Lucas on 2017-11-01.
@@ -17,10 +15,10 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
 
 
-        if (fixtureA.getUserData() != null && fixtureA.getUserData() instanceof Zombie && fixtureB.getUserData() != null && fixtureB.getUserData() instanceof Zombie) {
+        if (fixtureA.getUserData() != null && fixtureA.getUserData() instanceof NewZombie && fixtureB.getUserData() != null && fixtureB.getUserData() instanceof NewZombie) {
 
 
-            if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id) {
+            if (((NewZombie) fixtureA.getUserData()).id == ((NewZombie) fixtureB.getUserData()).id) {
 
                 if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0) {
                     return true;
@@ -33,20 +31,14 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
         }
 
-        if(fixtureA.getBody().getUserData() instanceof PowerUp || fixtureB.getBody().getUserData() instanceof PowerUp){
-            return true;
-        }
+        Gdx.app.log("baba", ""+fixtureA.getBody().getUserData() + " " + fixtureB.getBody().getUserData());
+        Gdx.app.log("baba", ""+fixtureA.getUserData() + " " + fixtureB.getUserData());
 
-        if(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")){
-            return (fixtureA.getUserData() instanceof Zombie && ((Zombie) fixtureA.getUserData()).enteredLevel) || (fixtureB.getUserData() instanceof Zombie && ((Zombie) fixtureB.getUserData()).enteredLevel);
-        }
+        //if(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")){
+            return (fixtureA.getUserData() instanceof NewZombie && ((NewZombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof NewZombie && ((NewZombie) fixtureB.getUserData()).isInLevel());
+        //}
 
-
-        if (fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody) {
-            return true;
-        } else {
-            return false;
-        }
+       // return true;
 
     }
 }
