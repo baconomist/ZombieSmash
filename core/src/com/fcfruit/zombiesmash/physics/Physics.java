@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -134,8 +135,8 @@ public class Physics
         PolygonShape planeShape = new PolygonShape();
         planeShape.setAsBox(Environment.physicsCamera.viewportWidth * 10, 0);
         planeFixture.shape = planeShape;
-        planeFixture.restitution = 0.4f;
-        planeFixture.friction = 0.4f;
+        planeFixture.restitution = 0.3f;
+        planeFixture.friction = 2f;
 
         this.groundBodies = new ArrayList<Body>();
         for (float i = 0f, c = 0; c < 3; i += 0.3f, c++)
@@ -241,7 +242,9 @@ public class Physics
         //Gdx.app.debug("body", ""+body);
 
         if (this.get_world_bodies().contains(body, true))
+        {
             this.world.destroyBody(body);
+        }
 
     }
 
