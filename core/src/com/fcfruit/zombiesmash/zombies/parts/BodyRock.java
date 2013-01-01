@@ -10,12 +10,14 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
+import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
@@ -30,12 +32,14 @@ import java.util.HashMap;
  * Created by Lucas on 2018-01-07.
  */
 
-public class BodyRock implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, DetachableEntityInterface, NameableEntityInterface
+public class BodyRock implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
+        DetachableEntityInterface, NameableEntityInterface, DestroyableEntityInterface
 {
     private String name;
 
     private ContainerEntityInterface parentContainer;
     private OptimizableEntity optimizableEntity;
+    private DestroyableEntity destroyableEntity;
     private DrawablePhysicsEntity drawableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
     private DetachableEntity detachableEntity;
@@ -55,6 +59,7 @@ public class BodyRock implements DrawableEntityInterface, OptimizableEntityInter
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.optimizableEntity = new OptimizableEntity(this, null, parentContainer);
+        this.destroyableEntity = new DestroyableEntity(this, this, this);
 
         this.detachableEntity = new DetachableEntity(joints, parentContainer, this);
 
@@ -74,6 +79,7 @@ public class BodyRock implements DrawableEntityInterface, OptimizableEntityInter
         this.interactivePhysicsEntity.update(delta);
 
         this.optimizableEntity.update(delta);
+        this.destroyableEntity.update(delta);
         for (InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
@@ -155,6 +161,12 @@ public class BodyRock implements DrawableEntityInterface, OptimizableEntityInter
     public Polygon getPolygon()
     {
         return this.interactivePhysicsEntity.getPolygon();
+    }
+
+    @Override
+    public void destroy()
+    {
+        this.destroyableEntity.destroy();
     }
 
     @Override

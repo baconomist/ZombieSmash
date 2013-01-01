@@ -10,10 +10,12 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
+import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
@@ -27,12 +29,13 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Torso implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntityInterface
+public class Torso implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntityInterface, DestroyableEntityInterface
 {
     private String name;
 
     private ContainerEntityInterface parentContainer;
     private OptimizableEntity optimizableEntity;
+    private DestroyableEntity destroyableEntity;
     private DrawablePhysicsEntity drawableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 
@@ -53,6 +56,7 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.optimizableEntity = new OptimizableEntity(this, null, parentContainer);
+        this.destroyableEntity = new DestroyableEntity(this.parentContainer, this, this);
 
         this.bleedablePoints = bleedablePoints;
 
@@ -82,6 +86,7 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         }
 
         this.optimizableEntity.update(delta);
+        this.destroyableEntity.update(delta);
     }
 
 
@@ -178,6 +183,12 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     public Polygon getPolygon()
     {
         return this.interactivePhysicsEntity.getPolygon();
+    }
+
+    @Override
+    public void destroy()
+    {
+        this.destroyableEntity.destroy();
     }
 
     @Override

@@ -11,8 +11,6 @@ import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterfa
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
-import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
-
 /**
  * Created by Lucas on 2018-01-25.
  */
@@ -25,7 +23,7 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
 
     // Optimization
     private double optimizationTimer;
-    private double timeBeforeOptimize = 2000;
+    private double timeBeforeOptimize = 1250;
 
     private boolean isOptimizationEnabled;
 
@@ -38,17 +36,12 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
 
     public void update(float delta)
     {
-        if (this.isOptimizationEnabled() && this.shouldOptimize())
+        if (this.isOptimizationEnabled() && this.shouldOptimize() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize)
         {
             this.optimize();
         }
-        else if(this.isOptimizationEnabled() && !this.shouldOptimize())
+        else if((this.isOptimizationEnabled() && !this.shouldOptimize()) || !this.isOptimizationEnabled)
         {
-            this.unoptimize();
-        }
-        else if(!this.isOptimizationEnabled())
-        {
-            this.unoptimize();
             this.optimizationTimer = System.currentTimeMillis();
         }
     }
@@ -64,8 +57,7 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
                 if(interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
-                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 0.1f && b.getLinearVelocity().y < 0.1f && b.getPosition().y < 1f
-                            && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize))
+                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < 1f))
                     {
                         return false;
                     }
@@ -77,10 +69,9 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
         {
             Body b = this.interactivePhysicsEntity.getPhysicsBody();
             return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching()
-                    && b.getLinearVelocity().x < 0.1f && b.getLinearVelocity().y < 0.1f && b.getPosition().y < 0.5f
-                    && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
+                    && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < 1f;
         }
-        return !this.interactivePhysicsEntity.isTouching() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
+        return !this.interactivePhysicsEntity.isTouching();
     }
 
     private void optimize()

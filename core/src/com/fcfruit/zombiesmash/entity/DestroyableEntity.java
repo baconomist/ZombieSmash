@@ -1,7 +1,14 @@
 package com.fcfruit.zombiesmash.entity;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
@@ -19,6 +26,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 public class DestroyableEntity implements DestroyableEntityInterface
 {
+    private AnimatableGraphicsEntity animatableGraphicsEntity;
+
     private OptimizableEntityInterface optimizableEntity;
     private ContainerEntityInterface containerEntity;
     private DetachableEntityInterface detachableEntity;
@@ -26,6 +35,8 @@ public class DestroyableEntity implements DestroyableEntityInterface
 
     private double destroyTimer;
     private double timeBeforeDestroy = 3000;
+
+    private boolean destroying = false;
 
     public DestroyableEntity(ContainerEntityInterface containerEntity, OptimizableEntityInterface optimizableEntity)
     {
@@ -50,10 +61,14 @@ public class DestroyableEntity implements DestroyableEntityInterface
     @Override
     public void update(float delta)
     {
-        if(!this.optimizableEntity.isOptimizationEnabled())
+        if(!this.optimizableEntity.isOptimizationEnabled() || this.interactivePhysicsEntity.getPhysicsBody().isActive())
             this.destroyTimer = System.currentTimeMillis();
-        else if(this.shouldDestroy())
+        else if(this.shouldDestroy() && !this.destroying)
+        {
+            this.createSmoke();
             this.destroy();
+            this.destroying = true;
+        }
     }
 
     private boolean shouldDestroy()
@@ -63,8 +78,7 @@ public class DestroyableEntity implements DestroyableEntityInterface
             for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
                 Body b = ((PhysicsEntityInterface)interactiveEntity).getPhysicsBody();
-                if(!(!interactiveEntity.isTouching()
-                        && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 0.5f
+                if(!(!interactiveEntity.isTouching() && b.getPosition().y < 1f
                         && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy))
                 {
                     return false;
@@ -75,11 +89,11 @@ public class DestroyableEntity implements DestroyableEntityInterface
         else if(this.detachableEntity != null)
         {
             Body b = this.interactivePhysicsEntity.getPhysicsBody();
-            return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching()
-                    && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 0.5f
+            return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching() && b.getPosition().y < 1f
                     && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
         }
-        return this.interactivePhysicsEntity.isTouching() && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
+        return !this.interactivePhysicsEntity.isTouching() && this.interactivePhysicsEntity.getPhysicsBody().getPosition().y < 1f
+                && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
     }
 
     @Override
@@ -92,15 +106,53 @@ public class DestroyableEntity implements DestroyableEntityInterface
             {
                 if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
-                    Gdx.app.log("Destroy", ""+((NameableEntityInterface) interactiveEntityInterface).getName());
-                    Environment.physics.destroyBody(((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody());
+                    // Instead of destroying body, move it out of screen
+                    // Destroying bodies here causes other zombies to lose limbs
+                    // because box2d re-uses memory for bodies
+                    // Probably safer in terms of crashing anyways
+                    ((InteractivePhysicsEntityInterface)interactiveEntityInterface).getPhysicsBody().setTransform(new Vector2(99, 99), 0);
+                    ((InteractivePhysicsEntityInterface)interactiveEntityInterface).getPhysicsBody().setActive(false);
                 }
             }
+            //Environment.physics.destroyBody(this.interactivePhysicsEntity.getPhysicsBody());
         } else if (this.detachableEntity instanceof DrawableEntityInterface)
         {
             Environment.drawableRemoveQueue.add((DrawableEntityInterface) this.interactivePhysicsEntity);
-            Gdx.app.log("Destroy", ""+((NameableEntityInterface) detachableEntity).getName());
-            Environment.physics.destroyBody(this.interactivePhysicsEntity.getPhysicsBody());
+            // Instead of destroying body, move it out of screen
+            // Destroying bodies here causes other zombies to lose limbs
+            // because box2d re-uses memory for bodies
+            // Probably safer in terms of crashing anyways
+            this.interactivePhysicsEntity.getPhysicsBody().setTransform(new Vector2(99, 99), 0);
+            this.interactivePhysicsEntity.getPhysicsBody().setActive(false);
         }
     }
+
+    private void createSmoke()
+    {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("effects/smoke/smoke.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("effects/smoke/smoke.json"));
+        Skeleton skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+
+        AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        //state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
+
+        state.addListener(new AnimationState.AnimationStateAdapter()
+        {
+            @Override
+            public void complete(AnimationState.TrackEntry entry)
+            {
+                Environment.drawableRemoveQueue.add(animatableGraphicsEntity);
+                super.complete(entry);
+            }
+        });
+
+        this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
+        this.animatableGraphicsEntity.setAnimation("animation");
+        this.animatableGraphicsEntity.setPosition(this.interactivePhysicsEntity.getPhysicsBody().getPosition());
+        Environment.drawableAddQueue.add(this.animatableGraphicsEntity);
+    }
+
 }
