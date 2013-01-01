@@ -97,8 +97,6 @@ public class BleedablePoint implements BleedableEntityInterface
 
         this.blood_pos_rot_offset = (float) Math.toDegrees(this.physicsBody.getAngle()) - blood_pos.computeWorldRotation(bone); // - 180; // -180 because pointAttachments have a different "0 degrees" than everything else
 
-        Gdx.app.log(blood_pos_name, ""+blood_pos.computeWorldRotation(bone));
-
     }
 
     /**
@@ -124,7 +122,7 @@ public class BleedablePoint implements BleedableEntityInterface
     @Override
     public void update(float delta)
     {
-        if(this.isBleeding && false)
+        if(this.isBleeding)
         {
             this.calc_phys_pos();
 
