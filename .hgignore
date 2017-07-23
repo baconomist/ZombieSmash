@@ -60,3 +60,5 @@ android/build/intermediates/pre-dexed/debug/core-1.0_3483fe99a8b8a9ff3072434d6ef
 .gradle/2.14.1/taskArtifacts/fileSnapshots.bin
 .gradle/2.14.1/taskArtifacts/fileHashes.bin
 .gradle/2.14.1/taskArtifacts/cache.properties.lock
+core/build/classes/main/com/fcfruit/zombiesmash/GameData.class
+android/build/tmp/expandedArchives/core-1.0.jar_4gkw6qgk7gc6s0y0215i5v0vt/com/fcfruit/zombiesmash/GameData.class

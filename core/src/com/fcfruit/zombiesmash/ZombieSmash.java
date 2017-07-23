@@ -22,6 +22,8 @@ public class ZombieSmash extends Game {
 		are initialized
 		 */
 
+		new GameData();
+
 		this.setScreen(new MainMenu(this));
 
 		Gdx.app.log("Game", "Initialized");
