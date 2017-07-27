@@ -205,3 +205,16 @@ android/build/intermediates/incremental-verifier/debug/com/fcfruit/zombiesmash/G
 android/build/intermediates/incremental-verifier/debug/com/fcfruit/zombiesmash/GameData.class
 android/build/intermediates/incremental-verifier/debug/com/fcfruit/zombiesmash/BuildConfig.class
 android/build/intermediates/incremental-verifier/debug/com/fcfruit/zombiesmash/AndroidLauncher.class
+core/build/classes/main/com/fcfruit/zombiesmash/Physics.class
+android/build/tmp/expandedArchives/core-1.0.jar_4gkw6qgk7gc6s0y0215i5v0vt/com/fcfruit/zombiesmash/Physics.class
+android/build/intermediates/pre-dexed/debug/gdx-freetype-1.9.6_2574ed706fc3fb731155e97509ccda18e18ed3f1.jar
+android/build/intermediates/pre-dexed/debug/gdx-controllers-android-1.9.6_401a02f3b4e3ec380faf3951c7f22850f5db37d7.jar
+android/build/intermediates/pre-dexed/debug/gdx-controllers-1.9.6_525bad14b2f8f4a008737bb1546db20b5ad41cb0.jar
+android/build/intermediates/pre-dexed/debug/gdx-bullet-1.9.6_037644653ecb27440043eac4ec7988646833f9a2.jar
+android/build/intermediates/pre-dexed/debug/gdx-box2d-1.9.6_2a67ba481268ec73e3bb583720f1ed86cab59b53.jar
+android/build/intermediates/pre-dexed/debug/gdx-backend-android-1.9.6_65136560a3aa4dded1bfe0ea79414f4dfe89c990.jar
+android/build/intermediates/pre-dexed/debug/gdx-ai-1.8.0_569f25f1350fb2533c05ba1663ac853f69c5155c.jar
+android/build/intermediates/pre-dexed/debug/gdx-1.9.6_774433cff72a335559b3e5c8da6be0d8be642293.jar
+android/build/intermediates/pre-dexed/debug/box2dlights-1.4_bb981bdde8ff9a11cef298678650af897c4a38d1.jar
+android/build/intermediates/pre-dexed/debug/ashley-1.7.0_d398d1411f82900f053bd5b02f84bd509fdd65dc.jar
+android/build/intermediates/incremental/packageDebug/zip-cache/I5_PsD4zIzkTtOeLqztuAR+g7KI=
