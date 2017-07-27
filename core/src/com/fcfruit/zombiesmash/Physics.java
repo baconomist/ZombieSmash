@@ -18,42 +18,77 @@ public class Physics {
 
     private Vector2 gravity;
 
-    private HashMap bodies;
+    private Zombie zombie;
 
-    private float ground = 100;
+    private float ground;
 
-    public Physics(Game g){
+    private Vector2 currentVelocity;
+
+    private float maxSpeed;
+
+    public Physics(Zombie z, Game g){
 
         game = g;
 
-        gravity = new Vector2(0.1f, 5f);
+        gravity = new Vector2(0f, -9.8f);
 
-        bodies = new HashMap();
+        zombie = z;
+
+        ground = 50f;
+
+        currentVelocity = new Vector2(0f, 0f);
+
+        maxSpeed = 100f;
+
     }
 
     public void update(float delta){
-        for(Object o : bodies.keySet()){
-            if(((Zombie) o).getY() > 100){
-                act((Zombie) o, delta);
-            }
+
+        if(zombie.getPhysicsState()) {
+
+            act(delta);
+
         }
+
     }
 
-    public void addBody(Zombie z){
-        bodies.put(z, z);
+    private void act(float delta){
+
+        if (zombie.getSprite().getY() > ground) {
+            applyGravity(delta);
+        }
+        else{
+            currentVelocity.x = 0f;
+            currentVelocity.y = 0f;
+        }
+
     }
 
-    public void removeBody(Zombie z){
-        bodies.remove(z);
+    private void applyGravity(float delta){
+        Vector2 velocity = getVelocity(delta);
+
+        if(zombie.getSprite().getY() + velocity.y > ground) {
+
+            zombie.getSprite().setPosition(zombie.getSprite().getX() + velocity.x, zombie.getSprite().getY() + velocity.y);
+
+        }
+        else{
+
+            zombie.getSprite().setPosition(zombie.getSprite().getX() + velocity.x, zombie.getSprite().getY() + (velocity.y + ground + ground - (zombie.getSprite().getY() + velocity.y + ground)));
+
+        }
+
+        if(velocity.x < maxSpeed) {
+            currentVelocity.x = velocity.x;
+        }
+        if(velocity.y < maxSpeed) {
+            currentVelocity.y = velocity.y;
+        }
+
     }
 
-    private void act(Zombie z, float delta){
-        Vector2 velocity = getVelocity(z);
-        z.setPosition(z.getX() + (z.getX() * delta * velocity.x), z.getY() + (z.getY() * delta * velocity.y));
-    }
-
-    private Vector2 getVelocity(Zombie z){
-        return new Vector2(z.getX()*gravity.x, z.getY()*gravity.y);
+    private Vector2 getVelocity(float delta){
+        return new Vector2(currentVelocity.x + (zombie.getMass()*gravity.x) * delta, currentVelocity.y + (zombie.getMass()*gravity.y) * delta);
     }
 
 

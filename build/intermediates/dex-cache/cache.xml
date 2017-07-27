@@ -30,15 +30,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\core\build\libs\core-1.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="a831bc500f2725da67abb80b4bd7e0231e48bc09">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\core-1.0_3483fe99a8b8a9ff3072434d6ef4c8b54e50f69d.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-bullet\1.9.6\13a6f83e5ae513c469b9998ed09409ae3667fed\gdx-bullet-1.9.6.jar"
         jumboMode="false"
         optimize="true"
@@ -66,15 +57,6 @@
     </item>
     <item
         is-multidex="false"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-ai\1.8.0\ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5\gdx-ai-1.8.0.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\gdx-ai-1.8.0_569f25f1350fb2533c05ba1663ac853f69c5155c.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.ashley\ashley\1.7.0\a7c4083c0a42027a3c03ba7ccecef6cbe1c5f0a4\ashley-1.7.0.jar"
         jumboMode="false"
         optimize="true"
@@ -83,13 +65,13 @@
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\ashley-1.7.0_d398d1411f82900f053bd5b02f84bd509fdd65dc.jar" />
     </item>
     <item
-        is-multidex="false"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.box2dlights\box2dlights\1.4\3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd\box2dlights-1.4.jar"
-        jumboMode="false"
+        is-multidex="true"
+        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\box2dlights-1.4_bb981bdde8ff9a11cef298678650af897c4a38d1.jar" />
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_c0352932a759cdba84e25cf097e2745137558c70\classes.dex" />
     </item>
     <item
         is-multidex="false"
@@ -99,6 +81,42 @@
         revision="25.0.3"
         sha1="69187cc3c8062f191df435b43671b0e5ffcbf353">
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\gdx-freetype-1.9.6_2574ed706fc3fb731155e97509ccda18e18ed3f1.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\core\build\libs\core-1.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="648691bd5830ed7c81b4e3a595778c3071c421ad">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\core-1.0_3483fe99a8b8a9ff3072434d6ef4c8b54e50f69d.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-ai\1.8.0\ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5\gdx-ai-1.8.0.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="ec30677d8ab1a8b8aa4b853c5f4e4b1361f50bf5">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\gdx-ai-1.8.0_569f25f1350fb2533c05ba1663ac853f69c5155c.jar" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="81188073b7cbfe21c3b63fc7c10a026b4d459930">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9fe3f376f40d3f7f926dc87db9852c404641d4c0\classes.dex" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.box2dlights\box2dlights\1.4\3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd\box2dlights-1.4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="3d77ad5b4164fb32fc67e2446e35911bb0aaf0bd">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\box2dlights-1.4_bb981bdde8ff9a11cef298678650af897c4a38d1.jar" />
     </item>
 
 </items>
