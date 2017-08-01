@@ -1,12 +1,7 @@
 package com.fcfruit.zombiesmash;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.zombiesmash.zombies.Zombie;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -14,11 +9,9 @@ import java.util.HashMap;
 
 public class Physics {
 
-    public Game game;
+    private Zombie zombie;
 
     private Vector2 gravity;
-
-    private Zombie zombie;
 
     private float ground;
 
@@ -26,13 +19,11 @@ public class Physics {
 
     private float maxSpeed;
 
-    public Physics(Zombie z, Game g){
-
-        game = g;
-
-        gravity = new Vector2(0f, -9.8f);
+    public Physics(Zombie z){
 
         zombie = z;
+
+        gravity = new Vector2(0f, -9.8f);
 
         ground = 50f;
 
@@ -44,7 +35,7 @@ public class Physics {
 
     public void update(float delta){
 
-        if(zombie.getPhysicsState()) {
+        if(zombie.isPhysicsEnabled) {
 
             act(delta);
 
@@ -54,7 +45,7 @@ public class Physics {
 
     private void act(float delta){
 
-        if (zombie.getSprite().getY() > ground) {
+        if (zombie.getY() > ground) {
             applyGravity(delta);
         }
         else{
@@ -90,6 +81,5 @@ public class Physics {
     private Vector2 getVelocity(float delta){
         return new Vector2(currentVelocity.x + (zombie.getMass()*gravity.x) * delta, currentVelocity.y + (zombie.getMass()*gravity.y) * delta);
     }
-
 
 }
