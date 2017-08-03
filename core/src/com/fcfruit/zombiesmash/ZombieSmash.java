@@ -4,10 +4,29 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.screens.MainMenu;
 
 
 public class ZombieSmash extends Game {
+
+	private TextureAtlas playerAtlas;
+	private SkeletonJson json;
+	private SkeletonData playerSkeletonData;
+	private AnimationStateData playerAnimationData;
+
+	private SpriteBatch batch;
+	private SkeletonRenderer skeletonRenderer;
+
+	private Skeleton skeleton;
+	private AnimationState animationState;
 
 	public ZombieSmash() {
 		//don't put anything here, may not work because game is not yet initialized
@@ -25,8 +44,6 @@ public class ZombieSmash extends Game {
 		new GameData();
 
 		this.setScreen(new MainMenu(this));
-
-		Gdx.app.log("Game", "Initialized");
 
 	}
 
@@ -63,7 +80,6 @@ public class ZombieSmash extends Game {
 	@Override
 	public void render () {
 		//don't put anything in here, use screens
-		super.render(); // still called after setting screen, whole game render
-
+		super.render();
 	}
 }

@@ -1,15 +1,15 @@
 package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.math.Vector2;
-import com.fcfruit.zombiesmash.zombies.Zombie;
+import com.fcfruit.zombiesmash.zombies.Part;
 
 /**
  * Created by Lucas on 2017-07-21.
  */
 
-public class Physics {
+public class PartPhysics {
 
-    private Zombie zombie;
+    private Part part;
 
     private Vector2 gravity;
 
@@ -19,9 +19,9 @@ public class Physics {
 
     private float maxSpeed;
 
-    public Physics(Zombie z){
+    public PartPhysics(Part p){
 
-        zombie = z;
+        part = p;
 
         gravity = new Vector2(0f, -9.8f);
 
@@ -35,7 +35,7 @@ public class Physics {
 
     public void update(float delta){
 
-        if(zombie.isPhysicsEnabled) {
+        if(part.isPhysicsEnabled) {
 
             act(delta);
 
@@ -45,12 +45,14 @@ public class Physics {
 
     private void act(float delta){
 
-        if (zombie.getY() > ground) {
-            applyGravity(delta);
-        }
-        else{
-            currentVelocity.x = 0f;
-            currentVelocity.y = 0f;
+        if(part.isGravityEnabled) {
+
+            if (part.getY() > ground) {
+                applyGravity(delta);
+            } else {
+                currentVelocity.x = 0f;
+                currentVelocity.y = 0f;
+            }
         }
 
     }
@@ -58,14 +60,14 @@ public class Physics {
     private void applyGravity(float delta){
         Vector2 velocity = getVelocity(delta);
 
-        if(zombie.getSprite().getY() + velocity.y > ground) {
+        if(part.getY() + velocity.y > ground) {
 
-            zombie.getSprite().setPosition(zombie.getSprite().getX() + velocity.x, zombie.getSprite().getY() + velocity.y);
+            part.setPosition(part.getX() + velocity.x, part.getY() + velocity.y);
 
         }
         else{
 
-            zombie.getSprite().setPosition(zombie.getSprite().getX() + velocity.x, zombie.getSprite().getY() + (velocity.y + ground + ground - (zombie.getSprite().getY() + velocity.y + ground)));
+            part.setPosition(part.getX() + velocity.x, part.getY() + (velocity.y + ground + ground - (part.getY() + velocity.y + ground)));
 
         }
 
@@ -79,7 +81,7 @@ public class Physics {
     }
 
     private Vector2 getVelocity(float delta){
-        return new Vector2(currentVelocity.x + (zombie.getMass()*gravity.x) * delta, currentVelocity.y + (zombie.getMass()*gravity.y) * delta);
+        return new Vector2(currentVelocity.x + (part.mass*gravity.x) * delta, currentVelocity.y + (part.mass*gravity.y) * delta);
     }
 
 }

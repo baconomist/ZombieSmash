@@ -10,8 +10,16 @@ import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.GifDecoder;
 import com.fcfruit.zombiesmash.levels.Level;
 import com.fcfruit.zombiesmash.zombies.Body;
@@ -27,6 +35,10 @@ import java.util.ArrayList;
 public class GameScreen implements Screen{
 
     private Zombie regZombie;
+
+    private SpriteBatch spriteBatch;
+
+    private SkeletonRenderer skeletonRenderer;
 
     private Stage game_stage;
     private Stage power_ups_stage;
@@ -49,12 +61,13 @@ public class GameScreen implements Screen{
 
 
 
-        Sprite larm = new Sprite(new Texture(Gdx.files.internal("zombies/default/arm.png")));
-        Sprite rarm = new Sprite(new Texture(Gdx.files.internal("zombies/default/arm.png")));
-        Sprite lfoot = new Sprite(new Texture(Gdx.files.internal("zombies/default/arm.png")));
-        Sprite rfoot = new Sprite(new Texture(Gdx.files.internal("zombies/default/arm.png")));
-        Sprite torso = new Sprite(new Texture(Gdx.files.internal("zombies/default/arm.png")));
-        Sprite head = new Sprite(new Texture(Gdx.files.internal("zombies/default/arm.png")));
+        Texture larm = new Texture(Gdx.files.internal("zombies/regzombie/arm.png"));
+        Texture rarm = new Texture(Gdx.files.internal("zombies/regzombie/arm.png"));
+        Texture lfoot = new Texture(Gdx.files.internal("zombies/regzombie/leg.png"));
+        Texture rfoot = new Texture(Gdx.files.internal("zombies/regzombie/leg.png"));
+        Texture torso = new Texture(Gdx.files.internal("zombies/regzombie/body.png"));
+        Texture head = new Texture(Gdx.files.internal("zombies/regzombie/headv2.png"));
+
 
         ArrayList a = new ArrayList();
 
@@ -68,7 +81,9 @@ public class GameScreen implements Screen{
         regZombie = new RegularZombie(a, g);
         regZombie.setPosition(100, 100);
 
+        spriteBatch = new SpriteBatch();
 
+        skeletonRenderer = new SkeletonRenderer();
 
         game_stage.addActor(regZombie);
 
@@ -94,6 +109,11 @@ public class GameScreen implements Screen{
 
         power_ups_stage.act(delta);
         power_ups_stage.draw();
+
+        spriteBatch.begin();
+        skeletonRenderer.draw(spriteBatch, regZombie.body.skeleton);
+        spriteBatch.end();
+
 
     }
 

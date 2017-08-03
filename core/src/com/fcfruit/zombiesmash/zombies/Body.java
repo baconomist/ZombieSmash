@@ -1,10 +1,23 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.collision.BoundingBox;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonBounds;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.SkeletonRenderer;
+import com.esotericsoftware.spine.SkeletonRendererDebug;
+import com.esotericsoftware.spine.Skin;
+import com.fcfruit.zombiesmash.BodyPhysics;
 
 import java.util.ArrayList;
 
@@ -14,147 +27,93 @@ import java.util.ArrayList;
 
 public class Body{
 
-    public Zombie zombie;
+    private BodyPhysics physics;
 
-    public Sprite head;
-    public Sprite torso;
-    public Sprite leftArm;
-    public Sprite rightArm;
-    public Sprite leftFoot;
-    public Sprite rightFoot;
-
-    public ArrayList parts;
-
-    public ArrayList body;
-
-    private Vector2 pos;
-
-    private float rotation;
+    public TextureAtlas atlas;
+    public Skeleton skeleton;
+    public AnimationState state;
 
     public float mass;
 
-    public Body(ArrayList prts, Zombie z){
-        //head = (Part)prts.get(0);
-        //torso = (Part)prts.get(1);
-        //leftArm = (Part)prts.get(2);
-        //rightArm = (Part)prts.get(3);
-        //leftFoot = (Part)prts.get(4);
-        //rightFoot = (Part)prts.get(5);
+    public boolean isPhysicsEnabled;
 
-        parts = new ArrayList();
-        parts.add(head);
-        parts.add(torso);
-        parts.add(leftArm);
-        parts.add(rightArm);
-        parts.add(leftFoot);
-        parts.add(rightFoot);
+    public boolean isGravityEnabled;
 
-        body = new ArrayList();
-        body.add(head);
-        body.add(torso);
-        body.add(leftArm);
-        body.add(rightArm);
-        body.add(leftFoot);
-        body.add(rightFoot);
+    public boolean isRagdollEnabled;
 
-        pos = new Vector2(0, 0);
+    public Body(Zombie z){
 
-        rotation = 0;
+        physics = new BodyPhysics(this);
 
-        mass = 68;
+        mass = 40;
 
-        construct();
+        isPhysicsEnabled = true;
 
-    }
+        isGravityEnabled = true;
 
-    private void construct(){
-        leftFoot.setPosition(pos.x, pos.y);
-        rightFoot.setPosition(leftFoot.getWidth(), leftFoot.getY());
-        torso.setPosition(leftFoot.getX() + leftFoot.getWidth(), leftFoot.getHeight());
-        head.setPosition(torso.getX() + torso.getWidth()/2, torso.getY() + torso.getHeight());
-        leftArm.setPosition(torso.getX() - leftArm.getWidth(), torso.getY());
-        rightArm.setPosition(torso.getX() + rightArm.getWidth(), torso.getY());
-    }
+        isRagdollEnabled = true;
 
-    private void rotate(){
-        //https://academo.org/demos/rotation-about-point/
-        //https://www.mathsisfun.com/sine-cosine-tangent.html
+        atlas = new TextureAtlas(Gdx.files.internal("spineboy.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(0.6f); // Load the skeleton at 60% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("spineboy.json"));
 
-        torso.setOrigin(head.getX() - torso.getX() ,head.getY() - torso.getY());
-        torso.setRotation(rotation);
+        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
 
-        leftArm.setOrigin(head.getX() - torso.getX() ,head.getY() - torso.getY());
-        leftArm.setRotation(rotation);
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+        stateData.setMix("run", "jump", 0.2f);
+        stateData.setMix("jump", "run", 0.2f);
 
-        rightArm.setOrigin(head.getX() - torso.getX() ,head.getY() - torso.getY());
-        rightArm.setRotation(rotation);
+        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        state.setTimeScale(0.5f); // Slow all animations down to 50% speed.
 
-        leftFoot.setOrigin(head.getX() - torso.getX() ,head.getY() - torso.getY());
-        leftFoot.setRotation(rotation);
-
-        rightFoot.setOrigin(head.getX() - torso.getX() ,head.getY() - torso.getY());
-        rightFoot.setRotation(rotation);
-
-        //torso.setPosition((float)(x*(Math.cos(rotation) - y*Math.sin(rotation))), (float)(y*(Math.cos(rotation) + x*Math.sin(rotation))));
-
-        head.rotate(rotation);
+        // Queue animations on track 0.
+        state.setAnimation(0, "run", true);
+        state.addAnimation(0, "jump", false, 2); // Jump after 2 seconds.
+        state.addAnimation(0, "run", true, 0); // Run after the jump.
 
     }
 
-    public void updateGravity(float delta){
-        //((Part)body.get(0)).update(delta);
-        construct();
+    public void update(float delta){
+
+        state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
+
+        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+
+        physics.update(delta); // Update physics.
+
+        Gdx.app.log("update", ""+skeleton.getY());
+
+
     }
 
-    public void setPosition(float x, float y){
-        pos.x = x;
-        pos.y = y;
-        construct();
-    }
 
-    public void setRotation(float rot){
-        rotation = rot;
-        rotate();
-    }
+    public boolean contains(float x, float y){
 
-    public Vector2 getPosition(){
-        return pos;
-    }    public float getRotation(){
-        return rotation;
+        return x < skeleton.findBone("head").getWorldX() + 100 && x > skeleton.findBone("head").getWorldX() - 100 && y < skeleton.findBone("head").getWorldY() + 100 && y > skeleton.findBone("head").getWorldY() - 100;
+
     }
 
     public float getX(){
-        return leftFoot.getX();
+        return skeleton.getX();
     }
+
     public float getY(){
-        return leftFoot.getY();
+        return skeleton.getY();
+
+    }
+
+    public void setPosition(float x, float y){
+        skeleton.setPosition(x, y);
     }
 
     public float getWidth(){
-        return leftArm.getWidth() + torso.getWidth() + rightArm.getWidth();
+        return skeleton.getX();
     }
 
     public float getHeight(){
-        return leftFoot.getHeight() + torso.getHeight() + head.getHeight();
+        return skeleton.getY();
     }
-
-    public void removePart(int part){
-        body.remove(part);
-    }
-
-    public void addPart(int part){
-        body.add(parts.get(part));
-    }
-
-    public void draw(Batch batch){
-        batch.draw(leftFoot, leftFoot.getX(), leftFoot.getY());
-        batch.draw(rightFoot, rightFoot.getX(), rightFoot.getY());
-        batch.draw(leftArm, leftArm.getX(), leftArm.getY());
-        batch.draw(rightArm, rightArm.getX(), rightArm.getY());
-        batch.draw(torso, torso.getX(), torso.getY());
-        batch.draw(head, head.getX(), head.getY());
-    }
-
-
 
 }
