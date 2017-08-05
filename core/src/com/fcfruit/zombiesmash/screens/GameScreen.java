@@ -59,33 +59,12 @@ public class GameScreen implements Screen{
 
         power_ups_stage = new Stage(power_ups_view);
 
-
-
-        Texture larm = new Texture(Gdx.files.internal("zombies/regzombie/arm.png"));
-        Texture rarm = new Texture(Gdx.files.internal("zombies/regzombie/arm.png"));
-        Texture lfoot = new Texture(Gdx.files.internal("zombies/regzombie/leg.png"));
-        Texture rfoot = new Texture(Gdx.files.internal("zombies/regzombie/leg.png"));
-        Texture torso = new Texture(Gdx.files.internal("zombies/regzombie/body.png"));
-        Texture head = new Texture(Gdx.files.internal("zombies/regzombie/headv2.png"));
-
-
-        ArrayList a = new ArrayList();
-
-        a.add(head);
-        a.add(torso);
-        a.add(larm);
-        a.add(rarm);
-        a.add(lfoot);
-        a.add(rfoot);
-
-        regZombie = new RegularZombie(a, g);
-        regZombie.setPosition(100, 100);
+        regZombie = new RegularZombie(g);
+        regZombie.setPosition(300, 300);
 
         spriteBatch = new SpriteBatch();
 
         skeletonRenderer = new SkeletonRenderer();
-
-        game_stage.addActor(regZombie);
 
         inputMultiplexer = new InputMultiplexer();
 
@@ -110,10 +89,11 @@ public class GameScreen implements Screen{
         power_ups_stage.act(delta);
         power_ups_stage.draw();
 
+        regZombie.update(delta);
+
         spriteBatch.begin();
         skeletonRenderer.draw(spriteBatch, regZombie.body.skeleton);
         spriteBatch.end();
-
 
     }
 
