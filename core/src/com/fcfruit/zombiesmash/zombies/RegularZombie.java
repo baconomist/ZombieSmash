@@ -13,8 +13,8 @@ import java.util.ArrayList;
 
 public class RegularZombie extends Zombie{
 
-    public RegularZombie(Game g){
-        super(g);
+    public RegularZombie(){
+        super();
     }
 
 }

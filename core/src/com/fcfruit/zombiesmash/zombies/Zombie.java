@@ -18,20 +18,17 @@ import java.util.ArrayList;
 
 public class Zombie{
 
-    private Game game;
-
     public Body body;
 
     public float mass;
 
-    public int touch;
+    public int touchedLimb;
 
     public boolean isHanging;
 
     public boolean isPhysicsEnabled;
 
-    public Zombie(Game g) {
-        game = g;
+    public Zombie() {
 
         body = new Body(this);
 
@@ -51,17 +48,21 @@ public class Zombie{
         body.update(delta);
 
 
-        if(body.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()) && Gdx.input.isTouched()) {
+        if(body.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()) && Gdx.input.isTouched() && !isDraging()) {
             isHanging = true;
+            touchedLimb = body.getTouchedLimb(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         } else if (!isDraging() && !Gdx.input.isTouched()){
             isHanging = false;
+            touchedLimb = 0;
         }
 
         // Simplified if statement.
         body.isGravityEnabled = !isHanging;
         if(isHanging) {
-            body.hangFromLimb(3, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+            body.hangFromLimb(touchedLimb, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         }
+
+        Gdx.app.log("touchedlimb", ""+touchedLimb);
 
 
 

@@ -76,9 +76,6 @@ public class BodyPhysics {
             y = bodyY + (ground + velocity.y + ground - (bodyY + velocity.y + ground));
         }
 
-
-        Gdx.app.log("yyy", ""+body.getY());
-
         body.skeleton.setPosition(x, y);
 
 
@@ -88,9 +85,6 @@ public class BodyPhysics {
         if (velocity.y > maxSpeed.y) {
             currentVelocity.y = velocity.y;
         }
-
-        Gdx.app.log("y", ""+currentVelocity.y);
-        Gdx.app.log("yy", ""+body.getY());
 
     }
 

@@ -22,6 +22,7 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.GifDecoder;
 import com.fcfruit.zombiesmash.levels.Level;
+import com.fcfruit.zombiesmash.stages.GameStage;
 import com.fcfruit.zombiesmash.zombies.Body;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -34,11 +35,7 @@ import java.util.ArrayList;
 
 public class GameScreen implements Screen{
 
-    private Zombie regZombie;
-
-    private SpriteBatch spriteBatch;
-
-    private SkeletonRenderer skeletonRenderer;
+    public Level level;
 
     private Stage game_stage;
     private Stage power_ups_stage;
@@ -48,23 +45,18 @@ public class GameScreen implements Screen{
 
     private InputMultiplexer inputMultiplexer;
 
-    public GameScreen(Level level, Game g){
+    public GameScreen(Level lvl, Game g){
+
+        level = lvl;
 
         game_view = new ExtendViewport(1920, 1080);
 
-        game_stage = new Stage(game_view);
+        game_stage = new GameStage(game_view, this);
 
         power_ups_view = new ExtendViewport(480, 270);
         power_ups_view.setScreenPosition(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 270);
 
         power_ups_stage = new Stage(power_ups_view);
-
-        regZombie = new RegularZombie(g);
-        regZombie.setPosition(300, 300);
-
-        spriteBatch = new SpriteBatch();
-
-        skeletonRenderer = new SkeletonRenderer();
 
         inputMultiplexer = new InputMultiplexer();
 
@@ -88,12 +80,6 @@ public class GameScreen implements Screen{
 
         power_ups_stage.act(delta);
         power_ups_stage.draw();
-
-        regZombie.update(delta);
-
-        spriteBatch.begin();
-        skeletonRenderer.draw(spriteBatch, regZombie.body.skeleton);
-        spriteBatch.end();
 
     }
 
