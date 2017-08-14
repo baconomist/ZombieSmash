@@ -183,38 +183,48 @@ public class Body{
         //y, x is correct!
         //**************
 
+        Gdx.app.log("aaa", ""+(float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+
         // If head
         if(limb == 1){
-            this.setPosition(x - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, y - (((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight() + ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight()));
+            this.setPosition(this.getX() + Gdx.input.getDeltaX(), this.getY() - Gdx.input.getDeltaY());
         }
         // If left arm
         else if (limb == 2){
-            skeleton.findBone("left_arm").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            skeleton.findBone("left_arm").setRotation((float)Math.toDegrees(Math.atan2(skeleton.findBone("left_arm").getWorldY() - y, skeleton.findBone("left_arm").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
         // If torso
         else if (limb == 3){
-            this.setPosition(x - ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getWidth()/2, y - ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight() - ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getWidth()/2);
+            this.setPosition(this.getX() + Gdx.input.getDeltaX(), this.getY() - Gdx.input.getDeltaY());
         }
         // If right arm
         else if (limb == 4){
-            skeleton.findBone("right_arm").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            // Do not know why this rotation is messed up, but need to add half circle or math.pi to the radians to rotate clockwise
+            // Subtracting is rotationg ccw
+            // For reference:
+            // https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
+            skeleton.findBone("right_arm").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(skeleton.findBone("right_arm").getWorldY() - y, skeleton.findBone("right_arm").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
         // If left leg
         else if (limb == 5){
-            skeleton.findBone("left_leg").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            skeleton.findBone("left_leg").setRotation((float)Math.toDegrees(Math.atan2(skeleton.findBone("left_leg").getWorldY() - y, skeleton.findBone("left_leg").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
         // If right leg
         else if (limb == 6){
-            skeleton.findBone("right_leg").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            // Do not know why this rotation is messed up, but need to add half circle or math.pi to the radians to rotate clockwise
+            // Subtracting is rotationg ccw
+            // For reference:
+            // https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
+            skeleton.findBone("right_leg").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(skeleton.findBone("right_leg").getWorldY() - y, skeleton.findBone("right_leg").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
