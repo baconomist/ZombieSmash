@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.collision.BoundingBox;
@@ -61,6 +62,7 @@ public class Body{
 
     public boolean isHanging;
 
+
     public Body(Zombie z){
 
         physics = new BodyPhysics(this);
@@ -83,6 +85,8 @@ public class Body{
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
         //stateData.setMix("run", "jump", 0.2f);
         //stateData.setMix("jump", "run", 0.2f);
+
+
 
         state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
         state.setTimeScale(0.7f); // Slow all animations down to 50% speed.
@@ -136,6 +140,10 @@ public class Body{
         //Always use this after any transformation change to skeleton:
         skeleton.updateWorldTransform();
 
+
+        // Make polygons follow skeleton bones.
+        // Some extra offsets in the positions.
+
         headBox.setPosition(skeleton.findBone("head").getWorldX() - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, skeleton.findBone("head").getWorldY());
         headBox.setRotation(skeleton.findBone("head").getRotation());
 
@@ -170,13 +178,18 @@ public class Body{
         //Width = height for some limbs.
         //Check atlas file and png.
 
+        //**************
+        //SohCahToa
+        //y, x is correct!
+        //**************
+
         // If head
         if(limb == 1){
             this.setPosition(x - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, y - (((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight() + ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight()));
         }
         // If left arm
         else if (limb == 2){
-            skeleton.findBone("left_arm").setRotation(skeleton.findBone("left_arm").getRotation() + (float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            skeleton.findBone("left_arm").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
@@ -187,21 +200,21 @@ public class Body{
         }
         // If right arm
         else if (limb == 4){
-            skeleton.findBone("right_arm").setRotation(skeleton.findBone("right_arm").getRotation() + (float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            skeleton.findBone("right_arm").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
         // If left leg
         else if (limb == 5){
-            skeleton.findBone("left_leg").setRotation(skeleton.findBone("left_leg").getRotation() + (float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            skeleton.findBone("left_leg").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
         // If right leg
         else if (limb == 6){
-            skeleton.findBone("right_leg").setRotation(skeleton.findBone("right_leg").getRotation() + (float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
+            skeleton.findBone("right_leg").setRotation((float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
@@ -212,32 +225,54 @@ public class Body{
     }
 
 
-    public boolean contains(float x, float y){
+    /*public boolean contains(float x, float y){
 
         return x > skeleton.findBone("left_arm").getWorldX() && x < skeleton.findBone("right_arm").getWorldX() && y > skeleton.findBone("left_leg").getWorldY() - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth() && y < skeleton.findBone("head").getWorldY() + ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight();
 
-    }
+    }*/
 
-    public int getTouchedLimb(float x, float y){
-        // Check width and height for each limb, width may actually == height.
-        // And where is x and y on the attachment? bottom left always????
+    public int getTouchedLimb(){
 
-        //Width = height for some limbs.
-        //Check atlas file and png.
+        // Probably best method for touch detection, works with rotation, contains() doesn't
 
-        //If statements can't be in order, should be in smallest to largest order for detection purposes
+        // If statements can't be in order, should be in smallest to largest order for detection purposes
 
-        if (leftArmBox.contains(x, y)) {
-            return 2;
-        }
-        else if(rightArmBox.contains(x, y)){
+        // Create a rectangle/square that will be used for touch detection
+        Polygon touchPolygon = new Polygon(new float[]{0, 0, 1, 0, 1, 1, 0, 1});
+        touchPolygon.setPosition(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+
+        if(Intersector.overlapConvexPolygons(rightArmBox, touchPolygon)){
             return 4;
         }
-        else if(leftLegBox.contains(x, y)){
+        else if(Intersector.overlapConvexPolygons(rightLegBox, touchPolygon)){
+            return 6;
+        }
+        else if (Intersector.overlapConvexPolygons(leftArmBox, touchPolygon)) {
+            return 2;
+        }
+        else if(Intersector.overlapConvexPolygons(leftLegBox, touchPolygon)){
             return 5;
+        }
+        else if(Intersector.overlapConvexPolygons(torsoBox, touchPolygon)){
+            return 3;
+        }
+        else if (Intersector.overlapConvexPolygons(headBox, touchPolygon)){
+            return 1;
+        }
+
+        return 0;
+
+        /*if(rightArmBox.contains(x, y)){
+            return 4;
         }
         else if(rightLegBox.contains(x, y)){
             return 6;
+        }
+        else if (leftArmBox.contains(x, y)) {
+            return 2;
+        }
+        else if(leftLegBox.contains(x, y)){
+            return 5;
         }
         else if(torsoBox.contains(x, y)){
             return 3;
@@ -246,9 +281,15 @@ public class Body{
             return 1;
         }
 
-        return 0;
+        return 0;*/
 
         /*
+        // Check width and height for each limb, width may actually == height.
+        // And where is x and y on the attachment? bottom left always????
+
+        // Width = height for some limbs.
+        // Check atlas file and png.
+
         // Left arm, pos is located @ attachement point, so equation is reversed for y
         if(x > skeleton.findBone("left_arm").getWorldX() && x < skeleton.findBone("left_arm").getWorldX() + skeleton.findBone("left_arm").getData().getLength() && y > skeleton.findBone("left_arm").getWorldY() - ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight() && y < skeleton.findBone("left_arm").getWorldY() + ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight()){
             return 2;

@@ -47,10 +47,13 @@ public class Zombie{
         // I.E. skeleton.findBone("left_arm").setRotation(90); will not work before this update call
         body.update(delta);
 
+        if(!isHanging) {
+            touchedLimb = body.getTouchedLimb();
+        }
 
-        if(body.contains(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY()) && Gdx.input.isTouched() && !isDraging()) {
+        //!isHanging works, cus if hanging false, then go to else, if not draging, ishanging = false
+        if(touchedLimb > 0 && Gdx.input.isTouched()) {
             isHanging = true;
-            touchedLimb = body.getTouchedLimb(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         } else if (!isDraging() && !Gdx.input.isTouched()){
             isHanging = false;
             touchedLimb = 0;
@@ -58,6 +61,7 @@ public class Zombie{
 
         // Simplified if statement.
         body.isGravityEnabled = !isHanging;
+
         if(isHanging) {
             body.hangFromLimb(touchedLimb, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         }
