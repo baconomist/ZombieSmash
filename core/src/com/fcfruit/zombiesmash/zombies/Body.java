@@ -15,6 +15,9 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.BodyPhysics;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * Created by Lucas on 2017-07-30.
  */
@@ -38,16 +41,11 @@ public class Body{
 
     private ShapeRenderer shapeRenderer;
 
-    private Matrix3 rotationMatrix;
-
     public float mass;
-
-    public boolean isPhysicsEnabled;
 
     public boolean isGravityEnabled;
 
-    int x = 0;
-
+    public boolean isRagdollEnabled;
 
     public Body(Zombie z){
 
@@ -57,9 +55,9 @@ public class Body{
 
         mass = 40;
 
-        isPhysicsEnabled = true;
-
         isGravityEnabled = true;
+
+        isRagdollEnabled = true;
 
         atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
@@ -118,10 +116,14 @@ public class Body{
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
-        if(isPhysicsEnabled) {
+        if(isGravityEnabled) {
 
-            physics.update(delta); // Update physics.
+            physics.applyGravity(delta); // Update physics.
 
+        }
+
+        if(isRagdollEnabled){
+            physics.applyRagdoll(delta);
         }
 
         //skeleton.findBone("head").setRotation(-200.1f);
@@ -130,14 +132,6 @@ public class Body{
 
         //Always use this after any transformation change to skeleton:
         skeleton.updateWorldTransform();
-
-        if(Gdx.input.isTouched()) {
-           this.setRotation(x++);
-        }
-
-        this.setPosition(500, 600);
-
-        Gdx.app.log("rot", ""+this.getRotation());
 
         updateBoxes();
 
@@ -176,7 +170,7 @@ public class Body{
         leftLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         leftLegBox.setRotation(skeleton.findBone("left_leg").getWorldRotationX());
 
-        rightLegBox.setPosition(skeleton.findBone("right_leg").getWorldX(), skeleton.findBone("right_leg").getWorldY() );
+        rightLegBox.setPosition(skeleton.findBone("right_leg").getWorldX(), skeleton.findBone("right_leg").getWorldY());
         rightLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         rightLegBox.setRotation(skeleton.findBone("right_leg").getWorldRotationX());
 
@@ -369,6 +363,10 @@ public class Body{
 
     public float getHeight(){
         return skeleton.getData().getHeight();
+    }
+
+    public ArrayList getRagdollParts(){
+        return new ArrayList();
     }
 
 }

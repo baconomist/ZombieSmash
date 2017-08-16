@@ -7,15 +7,14 @@
   <component name="BookmarkManager">
     <bookmark url="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java" line="26" />
     <bookmark url="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java" line="59" />
-    <bookmark url="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" line="150" />
-    <bookmark url="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" line="158" />
+    <bookmark url="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" line="144" />
+    <bookmark url="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" line="152" />
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,16 +49,17 @@
       <file leaf-file-name="Body.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-61">
-              <caret line="137" column="33" selection-start-line="137" selection-start-column="33" selection-end-line="137" selection-end-column="33" />
+            <state relative-caret-position="-2669">
+              <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
               <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#17472#17473#0" expanded="true" />
-                <element signature="e#17510#17511#0" expanded="true" />
-                <element signature="e#17788#17789#0" expanded="true" />
-                <element signature="e#17847#17848#0" expanded="true" />
-                <element signature="e#17880#17881#0" expanded="true" />
-                <element signature="e#17945#17946#0" expanded="true" />
+                <element signature="e#17390#17391#0" expanded="true" />
+                <element signature="e#17428#17429#0" expanded="true" />
+                <element signature="e#17706#17707#0" expanded="true" />
+                <element signature="e#17765#17766#0" expanded="true" />
+                <element signature="e#17798#17799#0" expanded="true" />
+                <element signature="e#17863#17864#0" expanded="true" />
+                <element signature="e#18070#18071#0" expanded="true" />
+                <element signature="e#18108#18109#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -81,9 +81,12 @@
       <file leaf-file-name="BodyPhysics.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="25">
-              <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="1126">
+              <caret line="79" column="40" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
+              <folding>
+                <element signature="e#1766#1767#0" expanded="true" />
+                <element signature="e#1804#1805#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -2227,9 +2230,9 @@
         <option value="$PROJECT_DIR$/android/assets/zombies/reg_zombie/Zombie1.json" />
         <option value="$PROJECT_DIR$/android/assets/zombies/reg_zombie/reg_zombie.json" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyGravity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java" />
       </list>
     </option>
@@ -2397,86 +2400,6 @@
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zombies" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
-          <PATH>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="ZombieSmash" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="android" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="assets" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="zombies" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-            <PATH_ELEMENT>
-              <option name="myItemId" value="reg_zombie" />
-              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
-            </PATH_ELEMENT>
-          </PATH>
         </subPane>
       </pane>
       <pane id="PackagesPane" />
@@ -2488,7 +2411,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../../spine-superspineboy-master" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../test" />
     <property name="device.picker.selection" value="521022984cb02453" />
     <property name="ExportApk.ApkPath" value="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android" />
     <property name="ExportApk.Flavors" value="" />
@@ -2856,8 +2779,8 @@
     <servers />
   </component>
   <component name="ToolWindowManager">
-    <frame x="-8" y="-8" width="2576" height="1456" extended-state="6" />
-    <editor active="true" />
+    <frame x="-8" y="-8" width="2576" height="1456" extended-state="7" />
+    <editor active="false" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.1408776" sideWeight="0.49523053" order="7" side_tool="false" content_ui="tabs" />
@@ -2872,7 +2795,7 @@
       <window_info id="Captures" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="5" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle Console" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1108903" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="true" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.1108903" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.09006929" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -2952,7 +2875,10 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
           <caret line="15" column="0" selection-start-line="15" selection-start-column="0" selection-end-line="15" selection-end-column="0" />
-          <folding />
+          <folding>
+            <element signature="e#1766#1767#0" expanded="true" />
+            <element signature="e#1804#1805#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>
@@ -3200,14 +3126,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="25">
-          <caret line="56" column="0" selection-start-line="56" selection-start-column="0" selection-end-line="56" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx/1.9.6/7d903ecd6b0df2ec334814b8e70618e4c93fd37c/gdx-1.9.6-sources.jar!/com/badlogic/gdx/graphics/g2d/Sprite.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="405">
@@ -3232,18 +3150,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/BodyPhysics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="1126">
+          <caret line="79" column="40" selection-start-line="79" selection-start-column="40" selection-end-line="79" selection-end-column="40" />
+          <folding>
+            <element signature="e#1766#1767#0" expanded="true" />
+            <element signature="e#1804#1805#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Body.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-61">
-          <caret line="137" column="33" selection-start-line="137" selection-start-column="33" selection-end-line="137" selection-end-column="33" />
+        <state relative-caret-position="-2669">
+          <caret line="5" column="55" selection-start-line="5" selection-start-column="55" selection-end-line="5" selection-end-column="55" />
           <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#17472#17473#0" expanded="true" />
-            <element signature="e#17510#17511#0" expanded="true" />
-            <element signature="e#17788#17789#0" expanded="true" />
-            <element signature="e#17847#17848#0" expanded="true" />
-            <element signature="e#17880#17881#0" expanded="true" />
-            <element signature="e#17945#17946#0" expanded="true" />
+            <element signature="e#17390#17391#0" expanded="true" />
+            <element signature="e#17428#17429#0" expanded="true" />
+            <element signature="e#17706#17707#0" expanded="true" />
+            <element signature="e#17765#17766#0" expanded="true" />
+            <element signature="e#17798#17799#0" expanded="true" />
+            <element signature="e#17863#17864#0" expanded="true" />
+            <element signature="e#18070#18071#0" expanded="true" />
+            <element signature="e#18108#18109#0" expanded="true" />
           </folding>
         </state>
       </provider>
