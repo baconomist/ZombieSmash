@@ -54,6 +54,7 @@ public class BodyPhysics {
                 currentVelocity.x = 0f;
                 currentVelocity.y = 0f;
             }
+
         }
 
     }

@@ -1,16 +1,6 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
-import com.badlogic.gdx.math.Rectangle;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.scenes.scene2d.Actor;
-import com.esotericsoftware.spine.Skeleton;
-import com.fcfruit.zombiesmash.BodyPhysics;
-
-import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -32,7 +22,7 @@ public class Zombie{
 
         body = new Body(this);
 
-        mass = 4;
+        touchedLimb = 0;
 
         isHanging = false;
 
@@ -59,7 +49,7 @@ public class Zombie{
             touchedLimb = 0;
         }
 
-        // Simplified if statement.
+        // Simplified if statements.
         body.isGravityEnabled = !isHanging;
 
         if(isHanging) {

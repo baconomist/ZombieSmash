@@ -1,41 +1,27 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
+import com.badlogic.gdx.math.Matrix3;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.collision.BoundingBox;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
-import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonBounds;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.SkeletonRenderer;
-import com.esotericsoftware.spine.SkeletonRendererDebug;
-import com.esotericsoftware.spine.Skin;
-import com.esotericsoftware.spine.Slot;
-import com.esotericsoftware.spine.attachments.Attachment;
-import com.esotericsoftware.spine.attachments.AttachmentType;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.BodyPhysics;
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-07-30.
  */
 
 public class Body{
+
+    public Zombie zombie;
 
     private BodyPhysics physics;
 
@@ -52,18 +38,20 @@ public class Body{
 
     private ShapeRenderer shapeRenderer;
 
+    private Matrix3 rotationMatrix;
+
     public float mass;
 
     public boolean isPhysicsEnabled;
 
     public boolean isGravityEnabled;
 
-    public boolean isRagdollEnabled;
-
-    public boolean isHanging;
+    int x = 0;
 
 
     public Body(Zombie z){
+
+        zombie = z;
 
         physics = new BodyPhysics(this);
 
@@ -72,8 +60,6 @@ public class Body{
         isPhysicsEnabled = true;
 
         isGravityEnabled = true;
-
-        isRagdollEnabled = true;
 
         atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
@@ -86,8 +72,6 @@ public class Body{
         //stateData.setMix("run", "jump", 0.2f);
         //stateData.setMix("jump", "run", 0.2f);
 
-
-
         state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
         state.setTimeScale(0.7f); // Slow all animations down to 50% speed.
 
@@ -99,26 +83,29 @@ public class Body{
 
         headBox = new Polygon();
         headBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight()});
-        
+        headBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+
         leftArmBox = new Polygon();
         leftArmBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getWidth(), ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight()});
-        leftArmBox.setOrigin(((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getWidth()/2, ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight()/2);
+        leftArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
 
+        // height and width flipped because in image height = width
         torsoBox = new Polygon();
-        torsoBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getWidth(), ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight()});
-        
+        torsoBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight(), ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getWidth()});
+        torsoBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+
         rightArmBox = new Polygon();
         rightArmBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getWidth(), ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getHeight()});
-        rightArmBox.setOrigin(((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getWidth()/2, ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getHeight()/2);
+        rightArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
 
 
         leftLegBox = new Polygon();
         leftLegBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight(), ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getWidth()});
-        leftLegBox.setOrigin(((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight()/2, ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getWidth()/2);
+        leftLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
 
         rightLegBox = new Polygon();
         rightLegBox.setVertices(new float[]{0, 0, ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getHeight(), 0, ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getHeight(), ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getWidth(), 0, ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getWidth()});
-        rightLegBox.setOrigin(((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getHeight()/2, ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getWidth()/2);
+        rightLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
 
         shapeRenderer = new ShapeRenderer();
 
@@ -131,7 +118,11 @@ public class Body{
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
-        physics.update(delta); // Update physics.
+        if(isPhysicsEnabled) {
+
+            physics.update(delta); // Update physics.
+
+        }
 
         //skeleton.findBone("head").setRotation(-200.1f);
         //skeleton.updateWorldTransform();
@@ -140,26 +131,15 @@ public class Body{
         //Always use this after any transformation change to skeleton:
         skeleton.updateWorldTransform();
 
+        if(Gdx.input.isTouched()) {
+           this.setRotation(x++);
+        }
 
-        // Make polygons follow skeleton bones.
-        // Some extra offsets in the positions.
+        this.setPosition(500, 600);
 
-        headBox.setPosition(skeleton.findBone("head").getWorldX() - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, skeleton.findBone("head").getWorldY());
-        headBox.setRotation(skeleton.findBone("head").getRotation());
+        Gdx.app.log("rot", ""+this.getRotation());
 
-        leftArmBox.setPosition(skeleton.findBone("left_arm").getWorldX(), skeleton.findBone("left_arm").getWorldY() - ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight());
-        leftArmBox.setRotation(skeleton.findBone("left_arm").getRotation());
-
-        torsoBox.setPosition(skeleton.findBone("body").getWorldX() - ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight()/3, skeleton.findBone("body").getWorldY());
-
-        rightArmBox.setPosition(skeleton.findBone("right_arm").getWorldX(), skeleton.findBone("right_arm").getWorldY() - ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getHeight());
-        rightArmBox.setRotation(skeleton.findBone("right_arm").getRotation());
-
-        leftLegBox.setPosition(skeleton.findBone("left_leg").getWorldX() - ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getHeight()/2, skeleton.findBone("left_leg").getWorldY() - ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getWidth() - ((RegionAttachment)skeleton.findSlot("left_leg").getAttachment()).getWidth()/2.5f);
-        leftLegBox.setRotation(skeleton.findBone("left_leg").getRotation());
-
-        rightLegBox.setPosition(skeleton.findBone("right_leg").getWorldX() - ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getHeight()/2, skeleton.findBone("right_leg").getWorldY() - ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getWidth() - ((RegionAttachment)skeleton.findSlot("right_leg").getAttachment()).getWidth()/2.5f);
-        rightLegBox.setRotation(skeleton.findBone("right_leg").getRotation());
+        updateBoxes();
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         shapeRenderer.polygon(headBox.getTransformedVertices());
@@ -172,8 +152,38 @@ public class Body{
 
     }
 
+    private void updateBoxes(){
+        // Make polygons follow skeleton bones.
+        // Some extra offsets in the positions.
+
+        headBox.setPosition(skeleton.findBone("head").getWorldX() + ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, skeleton.findBone("head").getWorldY());
+        headBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+        headBox.setRotation(skeleton.findBone("head").getWorldRotationX());
+
+        leftArmBox.setPosition(skeleton.findBone("left_arm").getWorldX(), skeleton.findBone("left_arm").getWorldY() - ((RegionAttachment)skeleton.findSlot("left_arm").getAttachment()).getHeight());
+        leftArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+        leftArmBox.setRotation(skeleton.findBone("left_arm").getWorldRotationX());
+
+        torsoBox.setPosition(skeleton.findBone("body").getWorldX() + ((RegionAttachment)skeleton.findSlot("body").getAttachment()).getHeight()/3, skeleton.findBone("body").getWorldY());
+        torsoBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+        torsoBox.setRotation(skeleton.findBone("body").getWorldRotationX());
+
+        rightArmBox.setPosition(skeleton.findBone("right_arm").getWorldX(), skeleton.findBone("right_arm").getWorldY() - ((RegionAttachment)skeleton.findSlot("right_arm").getAttachment()).getHeight());
+        rightArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+        rightArmBox.setRotation(skeleton.findBone("right_arm").getWorldRotationX());
+
+        leftLegBox.setPosition(skeleton.findBone("left_leg").getWorldX(), skeleton.findBone("left_leg").getWorldY());
+        leftLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+        leftLegBox.setRotation(skeleton.findBone("left_leg").getWorldRotationX());
+
+        rightLegBox.setPosition(skeleton.findBone("right_leg").getWorldX(), skeleton.findBone("right_leg").getWorldY() );
+        rightLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
+        rightLegBox.setRotation(skeleton.findBone("right_leg").getWorldRotationX());
+
+
+    }
+
     public void hangFromLimb(int limb, float x, float y){
-        // Use the hash map limbs for limbs reference!
 
         //Width = height for some limbs.
         //Check atlas file and png.
@@ -183,10 +193,9 @@ public class Body{
         //y, x is correct!
         //**************
 
-        Gdx.app.log("aaa", ""+(float)Math.toDegrees(Math.atan2(this.getY() - y, this.getX() - x)));
-
         // If head
         if(limb == 1){
+            // Y has to be negative bc deltaY+ is going up
             this.setPosition(this.getX() + Gdx.input.getDeltaX(), this.getY() - Gdx.input.getDeltaY());
         }
         // If left arm
@@ -203,7 +212,7 @@ public class Body{
         // If right arm
         else if (limb == 4){
             // Do not know why this rotation is messed up, but need to add half circle or math.pi to the radians to rotate clockwise
-            // Subtracting is rotationg ccw
+            // Subtracting is rotation ccw
             // For reference:
             // https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
             skeleton.findBone("right_arm").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(skeleton.findBone("right_arm").getWorldY() - y, skeleton.findBone("right_arm").getWorldX() - x)));
@@ -229,8 +238,6 @@ public class Body{
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
-
-
 
     }
 
@@ -346,6 +353,14 @@ public class Body{
 
         //Apply changes to skeleton
         skeleton.updateWorldTransform();
+    }
+
+    public void setRotation(float degrees){
+        skeleton.getRootBone().setRotation(degrees);
+    }
+
+    public float getRotation(){
+        return skeleton.getRootBone().getWorldRotationX();
     }
 
     public float getWidth(){
