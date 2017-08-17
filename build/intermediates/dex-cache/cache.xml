@@ -12,21 +12,21 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.codeandweb.physicseditor\gdx-pe-loader\1.1.0\dca64a362e19ca9a0992dcbff0cb67dbff2a942b\gdx-pe-loader-1.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="dca64a362e19ca9a0992dcbff0cb67dbff2a942b">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-pe-loader-1.1.0_121b0fd5bc672629f7e5f8d8db2814b515b570f9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
-        sha1="8542e454ca82419df6c55cec78caa74a82b453b9">
+        sha1="cc70b1e601c6d65493e6f84398ad5973e507b54d">
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9fe3f376f40d3f7f926dc87db9852c404641d4c0\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.esotericsoftware.spine\spine-libgdx\3.5.51.1\e162298aee4f3e7a0be0fe3aa41d45b968b54014\spine-libgdx-3.5.51.1.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="e162298aee4f3e7a0be0fe3aa41d45b968b54014">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\spine-libgdx-3.5.51.1_0037b4aa56e3b70f7b2c16f7a51f2d0583501bee\classes.dex" />
     </item>
 
 </items>

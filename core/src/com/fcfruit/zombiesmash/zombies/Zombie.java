@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.fcfruit.zombiesmash.screens.GameScreen;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -8,7 +9,7 @@ import com.badlogic.gdx.Gdx;
 
 public class Zombie{
 
-    public Body body;
+    public ZombieBody body;
 
     public float mass;
 
@@ -20,7 +21,7 @@ public class Zombie{
 
     public Zombie() {
 
-        body = new Body(this);
+        body = new ZombieBody(this);
 
         touchedLimb = 0;
 

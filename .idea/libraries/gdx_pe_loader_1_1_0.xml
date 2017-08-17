@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="gdx-pe-loader-1.1.0">
+    <CLASSES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.codeandweb.physicseditor/gdx-pe-loader/1.1.0/dca64a362e19ca9a0992dcbff0cb67dbff2a942b/gdx-pe-loader-1.1.0.jar!/" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.codeandweb.physicseditor/gdx-pe-loader/1.1.0/5c471a6bf847b748cb78271f3cc0d015f07d6f9c/gdx-pe-loader-1.1.0-sources.jar!/" />
+    </SOURCES>
+  </library>
+</component>

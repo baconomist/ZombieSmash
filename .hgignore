@@ -423,3 +423,5 @@ build/android-profile/profile-2017-08-02-21-57-46-110.rawproto
 build/android-profile/profile-2017-08-02-21-56-53-912.rawproto
 build/android-profile/profile-2017-08-02-21-56-40-021.rawproto
 build/**
+*.class
+*.jar

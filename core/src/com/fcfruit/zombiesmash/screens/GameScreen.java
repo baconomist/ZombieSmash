@@ -3,32 +3,17 @@ package com.fcfruit.zombiesmash.screens;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
-import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Animation;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.esotericsoftware.spine.AnimationState;
-import com.esotericsoftware.spine.AnimationStateData;
-import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonData;
-import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.SkeletonRenderer;
-import com.fcfruit.zombiesmash.GifDecoder;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.levels.Level;
 import com.fcfruit.zombiesmash.stages.GameStage;
-import com.fcfruit.zombiesmash.zombies.Body;
-import com.fcfruit.zombiesmash.zombies.RegularZombie;
-import com.fcfruit.zombiesmash.zombies.Zombie;
-
-import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -37,6 +22,10 @@ import java.util.ArrayList;
 public class GameScreen implements Screen{
 
     public Level level;
+
+    private Physics physics;
+
+    private OrthographicCamera camera;
 
     private Stage game_stage;
     private Stage power_ups_stage;
@@ -50,7 +39,11 @@ public class GameScreen implements Screen{
 
         level = lvl;
 
-        game_view = new ExtendViewport(1920, 1080);
+        physics = new Physics();
+
+        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+        game_view = new ExtendViewport(1920, 1080, camera);
 
         game_stage = new GameStage(game_view, this);
 
@@ -75,12 +68,19 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
+        // Clear the screen.
+        Gdx.gl.glClearColor(0, 0, 0, 1);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         game_stage.act(delta);
+        game_view.apply();// Needs to be called if you have multiple viewports, see docs. Before drawing.
         game_stage.draw();
 
         power_ups_stage.act(delta);
+        power_ups_view.apply();// Needs to be called if you have multiple viewports, see docs. Before drawing.
         power_ups_stage.draw();
+
+        camera.update();
 
     }
 
@@ -88,6 +88,17 @@ public class GameScreen implements Screen{
     public void resize(int width, int height) {
         power_ups_stage.getViewport().update(width, height);
         game_stage.getViewport().update(width, height);
+
+        camera.viewportWidth = width;
+        camera.viewportHeight = height;
+
+        camera.position.x = Gdx.graphics.getWidth()/2;
+        camera.position.y = Gdx.graphics.getHeight()/2;
+
+        Gdx.app.log("viewport", "x"+game_view.getWorldWidth());
+
+        camera.update();
+
     }
 
     @Override

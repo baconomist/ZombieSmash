@@ -11,7 +11,7 @@ import com.fcfruit.zombiesmash.PartPhysics;
 
 public class Part extends Sprite {
 
-    private Body body;
+    private ZombieBody body;
 
     private PartPhysics physics;
 
@@ -27,7 +27,7 @@ public class Part extends Sprite {
 
     public boolean isRagdollEnabled;
 
-    public Part(Texture t, Body b){
+    public Part(Texture t, ZombieBody b){
         super(t);
 
         body = b;
