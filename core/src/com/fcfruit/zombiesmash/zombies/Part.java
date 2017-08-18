@@ -3,17 +3,18 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
-import com.fcfruit.zombiesmash.PartPhysics;
+import com.esotericsoftware.spine.Slot;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 
 /**
  * Created by Lucas on 2017-08-01.
  */
 
-public class Part extends Sprite {
+public class Part{
+
+    private String name;
 
     private ZombieBody body;
-
-    private PartPhysics physics;
 
     public float mass;
 
@@ -21,44 +22,54 @@ public class Part extends Sprite {
 
     public boolean isAttached;
 
-    public boolean isPhysicsEnabled;
 
-    public boolean isGravityEnabled;
-
-    public boolean isRagdollEnabled;
-
-    public Part(Texture t, ZombieBody b){
-        super(t);
+    public Part(String nm, ZombieBody b){
+        name = nm;
 
         body = b;
-
-        physics = new PartPhysics(this);
 
         mass = 0.5f;
 
         isAttached = true;
 
-        isPhysicsEnabled = true;
-
-        isGravityEnabled = false;
-
-        isRagdollEnabled = true;
-
     }
 
     public void update(float delta){
-        physics.update(delta);
+
     }
 
     public void setScale(){
 
     }
 
-    public void setAttachementPoint(Vector2 atchmntpnt){
-        atchmntpnt.x = atchmntpnt.x + this.getX();
-        atchmntpnt.y = atchmntpnt.y + this.getY();
-
-        attachementPoint = atchmntpnt;
+    public void setRotation(float degrees){
+        body.skeleton.findBone(name).setRotation(degrees);
     }
+
+    public String getName(){
+        return name;
+    }
+
+    public float getWidth(){
+        return ((RegionAttachment)body.skeleton.findSlot(name).getAttachment()).getWidth();
+    }
+
+    public float getHeight(){
+        return ((RegionAttachment)body.skeleton.findSlot(name).getAttachment()).getHeight();
+    }
+
+    public float getWorldX(){
+        return body.skeleton.findBone(name).getWorldX();
+    }
+
+    public float getWorldY(){
+        return body.skeleton.findBone(name).getWorldY();
+    }
+
+    public float getWorldRotationX(){
+        return body.skeleton.findBone(name).getWorldRotationX();
+    }
+
+
 
 }

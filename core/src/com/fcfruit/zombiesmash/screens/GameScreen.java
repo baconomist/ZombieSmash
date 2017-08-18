@@ -21,11 +21,11 @@ import com.fcfruit.zombiesmash.stages.GameStage;
 
 public class GameScreen implements Screen{
 
-    public Level level;
+    private Level level;
 
     private Physics physics;
 
-    private OrthographicCamera camera;
+    public OrthographicCamera camera;
 
     private Stage game_stage;
     private Stage power_ups_stage;
@@ -39,7 +39,7 @@ public class GameScreen implements Screen{
 
         level = lvl;
 
-        physics = new Physics();
+        physics = new Physics(this);
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 

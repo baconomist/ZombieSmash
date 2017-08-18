@@ -13,7 +13,7 @@ public class Zombie{
 
     public float mass;
 
-    public int touchedLimb;
+    public String touchedLimb;
 
     public boolean isHanging;
 
@@ -23,7 +23,7 @@ public class Zombie{
 
         body = new ZombieBody(this);
 
-        touchedLimb = 0;
+        touchedLimb = "none";
 
         isHanging = false;
 
@@ -43,11 +43,11 @@ public class Zombie{
         }
 
         //!isHanging works, cus if hanging false, then go to else, if not draging, ishanging = false
-        if(touchedLimb > 0 && Gdx.input.isTouched()) {
+        if(!touchedLimb.equals("none") && Gdx.input.isTouched()) {
             isHanging = true;
         } else if (!isDraging() && !Gdx.input.isTouched()){
             isHanging = false;
-            touchedLimb = 0;
+            touchedLimb = "none";
         }
 
         // Simplified if statements.
