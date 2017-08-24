@@ -21,6 +21,8 @@ public class Zombie{
 
     public boolean isHanging;
 
+    public boolean isAnimating;
+
     public boolean isPhysicsEnabled;
 
     public Zombie() {
@@ -30,6 +32,8 @@ public class Zombie{
         touchedLimb = "none";
 
         isHanging = false;
+
+        isAnimating = true;
 
         isPhysicsEnabled = true;
 
@@ -55,7 +59,7 @@ public class Zombie{
         }
 
         // Simplified if statements.
-        body.isPhysicsEnabled = !isHanging;
+        body.isPhysicsEnabled = !isAnimating;
 
         if(isHanging) {
             body.hangFromLimb(touchedLimb, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
@@ -83,14 +87,13 @@ public class Zombie{
         body.constructPhysicsBodies(shapeCache, world);
     }
 
-    public ZombieBody getBody(){
-        return body;
-    }
-
     public void setPosition(float x, float y){
         body.setPosition(x, y);
     }
 
+    public ZombieBody getBody(){
+        return body;
+    }
 
 
 }

@@ -49,10 +49,9 @@ public class ZombieBody{
     private HashMap<String, Part> parts;
 
     // OFFSETS
-    private float HEAD_OFFSET_X;
-    private float LEFTARM_OFFSET_Y;
-    private float TORSO_OFFSET_X;
-    private float RIGHTARM_OFFSET_Y;
+    private HashMap<String, float[]> POLY_OFFSETS;
+    private HashMap<String, float[]> PHYS_OFFSETS;
+    private HashMap<String, Float> PHYS_ROT_OFFSETS;
 
     public float mass;
 
@@ -115,17 +114,34 @@ public class ZombieBody{
         // OFFSETS
         // Negatives are there because I am assuming that you
         // add the offsets not subtract, for consistency.
-        HEAD_OFFSET_X = ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2;
-        LEFTARM_OFFSET_Y = (parts.get("left_arm").getHeight())*-1;
-        TORSO_OFFSET_X = parts.get("torso").getHeight()/3;
-        RIGHTARM_OFFSET_Y = (parts.get("right_arm").getHeight())*-1;
+        POLY_OFFSETS = new HashMap<String, float[]>();
+        POLY_OFFSETS.put("head", new float[]{((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, 0});
+        POLY_OFFSETS.put("left_arm", new float[]{0, (parts.get("left_arm").getHeight())*-1});
+        POLY_OFFSETS.put("torso", new float[]{parts.get("torso").getHeight()/3, 0});
+        POLY_OFFSETS.put("left_arm", new float[]{0, (parts.get("right_arm").getHeight())*-1});
+
+        //Physics
+        PHYS_OFFSETS = new HashMap<String, float[]>();
+        PHYS_OFFSETS.put("head", new float[]{-10, -10});
+        PHYS_OFFSETS.put("left_arm", POLY_OFFSETS.get("left_arm"));
+        PHYS_OFFSETS.put("torso", new float[]{POLY_OFFSETS.get("torso")[0]*-1, PHYS_OFFSETS.get("head")[1]});
+        PHYS_OFFSETS.put("right_arm", POLY_OFFSETS.get("right_arm"));
+        PHYS_OFFSETS.put("left_leg", new float[]{parts.get("left_leg").getWidth()/2, parts.get("left_leg").getHeight()/10});
+        PHYS_OFFSETS.put("right_leg", new float[]{parts.get("right_leg").getWidth()/2, parts.get("left_leg").getHeight()/10});
+
+        // Cus rotation is ccw and I am adding offsets
+        PHYS_ROT_OFFSETS = new HashMap<String, Float>();
+        PHYS_ROT_OFFSETS.put("head", -50f);
+        PHYS_ROT_OFFSETS.put("torso", -90f);
+        PHYS_ROT_OFFSETS.put("left_leg", -90f);
+        PHYS_ROT_OFFSETS.put("right_leg", -90f);
 
     }
 
     private void animationSetup(){
         atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(0.6f); // Load the skeleton at 60% the size it was in Spine.
+        json.setScale(SCALE); // Load the skeleton at 60% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
@@ -135,7 +151,7 @@ public class ZombieBody{
         //stateData.setMix("jump", "run", 0.2f);
 
         state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        state.setTimeScale(0.7f); // Slow all animations down to 50% speed.
+        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
         // Queue animations on track 0.
         state.setAnimation(0, "run", true);
@@ -143,7 +159,7 @@ public class ZombieBody{
 
     public void update(float delta){
 
-        //state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
+        state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
@@ -160,39 +176,10 @@ public class ZombieBody{
     }
 
     private void updateParts(){
-
+        // Run update method for each body part
         for(String partName : parts.keySet()){
             parts.get(partName).update();
         }
-
-        /*
-        // Make polygons follow skeleton bones.
-        // Some extra offsets in the positions.
-
-        headBox.setPosition(parts.get("head").getWorldX() + HEADOFFSETX, parts.get("head").getWorldY());
-        headBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-        headBox.setRotation(parts.get("head").getWorldRotationX());
-
-        leftArmBox.setPosition(parts.get("left_arm").getWorldX(), parts.get("left_arm").getWorldY() - LEFTARMOFFSETY);
-        leftArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-        leftArmBox.setRotation(parts.get("left_arm").getWorldRotationX());
-
-        torsoBox.setPosition(parts.get("torso").getWorldX() + TORSOOFFSETX, parts.get("torso").getWorldY());
-        torsoBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-        torsoBox.setRotation(parts.get("torso").getWorldRotationX());
-
-        rightArmBox.setPosition(parts.get("right_arm").getWorldX(), parts.get("right_arm").getWorldY() - RIGHTARMOFFSETY);
-        rightArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-        rightArmBox.setRotation(parts.get("right_arm").getWorldRotationX());
-
-        leftLegBox.setPosition(parts.get("left_leg").getWorldX(), parts.get("left_leg").getWorldY());
-        leftLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-        leftLegBox.setRotation(parts.get("left_leg").getWorldRotationX());
-
-        rightLegBox.setPosition(parts.get("right_leg").getWorldX(), parts.get("right_leg").getWorldY());
-        rightLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-        rightLegBox.setRotation(parts.get("right_leg").getWorldRotationX());
-        */
 
     }
 
@@ -295,8 +282,11 @@ public class ZombieBody{
     }
 
     public void constructPhysicsBodies(PhysicsShapeCache shapeCache, World world){
+        Body b;
         for(String partName : parts.keySet()){
-            //Bind physics body to part, maybe a part.setPhysicsBody() method***************************************************fdsgdbjkhagfiqbhfiklhghfkbfkahjb flkiabnfaskfl
+            //Bind physics body to part
+            b = createBody(partName, parts.get(partName).getWorldX(), parts.get(partName).getWorldY(), (float)Math.toRadians(parts.get(partName).getWorldRotationX()), shapeCache, world);
+            parts.get(partName).setPhysicsBody(b);
         }
     }
 
@@ -307,20 +297,42 @@ public class ZombieBody{
         return body;
     }
 
-    public float[] getOffset(String partName){
-        if(partName.equals("head")){
-            return new float[]{HEAD_OFFSET_X, 0};
-        }
-        else if(partName.equals("left_arm")){
-            return new float[]{0, LEFTARM_OFFSET_Y};
-        }
-        else if(partName.equals("torso")){
-            return new float[]{TORSO_OFFSET_X, 0};
-        }
-        else if(partName.equals("right_arm")){
-            return new float[]{0, RIGHTARM_OFFSET_Y};
+
+    public void setPosition(float x, float y){
+        skeleton.setPosition(x, y);
+
+        //Apply changes to skeleton
+        skeleton.updateWorldTransform();
+    }
+
+    public void setRotation(float degrees){
+        skeleton.getRootBone().setRotation(degrees);
+    }
+
+
+    public float[] getPolyOffset(String partName){
+        if(POLY_OFFSETS.get(partName) != null) {
+            return POLY_OFFSETS.get(partName);
         }
         return new float[]{0, 0};
+
+
+    }
+
+    public float[] getPhysicsOffset(String partName){
+        if(PHYS_OFFSETS.get(partName) != null) {
+            return PHYS_OFFSETS.get(partName);
+        }
+        return new float[]{0, 0};
+
+    }
+
+    public float getRotationOffset(String partName){
+        if(PHYS_ROT_OFFSETS.get(partName) != null){
+            return PHYS_ROT_OFFSETS.get(partName);
+        }
+        return 0f;
+
     }
 
     public Skeleton getSkeleton(){
@@ -334,17 +346,6 @@ public class ZombieBody{
     public float getY(){
         return skeleton.getY();
 
-    }
-
-    public void setPosition(float x, float y){
-        skeleton.setPosition(x, y);
-
-        //Apply changes to skeleton
-        skeleton.updateWorldTransform();
-    }
-
-    public void setRotation(float degrees){
-        skeleton.getRootBone().setRotation(degrees);
     }
 
     public float getRotation(){

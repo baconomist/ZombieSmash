@@ -22,6 +22,8 @@ public class Part{
     private ZombieBody body;
 
     private Polygon polygon;
+
+    private Body physicsBody;
     
     private Skeleton bodySkeleton;
 
@@ -30,7 +32,6 @@ public class Part{
     public Vector2 attachementPoint;
 
     public boolean isAttached;
-
 
     public Part(String nm, ZombieBody b){
         name = nm;
@@ -51,14 +52,44 @@ public class Part{
                 //Do physics for whole body
 
             }
+            else if(!body.isPhysicsEnabled){
+                updatePhysicsBody();
+            }
         }
         //Update part polygon
         if(polygon != null) {
-            polygon.setPosition(this.getWorldX() + body.getOffset(name)[0], this.getWorldY() + body.getOffset(name)[1]);
+            polygon.setPosition(this.getWorldX() + body.getPolyOffset(name)[0], this.getWorldY() + body.getPolyOffset(name)[1]);
             polygon.setOrigin(bodySkeleton.getRootBone().getX(), bodySkeleton.getRootBone().getY());
             polygon.setRotation(this.getWorldRotationX());
         }
 
+    }
+
+    private void updatePhysicsBody(){
+        if(physicsBody != null) {
+            if(isAttached) {
+                physicsBody.setTransform(this.getWorldX() + body.getPhysicsOffset(name)[0], this.getWorldY() + body.getPhysicsOffset(name)[1], (float) Math.toRadians(this.getWorldRotationX() + body.getRotationOffset(name)));
+            }
+            else{
+                // Update using without body offsets
+            }
+        }
+    }
+
+    public void setPolygon(Polygon poly){
+        polygon = poly;
+    }
+
+    public void setRotation(float degrees){
+        bodySkeleton.findBone(name).setRotation(degrees);
+    }
+
+    public void setPhysicsBody(Body b){
+        physicsBody = b;
+    }
+
+    public Body getPhysicsBody(){
+        return physicsBody;
     }
 
     public Polygon getPolygon(){
@@ -88,20 +119,5 @@ public class Part{
     public float getWorldRotationX(){
         return bodySkeleton.findBone(name).getWorldRotationX();
     }
-
-    public void setScale(){
-
-    }
-
-    public void setPolygon(Polygon poly){
-        polygon = poly;
-    }
-
-    public void setRotation(float degrees){
-        bodySkeleton.findBone(name).setRotation(degrees);
-    }
-
-
-
 
 }
