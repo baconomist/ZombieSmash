@@ -1,6 +1,10 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.World;
+import com.codeandweb.physicseditor.PhysicsShapeCache;
+import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
 /**
@@ -9,7 +13,7 @@ import com.fcfruit.zombiesmash.screens.GameScreen;
 
 public class Zombie{
 
-    public ZombieBody body;
+    private ZombieBody body;
 
     public float mass;
 
@@ -51,7 +55,7 @@ public class Zombie{
         }
 
         // Simplified if statements.
-        body.isGravityEnabled = !isHanging;
+        body.isPhysicsEnabled = !isHanging;
 
         if(isHanging) {
             body.hangFromLimb(touchedLimb, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
@@ -75,9 +79,19 @@ public class Zombie{
 
     }
 
+    public void constructPhysicsBodies(PhysicsShapeCache shapeCache, World world){
+        body.constructPhysicsBodies(shapeCache, world);
+    }
+
+    public ZombieBody getBody(){
+        return body;
+    }
+
     public void setPosition(float x, float y){
         body.setPosition(x, y);
     }
+
+
 
 }
 

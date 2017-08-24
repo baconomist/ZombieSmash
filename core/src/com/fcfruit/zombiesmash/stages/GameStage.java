@@ -53,6 +53,8 @@ public class GameStage extends Stage {
 
         shapeRenderer = new ShapeRenderer();
 
+        gameScreen.physics.addBody(regZombie);
+
     }
 
     @Override
@@ -66,19 +68,19 @@ public class GameStage extends Stage {
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.polygon(regZombie.body.headBox.getTransformedVertices());
-        shapeRenderer.polygon(regZombie.body.leftArmBox.getTransformedVertices());
-        shapeRenderer.polygon(regZombie.body.torsoBox.getTransformedVertices());
-        shapeRenderer.polygon(regZombie.body.rightArmBox.getTransformedVertices());
-        shapeRenderer.polygon(regZombie.body.leftLegBox.getTransformedVertices());
-        shapeRenderer.polygon(regZombie.body.rightLegBox.getTransformedVertices());
+        shapeRenderer.polygon(regZombie.getBody().getParts().get("head").getPolygon().getTransformedVertices());
+        shapeRenderer.polygon(regZombie.getBody().getParts().get("left_arm").getPolygon().getTransformedVertices());
+        shapeRenderer.polygon(regZombie.getBody().getParts().get("torso").getPolygon().getTransformedVertices());
+        shapeRenderer.polygon(regZombie.getBody().getParts().get("right_arm").getPolygon().getTransformedVertices());
+        shapeRenderer.polygon(regZombie.getBody().getParts().get("left_leg").getPolygon().getTransformedVertices());
+        shapeRenderer.polygon(regZombie.getBody().getParts().get("right_leg").getPolygon().getTransformedVertices());
         shapeRenderer.end();
 
 
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-        skeletonRenderer.draw(spriteBatch, regZombie.body.skeleton);
+        skeletonRenderer.draw(spriteBatch, regZombie.getBody().getSkeleton());
         spriteBatch.end();
 
     }

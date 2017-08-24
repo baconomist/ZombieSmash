@@ -5,7 +5,13 @@ import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.utils.StringBuilder;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.codeandweb.physicseditor.PhysicsShapeCache;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
@@ -14,7 +20,9 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Physics;
 
+
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -23,26 +31,32 @@ import java.util.HashMap;
 
 public class ZombieBody{
 
-    public Zombie zombie;
+    public static final float SCALE = 0.6f;
 
-    public TextureAtlas atlas;
-    public Skeleton skeleton;
-    public AnimationState state;
+    private Zombie zombie;
 
-    public Polygon headBox;
-    public Polygon leftArmBox;
-    public Polygon torsoBox;
-    public Polygon rightArmBox;
-    public Polygon leftLegBox;
-    public Polygon rightLegBox;
+    private TextureAtlas atlas;
+    private Skeleton skeleton;
+    private AnimationState state;
+
+    private Polygon headBox;
+    private Polygon leftArmBox;
+    private Polygon torsoBox;
+    private Polygon rightArmBox;
+    private Polygon leftLegBox;
+    private Polygon rightLegBox;
 
     private HashMap<String, Part> parts;
 
+    // OFFSETS
+    private float HEAD_OFFSET_X;
+    private float LEFTARM_OFFSET_Y;
+    private float TORSO_OFFSET_X;
+    private float RIGHTARM_OFFSET_Y;
+
     public float mass;
 
-    public boolean isGravityEnabled;
-
-    public boolean isRagdollEnabled;
+    public boolean isPhysicsEnabled;
 
     public ZombieBody(Zombie z){
 
@@ -50,26 +64,9 @@ public class ZombieBody{
 
         mass = 40;
 
-        isGravityEnabled = true;
+        isPhysicsEnabled = true;
 
-        isRagdollEnabled = true;
-
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
-        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(0.6f); // Load the skeleton at 60% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
-
-        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
-
-        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
-        //stateData.setMix("run", "jump", 0.2f);
-        //stateData.setMix("jump", "run", 0.2f);
-
-        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        state.setTimeScale(0.7f); // Slow all animations down to 50% speed.
-
-        // Queue animations on track 0.
-        state.setAnimation(0, "run", true);
+        animationSetup();
 
         parts = new HashMap<String, Part>();
         parts.put("head", new Part("head", this));
@@ -100,7 +97,6 @@ public class ZombieBody{
         rightArmBox.setVertices(new float[]{0, 0, parts.get("right_arm").getWidth(), 0, parts.get("right_arm").getWidth(), parts.get("right_arm").getHeight(), 0, parts.get("right_arm").getHeight()});
         rightArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
 
-
         leftLegBox = new Polygon();
         leftLegBox.setVertices(new float[]{0, 0, parts.get("left_leg").getHeight(), 0, parts.get("left_leg").getHeight(), parts.get("left_leg").getWidth(), 0, parts.get("left_leg").getWidth()});
         leftLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
@@ -109,13 +105,45 @@ public class ZombieBody{
         rightLegBox.setVertices(new float[]{0, 0, parts.get("right_leg").getHeight(), 0, parts.get("right_leg").getHeight(), parts.get("right_leg").getWidth(), 0, parts.get("right_leg").getWidth()});
         rightLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
 
+        parts.get("head").setPolygon(headBox);
+        parts.get("left_arm").setPolygon(leftArmBox);
+        parts.get("torso").setPolygon(torsoBox);
+        parts.get("right_arm").setPolygon(rightArmBox);
+        parts.get("left_leg").setPolygon(leftLegBox);
+        parts.get("right_leg").setPolygon(rightLegBox);
 
+        // OFFSETS
+        // Negatives are there because I am assuming that you
+        // add the offsets not subtract, for consistency.
+        HEAD_OFFSET_X = ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2;
+        LEFTARM_OFFSET_Y = (parts.get("left_arm").getHeight())*-1;
+        TORSO_OFFSET_X = parts.get("torso").getHeight()/3;
+        RIGHTARM_OFFSET_Y = (parts.get("right_arm").getHeight())*-1;
 
+    }
+
+    private void animationSetup(){
+        atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(0.6f); // Load the skeleton at 60% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
+
+        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+        //stateData.setMix("run", "jump", 0.2f);
+        //stateData.setMix("jump", "run", 0.2f);
+
+        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        state.setTimeScale(0.7f); // Slow all animations down to 50% speed.
+
+        // Queue animations on track 0.
+        state.setAnimation(0, "run", true);
     }
 
     public void update(float delta){
 
-        state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
+        //state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
@@ -127,27 +155,33 @@ public class ZombieBody{
         //Always use this after any transformation change to skeleton:
         skeleton.updateWorldTransform();
 
-        updateBoxes();
+        updateParts();
 
     }
 
-    private void updateBoxes(){
+    private void updateParts(){
+
+        for(String partName : parts.keySet()){
+            parts.get(partName).update();
+        }
+
+        /*
         // Make polygons follow skeleton bones.
         // Some extra offsets in the positions.
 
-        headBox.setPosition(parts.get("head").getWorldX() + ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2, parts.get("head").getWorldY());
+        headBox.setPosition(parts.get("head").getWorldX() + HEADOFFSETX, parts.get("head").getWorldY());
         headBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         headBox.setRotation(parts.get("head").getWorldRotationX());
 
-        leftArmBox.setPosition(parts.get("left_arm").getWorldX(), parts.get("left_arm").getWorldY() - parts.get("left_arm").getHeight());
+        leftArmBox.setPosition(parts.get("left_arm").getWorldX(), parts.get("left_arm").getWorldY() - LEFTARMOFFSETY);
         leftArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         leftArmBox.setRotation(parts.get("left_arm").getWorldRotationX());
 
-        torsoBox.setPosition(parts.get("torso").getWorldX() + parts.get("torso").getHeight()/3, parts.get("torso").getWorldY());
+        torsoBox.setPosition(parts.get("torso").getWorldX() + TORSOOFFSETX, parts.get("torso").getWorldY());
         torsoBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         torsoBox.setRotation(parts.get("torso").getWorldRotationX());
 
-        rightArmBox.setPosition(parts.get("right_arm").getWorldX(), parts.get("right_arm").getWorldY() - parts.get("right_arm").getHeight());
+        rightArmBox.setPosition(parts.get("right_arm").getWorldX(), parts.get("right_arm").getWorldY() - RIGHTARMOFFSETY);
         rightArmBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         rightArmBox.setRotation(parts.get("right_arm").getWorldRotationX());
 
@@ -158,7 +192,7 @@ public class ZombieBody{
         rightLegBox.setPosition(parts.get("right_leg").getWorldX(), parts.get("right_leg").getWorldY());
         rightLegBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
         rightLegBox.setRotation(parts.get("right_leg").getWorldRotationX());
-
+        */
 
     }
 
@@ -258,64 +292,39 @@ public class ZombieBody{
 
         return "none";
 
-        /*if(rightArmBox.contains(x, y)){
-            return 4;
-        }
-        else if(rightLegBox.contains(x, y)){
-            return 6;
-        }
-        else if (leftArmBox.contains(x, y)) {
-            return 2;
-        }
-        else if(leftLegBox.contains(x, y)){
-            return 5;
-        }
-        else if(torsoBox.contains(x, y)){
-            return 3;
-        }
-        else if (headBox.contains(x, y)){
-            return 1;
-        }
+    }
 
-        return 0;*/
-
-        /*
-        // Check width and height for each limb, width may actually == height.
-        // And where is x and y on the attachment? bottom left always????
-
-        // Width = height for some limbs.
-        // Check atlas file and png.
-
-        // Left arm, pos is located @ attachement point, so equation is reversed for y
-        if(x > parts.get("left_arm").getWorldX() && x < parts.get("left_arm").getWorldX() + parts.get("left_am").getData().getLength() && y > parts.get("left_arm").getWorldY() - parts.get("left_arm").getHeight() && y < parts.get("left_arm").getWorldY() + parts.get("left_arm").getHeight()){
-            return 2;
+    public void constructPhysicsBodies(PhysicsShapeCache shapeCache, World world){
+        for(String partName : parts.keySet()){
+            //Bind physics body to part, maybe a part.setPhysicsBody() method***************************************************fdsgdbjkhagfiqbhfiklhghfkbfkahjb flkiabnfaskfl
         }
-        // Right arm, pos is located @ attachement point, so equation is reversed for y
-        else if (x > parts.get("left_arm").getWorldX() && + x < parts.get("left_arm").getWorldX() + parts.get("left_arm").getWidth() && y < parts.get("left_arm").getWorldY() + parts.get("left_arm").getHeight()/2 && y > parts.get("left_arm").getWorldY() - parts.get("left_arm").getHeight()/2){
-            return 4;
-        }
-        // Left leg, pos is located @ attachement point, so equation is reversed for y
-        else if(x > parts.get("left_leg").getWorldX() - parts.get("left_leg").getHeight()/2 && x < parts.get("left_leg").getWorldX() + parts.get("left_leg").getHeight()/2 && y < parts.get("left_leg").getWorldY() && y > parts.get("left_leg").getWorldY() - (parts.get("left_leg").getWidth())){
-            return 5;
-        }
-        // Right leg, pos is located @ attachement point, so equation is reversed for y
-        else if(x > parts.get("right_leg").getWorldX() - parts.get("right_leg").getHeight()/2 && x < parts.get("right_leg").getWorldX() + parts.get("right_leg").getHeight()/2 && y < parts.get("right_leg").getWorldY() && y > parts.get("right_leg").getWorldY() - (parts.get("right_leg").getWidth())){
-            return 6;
-        }
-        // Head
-        else if(x > parts.get("head").getWorldX() - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2 && x < parts.get("head").getWorldX() + ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth()/2 && y > parts.get("head").getWorldY() && y < parts.get("head").getWorldY() + ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight()){
-            return 1;
-        }
-        // torso
-        else if(x > parts.get("torso").getWorldX() - parts.get("torso").getHeight()/2 && x < parts.get("torso").getWorldX() + parts.get("torso").getHeight()/2 && y > parts.get("torso").getWorldY() && y < parts.get("torso").getWorldY() + parts.get("torso").getWidth()){
-            return 3;
-        }
+    }
 
+    public Body createBody(String name, float x, float y, float rotation, PhysicsShapeCache shapeCache, World world) {
+        Body body = shapeCache.createBody(name, world, SCALE, SCALE);
+        body.setTransform(x, y, rotation);
 
-        return 0;
-        */
+        return body;
+    }
 
+    public float[] getOffset(String partName){
+        if(partName.equals("head")){
+            return new float[]{HEAD_OFFSET_X, 0};
+        }
+        else if(partName.equals("left_arm")){
+            return new float[]{0, LEFTARM_OFFSET_Y};
+        }
+        else if(partName.equals("torso")){
+            return new float[]{TORSO_OFFSET_X, 0};
+        }
+        else if(partName.equals("right_arm")){
+            return new float[]{0, RIGHTARM_OFFSET_Y};
+        }
+        return new float[]{0, 0};
+    }
 
+    public Skeleton getSkeleton(){
+        return skeleton;
     }
 
     public float getX(){
@@ -350,8 +359,8 @@ public class ZombieBody{
         return skeleton.getData().getHeight();
     }
 
-    public ArrayList getRagdollParts(){
-        return new ArrayList();
+    public HashMap<String, Part> getParts(){
+        return parts;
     }
 
 }

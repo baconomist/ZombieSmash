@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
@@ -23,7 +24,7 @@ public class GameScreen implements Screen{
 
     private Level level;
 
-    private Physics physics;
+    public Physics physics;
 
     public OrthographicCamera camera;
 
@@ -35,11 +36,13 @@ public class GameScreen implements Screen{
 
     private InputMultiplexer inputMultiplexer;
 
+    private Box2DDebugRenderer debugRenderer;
+
     public GameScreen(Level lvl, Game g){
 
         level = lvl;
 
-        physics = new Physics(this);
+        physics = new Physics();
 
         camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
@@ -58,6 +61,8 @@ public class GameScreen implements Screen{
         inputMultiplexer.addProcessor(power_ups_stage);
 
         Gdx.input.setInputProcessor(inputMultiplexer);
+
+        debugRenderer = new Box2DDebugRenderer();
 
     }
 
@@ -81,6 +86,10 @@ public class GameScreen implements Screen{
         power_ups_stage.draw();
 
         camera.update();
+
+        physics.update(delta);
+
+        debugRenderer.render(physics.getWorld(), camera.combined);
 
     }
 
