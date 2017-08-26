@@ -113,7 +113,7 @@ public class Physics {
     public void addBody(Object o){
 
         if(o instanceof Zombie){
-            ((Zombie) o).constructPhysicsBodies(physicsBodies, world);
+            //((Zombie) o).constructPhysicsBodies(physicsBodies, world);
             zombies.add((Zombie) o);
         }
         else if (o instanceof Part){

@@ -5,6 +5,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
@@ -24,6 +28,8 @@ public class Part{
     private Polygon polygon;
 
     private Body physicsBody;
+
+    private RevoluteJoint joint;
     
     private Skeleton bodySkeleton;
 
@@ -71,9 +77,18 @@ public class Part{
                 physicsBody.setTransform(this.getWorldX() + body.getPhysicsOffset(name)[0], this.getWorldY() + body.getPhysicsOffset(name)[1], (float) Math.toRadians(this.getWorldRotationX() + body.getRotationOffset(name)));
             }
             else{
-                // Update using without body offsets
+                // Update using without using body offsets
             }
         }
+    }
+
+    public void createJoint(Body b, float[] offsets, World world){
+        RevoluteJointDef jointDef = new RevoluteJointDef();
+        jointDef.initialize(physicsBody, b, new Vector2(offsets[0], offsets[1]));
+        jointDef.enableLimit = false;
+        jointDef.enableMotor = true;
+        jointDef.collideConnected = false;
+        joint = (RevoluteJoint) world.createJoint(jointDef);
     }
 
     public void setPolygon(Polygon poly){

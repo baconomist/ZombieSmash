@@ -53,8 +53,10 @@ public class Zombie{
         //!isHanging works, cus if hanging false, then go to else, if not draging, ishanging = false
         if(!touchedLimb.equals("none") && Gdx.input.isTouched()) {
             isHanging = true;
+            isAnimating = false;
         } else if (!isDraging() && !Gdx.input.isTouched()){
             isHanging = false;
+            isAnimating = true;
             touchedLimb = "none";
         }
 

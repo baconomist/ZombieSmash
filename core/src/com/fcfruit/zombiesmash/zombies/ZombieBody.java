@@ -22,8 +22,10 @@ import com.fcfruit.zombiesmash.Physics;
 
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 
 /**
  * Created by Lucas on 2017-07-30.
@@ -32,6 +34,12 @@ import java.util.HashMap;
 public class ZombieBody{
 
     public static final float SCALE = 0.6f;
+
+    private static final String[][] jointInfo = {new String[]{"head", "torso"}, new String[]{"left_arm", "torso"},
+            new String[]{"right_arm", "torso"}, new String[]{"left_leg", "torso"}, new String[]{"right_leg", "torso"}};
+
+    //https://stackoverflow.com/questions/16839182/can-a-java-array-be-used-as-a-hashmap-key
+    private HashMap<List<String>, float[]> jointOffsets;
 
     private Zombie zombie;
 
@@ -74,6 +82,11 @@ public class ZombieBody{
         parts.put("right_arm", new Part("right_arm", this));
         parts.put("left_leg", new Part("left_leg", this));
         parts.put("right_leg", new Part("right_leg", this));
+
+        //Joint offsets
+        //https://stackoverflow.com/questions/16839182/can-a-java-array-be-used-as-a-hashmap-key
+        jointOffsets = new HashMap<List<String>, float[]>();
+        jointOffsets.put(Collections.unmodifiableList(Arrays.asList("head", "torso")), new float[]{0, parts.get("torso").getHeight()});
 
 
         //Width = height for some limbs.
@@ -123,7 +136,7 @@ public class ZombieBody{
         //Physics
         PHYS_OFFSETS = new HashMap<String, float[]>();
         PHYS_OFFSETS.put("head", new float[]{-10, -10});
-        PHYS_OFFSETS.put("left_arm", POLY_OFFSETS.get("left_arm"));
+        //PHYS_OFFSETS.put("left_arm", POLY_OFFSETS.get("left_arm"));
         PHYS_OFFSETS.put("torso", new float[]{POLY_OFFSETS.get("torso")[0]*-1, PHYS_OFFSETS.get("head")[1]});
         PHYS_OFFSETS.put("right_arm", POLY_OFFSETS.get("right_arm"));
         PHYS_OFFSETS.put("left_leg", new float[]{parts.get("left_leg").getWidth()/2, parts.get("left_leg").getHeight()/10});
@@ -198,9 +211,9 @@ public class ZombieBody{
             // Y has to be negative bc deltaY+ is going up
             this.setPosition(this.getX() + Gdx.input.getDeltaX(), this.getY() - Gdx.input.getDeltaY());
         }
-        // If left arm
-        else if (limb.equals("left_arm")){
-            parts.get("left_arm").setRotation((float)Math.toDegrees(Math.atan2(parts.get("left_arm").getWorldY() - y, parts.get("left_arm").getWorldX() - x)));
+        // If right arm
+        else if (limb.equals("right_arm")){
+            parts.get("right_arm").setRotation((float)Math.toDegrees(Math.atan2(parts.get("right_arm").getWorldY() - y, parts.get("right_arm").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
@@ -209,35 +222,37 @@ public class ZombieBody{
         else if (limb.equals("torso")){
             this.setPosition(this.getX() + Gdx.input.getDeltaX(), this.getY() - Gdx.input.getDeltaY());
         }
-        // If right arm
-        else if (limb.equals("right_arm")){
+        // If left arm
+        else if (limb.equals("left_arm")){
             // Do not know why this rotation is messed up, but need to add half circle or math.pi to the radians to rotate clockwise
             // Subtracting is rotation ccw
             // For reference:
             // https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
-            parts.get("right_arm").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(parts.get("right_arm").getWorldY() - y, parts.get("right_arm").getWorldX() - x)));
-
-            //Apply changes to skeleton
-            skeleton.updateWorldTransform();
-        }
-        // If left leg
-        else if (limb.equals("left_leg")){
-            parts.get("left_leg").setRotation((float)Math.toDegrees(Math.atan2(parts.get("left_leg").getWorldY() - y, parts.get("left_leg").getWorldX() - x)));
+            parts.get("left_arm").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(parts.get("left_arm").getWorldY() - y, parts.get("left_arm").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
         // If right leg
         else if (limb.equals("right_leg")){
-            // Do not know why this rotation is messed up, but need to add half circle or math.pi to the radians to rotate clockwise
-            // Subtracting is rotationg ccw
-            // For reference:
-            // https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
-            parts.get("right_leg").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(parts.get("right_leg").getWorldY() - y, parts.get("right_leg").getWorldX() - x)));
+            parts.get("right_leg").setRotation((float)Math.toDegrees(Math.atan2(parts.get("right_leg").getWorldY() - y, parts.get("right_leg").getWorldX() - x)));
 
             //Apply changes to skeleton
             skeleton.updateWorldTransform();
         }
+        // If left leg
+        else if (limb.equals("left_leg")){
+            // Do not know why this rotation is messed up, but need to add half circle or math.pi to the radians to rotate clockwise
+            // Subtracting is rotationg ccw
+            // For reference:
+            // https://stackoverflow.com/questions/9970281/java-calculating-the-angle-between-two-points-in-degrees
+            parts.get("left_leg").setRotation((float)Math.toDegrees(Math.PI + Math.atan2(parts.get("left_leg").getWorldY() - y, parts.get("left_leg").getWorldX() - x)));
+
+            //Apply changes to skeleton
+            skeleton.updateWorldTransform();
+        }
+
+
 
     }
 
@@ -288,6 +303,12 @@ public class ZombieBody{
             b = createBody(partName, parts.get(partName).getWorldX(), parts.get(partName).getWorldY(), (float)Math.toRadians(parts.get(partName).getWorldRotationX()), shapeCache, world);
             parts.get(partName).setPhysicsBody(b);
         }
+        // After all physics bodies have been constructed, create joints.
+        for(String[] i: jointInfo){
+            parts.get(i[0]).createJoint(parts.get(i[1]).getPhysicsBody(), jointOffsets.get(Arrays.asList(i)), world);
+            break;
+        }
+
     }
 
     public Body createBody(String name, float x, float y, float rotation, PhysicsShapeCache shapeCache, World world) {
