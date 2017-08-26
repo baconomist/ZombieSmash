@@ -1,0 +1,55 @@
+
+reg_zombie.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 2, 202
+  size: 304, 301
+  orig: 304, 301
+  offset: 0, 0
+  index: -1
+left_arm
+  rotate: false
+  xy: 308, 288
+  size: 238, 82
+  orig: 238, 82
+  offset: 0, 0
+  index: -1
+right_arm
+  rotate: false
+  xy: 308, 288
+  size: 238, 82
+  orig: 238, 82
+  offset: 0, 0
+  index: -1
+left_leg
+  rotate: true
+  xy: 308, 372
+  size: 131, 308
+  orig: 131, 308
+  offset: 0, 0
+  index: -1
+right_leg
+  rotate: true
+  xy: 308, 372
+  size: 131, 308
+  orig: 131, 308
+  offset: 0, 0
+  index: -1
+torso
+  rotate: true
+  xy: 2, 2
+  size: 198, 295
+  orig: 198, 295
+  offset: 0, 0
+  index: -1
+underwear
+  rotate: false
+  xy: 618, 448
+  size: 186, 55
+  orig: 186, 55
+  offset: 0, 0
+  index: -1
