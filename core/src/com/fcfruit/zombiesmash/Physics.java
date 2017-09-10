@@ -151,7 +151,7 @@ public class Physics {
             mouseJointDef.bodyB = touchedBody;
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(hitPoint.x, hitPoint.y);
-            mouseJointDef.maxForce = 10000f * touchedBody.getMass();
+            mouseJointDef.maxForce = 1000000f;
 
             mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
 
@@ -171,18 +171,19 @@ public class Physics {
     }
 
     public void touchUp(float x, float y, int pointer){
+        Gdx.app.log("pointer", ""+pointer);
 
         // Destroy mouseJoint at a pointer
 
         if(mouseJoints.get(pointer) != null) {
             world.destroyJoint(mouseJoints.get(pointer));
-            mouseJoints.put(pointer, null);
+            mouseJoints.remove(pointer);
         }
 
     }
 
     private void updateZombies(){
-        
+
     }
 
     private void updateParts(){
