@@ -140,7 +140,7 @@ public class Physics {
 
     public void touchDown(float x, float y, int pointer){
 
-        hitPoint.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+        hitPoint.set(x, y);
         touchedBody = null;
         world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
         if (touchedBody != null) {
@@ -158,11 +158,15 @@ public class Physics {
             touchedBody.setAwake(true);
 
         }
+
     }
 
     public void touchDragged(float x, float y, int pointer){
         if (mouseJoints.get(pointer) != null) {
             mouseJoints.get(pointer).setTarget(new Vector2(x, y));
+        }
+        else{
+            touchDown(x, y, pointer);
         }
     }
 
@@ -178,7 +182,7 @@ public class Physics {
     }
 
     private void updateZombies(){
-
+        
     }
 
     private void updateParts(){
