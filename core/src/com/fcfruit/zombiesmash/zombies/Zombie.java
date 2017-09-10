@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.codeandweb.physicseditor.PhysicsShapeCache;
@@ -39,12 +40,16 @@ public class Zombie{
 
     }
 
+    public void draw(SpriteBatch batch, float delta){
+        // Body.update() which is inside draw has to be called before everything, or else some instructions to skeleton will not function.
+        // I.E. skeleton.findBone("left_arm").setRotation(90); will not work before this body.draw() call
 
-    public void update(float delta){
+        body.draw(batch, delta);
 
-        // Has to be called before everything, or else some instructions to skeleton will not function.
-        // I.E. skeleton.findBone("left_arm").setRotation(90); will not work before this update call
-        body.update(delta);
+        update(delta);
+    }
+
+    private void update(float delta){
 
         if(!isHanging) {
             touchedLimb = body.getTouchedLimb();
@@ -67,10 +72,6 @@ public class Zombie{
             body.hangFromLimb(touchedLimb, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
         }
 
-        Gdx.app.log("touchedlimb", ""+touchedLimb);
-
-
-
     }
 
     private boolean isDraging(){
@@ -85,8 +86,8 @@ public class Zombie{
 
     }
 
-    public void constructPhysicsBodies(PhysicsShapeCache shapeCache, World world){
-        body.constructPhysicsBodies(shapeCache, world);
+    public void constructPhysicsBody(World world){
+        body.constructPhysicsBody(world);
     }
 
     public void setPosition(float x, float y){

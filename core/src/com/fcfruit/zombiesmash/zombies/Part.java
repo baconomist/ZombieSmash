@@ -33,8 +33,6 @@ public class Part{
     
     private Skeleton bodySkeleton;
 
-    public float mass;
-
     public Vector2 attachementPoint;
 
     public boolean isAttached;
@@ -45,8 +43,6 @@ public class Part{
         body = b;
         
         bodySkeleton = body.getSkeleton();
-
-        mass = 0.5f;
 
         isAttached = true;
 
@@ -67,6 +63,7 @@ public class Part{
             polygon.setPosition(this.getWorldX() + body.getPolyOffset(name)[0], this.getWorldY() + body.getPolyOffset(name)[1]);
             polygon.setOrigin(bodySkeleton.getRootBone().getX(), bodySkeleton.getRootBone().getY());
             polygon.setRotation(this.getWorldRotationX());
+
         }
 
     }
@@ -74,7 +71,7 @@ public class Part{
     private void updatePhysicsBody(){
         if(physicsBody != null) {
             if(isAttached) {
-                physicsBody.setTransform(this.getWorldX() + body.getPhysicsOffset(name)[0], this.getWorldY() + body.getPhysicsOffset(name)[1], (float) Math.toRadians(this.getWorldRotationX() + body.getRotationOffset(name)));
+
             }
             else{
                 // Update using without using body offsets

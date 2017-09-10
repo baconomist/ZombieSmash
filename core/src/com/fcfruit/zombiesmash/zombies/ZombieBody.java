@@ -1,16 +1,18 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.badlogic.gdx.utils.StringBuilder;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.codeandweb.physicseditor.PhysicsShapeCache;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
@@ -19,6 +21,11 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Physics;
+import com.fcfruit.zombiesmash.rube.RubeScene;
+import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
+
+import com.badlogic.gdx.graphics.g2d.TextureAtlas.*;
 
 
 import java.util.ArrayList;
@@ -35,17 +42,17 @@ public class ZombieBody{
 
     public static final float SCALE = 0.6f;
 
-    private static final String[][] jointInfo = {new String[]{"head", "torso"}, new String[]{"left_arm", "torso"},
-            new String[]{"right_arm", "torso"}, new String[]{"left_leg", "torso"}, new String[]{"right_leg", "torso"}};
-
-    //https://stackoverflow.com/questions/16839182/can-a-java-array-be-used-as-a-hashmap-key
-    private HashMap<List<String>, float[]> jointOffsets;
-
     private Zombie zombie;
+
+    private RubeScene rubeScene;
+
+    private HashMap<Body, Sprite> rubeSprites;
 
     private TextureAtlas atlas;
     private Skeleton skeleton;
     private AnimationState state;
+
+    private HashMap<String, float[]> POLY_OFFSETS;
 
     private Polygon headBox;
     private Polygon leftArmBox;
@@ -56,20 +63,13 @@ public class ZombieBody{
 
     private HashMap<String, Part> parts;
 
-    // OFFSETS
-    private HashMap<String, float[]> POLY_OFFSETS;
-    private HashMap<String, float[]> PHYS_OFFSETS;
-    private HashMap<String, Float> PHYS_ROT_OFFSETS;
-
-    public float mass;
-
     public boolean isPhysicsEnabled;
 
     public ZombieBody(Zombie z){
 
         zombie = z;
 
-        mass = 40;
+        rubeSprites = new HashMap<Body, Sprite>();
 
         isPhysicsEnabled = true;
 
@@ -83,19 +83,12 @@ public class ZombieBody{
         parts.put("left_leg", new Part("left_leg", this));
         parts.put("right_leg", new Part("right_leg", this));
 
-        //Joint offsets
-        //https://stackoverflow.com/questions/16839182/can-a-java-array-be-used-as-a-hashmap-key
-        jointOffsets = new HashMap<List<String>, float[]>();
-        jointOffsets.put(Collections.unmodifiableList(Arrays.asList("head", "torso")), new float[]{0, parts.get("torso").getHeight()});
-
-
         //Width = height for some limbs.
         //Check atlas file and png.
 
         headBox = new Polygon();
         headBox.setVertices(new float[]{0, 0, parts.get("head").getWidth(), 0, parts.get("head").getWidth(), parts.get("head").getHeight(), 0, parts.get("head").getHeight()});
         headBox.setOrigin(skeleton.getRootBone().getX(), skeleton.getRootBone().getY());
-
 
         leftArmBox = new Polygon();
         leftArmBox.setVertices(new float[]{0, 0, parts.get("left_arm").getWidth(), 0, parts.get("left_arm").getWidth(), parts.get("left_arm").getHeight(), 0, parts.get("left_arm").getHeight()});
@@ -133,21 +126,7 @@ public class ZombieBody{
         POLY_OFFSETS.put("torso", new float[]{parts.get("torso").getHeight()/3, 0});
         POLY_OFFSETS.put("left_arm", new float[]{0, (parts.get("right_arm").getHeight())*-1});
 
-        //Physics
-        PHYS_OFFSETS = new HashMap<String, float[]>();
-        PHYS_OFFSETS.put("head", new float[]{-10, -10});
-        //PHYS_OFFSETS.put("left_arm", POLY_OFFSETS.get("left_arm"));
-        PHYS_OFFSETS.put("torso", new float[]{POLY_OFFSETS.get("torso")[0]*-1, PHYS_OFFSETS.get("head")[1]});
-        PHYS_OFFSETS.put("right_arm", POLY_OFFSETS.get("right_arm"));
-        PHYS_OFFSETS.put("left_leg", new float[]{parts.get("left_leg").getWidth()/2, parts.get("left_leg").getHeight()/10});
-        PHYS_OFFSETS.put("right_leg", new float[]{parts.get("right_leg").getWidth()/2, parts.get("left_leg").getHeight()/10});
 
-        // Cus rotation is ccw and I am adding offsets
-        PHYS_ROT_OFFSETS = new HashMap<String, Float>();
-        PHYS_ROT_OFFSETS.put("head", -50f);
-        PHYS_ROT_OFFSETS.put("torso", -90f);
-        PHYS_ROT_OFFSETS.put("left_leg", -90f);
-        PHYS_ROT_OFFSETS.put("right_leg", -90f);
 
     }
 
@@ -170,7 +149,16 @@ public class ZombieBody{
         state.setAnimation(0, "run", true);
     }
 
-    public void update(float delta){
+    public void draw(SpriteBatch batch, float delta){
+        for(Body b : rubeSprites.keySet()){
+            batch.begin();
+            rubeSprites.get(b).draw(batch);
+            batch.end();
+        }
+        update(delta);
+    }
+
+    private void update(float delta){
 
         state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
@@ -184,8 +172,33 @@ public class ZombieBody{
         //Always use this after any transformation change to skeleton:
         skeleton.updateWorldTransform();
 
+        updateRubeImages();
+
         updateParts();
 
+    }
+
+    private void updateRubeImages(){
+        for(Body b : rubeSprites.keySet()){
+            Sprite sprite = rubeSprites.get(b);
+
+            for(RubeImage i : rubeScene.getImages()){
+                if(i.body == b){
+                    sprite.flip(i.flip, false);
+                    sprite.setColor(i.color);
+                    sprite.setOrigin(i.center.x, i.center.y);
+                }
+            }
+            sprite.setPosition(b.getPosition().x - sprite.getWidth()/2, b.getPosition().y - sprite.getHeight()/2);
+            sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+            sprite.setRotation((float) Math.toDegrees(b.getAngle()));
+
+
+            if(rubeScene.getCustom(b, "rotationOffset") != null){
+               sprite.setRotation(sprite.getRotation() + (Float) rubeScene.getCustom(b, "rotationOffset"));
+            }
+
+        }
     }
 
     private void updateParts(){
@@ -193,7 +206,6 @@ public class ZombieBody{
         for(String partName : parts.keySet()){
             parts.get(partName).update();
         }
-
     }
 
     public void hangFromLimb(String limb, float x, float y){
@@ -296,19 +308,30 @@ public class ZombieBody{
 
     }
 
-    public void constructPhysicsBodies(PhysicsShapeCache shapeCache, World world){
-        Body b;
-        for(String partName : parts.keySet()){
-            //Bind physics body to part
-            b = createBody(partName, parts.get(partName).getWorldX(), parts.get(partName).getWorldY(), (float)Math.toRadians(parts.get(partName).getWorldRotationX()), shapeCache, world);
-            parts.get(partName).setPhysicsBody(b);
-        }
-        // After all physics bodies have been constructed, create joints.
-        for(String[] i: jointInfo){
-            parts.get(i[0]).createJoint(parts.get(i[1]).getPhysicsBody(), jointOffsets.get(Arrays.asList(i)), world);
-            break;
+    public void constructPhysicsBody(World world){
+        RubeSceneLoader loader = new RubeSceneLoader(world);
+        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
+
+        for(Body b : rubeScene.getBodies()){
+
+            /*Sprite tempSprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
+
+            if(atlas.findRegion((String) rubeScene.getCustom(b, "name")).rotate){
+                tempSprite.setRotation(tempSprite.getRotation() - 90);
+            }
+
+            Sprite sprite = new Sprite(tempSprite.getTexture());*/
+
+            Sprite sprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
+
+
+            sprite.setScale(SCALE);
+
+            rubeSprites.put(b, sprite);
+
         }
 
+        updateRubeImages();
     }
 
     public Body createBody(String name, float x, float y, float rotation, PhysicsShapeCache shapeCache, World world) {
@@ -330,30 +353,8 @@ public class ZombieBody{
         skeleton.getRootBone().setRotation(degrees);
     }
 
-
-    public float[] getPolyOffset(String partName){
-        if(POLY_OFFSETS.get(partName) != null) {
-            return POLY_OFFSETS.get(partName);
-        }
-        return new float[]{0, 0};
-
-
-    }
-
-    public float[] getPhysicsOffset(String partName){
-        if(PHYS_OFFSETS.get(partName) != null) {
-            return PHYS_OFFSETS.get(partName);
-        }
-        return new float[]{0, 0};
-
-    }
-
-    public float getRotationOffset(String partName){
-        if(PHYS_ROT_OFFSETS.get(partName) != null){
-            return PHYS_ROT_OFFSETS.get(partName);
-        }
-        return 0f;
-
+    public Array<Body> getPhysicsBodies(){
+        return rubeScene.getBodies();
     }
 
     public Skeleton getSkeleton(){
@@ -367,6 +368,13 @@ public class ZombieBody{
     public float getY(){
         return skeleton.getY();
 
+    }
+
+    public float[] getPolyOffset(String partName){
+        if(POLY_OFFSETS.get(partName) != null) {
+            return POLY_OFFSETS.get(partName);
+        }
+        return new float[]{0, 0};
     }
 
     public float getRotation(){

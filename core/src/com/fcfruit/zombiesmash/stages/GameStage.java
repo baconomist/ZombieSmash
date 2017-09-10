@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
@@ -57,13 +58,14 @@ public class GameStage extends Stage {
 
     }
 
+
     @Override
     public void draw() {
         super.draw();
 
         delta = Gdx.graphics.getDeltaTime();
 
-        regZombie.update(delta);
+        regZombie.draw(spriteBatch, delta);
 
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
 
@@ -88,5 +90,26 @@ public class GameStage extends Stage {
     @Override
     public void act(float delta) {
         super.act(delta);
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
+        gameScreen.physics.touchDown(vector.x, vector.y, pointer);
+        return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+    @Override
+    public boolean touchDragged(int screenX, int screenY, int pointer) {
+        Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
+        gameScreen.physics.touchDragged(vector.x, vector.y, pointer);
+        return super.touchDragged(screenX, screenY, pointer);
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+        Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
+        gameScreen.physics.touchUp(vector.x, vector.y, pointer);
+        return super.touchUp(screenX, screenY, pointer, button);
     }
 }

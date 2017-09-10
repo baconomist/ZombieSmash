@@ -3,33 +3,6 @@
 
     <item
         is-multidex="true"
-        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_c0352932a759cdba84e25cf097e2745137558c70\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.codeandweb.physicseditor\gdx-pe-loader\1.1.0\dca64a362e19ca9a0992dcbff0cb67dbff2a942b\gdx-pe-loader-1.1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="dca64a362e19ca9a0992dcbff0cb67dbff2a942b">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-pe-loader-1.1.0_121b0fd5bc672629f7e5f8d8db2814b515b570f9\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl_util\2.9.2\4b9e37300a87799856e0bd15ed81663cdb6b0947\lwjgl_util-2.9.2.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="4b9e37300a87799856e0bd15ed81663cdb6b0947">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\lwjgl_util-2.9.2_eee0fe66890153027ea861dbf33571a4f122040e\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.jlayer\jlayer\1.0.1-gdx\7cca83cec5c1b2f011362f4d85aabd71a73b049d\jlayer-1.0.1-gdx.jar"
         jumboMode="true"
         optimize="true"
@@ -48,21 +21,21 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="07173b14ac09305d5d266b0fe141c33acc88d150">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9fe3f376f40d3f7f926dc87db9852c404641d4c0\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\net.java.jinput\jinput\2.0.5\39c7796b469a600f72380316f6b1f11db6c2c7c4\jinput-2.0.5.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
         sha1="39c7796b469a600f72380316f6b1f11db6c2c7c4">
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\jinput-2.0.5_4b9594aa4b734dbb71acbe06b0df279d8826308b\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-classes\debug\instant-run-bootstrap.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="d31794236fdf65df5c8292cc6cc30df2595ffca9">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9fe3f376f40d3f7f926dc87db9852c404641d4c0\classes.dex" />
     </item>
     <item
         is-multidex="true"
@@ -84,12 +57,39 @@
     </item>
     <item
         is-multidex="true"
+        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\incremental-runtime-classes\debug\instant-run.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="3be78ebc2706b2e1fe2f12d5726887a92d6c183b">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_c0352932a759cdba84e25cf097e2745137558c70\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl\2.9.2\a9d80fe5935c7a9149f6584d9777cfd471f65489\lwjgl-2.9.2.jar"
         jumboMode="true"
         optimize="true"
         revision="25.0.3"
         sha1="a9d80fe5935c7a9149f6584d9777cfd471f65489">
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\lwjgl-2.9.2_cfdc488b04e5cfeec13cc248d9ca76aa7227b47f\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.codeandweb.physicseditor\gdx-pe-loader\1.1.0\dca64a362e19ca9a0992dcbff0cb67dbff2a942b\gdx-pe-loader-1.1.0.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="dca64a362e19ca9a0992dcbff0cb67dbff2a942b">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-pe-loader-1.1.0_121b0fd5bc672629f7e5f8d8db2814b515b570f9\classes.dex" />
+    </item>
+    <item
+        is-multidex="true"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl_util\2.9.2\4b9e37300a87799856e0bd15ed81663cdb6b0947\lwjgl_util-2.9.2.jar"
+        jumboMode="true"
+        optimize="true"
+        revision="25.0.3"
+        sha1="4b9e37300a87799856e0bd15ed81663cdb6b0947">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\lwjgl_util-2.9.2_eee0fe66890153027ea861dbf33571a4f122040e\classes.dex" />
     </item>
 
 </items>

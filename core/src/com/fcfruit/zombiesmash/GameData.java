@@ -27,7 +27,6 @@ public class GameData {
 
         Gdx.app.log("coins", "" + coins);
 
-    }
-
+        }
 
 }

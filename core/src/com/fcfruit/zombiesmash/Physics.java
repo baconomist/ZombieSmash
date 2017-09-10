@@ -2,24 +2,41 @@ package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
+import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
 import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
+import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.Array;
 import com.codeandweb.physicseditor.PhysicsShapeCache;
+import com.fcfruit.zombiesmash.rube.RubeDefaults;
+import com.fcfruit.zombiesmash.rube.RubeScene;
+import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 import com.fcfruit.zombiesmash.zombies.ZombieBody;
+
+
+import net.java.games.input.Mouse;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,28 +59,34 @@ public class Physics {
 
     private World world;
 
-    private PhysicsShapeCache physicsBodies;
-
     private float accumulator = 0;
     private Body ground;
+
+    private HashMap<Integer, MouseJoint>mouseJoints;
+
+    private Body touchedBody = null;
+
+    public RubeScene scene;
 
     public Physics(){
 
         parts = new ArrayList<Part>();
         zombies = new ArrayList<Zombie>();
 
+        mouseJoints = new HashMap<Integer, MouseJoint>();
+
         world = new World(new Vector2(0, -120), true);
-        physicsBodies = new PhysicsShapeCache("physics.xml");
 
         createGround();
+
     }
 
     public void update(float delta){
-        if(Gdx.input.isTouched()) {
+        //if(Gdx.input.isTouched()) {
             updateZombies();
             updateParts();
             stepWorld(delta);
-        }
+        //}
     }
 
     private void stepWorld(float delta) {
@@ -95,11 +118,63 @@ public class Physics {
         shape.dispose();
     }
 
-    public Body createBody(String name, float x, float y, float rotation) {
-        Body body = physicsBodies.createBody(name, world, SCALE, SCALE);
-        body.setTransform(x, y, rotation);
+    Vector2 hitPoint = new Vector2();
+    QueryCallback callback = new QueryCallback() {
+        @Override
+        public boolean reportFixture (Fixture fixture) {
+            // if the hit fixture's body is the ground body
+            // we ignore it
+            if (fixture.getBody() == ground) return true;
 
-        return body;
+            // if the hit point is inside the fixture of the body
+            // we report it
+            if (fixture.testPoint(hitPoint
+                    .x, hitPoint
+                    .y)) {
+                touchedBody = fixture.getBody();
+                return false;
+            } else
+                return true;
+        }
+    };
+
+    public void touchDown(float x, float y, int pointer){
+
+        hitPoint.set(Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+        touchedBody = null;
+        world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
+        if (touchedBody != null) {
+            MouseJointDef mouseJointDef = new MouseJointDef();
+            // Needs 2 bodies, first one not used, so we use an arbitrary body.
+            // http://www.binarytides.com/mouse-joint-box2d-javascript/
+            mouseJointDef.bodyA = ground;
+            mouseJointDef.bodyB = touchedBody;
+            mouseJointDef.collideConnected = true;
+            mouseJointDef.target.set(hitPoint.x, hitPoint.y);
+            mouseJointDef.maxForce = 10000f * touchedBody.getMass();
+
+            mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
+
+            touchedBody.setAwake(true);
+
+        }
+    }
+
+    public void touchDragged(float x, float y, int pointer){
+        if (mouseJoints.get(pointer) != null) {
+            mouseJoints.get(pointer).setTarget(new Vector2(x, y));
+        }
+    }
+
+    public void touchUp(float x, float y, int pointer){
+
+        // Destroy mouseJoint at a pointer
+
+        if(mouseJoints.get(pointer) != null) {
+            world.destroyJoint(mouseJoints.get(pointer));
+            mouseJoints.put(pointer, null);
+        }
+
     }
 
     private void updateZombies(){
@@ -113,7 +188,7 @@ public class Physics {
     public void addBody(Object o){
 
         if(o instanceof Zombie){
-            //((Zombie) o).constructPhysicsBodies(physicsBodies, world);
+            ((Zombie)o).constructPhysicsBody(world);
             zombies.add((Zombie) o);
         }
         else if (o instanceof Part){
