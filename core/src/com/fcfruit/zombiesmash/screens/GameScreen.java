@@ -114,10 +114,10 @@ public class GameScreen implements Screen{
     public void resize(int width, int height) {
         power_ups_stage.getViewport().update(width, height);
 
-        //Resize method makes things smaller and messes up sprite size, can't see at all
+        // Resize viewport to screen size.
         game_view.update(width, height);
-        //resizing to current size breaks things?!?! but changing size to bigger makes things huge and leaving resize does the same as making it bigger
 
+        // Resize camera to world size.
         camera.viewportWidth = width/Physics.PPM;
         camera.viewportHeight = height/Physics.PPM;
 

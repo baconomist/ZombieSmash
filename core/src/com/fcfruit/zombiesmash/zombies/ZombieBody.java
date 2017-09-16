@@ -200,13 +200,10 @@ public class ZombieBody{
             sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
             sprite.setRotation((float) Math.toDegrees(b.getAngle()));
 
-            Gdx.app.log("w", ""+sprite.getWidth());
-
             if(rubeScene.getCustom(b, "rotationOffset") != null){
                sprite.setRotation(sprite.getRotation() + (Float) rubeScene.getCustom(b, "rotationOffset"));
             }
 
-            Gdx.app.log("pos", ""+sprite.getWidth());
 
         }
     }
