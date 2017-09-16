@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -46,7 +47,7 @@ public class GameStage extends Stage {
         gameScreen = gmscrn;
 
         regZombie = new RegularZombie();
-        regZombie.setPosition(300, 300);
+        regZombie.setPosition(gameScreen.camera.unproject(new Vector3(300, 300, 0)).x, gameScreen.camera.unproject(new Vector3(300, 300, 0)).y);
 
         spriteBatch = new SpriteBatch();
 
@@ -78,12 +79,12 @@ public class GameStage extends Stage {
         shapeRenderer.polygon(regZombie.getBody().getParts().get("right_leg").getPolygon().getTransformedVertices());
         shapeRenderer.end();
 
-
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
         skeletonRenderer.draw(spriteBatch, regZombie.getBody().getSkeleton());
         spriteBatch.end();
+
 
     }
 
@@ -96,6 +97,7 @@ public class GameStage extends Stage {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
         gameScreen.physics.touchDown(vector.x, vector.y, pointer);
+        Gdx.app.log("touch", ""+gameScreen.camera.unproject(new Vector3(Gdx.input.getX(), 0, 0)).x);
         return super.touchDown(screenX, screenY, pointer, button);
     }
 

@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
+import com.badlogic.gdx.utils.JsonReader;
+import com.badlogic.gdx.utils.JsonValue;
 import com.codeandweb.physicseditor.PhysicsShapeCache;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
@@ -40,8 +42,6 @@ import java.util.List;
 
 public class ZombieBody{
 
-    public static final float SCALE = 0.6f;
-
     private Zombie zombie;
 
     private RubeScene rubeScene;
@@ -64,6 +64,8 @@ public class ZombieBody{
     private HashMap<String, Part> parts;
 
     public boolean isPhysicsEnabled;
+
+    Sprite s = new Sprite(new Texture(Gdx.files.internal("badlogic.jpg")));
 
     public ZombieBody(Zombie z){
 
@@ -133,7 +135,7 @@ public class ZombieBody{
     private void animationSetup(){
         atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(SCALE); // Load the skeleton at 60% the size it was in Spine.
+        json.setScale(0.6f); // Load the skeleton at 60% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
@@ -153,6 +155,7 @@ public class ZombieBody{
         for(Body b : rubeSprites.keySet()){
             batch.begin();
             rubeSprites.get(b).draw(batch);
+            s.draw(batch);
             batch.end();
         }
         update(delta);
@@ -176,6 +179,8 @@ public class ZombieBody{
 
         updateParts();
 
+        s.setPosition(1, 1);
+
     }
 
     private void updateRubeImages(){
@@ -184,6 +189,8 @@ public class ZombieBody{
 
             for(RubeImage i : rubeScene.getImages()){
                 if(i.body == b){
+                    sprite.setScale(i.scale);
+                    sprite.setSize(i.width, i.height);
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOrigin(i.center.x, i.center.y);
@@ -193,10 +200,13 @@ public class ZombieBody{
             sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
             sprite.setRotation((float) Math.toDegrees(b.getAngle()));
 
+            Gdx.app.log("w", ""+sprite.getWidth());
 
             if(rubeScene.getCustom(b, "rotationOffset") != null){
                sprite.setRotation(sprite.getRotation() + (Float) rubeScene.getCustom(b, "rotationOffset"));
             }
+
+            Gdx.app.log("pos", ""+sprite.getWidth());
 
         }
     }
@@ -324,21 +334,11 @@ public class ZombieBody{
 
             Sprite sprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
 
-
-            sprite.setScale(SCALE);
-
             rubeSprites.put(b, sprite);
 
         }
 
         updateRubeImages();
-    }
-
-    public Body createBody(String name, float x, float y, float rotation, PhysicsShapeCache shapeCache, World world) {
-        Body body = shapeCache.createBody(name, world, SCALE, SCALE);
-        body.setTransform(x, y, rotation);
-
-        return body;
     }
 
 

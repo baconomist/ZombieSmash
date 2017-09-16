@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -14,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
@@ -49,7 +51,8 @@ import java.util.HashMap;
 
 public class Physics {
 
-    static final float SCALE = ZombieBody.SCALE;
+    public static final float PPM = 192;
+
     static final float STEP_TIME = 1f / 60f;
     static final int VELOCITY_ITERATIONS = 6;
     static final int POSITION_ITERATIONS = 2;
@@ -75,11 +78,12 @@ public class Physics {
 
         mouseJoints = new HashMap<Integer, MouseJoint>();
 
-        world = new World(new Vector2(0, -120), true);
+        world = new World(new Vector2(0, -25), true);
+
 
         createGround();
-
     }
+
 
     public void update(float delta){
         //if(Gdx.input.isTouched()) {
@@ -108,7 +112,7 @@ public class Physics {
         fixtureDef.friction = 1;
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Gdx.graphics.getWidth()*2, 1);
+        shape.setAsBox(Gdx.graphics.getWidth()/PPM*2, 0);
         fixtureDef.shape = shape;
 
         ground = world.createBody(bodyDef);
@@ -151,8 +155,8 @@ public class Physics {
             mouseJointDef.bodyB = touchedBody;
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(hitPoint.x, hitPoint.y);
-            mouseJointDef.maxForce = 1000000f;
-
+            // Force applied to body to get to point
+            mouseJointDef.maxForce = 10000f*touchedBody.getMass();
             mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
 
             touchedBody.setAwake(true);
@@ -171,7 +175,6 @@ public class Physics {
     }
 
     public void touchUp(float x, float y, int pointer){
-        Gdx.app.log("pointer", ""+pointer);
 
         // Destroy mouseJoint at a pointer
 

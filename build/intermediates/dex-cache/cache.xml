@@ -2,22 +2,22 @@
 <items version="2" >
 
     <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.jlayer\jlayer\1.0.1-gdx\7cca83cec5c1b2f011362f4d85aabd71a73b049d\jlayer-1.0.1-gdx.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\core\build\libs\core-1.0.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="7cca83cec5c1b2f011362f4d85aabd71a73b049d">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\jlayer-1.0.1-gdx_86d53cff69f9d3c58ea5d33a8d9aacc7a8e1d450\classes.dex" />
+        sha1="32519959b6139ea280a7a2205e55f1b6e8b9cd67">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\core-1.0_3483fe99a8b8a9ff3072434d6ef4c8b54e50f69d.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.jcraft\jorbis\0.0.17\8872d22b293e8f5d7d56ff92be966e6dc28ebdc6\jorbis-0.0.17.jar"
-        jumboMode="true"
+        is-multidex="false"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\net.java.jinput\jinput\2.0.5\39c7796b469a600f72380316f6b1f11db6c2c7c4\jinput-2.0.5.jar"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="8872d22b293e8f5d7d56ff92be966e6dc28ebdc6">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\jorbis-0.0.17_5250fb7498ac64a0b9239170ce58630c0d530a71\classes.dex" />
+        sha1="39c7796b469a600f72380316f6b1f11db6c2c7c4">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\jinput-2.0.5_4b9594aa4b734dbb71acbe06b0df279d8826308b.jar" />
     </item>
     <item
         is-multidex="true"
@@ -29,31 +29,13 @@
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run-bootstrap_9fe3f376f40d3f7f926dc87db9852c404641d4c0\classes.dex" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\net.java.jinput\jinput\2.0.5\39c7796b469a600f72380316f6b1f11db6c2c7c4\jinput-2.0.5.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="39c7796b469a600f72380316f6b1f11db6c2c7c4">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\jinput-2.0.5_4b9594aa4b734dbb71acbe06b0df279d8826308b\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-lwjgl\1.9.6\ee7c23636ee4a942d329579daecc3ec5e517fe4c\gdx-backend-lwjgl-1.9.6.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="ee7c23636ee4a942d329579daecc3ec5e517fe4c">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-backend-lwjgl-1.9.6_92eae5eede12341e45be08eb15c0fad0554ca563\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\net.java.jutils\jutils\1.0.0\e12fe1fda814bd348c1579329c86943d2cd3c6a6\jutils-1.0.0.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="e12fe1fda814bd348c1579329c86943d2cd3c6a6">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\jutils-1.0.0_0130d1068cbfb5f7b6d254d321f92baaed5b7e52\classes.dex" />
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\jutils-1.0.0_0130d1068cbfb5f7b6d254d321f92baaed5b7e52.jar" />
     </item>
     <item
         is-multidex="true"
@@ -65,31 +47,49 @@
         <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10000\instant-run_c0352932a759cdba84e25cf097e2745137558c70\classes.dex" />
     </item>
     <item
-        is-multidex="true"
+        is-multidex="false"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl\2.9.2\a9d80fe5935c7a9149f6584d9777cfd471f65489\lwjgl-2.9.2.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="a9d80fe5935c7a9149f6584d9777cfd471f65489">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\lwjgl-2.9.2_cfdc488b04e5cfeec13cc248d9ca76aa7227b47f\classes.dex" />
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\lwjgl-2.9.2_cfdc488b04e5cfeec13cc248d9ca76aa7227b47f.jar" />
     </item>
     <item
-        is-multidex="true"
-        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.codeandweb.physicseditor\gdx-pe-loader\1.1.0\dca64a362e19ca9a0992dcbff0cb67dbff2a942b\gdx-pe-loader-1.1.0.jar"
-        jumboMode="true"
-        optimize="true"
-        revision="25.0.3"
-        sha1="dca64a362e19ca9a0992dcbff0cb67dbff2a942b">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\gdx-pe-loader-1.1.0_121b0fd5bc672629f7e5f8d8db2814b515b570f9\classes.dex" />
-    </item>
-    <item
-        is-multidex="true"
+        is-multidex="false"
         jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.lwjgl.lwjgl\lwjgl_util\2.9.2\4b9e37300a87799856e0bd15ed81663cdb6b0947\lwjgl_util-2.9.2.jar"
-        jumboMode="true"
+        jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="4b9e37300a87799856e0bd15ed81663cdb6b0947">
-        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\transforms\dex\debug\folders\1000\10\lwjgl_util-2.9.2_eee0fe66890153027ea861dbf33571a4f122040e\classes.dex" />
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\lwjgl_util-2.9.2_eee0fe66890153027ea861dbf33571a4f122040e.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\org.jcraft\jorbis\0.0.17\8872d22b293e8f5d7d56ff92be966e6dc28ebdc6\jorbis-0.0.17.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="8872d22b293e8f5d7d56ff92be966e6dc28ebdc6">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\jorbis-0.0.17_5250fb7498ac64a0b9239170ce58630c0d530a71.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.gdx\gdx-backend-lwjgl\1.9.6\ee7c23636ee4a942d329579daecc3ec5e517fe4c\gdx-backend-lwjgl-1.9.6.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="ee7c23636ee4a942d329579daecc3ec5e517fe4c">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\gdx-backend-lwjgl-1.9.6_92eae5eede12341e45be08eb15c0fad0554ca563.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\Lucas\.gradle\caches\modules-2\files-2.1\com.badlogicgames.jlayer\jlayer\1.0.1-gdx\7cca83cec5c1b2f011362f4d85aabd71a73b049d\jlayer-1.0.1-gdx.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="7cca83cec5c1b2f011362f4d85aabd71a73b049d">
+        <dex dex="C:\Users\Lucas\Desktop\Projects\Android\ZombieSmash\android\build\intermediates\pre-dexed\debug\jlayer-1.0.1-gdx_86d53cff69f9d3c58ea5d33a8d9aacc7a8e1d450.jar" />
     </item>
 
 </items>

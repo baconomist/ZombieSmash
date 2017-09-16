@@ -29,6 +29,9 @@ import java.util.HashMap;
 
 public class GameScreen implements Screen{
 
+    static float screenWidth = 1920;
+    static float screenHeight = 1080;
+
     private Level level;
 
     public Physics physics;
@@ -51,9 +54,10 @@ public class GameScreen implements Screen{
 
         physics = new Physics();
 
-        camera = new OrthographicCamera(Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        camera = new OrthographicCamera(screenWidth/Physics.PPM, screenHeight/Physics.PPM);
 
-        game_view = new ExtendViewport(1920, 1080, camera);
+        game_view = new ExtendViewport(1920, 1080);
+        game_view.apply();
 
         game_stage = new GameStage(game_view, this);
 
@@ -80,16 +84,21 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
+
         // Clear the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
 
         game_stage.act(delta);
-        game_view.apply();// Needs to be called if you have multiple viewports, see docs. Before drawing.
+        // viewport.apply() needs to be called if you have multiple viewports before drawing, see docs.
+        // Sets gl viewport
+        game_view.apply();
         game_stage.draw();
 
         power_ups_stage.act(delta);
-        power_ups_view.apply();// Needs to be called if you have multiple viewports, see docs. Before drawing.
+        // viewport.apply() needs to be called if you have multiple viewports before drawing, see docs.
+        // Sets gl viewport
+        power_ups_view.apply();
         power_ups_stage.draw();
 
         camera.update();
@@ -98,20 +107,23 @@ public class GameScreen implements Screen{
 
         debugRenderer.render(physics.getWorld(), camera.combined);
 
+
     }
 
     @Override
     public void resize(int width, int height) {
         power_ups_stage.getViewport().update(width, height);
-        game_stage.getViewport().update(width, height);
 
-        camera.viewportWidth = width;
-        camera.viewportHeight = height;
+        //Resize method makes things smaller and messes up sprite size, can't see at all
+        game_view.update(width, height);
+        //resizing to current size breaks things?!?! but changing size to bigger makes things huge and leaving resize does the same as making it bigger
 
-        camera.position.x = Gdx.graphics.getWidth()/2;
-        camera.position.y = Gdx.graphics.getHeight()/2;
+        camera.viewportWidth = width/Physics.PPM;
+        camera.viewportHeight = height/Physics.PPM;
 
-        Gdx.app.log("viewport", "x"+game_view.getWorldWidth());
+        // Center camera
+        camera.position.x = camera.viewportWidth/2;
+        camera.position.y = camera.viewportHeight/2;
 
         camera.update();
 
