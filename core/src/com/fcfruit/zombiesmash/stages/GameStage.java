@@ -64,10 +64,10 @@ public class GameStage extends Stage {
         delta = Gdx.graphics.getDeltaTime();
 
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
-        regZombie.draw(spriteBatch, delta);
 
         spriteBatch.begin();
         skeletonRenderer.draw(spriteBatch, regZombie.getBody().getSkeleton());
+        regZombie.draw(spriteBatch, delta);
         spriteBatch.end();
 
 

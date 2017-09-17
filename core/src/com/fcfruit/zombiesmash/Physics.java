@@ -41,7 +41,10 @@ import com.fcfruit.zombiesmash.zombies.ZombieBody;
 import net.java.games.input.Mouse;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+
+import static java.util.Collections.min;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -68,6 +71,8 @@ public class Physics {
     private HashMap<Integer, MouseJoint>mouseJoints;
 
     private Body touchedBody = null;
+
+    private int mainPointer;
 
     public RubeScene scene;
 
@@ -142,7 +147,7 @@ public class Physics {
         }
     };
 
-    public void createMouseJoint(float x, float y, int pointer){
+    public void createMouseJoint(float x, float y, int pointer, boolean firstTouch){
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
@@ -150,13 +155,18 @@ public class Physics {
         mouseJointDef.bodyB = touchedBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(hitPoint.x, hitPoint.y);
-        if(pointer < 1) {
+        if(firstTouch) {
+            mainPointer = pointer;
             // Force applied to body to get to point
             mouseJointDef.maxForce = 10000f * touchedBody.getMass();
         }
         else{
             // Force applied to body to get to point
             mouseJointDef.maxForce = 100f * touchedBody.getMass();
+        }
+        if(mouseJoints.get(pointer) != null){
+            world.destroyJoint(mouseJoints.get(pointer));
+            mouseJoints.remove(pointer);
         }
         mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
 
@@ -169,7 +179,12 @@ public class Physics {
         touchedBody = null;
         world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
         if (touchedBody != null) {
-            createMouseJoint(x, y, pointer);
+            if(pointer < 1) {
+                createMouseJoint(x, y, pointer, true);
+            }
+            else{
+                createMouseJoint(x, y, pointer, false);
+            }
         }
 
     }
@@ -183,7 +198,12 @@ public class Physics {
             touchedBody = null;
             world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
             if(touchedBody != null) {
-                createMouseJoint(x, y, pointer);
+                if(pointer < 1) {
+                    createMouseJoint(x, y, pointer, true);
+                }
+                else{
+                    createMouseJoint(x, y, pointer, false);
+                }
             }
         }
     }
@@ -195,6 +215,13 @@ public class Physics {
         if(mouseJoints.get(pointer) != null) {
             world.destroyJoint(mouseJoints.get(pointer));
             mouseJoints.remove(pointer);
+
+            for(int p : mouseJoints.keySet()){
+                // Get next pointer in order
+                createMouseJoint(mouseJoints.get(p).getTarget().x, mouseJoints.get(p).getTarget().y, p, true);
+                break;
+            }
+
         }
 
         Gdx.app.log("mouse", ""+mouseJoints.get(pointer));

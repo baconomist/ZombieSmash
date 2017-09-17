@@ -45,17 +45,17 @@ import java.util.List;
 
 public class ZombieBody{
 
+    static String[] drawOrder = new String[]{"head", "torso", "right_arm", "left_arm", "right_leg", "left_leg"};
+
     private Zombie zombie;
 
     private RubeScene rubeScene;
-
-    private HashMap<Body, Sprite> rubeSprites;
 
     private TextureAtlas atlas;
     private Skeleton skeleton;
     private AnimationState state;
 
-    private HashMap<String, Part> parts;
+    public HashMap<String, Part> parts;
 
     public boolean isPhysicsEnabled;
 
@@ -65,20 +65,9 @@ public class ZombieBody{
 
         zombie = z;
 
-        rubeSprites = new HashMap<Body, Sprite>();
-
         isPhysicsEnabled = true;
 
         animationSetup();
-
-        parts = new HashMap<String, Part>();
-        parts.put("head", new Part("head", this));
-        parts.put("left_arm", new Part("left_arm", this));
-        parts.put("torso", new Part("torso", this));
-        parts.put("right_arm", new Part("right_arm", this));
-        parts.put("left_leg", new Part("left_leg", this));
-        parts.put("right_leg", new Part("right_leg", this));
-
 
     }
 
@@ -102,11 +91,11 @@ public class ZombieBody{
     }
 
     public void draw(SpriteBatch batch, float delta){
-        for(Body b : parts){
-            batch.begin();
-            rubeSprites.get(b).draw(batch);
-            batch.end();
+
+        for (String name : drawOrder) {
+            parts.get(name).draw(batch);
         }
+
         update(delta);
     }
 
@@ -131,11 +120,12 @@ public class ZombieBody{
     }
 
     private void updateRubeImages(){
-        for(Body b : rubeSprites.keySet()){
-            Sprite sprite = rubeSprites.get(b);
+        for(String partName : parts.keySet()){
+            Part part = parts.get(partName);
+            Sprite sprite = parts.get(partName).sprite;
 
             for(RubeImage i : rubeScene.getImages()){
-                if(i.body == b){
+                if(i.body == part.physicsBody){
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOrigin(i.center.x, i.center.y);
@@ -146,10 +136,10 @@ public class ZombieBody{
             }
 
 
-            Vector3 pos = camera.project(new Vector3(b.getPosition().x, b.getPosition().y, 0));
+            Vector3 pos = camera.project(new Vector3(part.physicsBody.getPosition().x, part.physicsBody.getPosition().y, 0));
             sprite.setPosition(pos.x - sprite.getWidth()/2, pos.y - sprite.getHeight()/2);
             sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-            sprite.setRotation((float) Math.toDegrees(b.getAngle()));
+            sprite.setRotation((float) Math.toDegrees(part.physicsBody.getAngle()));
 
 
 
@@ -168,19 +158,15 @@ public class ZombieBody{
         RubeSceneLoader loader = new RubeSceneLoader(world);
         rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
 
+        parts = new HashMap<String, Part>();
+
         for(Body b : rubeScene.getBodies()){
 
-            /*Sprite tempSprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
+            String bodyName = (String) rubeScene.getCustom(b, "name");
 
-            if(atlas.findRegion((String) rubeScene.getCustom(b, "name")).rotate){
-                tempSprite.setRotation(tempSprite.getRotation() - 90);
-            }
+            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
-            Sprite sprite = new Sprite(tempSprite.getTexture());*/
-
-            Sprite sprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
-
-            rubeSprites.put(b, sprite);
+            parts.put(bodyName, new Part(bodyName, sprite, b, this));
 
         }
 
@@ -236,9 +222,6 @@ public class ZombieBody{
     public float getHeight(){
         return skeleton.getData().getHeight();
     }
-
-    public HashMap<String, Part> getParts(){
-        return parts;
-    }
+    
 
 }
