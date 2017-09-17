@@ -35,6 +35,7 @@ public class GameScreen implements Screen{
 
     private Level level;
 
+    // Physics should belong to game not a screen
     public Physics physics;
 
     public OrthographicCamera camera;

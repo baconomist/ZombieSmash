@@ -50,24 +50,13 @@ public class Part{
     }
 
     public void update(){
-        if(isAttached){
-            if(name.equals("torso") && body.isPhysicsEnabled){
-                //Do physics for whole body
 
-            }
-            else if(!body.isPhysicsEnabled){
-                updatePhysicsBody();
-            }
-        }
     }
 
     private void updatePhysicsBody(){
         if(physicsBody != null) {
-            if(isAttached) {
+            if(!isAttached) {
 
-            }
-            else{
-                // Update using without using body offsets
             }
         }
     }

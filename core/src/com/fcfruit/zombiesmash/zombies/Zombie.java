@@ -18,23 +18,12 @@ public class Zombie{
 
     public float mass;
 
-    public String touchedLimb;
-
-    public boolean isHanging;
-
-    public boolean isAnimating;
 
     public boolean isPhysicsEnabled;
 
-    public Zombie() {
+    public Zombie(Physics p) {
 
-        body = new ZombieBody(this);
-
-        touchedLimb = "none";
-
-        isHanging = false;
-
-        isAnimating = true;
+        body = new ZombieBody(this, p);
 
         isPhysicsEnabled = true;
 
@@ -51,40 +40,24 @@ public class Zombie{
 
     private void update(float delta){
 
-        if(!isHanging) {
-            
-        }
 
-        //!isHanging works, cus if hanging false, then go to else, if not draging, ishanging = false
-        if(!touchedLimb.equals("none") && Gdx.input.isTouched()) {
-            isHanging = true;
-            isAnimating = false;
-        } else if (!isDraging() && !Gdx.input.isTouched()){
-            isHanging = false;
-            isAnimating = true;
-            touchedLimb = "none";
-        }
-
-        // Simplified if statements.
-        body.isPhysicsEnabled = !isAnimating;
-
-        if(isHanging) {
-
-        }
 
     }
 
-    private boolean isDraging(){
-
-        if(Gdx.input.getDeltaX() != 0f || Gdx.input.getDeltaY() != 0f) {
-
-            return Gdx.input.getDeltaX() <= 500 && Gdx.input.getDeltaX() >= -500 && Gdx.input.getDeltaY() <= 500 && Gdx.input.getDeltaY() >= -500;
-
-        }
-
-        return false;
-
+    public void touchDown(float x, float y, int pointer){
+        body.touchDown(x, y, pointer);
     }
+
+    public void touchDragged(float x, float y, int pointer){
+        body.touchDragged(x, y, pointer);
+    }
+
+    public void touchUp(float x, float y, int pointer){
+        body.touchUp(x, y, pointer);
+    }
+
+
+
 
     public void constructPhysicsBody(World world){
         body.constructPhysicsBody(world);

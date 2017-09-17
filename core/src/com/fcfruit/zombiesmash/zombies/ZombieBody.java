@@ -13,6 +13,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
@@ -48,6 +49,8 @@ public class ZombieBody{
     static String[] drawOrder = new String[]{"head", "torso", "right_arm", "left_arm", "right_leg", "left_leg"};
 
     private Zombie zombie;
+    
+    private Physics physics;
 
     private RubeScene rubeScene;
 
@@ -60,12 +63,23 @@ public class ZombieBody{
     public boolean isPhysicsEnabled;
 
     public OrthographicCamera camera;
+    
 
-    public ZombieBody(Zombie z){
+    private HashMap<Integer, MouseJoint>mouseJoints;
+
+    private Body touchedPart = null;
+
+    private int mainPointer;
+
+    public ZombieBody(Zombie z, Physics p){
 
         zombie = z;
+        
+        physics = p;
 
         isPhysicsEnabled = true;
+
+        mouseJoints = new HashMap<Integer, MouseJoint>();
 
         animationSetup();
 
@@ -91,11 +105,9 @@ public class ZombieBody{
     }
 
     public void draw(SpriteBatch batch, float delta){
-
-        for (String name : drawOrder) {
+        for(String name : drawOrder){
             parts.get(name).draw(batch);
         }
-
         update(delta);
     }
 
@@ -141,9 +153,6 @@ public class ZombieBody{
             sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
             sprite.setRotation((float) Math.toDegrees(part.physicsBody.getAngle()));
 
-
-
-
         }
     }
 
@@ -172,13 +181,112 @@ public class ZombieBody{
 
         updateRubeImages();
     }
+    
+    
+    Vector2 hitPoint = new Vector2();
+    QueryCallback callback = new QueryCallback() {
+        @Override
+        public boolean reportFixture (Fixture fixture) {
+            // if the hit fixture's body is the ground body
+            // we ignore it
+            if (fixture.getBody() == physics.getGround()) return true;
+            
+            // if the hit point is inside the fixture of the body
+            // we report it
+            if (fixture.testPoint(hitPoint
+                    .x, hitPoint
+                    .y)) {
+                touchedPart = fixture.getBody();
+                return false;
+            } else
+                return true;
+        }
+    };
 
+    public void createMouseJoint(float x, float y, int pointer, boolean mainTouch){
+        MouseJointDef mouseJointDef = new MouseJointDef();
+        // Needs 2 bodies, first one not used, so we use an arbitrary body.
+        // http://www.binarytides.com/mouse-joint-box2d-javascript/
+        mouseJointDef.bodyA = physics.getGround();
+        mouseJointDef.bodyB = touchedPart;
+        mouseJointDef.collideConnected = true;
+        mouseJointDef.target.set(x, y);
+        if(mainTouch) {
+            mainPointer = pointer;
+            // Force applied to body to get to point
+            mouseJointDef.maxForce = 10000f * touchedPart.getMass();
+        }
+        else{
+            // Force applied to body to get to point
+            // Set to less if already touching so you can only rotate other limbs
+            mouseJointDef.maxForce = 100f * touchedPart.getMass();
+        }
+        if(mouseJoints.get(pointer) != null){
+            physics.getWorld().destroyJoint(mouseJoints.get(pointer));
+            mouseJoints.remove(pointer);
+        }
+        mouseJoints.put(pointer, (MouseJoint) physics.getWorld().createJoint(mouseJointDef));
 
-    /*public boolean contains(float x, float y){
+        touchedPart.setAwake(true);
+    }
 
-        return x > parts.get("left_arm").getWorldX() && x < parts.get("right_arm").getWorldX() && y > parts.get("left_leg").getWorldY() - ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth() && y < parts.get("head").getWorldY() + ((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight();
+    public void touchDown(float x, float y, int pointer){
 
-    }*/
+        hitPoint.set(x, y);
+        touchedPart = null;
+        physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
+        if (touchedPart != null) {
+            if(mouseJoints.size() < 1) {
+                createMouseJoint(x, y, pointer, true);
+            }
+            else{
+                createMouseJoint(x, y, pointer, false);
+            }
+        }
+
+    }
+
+    public void touchDragged(float x, float y, int pointer){
+        if (mouseJoints.get(pointer) != null) {
+            mouseJoints.get(pointer).setTarget(new Vector2(x, y));
+        }
+        else{
+            hitPoint.set(x, y);
+            touchedPart = null;
+            physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
+            if(touchedPart != null) {
+                if(mouseJoints.size() < 1) {
+                    createMouseJoint(x, y, pointer, true);
+                }
+                else{
+                    createMouseJoint(x, y, pointer, false);
+                }
+            }
+        }
+    }
+
+    public void touchUp(float x, float y, int pointer){
+
+        // Destroy mouseJoint at a pointer
+
+        if(mouseJoints.get(pointer) != null) {
+            physics.getWorld().destroyJoint(mouseJoints.get(pointer));
+            mouseJoints.remove(pointer);
+
+            if(pointer == mainPointer) {
+                // Assuming mouseJoints.keySet() doesn't list in arbitrary order
+                for (int p : mouseJoints.keySet()) {
+                    // Get next pointer in order
+                    touchedPart = mouseJoints.get(p).getBodyB();
+                    mainPointer = p;
+                    mouseJoints.get(p).setMaxForce(10000f * touchedPart.getMass());
+                    break;
+                }
+            }
+
+        }
+
+    }
 
 
 
@@ -201,27 +309,5 @@ public class ZombieBody{
     public Skeleton getSkeleton(){
         return skeleton;
     }
-
-    public float getX(){
-        return skeleton.getX();
-    }
-
-    public float getY(){
-        return skeleton.getY();
-
-    }
-
-    public float getRotation(){
-        return skeleton.getRootBone().getWorldRotationX();
-    }
-
-    public float getWidth(){
-        return skeleton.getData().getWidth();
-    }
-
-    public float getHeight(){
-        return skeleton.getData().getHeight();
-    }
-    
 
 }

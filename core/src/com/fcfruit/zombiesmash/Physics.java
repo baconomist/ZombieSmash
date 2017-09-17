@@ -66,13 +66,9 @@ public class Physics {
     private World world;
 
     private float accumulator = 0;
+
     private Body ground;
 
-    private HashMap<Integer, MouseJoint>mouseJoints;
-
-    private Body touchedBody = null;
-
-    private int mainPointer;
 
     public RubeScene scene;
 
@@ -80,8 +76,6 @@ public class Physics {
 
         parts = new ArrayList<Part>();
         zombies = new ArrayList<Zombie>();
-
-        mouseJoints = new HashMap<Integer, MouseJoint>();
 
         world = new World(new Vector2(0, -25), true);
 
@@ -127,107 +121,25 @@ public class Physics {
         shape.dispose();
     }
 
-    Vector2 hitPoint = new Vector2();
-    QueryCallback callback = new QueryCallback() {
-        @Override
-        public boolean reportFixture (Fixture fixture) {
-            // if the hit fixture's body is the ground body
-            // we ignore it
-            if (fixture.getBody() == ground) return true;
-
-            // if the hit point is inside the fixture of the body
-            // we report it
-            if (fixture.testPoint(hitPoint
-                    .x, hitPoint
-                    .y)) {
-                touchedBody = fixture.getBody();
-                return false;
-            } else
-                return true;
-        }
-    };
-
-    public void createMouseJoint(float x, float y, int pointer, boolean mainTouch){
-        MouseJointDef mouseJointDef = new MouseJointDef();
-        // Needs 2 bodies, first one not used, so we use an arbitrary body.
-        // http://www.binarytides.com/mouse-joint-box2d-javascript/
-        mouseJointDef.bodyA = ground;
-        mouseJointDef.bodyB = touchedBody;
-        mouseJointDef.collideConnected = true;
-        mouseJointDef.target.set(x, y);
-        if(mainTouch) {
-            mainPointer = pointer;
-            // Force applied to body to get to point
-            mouseJointDef.maxForce = 10000f * touchedBody.getMass();
-        }
-        else{
-            // Force applied to body to get to point
-            // Set to less if already touching so you can only rotate other limbs
-            mouseJointDef.maxForce = 100f * touchedBody.getMass();
-        }
-        if(mouseJoints.get(pointer) != null){
-            world.destroyJoint(mouseJoints.get(pointer));
-            mouseJoints.remove(pointer);
-        }
-        mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
-
-        touchedBody.setAwake(true);
-    }
 
     public void touchDown(float x, float y, int pointer){
 
-        hitPoint.set(x, y);
-        touchedBody = null;
-        world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
-        if (touchedBody != null) {
-            if(mouseJoints.size() < 1) {
-                createMouseJoint(x, y, pointer, true);
-            }
-            else{
-                createMouseJoint(x, y, pointer, false);
-            }
+        for(Zombie z : zombies){
+            z.touchDown(x, y, pointer);
         }
 
     }
 
     public void touchDragged(float x, float y, int pointer){
-        if (mouseJoints.get(pointer) != null) {
-            mouseJoints.get(pointer).setTarget(new Vector2(x, y));
-        }
-        else{
-            hitPoint.set(x, y);
-            touchedBody = null;
-            world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
-            if(touchedBody != null) {
-                if(mouseJoints.size() < 1) {
-                    createMouseJoint(x, y, pointer, true);
-                }
-                else{
-                    createMouseJoint(x, y, pointer, false);
-                }
-            }
+        for(Zombie z : zombies){
+            z.touchDragged(x, y, pointer);
         }
     }
 
     public void touchUp(float x, float y, int pointer){
 
-        // Destroy mouseJoint at a pointer
-
-        if(mouseJoints.get(pointer) != null) {
-            world.destroyJoint(mouseJoints.get(pointer));
-            mouseJoints.remove(pointer);
-
-            if(pointer == mainPointer) {
-                // Assuming mouseJoints.keySet() doesn't list in arbitrary order
-                for (int p : mouseJoints.keySet()) {
-                    // Get next pointer in order
-                    touchedBody = mouseJoints.get(p).getBodyB();
-                    mainPointer = p;
-                    mouseJoints.get(1).setMaxForce(10000f * touchedBody.getMass());
-                    break;
-                }
-            }
-
+        for(Zombie z : zombies){
+            z.touchUp(x, y, pointer);
         }
 
     }
@@ -258,6 +170,10 @@ public class Physics {
 
     public World getWorld(){
         return world;
+    }
+
+    public Body getGround(){
+        return ground;
     }
 
 }
