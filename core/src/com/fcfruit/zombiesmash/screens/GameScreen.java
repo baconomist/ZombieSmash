@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -84,7 +85,6 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
-
         // Clear the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
@@ -118,8 +118,9 @@ public class GameScreen implements Screen{
         game_view.update(width, height);
 
         // Resize camera to world size.
-        camera.viewportWidth = width/Physics.PPM;
-        camera.viewportHeight = height/Physics.PPM;
+        // I don't know if this makes sense
+        //camera.viewportWidth = width/Physics.PPM;
+        //camera.viewportHeight = height/Physics.PPM;
 
         // Center camera
         camera.position.x = camera.viewportWidth/2;

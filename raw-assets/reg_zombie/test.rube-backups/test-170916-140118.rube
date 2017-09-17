@@ -1,0 +1,176 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "body",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metabody" : 
+    [
+      
+      {
+        "angle" : 0,
+        "angularVelocity" : 0,
+        "awake" : true,
+        "fixture" : 
+        [
+          
+          {
+            "density" : 1,
+            "friction" : 0.2,
+            "id" : 1,
+            "name" : "fixture0",
+            "shapes" : 
+            [
+              
+              {
+                "type" : "polygon"
+              }
+            ],
+            "vertices" : 
+            {
+              "x" : 
+              [
+                -1.205530047416687,
+                -1.199290037155151,
+                -1.430400013923645,
+                -1.414780020713806,
+                -1.280490040779114,
+                -0.9931589961051941,
+                -0.1311720013618469,
+                0.8307549953460693,
+                1.105589985847473,
+                1.205530047416687,
+                1.367930054664612,
+                0.8182619810104370,
+                0.5684109926223755,
+                -0.2436050027608872,
+                -0.4309940040111542
+              ],
+              "y" : 
+              [
+                0.5059490203857422,
+                0.3685309886932373,
+                0.2311130017042160,
+                -0.2186190038919449,
+                -0.3654069900512695,
+                -0.4778400063514710,
+                -0.3685300052165985,
+                -0.3810229897499085,
+                -0.4153769910335541,
+                -0.2560969889163971,
+                0.3747769892215729,
+                0.4060089886188507,
+                0.3060680031776428,
+                0.2467280030250549,
+                0.3654080033302307
+              ]
+            }
+          }
+        ],
+        "id" : 1,
+        "linearVelocity" : 0,
+        "massData-I" : 1.372567534446716,
+        "massData-center" : 
+        {
+          "x" : -0.09836385399103165,
+          "y" : -0.01263586990535259
+        },
+        "massData-mass" : 2.008254766464233,
+        "name" : "body0",
+        "position" : 
+        {
+          "x" : 0.8648144602775574,
+          "y" : 0.3826695680618286
+        },
+        "type" : "dynamic"
+      }
+    ],
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "body" : 1,
+        "center" : 0,
+        "file" : "pngs/left_arm.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 3,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 1
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}

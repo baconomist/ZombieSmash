@@ -1,0 +1,238 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "body",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metabody" : 
+    [
+      
+      {
+        "angle" : 0,
+        "angularVelocity" : 0,
+        "awake" : true,
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "head"
+          }
+        ],
+        "fixture" : 
+        [
+          
+          {
+            "density" : 1,
+            "friction" : 0.2,
+            "id" : 4,
+            "name" : "fixture0",
+            "shapes" : 
+            [
+              
+              {
+                "type" : "polygon"
+              }
+            ],
+            "vertices" : 
+            {
+              "x" : 
+              [
+                -0.1628546118736267,
+                -0.2182162255048752,
+                -0.2294038832187653,
+                -0.2297498583793640,
+                -0.2574306428432465,
+                -0.2701175510883331,
+                -0.2774415016174316,
+                -0.2599678039550781,
+                -0.2297498583793640,
+                -0.1863831579685211,
+                -0.1847686171531677,
+                -0.1670068800449371,
+                -0.1448622345924377,
+                -0.1031106710433960,
+                -0.06551077961921692,
+                -0.009227007627487183,
+                0.07196956872940064,
+                0.1333285868167877,
+                0.1854604482650757,
+                0.2034530043601990,
+                0.2523553967475891,
+                0.2643500566482544,
+                0.2786520719528198,
+                0.2717320919036865,
+                0.2373618483543396,
+                0.2422059774398804,
+                0.2276734709739685,
+                0.2039142251014710,
+                0.1587023735046387,
+                0.1217949390411377,
+                0.1716198623180389,
+                0.1810776591300964,
+                0.1686213314533234,
+                0.1328672766685486,
+                0.05559170246124268,
+                0.05789875984191895,
+                -0.01199501752853394,
+                -0.03044885396957398,
+                -0.08673286437988281,
+                -0.1190271973609924
+              ],
+              "y" : 
+              [
+                0.1642385721206665,
+                0.09780514240264893,
+                0.07243144512176514,
+                0.02952599525451660,
+                0.01291763782501221,
+                -0.008304238319396973,
+                -0.05273747444152832,
+                -0.09503686428070068,
+                -0.1213335990905762,
+                -0.1275618076324463,
+                -0.1508597135543823,
+                -0.1780791282653809,
+                -0.1937645673751831,
+                -0.2482036352157593,
+                -0.2671184539794922,
+                -0.2765763401985169,
+                -0.2765763401985169,
+                -0.2616976499557495,
+                -0.2283653020858765,
+                -0.1956101655960083,
+                -0.08488774299621582,
+                -0.06827926635742188,
+                -0.02214455604553223,
+                0.01660847663879395,
+                0.0618203878402710,
+                0.09503674507141113,
+                0.146707296371460,
+                0.1808470487594605,
+                0.2101423740386963,
+                0.2239829301834106,
+                0.2364392280578613,
+                0.2468196153640747,
+                0.2629088163375855,
+                0.2655041217803955,
+                0.2525863647460938,
+                0.2740964889526367,
+                0.2578920125961304,
+                0.2403609752655029,
+                0.2230603694915772,
+                0.2043756246566773
+              ]
+            }
+          }
+        ],
+        "id" : 4,
+        "linearVelocity" : 0,
+        "massData-I" : 0.007661255542188883,
+        "massData-center" : 
+        {
+          "x" : 0.01456848066300154,
+          "y" : -0.009613241069018841
+        },
+        "massData-mass" : 0.2169671356678009,
+        "name" : "body0",
+        "position" : 
+        {
+          "x" : 0.3382427394390106,
+          "y" : 0.4905092120170593
+        },
+        "type" : "dynamic"
+      }
+    ],
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "body" : 4,
+        "center" : 
+        {
+          "x" : 0.6788842678070068,
+          "y" : 0.9556741118431091
+        },
+        "file" : "../../android/assets/zombies/reg_zombie/reg_zombie.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 4,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 1
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}

@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
@@ -28,6 +30,7 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import com.badlogic.gdx.graphics.g2d.TextureAtlas.*;
+import com.fcfruit.zombiesmash.screens.GameScreen;
 
 
 import java.util.ArrayList;
@@ -65,7 +68,7 @@ public class ZombieBody{
 
     public boolean isPhysicsEnabled;
 
-    Sprite s = new Sprite(new Texture(Gdx.files.internal("badlogic.jpg")));
+    public OrthographicCamera camera;
 
     public ZombieBody(Zombie z){
 
@@ -155,7 +158,6 @@ public class ZombieBody{
         for(Body b : rubeSprites.keySet()){
             batch.begin();
             rubeSprites.get(b).draw(batch);
-            s.draw(batch);
             batch.end();
         }
         update(delta);
@@ -179,8 +181,6 @@ public class ZombieBody{
 
         updateParts();
 
-        s.setPosition(1, 1);
-
     }
 
     private void updateRubeImages(){
@@ -189,20 +189,24 @@ public class ZombieBody{
 
             for(RubeImage i : rubeScene.getImages()){
                 if(i.body == b){
-                    sprite.setScale(i.scale);
-                    sprite.setSize(i.width, i.height);
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOrigin(i.center.x, i.center.y);
+                    Gdx.app.log("nam", i.name+" "+sprite.getWidth()+" "+sprite.getHeight());
+                    Gdx.app.log("nam", ""+i.width*Physics.PPM+" "+i.height*Physics.PPM);
+                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
+
                 }
+
             }
-            sprite.setPosition(b.getPosition().x - sprite.getWidth()/2, b.getPosition().y - sprite.getHeight()/2);
+
+
+            Vector3 pos = camera.project(new Vector3(b.getPosition().x, b.getPosition().y, 0));
+            sprite.setPosition(pos.x - sprite.getWidth()/2, pos.y - sprite.getHeight()/2);
             sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
             sprite.setRotation((float) Math.toDegrees(b.getAngle()));
 
-            if(rubeScene.getCustom(b, "rotationOffset") != null){
-               sprite.setRotation(sprite.getRotation() + (Float) rubeScene.getCustom(b, "rotationOffset"));
-            }
+
 
 
         }
@@ -213,6 +217,29 @@ public class ZombieBody{
         for(String partName : parts.keySet()){
             parts.get(partName).update();
         }
+    }
+
+    public void constructPhysicsBody(World world){
+        RubeSceneLoader loader = new RubeSceneLoader(world);
+        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
+
+        for(Body b : rubeScene.getBodies()){
+
+            /*Sprite tempSprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
+
+            if(atlas.findRegion((String) rubeScene.getCustom(b, "name")).rotate){
+                tempSprite.setRotation(tempSprite.getRotation() - 90);
+            }
+
+            Sprite sprite = new Sprite(tempSprite.getTexture());*/
+
+            Sprite sprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
+
+            rubeSprites.put(b, sprite);
+
+        }
+
+        updateRubeImages();
     }
 
     public void hangFromLimb(String limb, float x, float y){
@@ -313,29 +340,6 @@ public class ZombieBody{
 
         return "none";
 
-    }
-
-    public void constructPhysicsBody(World world){
-        RubeSceneLoader loader = new RubeSceneLoader(world);
-        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
-
-        for(Body b : rubeScene.getBodies()){
-
-            /*Sprite tempSprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
-
-            if(atlas.findRegion((String) rubeScene.getCustom(b, "name")).rotate){
-                tempSprite.setRotation(tempSprite.getRotation() - 90);
-            }
-
-            Sprite sprite = new Sprite(tempSprite.getTexture());*/
-
-            Sprite sprite = new Sprite(atlas.findRegion((String) rubeScene.getCustom(b, "name")));
-
-            rubeSprites.put(b, sprite);
-
-        }
-
-        updateRubeImages();
     }
 
 

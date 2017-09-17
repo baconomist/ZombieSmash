@@ -48,6 +48,7 @@ public class GameStage extends Stage {
 
         regZombie = new RegularZombie();
         regZombie.setPosition(gameScreen.camera.unproject(new Vector3(300, 300, 0)).x, gameScreen.camera.unproject(new Vector3(300, 300, 0)).y);
+        regZombie.getBody().camera = gameScreen.camera;
 
         spriteBatch = new SpriteBatch();
 
@@ -66,6 +67,7 @@ public class GameStage extends Stage {
 
         delta = Gdx.graphics.getDeltaTime();
 
+        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
         regZombie.draw(spriteBatch, delta);
 
         shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
@@ -78,8 +80,6 @@ public class GameStage extends Stage {
         shapeRenderer.polygon(regZombie.getBody().getParts().get("left_leg").getPolygon().getTransformedVertices());
         shapeRenderer.polygon(regZombie.getBody().getParts().get("right_leg").getPolygon().getTransformedVertices());
         shapeRenderer.end();
-
-        spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
         skeletonRenderer.draw(spriteBatch, regZombie.getBody().getSkeleton());

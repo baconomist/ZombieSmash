@@ -776,7 +776,7 @@
         "filter" : 1,
         "flip" : false,
         "id" : 11,
-        "name" : "left_leg",
+        "name" : "image0",
         "opacity" : 0.5,
         "scale" : 0.5147535204887390
       },
@@ -793,7 +793,7 @@
         "filter" : 1,
         "flip" : false,
         "id" : 12,
-        "name" : "right_leg",
+        "name" : "image0",
         "opacity" : 0.5,
         "scale" : 0.5147535204887390
       },

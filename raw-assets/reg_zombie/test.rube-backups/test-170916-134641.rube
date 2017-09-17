@@ -1,0 +1,208 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "body",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metabody" : 
+    [
+      
+      {
+        "angle" : 0,
+        "angularVelocity" : 0,
+        "awake" : true,
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "head"
+          }
+        ],
+        "fixture" : 
+        [
+          
+          {
+            "density" : 1,
+            "friction" : 0.2,
+            "id" : 1,
+            "name" : "fixture0",
+            "shapes" : 
+            [
+              
+              {
+                "type" : "polygon"
+              }
+            ],
+            "vertices" : 
+            {
+              "x" : 
+              [
+                -0.3954659998416901,
+                -0.4163680076599121,
+                -0.4895249903202057,
+                -0.502797007560730,
+                -0.4711309969425201,
+                -0.4163680076599121,
+                -0.3377760052680969,
+                -0.3348500132560730,
+                -0.1868640035390854,
+                -0.1187229976058006,
+                -0.01672160066664219,
+                0.1304280012845993,
+                0.2416269928216934,
+                0.3453010022640228,
+                0.4790740013122559,
+                0.5049920082092285,
+                0.4301629960536957,
+                0.4389419853687286,
+                0.3695470094680786,
+                0.2207249999046326,
+                0.3055869936943054,
+                0.1007480025291443,
+                0.1049280017614365,
+                -0.02173810079693794,
+                -0.05518120154738426
+              ],
+              "y" : 
+              [
+                0.1772489994764328,
+                0.05350960046052933,
+                -0.01504889968782663,
+                -0.09557390213012695,
+                -0.1722320020198822,
+                -0.2198880016803742,
+                -0.2311760038137436,
+                -0.2733980119228363,
+                -0.4498099982738495,
+                -0.4840900003910065,
+                -0.5012289881706238,
+                -0.5012289881706238,
+                -0.4742659926414490,
+                -0.4013180136680603,
+                -0.1237389966845512,
+                -0.04013130068778992,
+                0.1120349988341332,
+                0.1722330003976822,
+                0.3277440071105957,
+                0.4059169888496399,
+                0.4764609932899475,
+                0.4577539861202240,
+                0.4967359900474548,
+                0.4673689901828766,
+                0.4355979859828949
+              ]
+            }
+          }
+        ],
+        "id" : 1,
+        "linearVelocity" : 0,
+        "massData-I" : 0.07869636267423630,
+        "massData-center" : 
+        {
+          "x" : 0.02851019427180290,
+          "y" : -0.02706920355558395
+        },
+        "massData-mass" : 0.6927900910377502,
+        "name" : "body0",
+        "position" : 
+        {
+          "x" : -0.07215619832277298,
+          "y" : 0.3565365076065064
+        },
+        "type" : "dynamic"
+      }
+    ],
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "body" : 1,
+        "center" : 
+        {
+          "x" : 0.03492104262113571,
+          "y" : -0.1725510358810425
+        },
+        "file" : "pngs/head.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 1,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 0.5160354375839233
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}
