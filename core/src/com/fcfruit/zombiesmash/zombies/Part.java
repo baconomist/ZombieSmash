@@ -58,14 +58,6 @@ public class Part{
                 updatePhysicsBody();
             }
         }
-        //Update part polygon
-        if(polygon != null) {
-            polygon.setPosition(this.getWorldX() + body.getPolyOffset(name)[0], this.getWorldY() + body.getPolyOffset(name)[1]);
-            polygon.setOrigin(bodySkeleton.getRootBone().getX(), bodySkeleton.getRootBone().getY());
-            polygon.setRotation(this.getWorldRotationX());
-
-        }
-
     }
 
     private void updatePhysicsBody(){
@@ -88,10 +80,6 @@ public class Part{
         joint = (RevoluteJoint) world.createJoint(jointDef);
     }
 
-    public void setPolygon(Polygon poly){
-        polygon = poly;
-    }
-
     public void setRotation(float degrees){
         bodySkeleton.findBone(name).setRotation(degrees);
     }
@@ -102,10 +90,6 @@ public class Part{
 
     public Body getPhysicsBody(){
         return physicsBody;
-    }
-
-    public Polygon getPolygon(){
-        return polygon;
     }
 
     public String getName(){

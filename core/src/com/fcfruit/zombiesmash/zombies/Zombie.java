@@ -52,7 +52,7 @@ public class Zombie{
     private void update(float delta){
 
         if(!isHanging) {
-            touchedLimb = body.getTouchedLimb();
+            
         }
 
         //!isHanging works, cus if hanging false, then go to else, if not draging, ishanging = false
@@ -69,7 +69,7 @@ public class Zombie{
         body.isPhysicsEnabled = !isAnimating;
 
         if(isHanging) {
-            body.hangFromLimb(touchedLimb, Gdx.input.getX(), Gdx.graphics.getHeight() - Gdx.input.getY());
+
         }
 
     }

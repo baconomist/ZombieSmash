@@ -35,8 +35,6 @@ public class GameStage extends Stage {
 
     private SkeletonRenderer skeletonRenderer;
 
-    private ShapeRenderer shapeRenderer;
-
     private float delta;
 
     public GameStage(Viewport v, GameScreen gmscrn){
@@ -54,8 +52,6 @@ public class GameStage extends Stage {
 
         skeletonRenderer = new SkeletonRenderer();
 
-        shapeRenderer = new ShapeRenderer();
-
         gameScreen.physics.addBody(regZombie);
 
     }
@@ -69,17 +65,6 @@ public class GameStage extends Stage {
 
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
         regZombie.draw(spriteBatch, delta);
-
-        shapeRenderer.setProjectionMatrix(viewport.getCamera().combined);
-
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.polygon(regZombie.getBody().getParts().get("head").getPolygon().getTransformedVertices());
-        shapeRenderer.polygon(regZombie.getBody().getParts().get("left_arm").getPolygon().getTransformedVertices());
-        shapeRenderer.polygon(regZombie.getBody().getParts().get("torso").getPolygon().getTransformedVertices());
-        shapeRenderer.polygon(regZombie.getBody().getParts().get("right_arm").getPolygon().getTransformedVertices());
-        shapeRenderer.polygon(regZombie.getBody().getParts().get("left_leg").getPolygon().getTransformedVertices());
-        shapeRenderer.polygon(regZombie.getBody().getParts().get("right_leg").getPolygon().getTransformedVertices());
-        shapeRenderer.end();
 
         spriteBatch.begin();
         skeletonRenderer.draw(spriteBatch, regZombie.getBody().getSkeleton());
