@@ -105,7 +105,7 @@ public class GameScreen implements Screen{
 
         physics.update(delta);
 
-        debugRenderer.render(physics.getWorld(), camera.combined);
+        //debugRenderer.render(physics.getWorld(), camera.combined);
 
 
     }

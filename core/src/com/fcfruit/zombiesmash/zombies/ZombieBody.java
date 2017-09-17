@@ -66,6 +66,8 @@ public class ZombieBody{
 
     private HashMap<String, Part> parts;
 
+    private HashMap<String, Sprite> renderOrder;
+
     public boolean isPhysicsEnabled;
 
     public OrthographicCamera camera;
@@ -155,7 +157,7 @@ public class ZombieBody{
     }
 
     public void draw(SpriteBatch batch, float delta){
-        for(Body b : rubeSprites.keySet()){
+        for(Body b : parts){
             batch.begin();
             rubeSprites.get(b).draw(batch);
             batch.end();
@@ -192,8 +194,6 @@ public class ZombieBody{
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOrigin(i.center.x, i.center.y);
-                    Gdx.app.log("nam", i.name+" "+sprite.getWidth()+" "+sprite.getHeight());
-                    Gdx.app.log("nam", ""+i.width*Physics.PPM+" "+i.height*Physics.PPM);
                     sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
 
                 }

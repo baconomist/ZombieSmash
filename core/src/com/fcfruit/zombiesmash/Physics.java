@@ -142,25 +142,34 @@ public class Physics {
         }
     };
 
+    public void createMouseJoint(float x, float y, int pointer){
+        MouseJointDef mouseJointDef = new MouseJointDef();
+        // Needs 2 bodies, first one not used, so we use an arbitrary body.
+        // http://www.binarytides.com/mouse-joint-box2d-javascript/
+        mouseJointDef.bodyA = ground;
+        mouseJointDef.bodyB = touchedBody;
+        mouseJointDef.collideConnected = true;
+        mouseJointDef.target.set(hitPoint.x, hitPoint.y);
+        if(pointer < 1) {
+            // Force applied to body to get to point
+            mouseJointDef.maxForce = 10000f * touchedBody.getMass();
+        }
+        else{
+            // Force applied to body to get to point
+            mouseJointDef.maxForce = 100f * touchedBody.getMass();
+        }
+        mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
+
+        touchedBody.setAwake(true);
+    }
+
     public void touchDown(float x, float y, int pointer){
 
         hitPoint.set(x, y);
         touchedBody = null;
         world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
         if (touchedBody != null) {
-            MouseJointDef mouseJointDef = new MouseJointDef();
-            // Needs 2 bodies, first one not used, so we use an arbitrary body.
-            // http://www.binarytides.com/mouse-joint-box2d-javascript/
-            mouseJointDef.bodyA = ground;
-            mouseJointDef.bodyB = touchedBody;
-            mouseJointDef.collideConnected = true;
-            mouseJointDef.target.set(hitPoint.x, hitPoint.y);
-            // Force applied to body to get to point
-            mouseJointDef.maxForce = 10000f*touchedBody.getMass();
-            mouseJoints.put(pointer, (MouseJoint) world.createJoint(mouseJointDef));
-
-            touchedBody.setAwake(true);
-
+            createMouseJoint(x, y, pointer);
         }
 
     }
@@ -170,7 +179,12 @@ public class Physics {
             mouseJoints.get(pointer).setTarget(new Vector2(x, y));
         }
         else{
-            touchDown(x, y, pointer);
+            hitPoint.set(x, y);
+            touchedBody = null;
+            world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
+            if(touchedBody != null) {
+                createMouseJoint(x, y, pointer);
+            }
         }
     }
 
@@ -182,6 +196,9 @@ public class Physics {
             world.destroyJoint(mouseJoints.get(pointer));
             mouseJoints.remove(pointer);
         }
+
+        Gdx.app.log("mouse", ""+mouseJoints.get(pointer));
+
 
     }
 
