@@ -147,21 +147,22 @@ public class Physics {
         }
     };
 
-    public void createMouseJoint(float x, float y, int pointer, boolean firstTouch){
+    public void createMouseJoint(float x, float y, int pointer, boolean mainTouch){
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
         mouseJointDef.bodyA = ground;
         mouseJointDef.bodyB = touchedBody;
         mouseJointDef.collideConnected = true;
-        mouseJointDef.target.set(hitPoint.x, hitPoint.y);
-        if(firstTouch) {
+        mouseJointDef.target.set(x, y);
+        if(mainTouch) {
             mainPointer = pointer;
             // Force applied to body to get to point
             mouseJointDef.maxForce = 10000f * touchedBody.getMass();
         }
         else{
             // Force applied to body to get to point
+            // Set to less if already touching so you can only rotate other limbs
             mouseJointDef.maxForce = 100f * touchedBody.getMass();
         }
         if(mouseJoints.get(pointer) != null){
@@ -179,7 +180,7 @@ public class Physics {
         touchedBody = null;
         world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
         if (touchedBody != null) {
-            if(pointer < 1) {
+            if(mouseJoints.size() < 1) {
                 createMouseJoint(x, y, pointer, true);
             }
             else{
@@ -198,7 +199,7 @@ public class Physics {
             touchedBody = null;
             world.QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
             if(touchedBody != null) {
-                if(pointer < 1) {
+                if(mouseJoints.size() < 1) {
                     createMouseJoint(x, y, pointer, true);
                 }
                 else{
@@ -216,16 +217,18 @@ public class Physics {
             world.destroyJoint(mouseJoints.get(pointer));
             mouseJoints.remove(pointer);
 
-            for(int p : mouseJoints.keySet()){
-                // Get next pointer in order
-                createMouseJoint(mouseJoints.get(p).getTarget().x, mouseJoints.get(p).getTarget().y, p, true);
-                break;
+            if(pointer == mainPointer) {
+                // Assuming mouseJoints.keySet() doesn't list in arbitrary order
+                for (int p : mouseJoints.keySet()) {
+                    // Get next pointer in order
+                    touchedBody = mouseJoints.get(p).getBodyB();
+                    mainPointer = p;
+                    mouseJoints.get(1).setMaxForce(10000f * touchedBody.getMass());
+                    break;
+                }
             }
 
         }
-
-        Gdx.app.log("mouse", ""+mouseJoints.get(pointer));
-
 
     }
 
