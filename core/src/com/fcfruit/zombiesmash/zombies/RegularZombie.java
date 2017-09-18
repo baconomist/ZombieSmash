@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
@@ -15,8 +16,8 @@ import java.util.ArrayList;
 
 public class RegularZombie extends Zombie{
 
-    public RegularZombie(Physics physics){
-        super(physics);
+    public RegularZombie(OrthographicCamera cam, Physics physics){
+        super(cam, physics);
     }
 
 }

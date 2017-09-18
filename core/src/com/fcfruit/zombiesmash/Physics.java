@@ -128,18 +128,32 @@ public class Physics {
             z.touchDown(x, y, pointer);
         }
 
+        for(Part p : parts){
+            p.touchDown(x, y, pointer);
+        }
+
     }
 
     public void touchDragged(float x, float y, int pointer){
+
         for(Zombie z : zombies){
             z.touchDragged(x, y, pointer);
         }
+
+        for(Part p : parts){
+            p.touchDragged(x, y, pointer);
+        }
+
     }
 
     public void touchUp(float x, float y, int pointer){
 
         for(Zombie z : zombies){
             z.touchUp(x, y, pointer);
+        }
+
+        for(Part p : parts){
+            p.touchUp(x, y, pointer);
         }
 
     }

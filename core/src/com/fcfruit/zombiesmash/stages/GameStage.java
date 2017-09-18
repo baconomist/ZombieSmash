@@ -44,9 +44,8 @@ public class GameStage extends Stage {
 
         gameScreen = gmscrn;
 
-        regZombie = new RegularZombie(gameScreen.physics);
+        regZombie = new RegularZombie(gameScreen.camera, gameScreen.physics);
         regZombie.setPosition(gameScreen.camera.unproject(new Vector3(300, 300, 0)).x, gameScreen.camera.unproject(new Vector3(300, 300, 0)).y);
-        regZombie.getBody().camera = gameScreen.camera;
 
         spriteBatch = new SpriteBatch();
 

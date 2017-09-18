@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
@@ -19,13 +20,13 @@ public class Zombie{
     public float mass;
 
 
-    public boolean isPhysicsEnabled;
+    public boolean physicsEnabled;
 
-    public Zombie(Physics p) {
+    public Zombie(OrthographicCamera cam, Physics p) {
 
-        body = new ZombieBody(this, p);
+        body = new ZombieBody(this, cam, p);
 
-        isPhysicsEnabled = true;
+        physicsEnabled = true;
 
     }
 

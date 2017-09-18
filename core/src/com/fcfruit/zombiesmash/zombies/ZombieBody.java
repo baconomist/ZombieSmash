@@ -49,6 +49,9 @@ public class ZombieBody{
     static String[] drawOrder = new String[]{"head", "torso", "right_arm", "left_arm", "right_leg", "left_leg"};
 
     private Zombie zombie;
+
+    //Don't know if this is good practice
+    private OrthographicCamera camera;
     
     private Physics physics;
 
@@ -60,26 +63,20 @@ public class ZombieBody{
 
     public HashMap<String, Part> parts;
 
-    public boolean isPhysicsEnabled;
+    public boolean physicsEnabled;
 
-    public OrthographicCamera camera;
-    
 
-    private HashMap<Integer, MouseJoint>mouseJoints;
+    public boolean isTouching = false;
 
-    private Body touchedPart = null;
-
-    private int mainPointer;
-
-    public ZombieBody(Zombie z, Physics p){
+    public ZombieBody(Zombie z, OrthographicCamera cam, Physics p){
 
         zombie = z;
+
+        camera = cam;
         
         physics = p;
 
-        isPhysicsEnabled = true;
-
-        mouseJoints = new HashMap<Integer, MouseJoint>();
+        physicsEnabled = true;
 
         animationSetup();
 
@@ -106,7 +103,9 @@ public class ZombieBody{
 
     public void draw(SpriteBatch batch, float delta){
         for(String name : drawOrder){
-            parts.get(name).draw(batch);
+            if(parts.get(name) != null) {
+                parts.get(name).draw(batch);
+            }
         }
         update(delta);
     }
@@ -125,41 +124,14 @@ public class ZombieBody{
         //Always use this after any transformation change to skeleton:
         skeleton.updateWorldTransform();
 
-        updateRubeImages();
-
         updateParts();
 
-    }
-
-    private void updateRubeImages(){
-        for(String partName : parts.keySet()){
-            Part part = parts.get(partName);
-            Sprite sprite = parts.get(partName).sprite;
-
-            for(RubeImage i : rubeScene.getImages()){
-                if(i.body == part.physicsBody){
-                    sprite.flip(i.flip, false);
-                    sprite.setColor(i.color);
-                    sprite.setOrigin(i.center.x, i.center.y);
-                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
-
-                }
-
-            }
-
-
-            Vector3 pos = camera.project(new Vector3(part.physicsBody.getPosition().x, part.physicsBody.getPosition().y, 0));
-            sprite.setPosition(pos.x - sprite.getWidth()/2, pos.y - sprite.getHeight()/2);
-            sprite.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-            sprite.setRotation((float) Math.toDegrees(part.physicsBody.getAngle()));
-
-        }
     }
 
     private void updateParts(){
         // Run update method for each body part
         for(String partName : parts.keySet()){
-            parts.get(partName).update();
+            parts.get(partName).update(camera);
         }
     }
 
@@ -175,115 +147,54 @@ public class ZombieBody{
 
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
-            parts.put(bodyName, new Part(bodyName, sprite, b, this));
+            for(RubeImage i : rubeScene.getImages()){
+                if(i.body == b){
+                    sprite.flip(i.flip, false);
+                    sprite.setColor(i.color);
+                    sprite.setOrigin(i.center.x, i.center.y);
+                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
+                }
+
+            }
+
+            Joint joint = null;
+            for(Joint j : rubeScene.getJoints()){
+                if(j.getBodyA() == b || j.getBodyB() == b){
+                    joint = j;
+                    break;
+                }
+            }
+
+            parts.put(bodyName, new Part(bodyName, sprite, b, joint, physics, this));
+            //parts.get(bodyName).detach();
 
         }
 
-        updateRubeImages();
+        updateParts();
     }
-    
-    
-    Vector2 hitPoint = new Vector2();
-    QueryCallback callback = new QueryCallback() {
-        @Override
-        public boolean reportFixture (Fixture fixture) {
-            // if the hit fixture's body is the ground body
-            // we ignore it
-            if (fixture.getBody() == physics.getGround()) return true;
-            
-            // if the hit point is inside the fixture of the body
-            // we report it
-            if (fixture.testPoint(hitPoint
-                    .x, hitPoint
-                    .y)) {
-                touchedPart = fixture.getBody();
-                return false;
-            } else
-                return true;
-        }
-    };
 
-    public void createMouseJoint(float x, float y, int pointer, boolean mainTouch){
-        MouseJointDef mouseJointDef = new MouseJointDef();
-        // Needs 2 bodies, first one not used, so we use an arbitrary body.
-        // http://www.binarytides.com/mouse-joint-box2d-javascript/
-        mouseJointDef.bodyA = physics.getGround();
-        mouseJointDef.bodyB = touchedPart;
-        mouseJointDef.collideConnected = true;
-        mouseJointDef.target.set(x, y);
-        if(mainTouch) {
-            mainPointer = pointer;
-            // Force applied to body to get to point
-            mouseJointDef.maxForce = 10000f * touchedPart.getMass();
-        }
-        else{
-            // Force applied to body to get to point
-            // Set to less if already touching so you can only rotate other limbs
-            mouseJointDef.maxForce = 100f * touchedPart.getMass();
-        }
-        if(mouseJoints.get(pointer) != null){
-            physics.getWorld().destroyJoint(mouseJoints.get(pointer));
-            mouseJoints.remove(pointer);
-        }
-        mouseJoints.put(pointer, (MouseJoint) physics.getWorld().createJoint(mouseJointDef));
 
-        touchedPart.setAwake(true);
-    }
 
     public void touchDown(float x, float y, int pointer){
 
-        hitPoint.set(x, y);
-        touchedPart = null;
-        physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
-        if (touchedPart != null) {
-            if(mouseJoints.size() < 1) {
-                createMouseJoint(x, y, pointer, true);
-            }
-            else{
-                createMouseJoint(x, y, pointer, false);
-            }
+        for(String name : parts.keySet()){
+            parts.get(name).touchDown(x, y, pointer);
         }
 
     }
 
     public void touchDragged(float x, float y, int pointer){
-        if (mouseJoints.get(pointer) != null) {
-            mouseJoints.get(pointer).setTarget(new Vector2(x, y));
+
+        for(String name : parts.keySet()){
+            parts.get(name).touchDragged(x, y, pointer);
         }
-        else{
-            hitPoint.set(x, y);
-            touchedPart = null;
-            physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
-            if(touchedPart != null) {
-                if(mouseJoints.size() < 1) {
-                    createMouseJoint(x, y, pointer, true);
-                }
-                else{
-                    createMouseJoint(x, y, pointer, false);
-                }
-            }
-        }
+
     }
 
     public void touchUp(float x, float y, int pointer){
 
-        // Destroy mouseJoint at a pointer
-
-        if(mouseJoints.get(pointer) != null) {
-            physics.getWorld().destroyJoint(mouseJoints.get(pointer));
-            mouseJoints.remove(pointer);
-
-            if(pointer == mainPointer) {
-                // Assuming mouseJoints.keySet() doesn't list in arbitrary order
-                for (int p : mouseJoints.keySet()) {
-                    // Get next pointer in order
-                    touchedPart = mouseJoints.get(p).getBodyB();
-                    mainPointer = p;
-                    mouseJoints.get(p).setMaxForce(10000f * touchedPart.getMass());
-                    break;
-                }
-            }
-
+        for(String name : parts.keySet()){
+            parts.get(name).touchUp(x, y, pointer);
         }
 
     }
