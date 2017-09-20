@@ -111,7 +111,7 @@ public class Physics {
         fixtureDef.friction = 1;
 
         PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Gdx.graphics.getWidth()/PPM*2, 0);
+        shape.setAsBox(Environment.gameCamera.viewportWidth*2, 0);
         fixtureDef.shape = shape;
 
         ground = world.createBody(bodyDef);

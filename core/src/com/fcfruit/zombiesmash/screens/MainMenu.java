@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.levels.Level;
 
 /**
@@ -29,12 +30,10 @@ public class MainMenu implements Screen{
 
     private TextButton settingsButton;
 
-    public Game game;
-
     private Stage stage;
 
-    public MainMenu(Game g){
-        game = g;
+    public MainMenu(){
+
         stage = new Stage(new ExtendViewport(1920, 1080));
 
         Gdx.input.setInputProcessor(stage);
@@ -72,7 +71,7 @@ public class MainMenu implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 stage.clear();// clears stage/screen
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                game.setScreen(new LevelSelect(self));
+                Environment.game.setScreen(new LevelSelect(self));
             }
         });
 
@@ -81,7 +80,7 @@ public class MainMenu implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 stage.clear();// clears stage/screen
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                game.setScreen(new Shop(self));
+                Environment.game.setScreen(new Shop(self));
             }
         });
 
@@ -90,7 +89,7 @@ public class MainMenu implements Screen{
             public void changed(ChangeEvent event, Actor actor) {
                 stage.clear();// clears stage/screen
                 Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-                game.setScreen(new Settings(self));
+                Environment.game.setScreen(new Settings(self));
             }
         });
 

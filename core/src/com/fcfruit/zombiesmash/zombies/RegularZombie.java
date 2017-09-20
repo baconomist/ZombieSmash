@@ -16,8 +16,8 @@ import java.util.ArrayList;
 
 public class RegularZombie extends Zombie{
 
-    public RegularZombie(OrthographicCamera cam, Physics physics){
-        super(cam, physics);
+    public RegularZombie(){
+        super();
     }
 
 }

@@ -17,14 +17,11 @@ public class Zombie{
 
     private ZombieBody body;
 
-    public float mass;
-
-
     public boolean physicsEnabled;
 
-    public Zombie(OrthographicCamera cam, Physics p) {
+    public Zombie() {
 
-        body = new ZombieBody(this, cam, p);
+        body = new ZombieBody(this);
 
         physicsEnabled = true;
 

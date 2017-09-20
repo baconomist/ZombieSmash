@@ -25,6 +25,7 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -50,11 +51,6 @@ public class ZombieBody{
 
     private Zombie zombie;
 
-    //Don't know if this is good practice
-    private OrthographicCamera camera;
-    
-    private Physics physics;
-
     private RubeScene rubeScene;
 
     private TextureAtlas atlas;
@@ -68,13 +64,9 @@ public class ZombieBody{
 
     public boolean isTouching = false;
 
-    public ZombieBody(Zombie z, OrthographicCamera cam, Physics p){
+    public ZombieBody(Zombie z){
 
         zombie = z;
-
-        camera = cam;
-        
-        physics = p;
 
         physicsEnabled = true;
 
@@ -131,7 +123,7 @@ public class ZombieBody{
     private void updateParts(){
         // Run update method for each body part
         for(String partName : parts.keySet()){
-            parts.get(partName).update(camera);
+            parts.get(partName).update();
         }
     }
 
@@ -165,11 +157,11 @@ public class ZombieBody{
                 }
             }
 
-            parts.put(bodyName, new Part(bodyName, sprite, b, joint, physics, this));
+            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
             //parts.get(bodyName).detach();
 
         }
-
+        parts.get("head").setPosition(100, 100);
         updateParts();
     }
 

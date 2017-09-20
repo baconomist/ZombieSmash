@@ -14,6 +14,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
@@ -27,8 +28,6 @@ public class GameStage extends Stage {
 
     public Viewport viewport;
 
-    public GameScreen gameScreen;
-
     private Zombie regZombie;
 
     private SpriteBatch spriteBatch;
@@ -37,21 +36,19 @@ public class GameStage extends Stage {
 
     private float delta;
 
-    public GameStage(Viewport v, GameScreen gmscrn){
+    public GameStage(Viewport v){
         super(v);
 
         viewport = v;
 
-        gameScreen = gmscrn;
-
-        regZombie = new RegularZombie(gameScreen.camera, gameScreen.physics);
-        regZombie.setPosition(gameScreen.camera.unproject(new Vector3(300, 300, 0)).x, gameScreen.camera.unproject(new Vector3(300, 300, 0)).y);
+        regZombie = new RegularZombie();
+        regZombie.setPosition(Environment.gameCamera.unproject(new Vector3(300, 300, 0)).x, Environment.gameCamera.unproject(new Vector3(300, 300, 0)).y);
 
         spriteBatch = new SpriteBatch();
 
         skeletonRenderer = new SkeletonRenderer();
 
-        gameScreen.physics.addBody(regZombie);
+        Environment.physics.addBody(regZombie);
 
     }
 
@@ -79,23 +76,23 @@ public class GameStage extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
-        gameScreen.physics.touchDown(vector.x, vector.y, pointer);
-        Gdx.app.log("touch", ""+gameScreen.camera.unproject(new Vector3(Gdx.input.getX(), 0, 0)).x);
+        Vector3 vector = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+        Environment.physics.touchDown(vector.x, vector.y, pointer);
+        Gdx.app.log("touch", ""+Environment.gameCamera.unproject(new Vector3(Gdx.input.getX(), 0, 0)).x);
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
-        gameScreen.physics.touchDragged(vector.x, vector.y, pointer);
+        Vector3 vector = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+        Environment.physics.touchDragged(vector.x, vector.y, pointer);
         return super.touchDragged(screenX, screenY, pointer);
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        Vector3 vector = gameScreen.camera.unproject(new Vector3(screenX, screenY, 0));
-        gameScreen.physics.touchUp(vector.x, vector.y, pointer);
+        Vector3 vector = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+        Environment.physics.touchUp(vector.x, vector.y, pointer);
         return super.touchUp(screenX, screenY, pointer, button);
     }
 }

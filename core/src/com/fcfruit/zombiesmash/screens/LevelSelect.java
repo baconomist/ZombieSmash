@@ -1,8 +1,10 @@
 package com.fcfruit.zombiesmash.screens;
 
 import com.badlogic.gdx.Game;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.maps.tiled.TmxMapLoader;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.levels.Level;
 
 /**
@@ -11,10 +13,8 @@ import com.fcfruit.zombiesmash.levels.Level;
 
 public class LevelSelect implements Screen{
 
-    private Game game;
-
     public LevelSelect(MainMenu mainMenu){
-        game = mainMenu.game;
+
     }
 
     @Override
@@ -24,7 +24,7 @@ public class LevelSelect implements Screen{
 
     @Override
     public void render(float delta) {
-        game.setScreen(new GameScreen(new Level(null), game));
+        Environment.game.setScreen(Environment.gameScreen);
     }
 
     @Override

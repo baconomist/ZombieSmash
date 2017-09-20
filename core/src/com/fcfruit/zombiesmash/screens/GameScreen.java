@@ -15,6 +15,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.levels.Level;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
@@ -30,13 +31,7 @@ import java.util.HashMap;
 
 public class GameScreen implements Screen{
 
-    static float screenWidth = 1920;
-    static float screenHeight = 1080;
-
     private Level level;
-
-    // Physics should belong to game not a screen
-    public Physics physics;
 
     public OrthographicCamera camera;
 
@@ -50,18 +45,14 @@ public class GameScreen implements Screen{
 
     private Box2DDebugRenderer debugRenderer;
 
-    public GameScreen(Level lvl, Game g){
+    public GameScreen(){
 
-        level = lvl;
-
-        physics = new Physics();
-
-        camera = new OrthographicCamera(screenWidth/Physics.PPM, screenHeight/Physics.PPM);
+        camera = Environment.gameCamera;
 
         game_view = new ExtendViewport(1920, 1080);
         game_view.apply();
 
-        game_stage = new GameStage(game_view, this);
+        game_stage = new GameStage(game_view);
 
         power_ups_view = new ExtendViewport(480, 270);
         power_ups_view.setScreenPosition(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 270);
@@ -73,15 +64,17 @@ public class GameScreen implements Screen{
         inputMultiplexer.addProcessor(game_stage);
         inputMultiplexer.addProcessor(power_ups_stage);
 
-        Gdx.input.setInputProcessor(inputMultiplexer);
-
         debugRenderer = new Box2DDebugRenderer();
 
     }
 
     @Override
     public void show() {
-
+        // Have to reset input processor bc
+        // Game stage created @ begining of game,
+        // So game menu sets input processor after
+        // GameScreen if you don't put this here
+        Gdx.input.setInputProcessor(inputMultiplexer);
     }
 
     @Override
@@ -104,10 +97,9 @@ public class GameScreen implements Screen{
 
         camera.update();
 
-        physics.update(delta);
+        Environment.physics.update(delta);
 
-        debugRenderer.render(physics.getWorld(), camera.combined);
-
+        debugRenderer.render(Environment.physics.getWorld(), camera.combined);
 
     }
 
@@ -149,6 +141,10 @@ public class GameScreen implements Screen{
     @Override
     public void dispose() {
 
+    }
+
+    public void setLevel(Level lvl){
+        level = lvl;
     }
 
 }

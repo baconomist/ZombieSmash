@@ -21,6 +21,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
@@ -40,8 +41,6 @@ public class Part{
 
     private Joint bodyJoint;
 
-    private Physics physics;
-
 
     private MouseJoint mouseJoint = null;
 
@@ -54,7 +53,7 @@ public class Part{
 
     public boolean isAttached;
 
-    public Part(String nm, Sprite s, Body b, Joint j, Physics p, ZombieBody zbody){
+    public Part(String nm, Sprite s, Body b, Joint j, ZombieBody zbody){
         name = nm;
 
         sprite = s;
@@ -62,8 +61,6 @@ public class Part{
         physicsBody = b;
 
         bodyJoint = j;
-
-        physics = p;
 
         body = zbody;
 
@@ -75,9 +72,9 @@ public class Part{
         sprite.draw(batch);
     }
 
-    public void update(OrthographicCamera camera){
+    public void update(){
 
-        Vector3 pos = camera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
+        Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
         sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
@@ -90,7 +87,7 @@ public class Part{
         public boolean reportFixture (Fixture fixture) {
             // if the hit fixture's body is the ground body
             // we ignore it
-            if (fixture.getBody() == physics.getGround()) return true;
+            if (fixture.getBody() == Environment.physics.getGround()) return true;
 
             // if the hit point is inside the fixture of the body
             // we report it
@@ -110,7 +107,7 @@ public class Part{
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
-        mouseJointDef.bodyA = physics.getGround();
+        mouseJointDef.bodyA = Environment.physics.getGround();
         mouseJointDef.bodyB = physicsBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(x, y);
@@ -126,9 +123,9 @@ public class Part{
         }
         // Destroy the current mouseJoint
         if(mouseJoint != null){
-            physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.getWorld().destroyJoint(mouseJoint);
         }
-        mouseJoint = (MouseJoint) physics.getWorld().createJoint(mouseJointDef);
+        mouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
 
         physicsBody.setAwake(true);
     }
@@ -136,7 +133,7 @@ public class Part{
     public void touchDown(float x, float y, int p){
         if(mouseJoint == null) {
             hitPoint.set(x, y);
-            physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
+            Environment.physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
             if(isAttached && touched) {
                 if(!body.isTouching) {
                     isPowerfulPart = true;
@@ -163,7 +160,7 @@ public class Part{
 
     public void touchUp(float x, float y, int p){
         if(mouseJoint != null && pointer == p){
-            physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.getWorld().destroyJoint(mouseJoint);
             mouseJoint = null;
             touched = false;
             if(isPowerfulPart){
@@ -178,17 +175,21 @@ public class Part{
         // Don't want to detach if torso or else you have
         // Joint deletion on a joint that doesn't exist
         if(isAttached && !name.equals("torso")) {
-            physics.getWorld().destroyJoint(bodyJoint);
+            Environment.physics.getWorld().destroyJoint(bodyJoint);
             bodyJoint = null;
             body.parts.remove(name);
             body = null;
-            physics.addBody(this);
+            Environment.physics.addBody(this);
             isAttached = false;
         }
     }
 
     public String getName(){
         return name;
+    }
+
+    public void setPosition(float x, float y){
+        physicsBody.setTransform(x, y, physicsBody.getAngle());
     }
 
 }
