@@ -35,11 +35,11 @@ public class Part{
 
     public Sprite sprite;
 
-    private ZombieBody body;
+    public ZombieBody body;
 
     public Body physicsBody;
 
-    private Joint bodyJoint;
+    public Joint bodyJoint;
 
 
     private MouseJoint mouseJoint = null;
@@ -104,6 +104,15 @@ public class Part{
     };
 
     public void createMouseJoint(float x, float y, int p, boolean isTouching){
+
+        /*
+        To make draging faster:
+
+        myObjectBody.applyForceToCenter(new Vector2((float)Math.cos(myMouseDirectionAngle)
+        forceYouWantToApply, (float)Math.sin(myMouseDirectionAngle) * forceYouWantToApply));
+        */
+
+
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
@@ -111,10 +120,19 @@ public class Part{
         mouseJointDef.bodyB = physicsBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(x, y);
+
+        // Makes the joint move body faster
+        mouseJointDef.frequencyHz = 10;
+
+        // Idk what this does, may want to play with it
+        // Default is 0.7, I do know that it makes things
+        // A lot slower for the mousejoint though when you set it to 10
+        //mouseJointDef.dampingRatio = 10;
+
         pointer = p;
         if(isTouching) {
             // Force applied to body to get to point
-            mouseJointDef.maxForce = 10000f * physicsBody.getMass();
+            mouseJointDef.maxForce = 10000f * body.getMass();
         }
         else {
             // Force applied to body to get to point
@@ -159,7 +177,9 @@ public class Part{
     }
 
     public void touchUp(float x, float y, int p){
+
         if(mouseJoint != null && pointer == p){
+
             Environment.physics.getWorld().destroyJoint(mouseJoint);
             mouseJoint = null;
             touched = false;

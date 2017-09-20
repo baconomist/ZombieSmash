@@ -56,19 +56,21 @@ public class Physics {
 
     public static final float PPM = 192;
 
-    static final float STEP_TIME = 1f / 60f;
+    public static final float STEP_TIME = 1f / 60f;
     static final int VELOCITY_ITERATIONS = 6;
     static final int POSITION_ITERATIONS = 2;
-    
-    private ArrayList<Part> parts;
-    private ArrayList<Zombie> zombies;
+
+    public ArrayList<Part> parts;
+    public ArrayList<Zombie> zombies;
 
     private World world;
 
     private float accumulator = 0;
 
     private Body ground;
-
+    private Body roof;
+    private Body wall_1;
+    private Body wall_2;
 
     public RubeScene scene;
 
@@ -78,18 +80,18 @@ public class Physics {
         zombies = new ArrayList<Zombie>();
 
         world = new World(new Vector2(0, -25), true);
+        world.setContactListener(new Box2DCollisionListener());
 
 
-        createGround();
+        constructPhysicsBoundries();
     }
 
 
     public void update(float delta){
-        //if(Gdx.input.isTouched()) {
-            updateZombies();
-            updateParts();
-            stepWorld(delta);
-        //}
+
+        updateParts();
+        stepWorld(delta);
+        
     }
 
     private void stepWorld(float delta) {
@@ -101,25 +103,69 @@ public class Physics {
         }
     }
 
-    private void createGround() {
-        if (ground != null) world.destroyBody(ground);
+    public void constructPhysicsBoundries(){
+        if(ground != null){
+            world.destroyBody(ground);
+        }
+        if(roof != null){
+            world.destroyBody(roof);
+        }
+        if(wall_1 != null){
+            world.destroyBody(wall_1);
+        }
+        if(wall_2 != null){
+            world.destroyBody(wall_2);
+        }
 
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.StaticBody;
+        BodyDef walls = new BodyDef();
+        walls.type = BodyDef.BodyType.StaticBody;
 
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.friction = 1;
+        FixtureDef wallFixture = new FixtureDef();
+        wallFixture.friction = 1;
 
-        PolygonShape shape = new PolygonShape();
-        shape.setAsBox(Environment.gameCamera.viewportWidth*2, 0);
-        fixtureDef.shape = shape;
+        PolygonShape wallShape = new PolygonShape();
+        wallShape.setAsBox(0, Environment.gameCamera.viewportHeight*2);
+        wallFixture.shape = wallShape;
 
-        ground = world.createBody(bodyDef);
-        ground.createFixture(fixtureDef);
+
+
+        wall_1 = world.createBody(walls);
+        wall_1.createFixture(wallFixture);
+        wall_1.setTransform(0, 0, 0);
+
+        wall_2 = world.createBody(walls);
+        wall_2.createFixture(wallFixture);
+        wall_2.setTransform(Environment.gameCamera.viewportWidth, 0, 0);
+
+        wallShape.dispose();
+
+
+
+        BodyDef plane = new BodyDef();
+        plane.type = BodyDef.BodyType.StaticBody;
+
+        FixtureDef planeFixture = new FixtureDef();
+        planeFixture.friction = 1;
+
+        PolygonShape planeShape = new PolygonShape();
+        planeShape.setAsBox(Environment.gameCamera.viewportWidth, 0);
+        planeFixture.shape = planeShape;
+
+
+
+        ground = world.createBody(plane);
+        ground.createFixture(planeFixture);
         ground.setTransform(0, 0, 0);
 
-        shape.dispose();
+        roof = world.createBody(plane);
+        roof.createFixture(planeFixture);
+        roof.setTransform(0, Environment.gameCamera.viewportHeight*2, 0);
+
+        planeShape.dispose();
+        
     }
+
+    
 
 
     public void touchDown(float x, float y, int pointer){
@@ -158,12 +204,10 @@ public class Physics {
 
     }
 
-    private void updateZombies(){
-
-    }
-
     private void updateParts(){
-
+        for(Part p : parts){
+            p.update();
+        }
     }
 
     public void addBody(Object o){

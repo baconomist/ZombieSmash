@@ -24,6 +24,7 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
@@ -40,6 +41,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by Lucas on 2017-07-30.
@@ -93,12 +95,13 @@ public class ZombieBody{
         state.setAnimation(0, "run", true);
     }
 
-    public void draw(SpriteBatch batch, float delta){
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         for(String name : drawOrder){
             if(parts.get(name) != null) {
                 parts.get(name).draw(batch);
             }
         }
+        skeletonRenderer.draw(batch, skeleton);
         update(delta);
     }
 
@@ -121,9 +124,16 @@ public class ZombieBody{
     }
 
     private void updateParts(){
+
+        HashMap<String, Part> copy = new HashMap<String, Part>();
+        for (Map.Entry<String, Part> entry : parts.entrySet())
+        {
+            copy.put(entry.getKey(), entry.getValue());
+        }
+
         // Run update method for each body part
-        for(String partName : parts.keySet()){
-            parts.get(partName).update();
+        for(Part p : copy.values()){
+            p.update();
         }
     }
 
@@ -161,7 +171,7 @@ public class ZombieBody{
             //parts.get(bodyName).detach();
 
         }
-        parts.get("head").setPosition(100, 100);
+        parts.get("head").setPosition(1, 1);
         updateParts();
     }
 
@@ -212,5 +222,26 @@ public class ZombieBody{
     public Skeleton getSkeleton(){
         return skeleton;
     }
+
+    public float getMass(){
+        float mass = 0;
+        for(Part p : parts.values()){
+            mass = mass + p.physicsBody.getMass();
+        }
+        return mass;
+    }
+
+    public Part getPartFromPhysicsBody(Body physicsBody){
+
+        for(Part p : parts.values()){
+            if(p.physicsBody.equals(physicsBody)){
+                return p;
+            }
+        }
+
+        return null;
+
+    }
+
 
 }

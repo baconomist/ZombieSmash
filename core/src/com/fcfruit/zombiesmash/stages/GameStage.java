@@ -17,8 +17,11 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
+import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2017-08-05.
@@ -29,6 +32,8 @@ public class GameStage extends Stage {
     public Viewport viewport;
 
     private Zombie regZombie;
+
+    private ArrayList<Part> parts;
 
     private SpriteBatch spriteBatch;
 
@@ -62,10 +67,17 @@ public class GameStage extends Stage {
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-        skeletonRenderer.draw(spriteBatch, regZombie.getBody().getSkeleton());
-        regZombie.draw(spriteBatch, delta);
-        spriteBatch.end();
 
+
+        regZombie.draw(spriteBatch, skeletonRenderer, delta);
+
+        parts = Environment.physics.parts;
+
+        for(Part p : parts){
+            p.draw(spriteBatch);
+        }
+
+        spriteBatch.end();
 
     }
 

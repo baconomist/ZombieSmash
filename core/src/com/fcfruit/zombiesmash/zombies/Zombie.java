@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.World;
 import com.codeandweb.physicseditor.PhysicsShapeCache;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
@@ -27,11 +28,11 @@ public class Zombie{
 
     }
 
-    public void draw(SpriteBatch batch, float delta){
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         // Body.update() which is inside draw has to be called before everything, or else some instructions to skeleton will not function.
         // I.E. skeleton.findBone("left_arm").setRotation(90); will not work before this body.draw() call
 
-        body.draw(batch, delta);
+        body.draw(batch, skeletonRenderer, delta);
 
         update(delta);
     }
@@ -65,8 +66,10 @@ public class Zombie{
         body.setPosition(x, y);
     }
 
-    public ZombieBody getBody(){
-        return body;
+    public Part getPartFromPhysicsBody(Body physicsBody){
+
+        return body.getPartFromPhysicsBody(physicsBody);
+
     }
 
 
