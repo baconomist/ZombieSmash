@@ -23,7 +23,10 @@ import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
+import com.fcfruit.zombiesmash.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.screens.GameScreen;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2017-08-01.
@@ -41,7 +44,6 @@ public class Part{
 
     public Joint bodyJoint;
 
-
     private MouseJoint mouseJoint = null;
 
     private int pointer;
@@ -50,8 +52,7 @@ public class Part{
 
     private boolean isPowerfulPart = false;
 
-
-    public boolean isAttached;
+    String state;
 
     public Part(String nm, Sprite s, Body b, Joint j, ZombieBody zbody){
         name = nm;
@@ -64,7 +65,7 @@ public class Part{
 
         body = zbody;
 
-        isAttached = true;
+        state = "attached";
 
     }
 
@@ -103,10 +104,10 @@ public class Part{
         }
     };
 
-    public void createMouseJoint(float x, float y, int p, boolean isTouching){
+    public void createMouseJoint(float x, float y, int p, boolean isPowerful){
 
         /*
-        To make draging faster:
+        To make dragging faster:
 
         myObjectBody.applyForceToCenter(new Vector2((float)Math.cos(myMouseDirectionAngle)
         forceYouWantToApply, (float)Math.sin(myMouseDirectionAngle) * forceYouWantToApply));
@@ -130,15 +131,16 @@ public class Part{
         //mouseJointDef.dampingRatio = 10;
 
         pointer = p;
-        if(isTouching) {
+        if(isPowerful) {
             // Force applied to body to get to point
-            mouseJointDef.maxForce = 10000f * body.getMass();
+            mouseJointDef.maxForce = 10000f * physicsBody.getMass();
         }
         else {
             // Force applied to body to get to point
             // Set to less if already touching so you can only rotate other limbs
             mouseJointDef.maxForce = 100f * physicsBody.getMass();
         }
+
         // Destroy the current mouseJoint
         if(mouseJoint != null){
             Environment.physics.getWorld().destroyJoint(mouseJoint);
@@ -152,7 +154,7 @@ public class Part{
         if(mouseJoint == null) {
             hitPoint.set(x, y);
             Environment.physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
-            if(isAttached && touched) {
+            if(state.equals("attached") && touched) {
                 if(!body.isTouching) {
                     isPowerfulPart = true;
                     createMouseJoint(x, y, p, isPowerfulPart);
@@ -183,7 +185,7 @@ public class Part{
             Environment.physics.getWorld().destroyJoint(mouseJoint);
             mouseJoint = null;
             touched = false;
-            if(isPowerfulPart){
+            if(isPowerfulPart && state.equals("attached")){
                 body.isTouching = false;
             }
         }
@@ -194,22 +196,52 @@ public class Part{
     public void detach(){
         // Don't want to detach if torso or else you have
         // Joint deletion on a joint that doesn't exist
-        if(isAttached && !name.equals("torso")) {
+
+        if(name.equals("torso")){
+            body.parts.remove(name);
+            for(String n : body.parts.keySet()){
+                body.parts.get(n).detach();
+                body.parts.remove(n);
+            }
+            bodyJoint = null;
+            body.destroy();
+            body = null;
+        }
+
+        else if(bodyJoint != null) {
+
             Environment.physics.getWorld().destroyJoint(bodyJoint);
             bodyJoint = null;
             body.parts.remove(name);
             body = null;
             Environment.physics.addBody(this);
-            isAttached = false;
+            setState("detached");
+
         }
+
     }
 
     public String getName(){
         return name;
     }
 
+    public String getState(){return state;}
+
     public void setPosition(float x, float y){
         physicsBody.setTransform(x, y, physicsBody.getAngle());
+    }
+
+    public void setState(String s){
+        if(s.equals("waiting_for_detach")){
+            state = s;
+        }
+        else if(s.equals("detached")){
+            state = s;
+        }
+    }
+
+    public void destroy(){
+
     }
 
 }

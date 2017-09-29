@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "Oa29nQCRN9UrodD/1dQX5cAxojM", "spine": "3.6.38", "width": 396.83, "height": 796.15, "images": "./pngs/" },
+"skeleton": { "hash": "mIQbbqPBiAG2b0cz8NsstETnzyY", "spine": "3.6.38", "width": 396.83, "height": 796.15, "images": "./pngs/" },
 "bones": [
 	{ "name": "root", "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": -18.13, "y": 298.48 },
@@ -58,7 +58,7 @@
 			"right_leg": { "x": 133.68, "y": 4.24, "rotation": 78.65, "width": 131, "height": 308 }
 		},
 		"torso": {
-			"torso": { "x": 102.79, "y": 7.03, "scaleX": 0.938, "scaleY": 0.875, "rotation": -92.35, "width": 198, "height": 295 }
+			"torso": { "x": 102.79, "y": 7.03, "scaleX": 0.938, "scaleY": 0.875, "rotation": -92.22, "width": 237, "height": 313 }
 		},
 		"underwear": {
 			"underwear": { "x": -1.29, "y": -4.67, "scaleX": 0.939, "scaleY": 1.001, "rotation": 174.23, "width": 186, "height": 55 }

@@ -10,6 +10,8 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
+import java.util.HashMap;
+
 /**
  * Created by Lucas on 2017-07-21.
  */
@@ -66,10 +68,20 @@ public class Zombie{
         body.setPosition(x, y);
     }
 
+
     public Part getPartFromPhysicsBody(Body physicsBody){
 
         return body.getPartFromPhysicsBody(physicsBody);
 
+    }
+
+    public HashMap<String, Part> getParts(){
+        return body.getParts();
+    }
+
+
+    public void destroy(){
+        body.destroy();
     }
 
 

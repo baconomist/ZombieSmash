@@ -90,6 +90,7 @@ public class Physics {
     public void update(float delta){
 
         updateParts();
+        updateZombies();
         stepWorld(delta);
         
     }
@@ -210,6 +211,23 @@ public class Physics {
         }
     }
 
+    private void updateZombies(){
+
+        for(Zombie z : zombies){
+            HashMap<String, Part> copy = new HashMap<String, Part>();
+            for(HashMap.Entry<String, Part> e: z.getParts().entrySet()){
+                copy.put(e.getKey(), e.getValue());
+            }
+            for(Part p : copy.values()){
+                if(p.getState().equals("waiting_for_detach")){
+
+                    p.detach();
+
+                }
+            }
+        }
+    }
+
     public void addBody(Object o){
 
         if(o instanceof Zombie){
@@ -222,8 +240,12 @@ public class Physics {
     }
 
     public void clearBodies(){
-        zombies = null;
-        parts = null;
+        for(Zombie z : zombies){
+            z.destroy();
+        }
+        for(Part p : parts){
+            p.destroy();
+        }
     }
 
     public World getWorld(){

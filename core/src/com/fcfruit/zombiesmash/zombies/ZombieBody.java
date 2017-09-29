@@ -25,9 +25,11 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
+import com.fcfruit.zombiesmash.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
@@ -49,8 +51,6 @@ import java.util.Map;
 
 public class ZombieBody{
 
-    static String[] drawOrder = new String[]{"head", "torso", "right_arm", "left_arm", "right_leg", "left_leg"};
-
     private Zombie zombie;
 
     private RubeScene rubeScene;
@@ -61,8 +61,8 @@ public class ZombieBody{
 
     public HashMap<String, Part> parts;
 
-    public boolean physicsEnabled;
 
+    public boolean physicsEnabled;
 
     public boolean isTouching = false;
 
@@ -93,12 +93,13 @@ public class ZombieBody{
 
         // Queue animations on track 0.
         state.setAnimation(0, "run", true);
+
     }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
-        for(String name : drawOrder){
-            if(parts.get(name) != null) {
-                parts.get(name).draw(batch);
+        for(Slot slot : skeleton.getDrawOrder()){
+            if(parts.get(slot.getAttachment().getName()) != null) {
+                parts.get(slot.getAttachment().getName()).draw(batch);
             }
         }
         skeletonRenderer.draw(batch, skeleton);
@@ -107,9 +108,12 @@ public class ZombieBody{
 
     private void update(float delta){
 
+        //getUp();
+
         state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
         //parts.get("head").setRotation(-200.1f);
@@ -117,7 +121,7 @@ public class ZombieBody{
         //parts.get("left_am").setRotation(-160);
 
         //Always use this after any transformation change to skeleton:
-        skeleton.updateWorldTransform();
+        //skeleton.updateWorldTransform();
 
         updateParts();
 
@@ -143,36 +147,47 @@ public class ZombieBody{
 
         parts = new HashMap<String, Part>();
 
-        for(Body b : rubeScene.getBodies()){
+        for(Body b : rubeScene.getBodies()) {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
 
-            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
+                Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
-            for(RubeImage i : rubeScene.getImages()){
-                if(i.body == b){
-                    sprite.flip(i.flip, false);
-                    sprite.setColor(i.color);
-                    sprite.setOrigin(i.center.x, i.center.y);
-                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
+                for (RubeImage i : rubeScene.getImages()) {
+                    if (i.body == b) {
+                        sprite.flip(i.flip, false);
+                        sprite.setColor(i.color);
+                        sprite.setOrigin(i.center.x, i.center.y);
+                        sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
+                    }
+
                 }
 
-            }
-
-            Joint joint = null;
-            for(Joint j : rubeScene.getJoints()){
-                if(j.getBodyA() == b || j.getBodyB() == b){
-                    joint = j;
-                    break;
+                Joint joint = null;
+                for (Joint j : rubeScene.getJoints()) {
+                    if (j.getBodyA() == b || j.getBodyB() == b) {
+                        joint = j;
+                        break;
+                    }
                 }
-            }
 
-            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
-            //parts.get(bodyName).detach();
+                parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-        parts.get("head").setPosition(1, 1);
+        this.setPosition(1, 1);
         updateParts();
+    }
+
+    private void getUp(){
+        for(Part p : parts.values()){
+
+            if(p.getName() != "head" || !(p.getName().contains("arm"))) {
+
+                p.physicsBody.setTransform(p.physicsBody.getPosition(), (float)Math.toRadians(0));
+
+            }
+
+        }
     }
 
 
@@ -206,9 +221,13 @@ public class ZombieBody{
 
     public void setPosition(float x, float y){
         skeleton.setPosition(x, y);
-
-        //Apply changes to skeleton
-        skeleton.updateWorldTransform();
+        if(parts.get("torso") != null){
+            parts.get("torso").setPosition(x,
+                    y);
+        }
+        else{
+            this.destroy();
+        }
     }
 
     public void setRotation(float degrees){
@@ -240,6 +259,14 @@ public class ZombieBody{
         }
 
         return null;
+
+    }
+
+    public HashMap<String, Part> getParts(){
+        return parts;
+    }
+
+    public void destroy(){
 
     }
 

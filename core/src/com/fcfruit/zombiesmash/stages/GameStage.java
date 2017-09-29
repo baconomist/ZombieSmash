@@ -47,13 +47,14 @@ public class GameStage extends Stage {
         viewport = v;
 
         regZombie = new RegularZombie();
-        regZombie.setPosition(Environment.gameCamera.unproject(new Vector3(300, 300, 0)).x, Environment.gameCamera.unproject(new Vector3(300, 300, 0)).y);
+        Environment.physics.addBody(regZombie);
+        regZombie.setPosition(1, 1);
 
         spriteBatch = new SpriteBatch();
 
         skeletonRenderer = new SkeletonRenderer();
 
-        Environment.physics.addBody(regZombie);
+
 
     }
 

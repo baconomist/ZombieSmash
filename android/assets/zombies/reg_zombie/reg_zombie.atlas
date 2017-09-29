@@ -27,28 +27,28 @@ right_arm
   index: -1
 left_leg
   rotate: false
-  xy: 508, 79
+  xy: 547, 79
   size: 131, 308
   orig: 131, 308
   offset: 0, 0
   index: -1
 right_leg
   rotate: false
-  xy: 508, 79
+  xy: 547, 79
   size: 131, 308
   orig: 131, 308
   offset: 0, 0
   index: -1
 torso
   rotate: false
-  xy: 308, 92
-  size: 198, 295
-  orig: 198, 295
+  xy: 308, 74
+  size: 237, 313
+  orig: 237, 313
   offset: 0, 0
   index: -1
 underwear
   rotate: false
-  xy: 641, 332
+  xy: 680, 332
   size: 186, 55
   orig: 186, 55
   offset: 0, 0
