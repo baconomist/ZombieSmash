@@ -197,7 +197,7 @@ public class Part{
         // Don't want to detach if torso or else you have
         // Joint deletion on a joint that doesn't exist
 
-        if(name.equals("torso")){
+        /*if(name.equals("torso")){
             body.parts.remove(name);
             for(String n : body.parts.keySet()){
                 body.parts.get(n).detach();
@@ -206,18 +206,15 @@ public class Part{
             bodyJoint = null;
             body.destroy();
             body = null;
-        }
+        }*/
 
-        else if(bodyJoint != null) {
+        Environment.physics.getWorld().destroyJoint(bodyJoint);
 
-            Environment.physics.getWorld().destroyJoint(bodyJoint);
-            bodyJoint = null;
-            body.parts.remove(name);
-            body = null;
-            Environment.physics.addBody(this);
-            setState("detached");
-
-        }
+        bodyJoint = null;
+        body.parts.remove(name);
+        body = null;
+        Environment.physics.addBody(this);
+        setState("detached");
 
     }
 

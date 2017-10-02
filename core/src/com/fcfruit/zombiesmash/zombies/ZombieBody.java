@@ -181,7 +181,7 @@ public class ZombieBody{
     private void getUp(){
         for(Part p : parts.values()){
 
-            if(p.getName() != "head" || !(p.getName().contains("arm"))) {
+            if(!(p.getName().equals("head")) || !(p.getName().contains("arm"))) {
 
                 p.physicsBody.setTransform(p.physicsBody.getPosition(), (float)Math.toRadians(0));
 

@@ -219,7 +219,7 @@ public class Physics {
                 copy.put(e.getKey(), e.getValue());
             }
             for(Part p : copy.values()){
-                if(p.getState().equals("waiting_for_detach")){
+                if(p.getState().equals("waiting_for_detach")) {
 
                     p.detach();
 
