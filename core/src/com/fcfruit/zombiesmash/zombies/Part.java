@@ -48,9 +48,9 @@ public class Part{
 
     private int pointer;
 
-    private boolean touched = false;
+    public boolean isTouching = false;
 
-    private boolean isPowerfulPart = false;
+    public boolean isPowerfulPart = false;
 
     String state;
 
@@ -97,7 +97,7 @@ public class Part{
                     .y)) {
                 // Simplified if statement
                 // If body is fuxture body then touch is true, else false
-                touched = fixture.getBody() == physicsBody;
+                isTouching = fixture.getBody() == physicsBody;
                 return false;
             } else
                 return true;
@@ -154,18 +154,17 @@ public class Part{
         if(mouseJoint == null) {
             hitPoint.set(x, y);
             Environment.physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
-            if(state.equals("attached") && touched) {
-                if(!body.isTouching) {
+            if(state.equals("attached") && isTouching) {
+                if(!body.hasPowerfulPart) {
                     isPowerfulPart = true;
                     createMouseJoint(x, y, p, isPowerfulPart);
-                    body.isTouching = true;
                 }
                 else{
                     isPowerfulPart = false;
                     createMouseJoint(x, y, p, isPowerfulPart);
                 }
             }
-            else if (touched){
+            else if (isTouching){
                 createMouseJoint(x, y, p, true);
             }
         }
@@ -173,9 +172,17 @@ public class Part{
     }
 
     public void touchDragged(float x, float y, int p){
-        if(mouseJoint != null && pointer == p){
+
+        if (mouseJoint != null && pointer == p) {
             mouseJoint.setTarget(new Vector2(x, y));
+            if(state.equals("attached")){
+                if(!body.hasPowerfulPart){
+                    mouseJoint.setMaxForce(10000f * physicsBody.getMass());
+                }
+            }
         }
+
+
     }
 
     public void touchUp(float x, float y, int p){
@@ -184,10 +191,9 @@ public class Part{
 
             Environment.physics.getWorld().destroyJoint(mouseJoint);
             mouseJoint = null;
-            touched = false;
-            if(isPowerfulPart && state.equals("attached")){
-                body.isTouching = false;
-            }
+            isTouching = false;
+            isPowerfulPart = false;
+
         }
 
     }

@@ -45,8 +45,8 @@ public class Box2DCollisionListener implements ContactListener {
                 // If name is torso, torso body joint is probably null, and you call a world mehod bodyjoint.getreactionforce
                 // Which triggers a box2d exception fatal error 11
                 
-                if (part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).x > 10 || part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).x > 10
-                        || part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).y > 10 || part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).y > 10) {
+                if (part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).x > 20
+                        || part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || part.bodyJoint.getReactionForce(1f / Physics.STEP_TIME).y > 20) {
 
                     part.setState("waiting_for_detach");
 

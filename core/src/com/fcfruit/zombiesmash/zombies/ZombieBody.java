@@ -64,6 +64,8 @@ public class ZombieBody{
 
     public boolean physicsEnabled;
 
+    public boolean hasPowerfulPart = false;
+
     public boolean isTouching = false;
 
     public ZombieBody(Zombie z){
@@ -125,20 +127,34 @@ public class ZombieBody{
 
         updateParts();
 
+        Gdx.app.log("pos", ""+parts.get("head").physicsBody.getPosition().y);
+        Gdx.app.log("istouching", ""+isTouching);
+        Gdx.app.log("isgetup", ""+(isOnGround() && !isTouching));
+        if(isOnGround() && !isTouching){
+            getUp();
+        }
+
     }
 
     private void updateParts(){
 
-        HashMap<String, Part> copy = new HashMap<String, Part>();
-        for (Map.Entry<String, Part> entry : parts.entrySet())
-        {
-            copy.put(entry.getKey(), entry.getValue());
+        // Run update method for each body part
+        boolean ispowerfulpart = false;
+        boolean istouching = false;
+        for(Part p : parts.values()){
+            p.update();
+            if(p.isPowerfulPart && !ispowerfulpart){
+                ispowerfulpart = true;
+            }
+            if(p.isTouching && !istouching){
+                istouching = true;
+            }
         }
 
-        // Run update method for each body part
-        for(Part p : copy.values()){
-            p.update();
-        }
+        // Update body touching state
+        hasPowerfulPart = ispowerfulpart;
+        isTouching = istouching;
+
     }
 
     public void constructPhysicsBody(World world){
@@ -180,14 +196,21 @@ public class ZombieBody{
 
     private void getUp(){
         for(Part p : parts.values()){
-
-            if(!(p.getName().equals("head")) || !(p.getName().contains("arm"))) {
-
-                p.physicsBody.setTransform(p.physicsBody.getPosition(), (float)Math.toRadians(0));
-
+            if(p.getName().contains("leg") && p.getName().equals("torso")){
+                if((float) Math.toDegrees(p.physicsBody.getAngle()) > 0){
+                    p.physicsBody.setAwake(false);
+                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toDegrees(p.physicsBody.getAngle()) - 1f*Gdx.graphics.getDeltaTime());
+                }
+                else if((float) Math.toDegrees(p.physicsBody.getAngle()) < 0){
+                    p.physicsBody.setAwake(false);
+                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toDegrees(p.physicsBody.getAngle()) + 1f*Gdx.graphics.getDeltaTime());
+                }
             }
-
         }
+    }
+
+    private boolean isOnGround(){
+        return parts.get("head").physicsBody.getPosition().y < 0.3;
     }
 
 
