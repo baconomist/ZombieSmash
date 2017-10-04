@@ -13,8 +13,6 @@
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Box2DCollisionListener.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Box2DCollisionListener.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Part.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Part.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/ZombieBody.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/ZombieBody.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
@@ -55,16 +53,14 @@
           <file leaf-file-name="ZombieBody.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/ZombieBody.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="336">
-                  <caret line="145" column="52" selection-start-line="145" selection-start-column="52" selection-end-line="145" selection-end-column="52" />
+                <state relative-caret-position="731">
+                  <caret line="140" column="35" selection-start-line="140" selection-start-column="35" selection-end-line="140" selection-end-column="35" />
                   <folding>
                     <element signature="imports" expanded="true" />
-                    <element signature="e#7393#7394#0" expanded="true" />
-                    <element signature="e#7467#7468#0" expanded="true" />
-                    <element signature="e#8406#8407#0" expanded="true" />
-                    <element signature="e#8450#8451#0" expanded="true" />
-                    <element signature="e#8486#8487#0" expanded="true" />
-                    <element signature="e#8517#8518#0" expanded="true" />
+                    <element signature="e#8821#8822#0" expanded="true" />
+                    <element signature="e#8865#8866#0" expanded="true" />
+                    <element signature="e#8901#8902#0" expanded="true" />
+                    <element signature="e#8932#8933#0" expanded="true" />
                   </folding>
                 </state>
               </provider>
@@ -102,7 +98,7 @@
           <file leaf-file-name="Part.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Part.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="514">
+                <state relative-caret-position="1891">
                   <caret line="179" column="73" selection-start-line="179" selection-start-column="73" selection-end-line="179" selection-end-column="73" />
                   <folding>
                     <element signature="imports" expanded="true" />
@@ -5309,7 +5305,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="-4" y="0" width="2572" height="1452" extended-state="0" />
-    <editor active="false" />
+    <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
       <window_info id="Messages" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.24633205" sideWeight="0.4920509" order="7" side_tool="false" content_ui="tabs" />
@@ -5317,7 +5313,7 @@
       <window_info id="Image Layers" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Analysis" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Event Log" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25712085" sideWeight="0.5079491" order="7" side_tool="true" content_ui="tabs" />
-      <window_info id="Android Monitor" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21776062" sideWeight="0.7154213" order="7" side_tool="false" content_ui="tabs" />
+      <window_info id="Android Monitor" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.21776062" sideWeight="0.7154213" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Run" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.37022603" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
       <window_info id="Version Control" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="7" side_tool="false" content_ui="tabs" />
@@ -5750,7 +5746,7 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Part.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="514">
+        <state relative-caret-position="1891">
           <caret line="179" column="73" selection-start-line="179" selection-start-column="73" selection-end-line="179" selection-end-column="73" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -5762,16 +5758,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/ZombieBody.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="336">
-          <caret line="145" column="52" selection-start-line="145" selection-start-column="52" selection-end-line="145" selection-end-column="52" />
+        <state relative-caret-position="731">
+          <caret line="140" column="35" selection-start-line="140" selection-start-column="35" selection-end-line="140" selection-end-column="35" />
           <folding>
             <element signature="imports" expanded="true" />
-            <element signature="e#7393#7394#0" expanded="true" />
-            <element signature="e#7467#7468#0" expanded="true" />
-            <element signature="e#8406#8407#0" expanded="true" />
-            <element signature="e#8450#8451#0" expanded="true" />
-            <element signature="e#8486#8487#0" expanded="true" />
-            <element signature="e#8517#8518#0" expanded="true" />
+            <element signature="e#8821#8822#0" expanded="true" />
+            <element signature="e#8865#8866#0" expanded="true" />
+            <element signature="e#8901#8902#0" expanded="true" />
+            <element signature="e#8932#8933#0" expanded="true" />
           </folding>
         </state>
       </provider>

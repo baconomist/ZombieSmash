@@ -61,10 +61,17 @@ public class ZombieBody{
 
     public HashMap<String, Part> parts;
 
+    private float timeBeforeAnimate = 5000;
+
+    private float time = 0;
 
     public boolean physicsEnabled;
 
     public boolean hasPowerfulPart = false;
+
+    public boolean isMoving = false;
+    
+    public boolean isAnimating = true;
 
     public boolean isTouching = false;
 
@@ -129,8 +136,12 @@ public class ZombieBody{
 
         Gdx.app.log("pos", ""+parts.get("head").physicsBody.getPosition().y);
         Gdx.app.log("istouching", ""+isTouching);
-        Gdx.app.log("isgetup", ""+(isOnGround() && !isTouching));
-        if(isOnGround() && !isTouching){
+        Gdx.app.log("isgetup", ""+(!isTouching && !isMoving));
+
+        if(!isTouching && !isMoving){
+            time = System.currentTimeMillis();
+        }
+        else if(!isTouching && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
             getUp();
         }
 
@@ -141,6 +152,7 @@ public class ZombieBody{
         // Run update method for each body part
         boolean ispowerfulpart = false;
         boolean istouching = false;
+        boolean ismoving = false;
         for(Part p : parts.values()){
             p.update();
             if(p.isPowerfulPart && !ispowerfulpart){
@@ -149,11 +161,15 @@ public class ZombieBody{
             if(p.isTouching && !istouching){
                 istouching = true;
             }
+            if(p.physicsBody.getLinearVelocity().x > 0.1 || p.physicsBody.getLinearVelocity().y > 0.1 && !ismoving) {
+                ismoving = true;
+            }
         }
 
         // Update body touching state
         hasPowerfulPart = ispowerfulpart;
         isTouching = istouching;
+        isMoving = ismoving;
 
     }
 
@@ -196,23 +212,17 @@ public class ZombieBody{
 
     private void getUp(){
         for(Part p : parts.values()){
-            if(p.getName().contains("leg") && p.getName().equals("torso")){
+            p.physicsBody.setAwake(false);
+            if(p.getName().contains("leg") || p.getName().equals("torso")){
                 if((float) Math.toDegrees(p.physicsBody.getAngle()) > 0){
-                    p.physicsBody.setAwake(false);
-                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toDegrees(p.physicsBody.getAngle()) - 1f*Gdx.graphics.getDeltaTime());
+                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toRadians((float) Math.toDegrees(p.physicsBody.getAngle()) - 1f*Gdx.graphics.getDeltaTime()));
                 }
                 else if((float) Math.toDegrees(p.physicsBody.getAngle()) < 0){
-                    p.physicsBody.setAwake(false);
-                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toDegrees(p.physicsBody.getAngle()) + 1f*Gdx.graphics.getDeltaTime());
+                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toRadians((float) Math.toDegrees(p.physicsBody.getAngle()) + 1f*Gdx.graphics.getDeltaTime()));
                 }
             }
         }
     }
-
-    private boolean isOnGround(){
-        return parts.get("head").physicsBody.getPosition().y < 0.3;
-    }
-
 
 
     public void touchDown(float x, float y, int pointer){
