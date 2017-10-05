@@ -61,9 +61,11 @@ public class ZombieBody{
 
     public HashMap<String, Part> parts;
 
-    private float timeBeforeAnimate = 5000;
+    private MouseJoint getUpMouseJoint = null;
 
-    private float time = 0;
+    private double timeBeforeAnimate = 5000;
+
+    private double time = 0;
 
     public boolean physicsEnabled;
 
@@ -72,6 +74,8 @@ public class ZombieBody{
     public boolean isMoving = false;
     
     public boolean isAnimating = true;
+
+    public boolean isGettingUp = false;
 
     public boolean isTouching = false;
 
@@ -134,14 +138,18 @@ public class ZombieBody{
 
         updateParts();
 
-        Gdx.app.log("pos", ""+parts.get("head").physicsBody.getPosition().y);
         Gdx.app.log("istouching", ""+isTouching);
-        Gdx.app.log("isgetup", ""+(!isTouching && !isMoving));
+        Gdx.app.log("isgetup", ""+(!isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate));
 
-        if(!isTouching && !isMoving){
+        if(isTouching){
             time = System.currentTimeMillis();
+            if(getUpMouseJoint != null){
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                getUpMouseJoint = null;
+            }
+            isAnimating = false;
         }
-        else if(!isTouching && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
+        else if(!isAnimating && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
             getUp();
         }
 
@@ -211,18 +219,44 @@ public class ZombieBody{
     }
 
     private void getUp(){
-        for(Part p : parts.values()){
-            p.physicsBody.setAwake(false);
-            if(p.getName().contains("leg") || p.getName().equals("torso")){
-                if((float) Math.toDegrees(p.physicsBody.getAngle()) > 0){
-                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toRadians((float) Math.toDegrees(p.physicsBody.getAngle()) - 1f*Gdx.graphics.getDeltaTime()));
-                }
-                else if((float) Math.toDegrees(p.physicsBody.getAngle()) < 0){
-                    p.physicsBody.setTransform(p.physicsBody.getPosition(), (float) Math.toRadians((float) Math.toDegrees(p.physicsBody.getAngle()) + 1f*Gdx.graphics.getDeltaTime()));
-                }
-            }
+        if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.5){
+            isAnimating = true;
+            isGettingUp = false;
         }
+
+        else if(!isGettingUp) {
+
+            MouseJointDef mouseJointDef = new MouseJointDef();
+            // Needs 2 bodies, first one not used, so we use an arbitrary body.
+            // http://www.binarytides.com/mouse-joint-box2d-javascript/
+            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyB = parts.get("head").physicsBody;
+            mouseJointDef.collideConnected = true;
+            mouseJointDef.target.set(1, 1.5f);
+
+            // Makes the joint move body slower
+            mouseJointDef.frequencyHz = 10;
+
+            mouseJointDef.maxForce = 100000000f;
+
+            // Destroy the current mouseJoint
+            if(getUpMouseJoint != null){
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            }
+            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+
+            isGettingUp = true;
+
+            Gdx.app.log("joint", "jjj"+getUpMouseJoint);
+
+            for(Part p : parts.values()){
+                p.physicsBody.setAwake(true);
+            }
+
+        }
+
     }
+
 
 
     public void touchDown(float x, float y, int pointer){
@@ -248,9 +282,6 @@ public class ZombieBody{
         }
 
     }
-
-
-
 
     public void setPosition(float x, float y){
         skeleton.setPosition(x, y);

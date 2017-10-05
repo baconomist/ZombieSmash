@@ -151,6 +151,7 @@ public class Part{
     }
 
     public void touchDown(float x, float y, int p){
+
         if(mouseJoint == null) {
             hitPoint.set(x, y);
             Environment.physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
