@@ -70,10 +70,24 @@ public class Part{
     }
 
     public void draw(SpriteBatch batch){
-        sprite.draw(batch);
+        if(state.equals("attached")) {
+            if (body.physicsEnabled) {
+                sprite.draw(batch);
+            }
+        }
+        else{
+            sprite.draw(batch);
+        }
     }
 
     public void update(){
+
+        if(state.equals("attached") && !body.physicsEnabled) {
+            physicsBody.setAwake(false);
+            if (name.equals("torso")) {
+                physicsBody.setTransform(body.getPosition().x, body.getPosition().y, physicsBody.getAngle());
+            }
+        }
 
         Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);

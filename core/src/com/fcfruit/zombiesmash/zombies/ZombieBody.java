@@ -52,6 +52,7 @@ import java.util.Map;
  */
 
 public class ZombieBody{
+    private static float ANIMSCALE;
 
     private Zombie zombie;
 
@@ -69,7 +70,7 @@ public class ZombieBody{
 
     private double time = 0;
 
-    public boolean physicsEnabled;
+    public boolean physicsEnabled = false;
 
     public boolean hasPowerfulPart = false;
 
@@ -85,8 +86,6 @@ public class ZombieBody{
 
         zombie = z;
 
-        physicsEnabled = true;
-
         animationSetup();
 
     }
@@ -98,7 +97,6 @@ public class ZombieBody{
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
-
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
         //stateData.setMix("run", "jump", 0.2f);
         //stateData.setMix("jump", "run", 0.2f);
@@ -126,7 +124,7 @@ public class ZombieBody{
         state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
-
+        skeleton.setPosition(100, 100);
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
         //parts.get("head").setRotation(-200.1f);
@@ -199,7 +197,9 @@ public class ZombieBody{
                         sprite.flip(i.flip, false);
                         sprite.setColor(i.color);
                         sprite.setOrigin(i.center.x, i.center.y);
+                        float width = sprite.getWidth();
                         sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
+                        ANIMSCALE = sprite.getWidth()/width;
                     }
 
                 }
@@ -215,8 +215,7 @@ public class ZombieBody{
                 parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-        this.setPosition(1, 1);
-        updateParts();
+        skeleton.getRootBone().setScale(ANIMSCALE);
     }
 
     private void getUp(){
@@ -302,8 +301,15 @@ public class ZombieBody{
         }
     }
 
-    public void setRotation(float degrees){
-        skeleton.getRootBone().setRotation(degrees);
+    public Vector2 getPosition(){
+        if(physicsEnabled){
+            return parts.get("torso").physicsBody.getPosition();
+        }
+        // Else, return animation position
+        // Camera doesn't take care of reverse y axis(starting from top)
+        Vector3 pos = Environment.gameCamera.unproject(new Vector3(skeleton.getRootBone().getWorldX(), skeleton.getRootBone().getWorldY() + ((RegionAttachment)skeleton.findSlot("torso").getAttachment()).getHeight()/2, 0));
+        Gdx.app.log("skel", ""+pos.y);
+        return new Vector2(pos.x, Environment.gameCamera.viewportHeight - pos.y);
     }
 
     public Array<Body> getPhysicsBodies(){
