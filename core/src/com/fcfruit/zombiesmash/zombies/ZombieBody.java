@@ -13,6 +13,8 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
+import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
@@ -63,7 +65,7 @@ public class ZombieBody{
 
     private MouseJoint getUpMouseJoint = null;
 
-    private double timeBeforeAnimate = 5000;
+    private double timeBeforeAnimate = 500;
 
     private double time = 0;
 
@@ -92,7 +94,7 @@ public class ZombieBody{
     private void animationSetup(){
         atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(0.6f); // Load the skeleton at 60% the size it was in Spine.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
@@ -121,8 +123,6 @@ public class ZombieBody{
 
     private void update(float delta){
 
-        //getUp();
-
         state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
@@ -139,7 +139,7 @@ public class ZombieBody{
         updateParts();
 
         Gdx.app.log("istouching", ""+isTouching);
-        Gdx.app.log("isgetup", ""+(!isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate));
+        Gdx.app.log("isgetup", ""+isGettingUp);
 
         if(isTouching){
             time = System.currentTimeMillis();
@@ -148,6 +148,7 @@ public class ZombieBody{
                 getUpMouseJoint = null;
             }
             isAnimating = false;
+            isGettingUp = false;
         }
         else if(!isAnimating && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
             getUp();
@@ -219,40 +220,47 @@ public class ZombieBody{
     }
 
     private void getUp(){
-        if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.5){
+
+        if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
             isAnimating = true;
             isGettingUp = false;
+            if(getUpMouseJoint != null){
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                getUpMouseJoint = null;
+            }
         }
 
         else if(!isGettingUp) {
-
+            
             MouseJointDef mouseJointDef = new MouseJointDef();
+            
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
             mouseJointDef.bodyA = Environment.physics.getGround();
             mouseJointDef.bodyB = parts.get("head").physicsBody;
             mouseJointDef.collideConnected = true;
-            mouseJointDef.target.set(1, 1.5f);
+            mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());
 
             // Makes the joint move body slower
-            mouseJointDef.frequencyHz = 10;
+            mouseJointDef.dampingRatio = 20;
 
-            mouseJointDef.maxForce = 100000000f;
+            mouseJointDef.maxForce = 100000f;
 
             // Destroy the current mouseJoint
             if(getUpMouseJoint != null){
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+            getUpMouseJoint.setTarget(new Vector2(parts.get("left_leg").physicsBody.getPosition().x, 1.5f));
 
             isGettingUp = true;
 
             Gdx.app.log("joint", "jjj"+getUpMouseJoint);
-
-            for(Part p : parts.values()){
+        }
+        if(isGettingUp) {
+            for (Part p : parts.values()) {
                 p.physicsBody.setAwake(true);
             }
-
         }
 
     }
