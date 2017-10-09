@@ -65,10 +65,10 @@ public class GameStage extends Stage {
 
         delta = Gdx.graphics.getDeltaTime();
 
+        // Viewport.getCamera() != Environment.gameCamera
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-
 
         regZombie.draw(spriteBatch, skeletonRenderer, delta);
 
@@ -91,7 +91,7 @@ public class GameStage extends Stage {
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         Vector3 vector = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchDown(vector.x, vector.y, pointer);
-        Gdx.app.log("touch", ""+Environment.gameCamera.unproject(new Vector3(Gdx.input.getX(), 0, 0)).x);
+        Gdx.app.log("touch", ""+Environment.gameCamera.unproject(new Vector3(0, Gdx.input.getY(), 0)).y);
         return super.touchDown(screenX, screenY, pointer, button);
     }
 

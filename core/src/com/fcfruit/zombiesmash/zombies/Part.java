@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -78,16 +79,19 @@ public class Part{
         else{
             sprite.draw(batch);
         }
+        sprite.draw(batch);
     }
 
     public void update(){
 
-        if(state.equals("attached") && !body.physicsEnabled) {
+        /*if(state.equals("attached") && !body.physicsEnabled) {
             physicsBody.setAwake(false);
-            if (name.equals("torso")) {
-                physicsBody.setTransform(body.getPosition().x, body.getPosition().y, physicsBody.getAngle());
-            }
-        }
+
+            Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(), body.getSkeleton().findBone(name).getWorldY(), 0));
+            Gdx.app.log("pos", ""+pos.y);
+            physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, physicsBody.getAngle());
+
+        }*/
 
         Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);

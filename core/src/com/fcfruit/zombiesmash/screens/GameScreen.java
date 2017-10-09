@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
@@ -51,6 +52,14 @@ public class GameScreen implements Screen{
 
         game_view = new ExtendViewport(1920, 1080);
         game_view.apply();
+
+        Vector3 pos = camera.project(new Vector3(0, 0, 0));
+        Gdx.app.log("posx", ""+pos.x);
+        Gdx.app.log("posy", ""+pos.y);
+
+        pos = camera.unproject(new Vector3(192, 192, 0));
+        Gdx.app.log("sposx", ""+pos.x);
+        Gdx.app.log("sposy", ""+pos.y);
 
         game_stage = new GameStage(game_view);
 
@@ -109,17 +118,6 @@ public class GameScreen implements Screen{
 
         // Resize viewport to screen size.
         game_view.update(width, height);
-
-        // Resize camera to world size.
-        // I don't know if this makes sense
-        //camera.viewportWidth = width/Physics.PPM;
-        //camera.viewportHeight = height/Physics.PPM;
-
-        // Center camera
-        camera.position.x = camera.viewportWidth/2;
-        camera.position.y = camera.viewportHeight/2;
-
-        camera.update();
 
     }
 

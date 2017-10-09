@@ -124,7 +124,7 @@ public class ZombieBody{
         state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
-        skeleton.setPosition(100, 100);
+
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
         //parts.get("head").setRotation(-200.1f);
@@ -136,9 +136,6 @@ public class ZombieBody{
 
         updateParts();
 
-        Gdx.app.log("istouching", ""+isTouching);
-        Gdx.app.log("isgetup", ""+isGettingUp);
-
         if(isTouching){
             time = System.currentTimeMillis();
             if(getUpMouseJoint != null){
@@ -147,6 +144,7 @@ public class ZombieBody{
             }
             isAnimating = false;
             isGettingUp = false;
+            physicsEnabled = true;
         }
         else if(!isAnimating && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
             getUp();
@@ -223,6 +221,11 @@ public class ZombieBody{
         if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
             isAnimating = true;
             isGettingUp = false;
+            Vector3 pos = Environment.gameCamera.project(new Vector3(parts.get("torso").physicsBody.getPosition(), 0));
+            Gdx.app.log("posy", ""+pos.y);
+            //skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight*Physics.PPM - pos.y);
+            //skeleton.updateWorldTransform();
+            physicsEnabled = false;
             if(getUpMouseJoint != null){
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
@@ -291,14 +294,18 @@ public class ZombieBody{
     }
 
     public void setPosition(float x, float y){
-        skeleton.setPosition(x, y);
-        if(parts.get("torso") != null){
-            parts.get("torso").setPosition(x,
-                    y);
+        if(physicsEnabled){
+            parts.get("torso").setPosition(x, y);
         }
-        else{
-            this.destroy();
+        else {
+            Vector3 pos = Environment.gameCamera.project(new Vector3(x, y, 0));
+            skeleton.setPosition(pos.x, pos.y);
+            skeleton.updateWorldTransform();
         }
+
+
+
+
     }
 
     public Vector2 getPosition(){
@@ -308,7 +315,6 @@ public class ZombieBody{
         // Else, return animation position
         // Camera doesn't take care of reverse y axis(starting from top)
         Vector3 pos = Environment.gameCamera.unproject(new Vector3(skeleton.getRootBone().getWorldX(), skeleton.getRootBone().getWorldY() + ((RegionAttachment)skeleton.findSlot("torso").getAttachment()).getHeight()/2, 0));
-        Gdx.app.log("skel", ""+pos.y);
         return new Vector2(pos.x, Environment.gameCamera.viewportHeight - pos.y);
     }
 
