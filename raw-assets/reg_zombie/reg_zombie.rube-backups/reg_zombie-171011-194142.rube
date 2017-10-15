@@ -38,43 +38,6 @@
       "bitplane32"
     ]
   },
-  "customPropertyDefs" : 
-  [
-    
-    {
-      "class" : "body",
-      "comboboxEntries" : 
-      [
-        
-        {
-          "entry" : "head"
-        },
-        
-        {
-          "entry" : "right_arm"
-        },
-        
-        {
-          "entry" : "left_arm"
-        },
-        
-        {
-          "entry" : "torso"
-        },
-        
-        {
-          "entry" : "right_leg"
-        },
-        
-        {
-          "entry" : "left_leg"
-        }
-      ],
-      "displayName" : "name",
-      "name" : "name",
-      "type" : "string"
-    }
-  ],
   "metaworld" : 
   {
     "allowSleep" : true,
@@ -104,14 +67,6 @@
         "angle" : 0,
         "angularVelocity" : 0,
         "awake" : true,
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "left_arm"
-          }
-        ],
         "fixture" : 
         [
           
@@ -393,14 +348,6 @@
         "angle" : 3.089714288711548,
         "angularVelocity" : 0,
         "awake" : true,
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "right_arm"
-          }
-        ],
         "fixture" : 
         [
           

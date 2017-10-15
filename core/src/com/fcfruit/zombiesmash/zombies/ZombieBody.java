@@ -188,29 +188,29 @@ public class ZombieBody{
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
 
-                Sprite sprite = new Sprite(atlas.findRegion(bodyName));
+            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
-                for (RubeImage i : rubeScene.getImages()) {
-                    if (i.body == b) {
-                        sprite.flip(i.flip, false);
-                        sprite.setColor(i.color);
-                        sprite.setOrigin(i.center.x, i.center.y);
-                        float width = sprite.getWidth();
-                        sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
-                        ANIMSCALE = sprite.getWidth()/width;
-                    }
-
+            for (RubeImage i : rubeScene.getImages()) {
+                if (i.body == b) {
+                    sprite.flip(i.flip, false);
+                    sprite.setColor(i.color);
+                    sprite.setOrigin(i.center.x, i.center.y);
+                    float width = sprite.getWidth();
+                    sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
+                    ANIMSCALE = sprite.getWidth()/width;
                 }
 
-                Joint joint = null;
-                for (Joint j : rubeScene.getJoints()) {
-                    if (j.getBodyA() == b || j.getBodyB() == b) {
-                        joint = j;
-                        break;
-                    }
-                }
+            }
 
-                parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
+            Joint joint = null;
+            for (Joint j : rubeScene.getJoints()) {
+                if (j.getBodyA() == b || j.getBodyB() == b) {
+                    joint = j;
+                    break;
+                }
+            }
+
+            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
         skeleton.getRootBone().setScale(ANIMSCALE);
@@ -221,11 +221,9 @@ public class ZombieBody{
         if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
             isAnimating = true;
             isGettingUp = false;
-            Vector3 pos = Environment.gameCamera.project(new Vector3(parts.get("torso").physicsBody.getPosition(), 0));
-            Gdx.app.log("posy", ""+pos.y);
-            //skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight*Physics.PPM - pos.y);
-            //skeleton.updateWorldTransform();
             physicsEnabled = false;
+            setPosition(parts.get("torso").physicsBody.getPosition().x, parts.get("torso").physicsBody.getPosition().y);
+
             if(getUpMouseJoint != null){
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;

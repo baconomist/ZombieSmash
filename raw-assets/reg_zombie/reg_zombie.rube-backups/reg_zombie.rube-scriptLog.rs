@@ -1,38 +1,13 @@
-//Started script log at 10/04/17 17:27:27
+//Started script log at 10/15/17 14:58:27
 
-getBody(8).select();
-getBody(8).deselect();
-getBody(5).select();
-getBody(5).deselect();
-getBody(1).select();
-getBody(1).deselect();
 getBody(3).select();
 getBody(3).deselect();
-getBody(8).select();
-getBody(8).deselect();
-getBody(4).select();
-getBody(4).deselect();
+getBody(3).select();
+getFixture(19).select();
+getFixture(19).deselect();
+getBody(3).deselect();
+getBody(3).select();
+getBody(3).deselect();
+getBody(3).select();
+getBody(3).deselect();
 getBody(2).select();
-getBody(2).deselect();
-getBody(4).select();
-getBody(4).setPosition(-0.0994068,0.776992);
-getBody(4).setAngle(1.36363);
-getBody(4).setPosition(-0.631102,0.464013);
-getBody(4).setAngle(2.17319);
-getBody(4).setPosition(0.343456,0.704014);
-getBody(4).setAngle(0.782496);
-getBody(4).setPosition(-0.159527,0.766909);
-getBody(4).setAngle(1.44147);
-getBody(4).setPosition(-0.783013,-0.0220824);
-getBody(4).setAngle(2.83537);
-getBody(4).setPosition(-0.0338888,-0.782591);
-getBody(4).setAngle(4.3347);
-getBody(4).setPosition(0.713284,-0.323765);
-getBody(4).setAngle(5.52267);
-getBody(4).setAngle(4.3347);getBody(4).setPosition(-0.0338888,-0.782591);
-getBody(4).setAngle(2.83537);getBody(4).setPosition(-0.783013,-0.0220824);
-getBody(4).setAngle(1.44147);getBody(4).setPosition(-0.159527,0.766909);
-getBody(4).setAngle(0.782496);getBody(4).setPosition(0.343456,0.704014);
-getBody(4).setAngle(2.17319);getBody(4).setPosition(-0.631102,0.464013);
-getBody(4).setAngle(1.36363);getBody(4).setPosition(-0.0994068,0.776992);
-getBody(4).setAngle(0);getBody(4).setPosition(0.73993,0.257101);

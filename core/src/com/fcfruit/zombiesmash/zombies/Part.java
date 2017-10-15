@@ -79,19 +79,55 @@ public class Part{
         else{
             sprite.draw(batch);
         }
-        sprite.draw(batch);
     }
 
     public void update(){
 
-        /*if(state.equals("attached") && !body.physicsEnabled) {
+        if(state.equals("attached") && !body.physicsEnabled) {
             physicsBody.setAwake(false);
 
-            Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(), body.getSkeleton().findBone(name).getWorldY(), 0));
-            Gdx.app.log("pos", ""+pos.y);
-            physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, physicsBody.getAngle());
 
-        }*/
+            if(name.contains("leg")){
+
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
+
+                float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
+
+
+                // Quarter of a circle counter-clockwise, in radians
+                rot += 1.57;
+                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
+
+            }
+
+            if(name.contains("arm")){
+
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
+
+                float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
+
+                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
+
+            }
+
+            else{
+
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
+
+                float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
+
+
+                // Quarter of a circle counter-clockwise, in radians
+                rot -= 1.57;
+                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
+
+            }
+
+
+        }
 
         Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
