@@ -20,7 +20,6 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
-import com.codeandweb.physicseditor.PhysicsShapeCache;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
@@ -28,6 +27,7 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
+import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Physics;
@@ -80,6 +80,8 @@ public class ZombieBody{
 
     public boolean isGettingUp = false;
 
+    private boolean isGetUpRotationCounterClockWise = true;
+
     public boolean isTouching = false;
 
     public ZombieBody(Zombie z){
@@ -115,24 +117,15 @@ public class ZombieBody{
                 parts.get(slot.getAttachment().getName()).draw(batch);
             }
         }
-        skeletonRenderer.draw(batch, skeleton);
+        if(!physicsEnabled) {
+            skeletonRenderer.draw(batch, skeleton);
+        }
         update(delta);
     }
 
     private void update(float delta){
 
-        state.update(Gdx.graphics.getDeltaTime()); // Update the animation time.
-
-        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
-
-        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
-
-        //parts.get("head").setRotation(-200.1f);
-        //skeleton.updateWorldTransform();
-        //parts.get("left_am").setRotation(-160);
-
-        //Always use this after any transformation change to skeleton:
-        //skeleton.updateWorldTransform();
+        updateSkeleton(delta);
 
         updateParts();
 
@@ -148,6 +141,33 @@ public class ZombieBody{
         }
         else if(!isAnimating && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
             getUp();
+        }
+
+    }
+
+    private void updateSkeleton(float delta){
+        state.update(delta); // Update the animation time.
+
+        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+
+        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+
+        //parts.get("head").setRotation(-200.1f);
+        //skeleton.updateWorldTransform();
+        //parts.get("left_am").setRotation(-160);
+
+        //Always use this after any transformation change to skeleton:
+        //skeleton.updateWorldTransform();
+
+        for(Slot s : skeleton.getSlots()){
+            if(parts.get(s.getData().getName()) == null){
+                s.setAttachment(new Attachment("new attachement") {
+                    @Override
+                    public String getName() {
+                        return super.getName();
+                    }
+                });
+            }
         }
 
     }
@@ -218,7 +238,34 @@ public class ZombieBody{
 
     private void getUp(){
 
-        if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
+        if(isGettingUp){
+            if(!(skeleton.getRootBone().getRotation() > -1 && skeleton.getRootBone().getRotation() < 1)) {
+                Gdx.app.log("rot", ""+skeleton.getRootBone().getRotation());
+                if (isGetUpRotationCounterClockWise) {
+                    skeleton.getRootBone().setRotation(skeleton.getRootBone().getWorldRotationX() + 100f*Gdx.graphics.getDeltaTime());
+                } else {
+                    skeleton.getRootBone().setRotation(skeleton.getRootBone().getWorldRotationX() - 100f*Gdx.graphics.getDeltaTime());
+                }
+            }
+            else {
+                isGettingUp = false;
+                isAnimating = true;
+            }
+        }
+        else{
+
+            isGetUpRotationCounterClockWise = (float) Math.toDegrees(parts.get("torso").physicsBody.getAngle()) < 0;
+
+            Vector3 pos = Environment.gameCamera.project(new Vector3(parts.get("left_leg").physicsBody.getPosition(), 0));
+            skeleton.setPosition(pos.x, pos.y);
+            skeleton.getRootBone().setRotation((float)Math.toDegrees(parts.get("torso").physicsBody.getAngle()));
+
+            physicsEnabled = false;
+            isGettingUp = true;
+
+        }
+
+        /*if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
             isAnimating = true;
             isGettingUp = false;
             physicsEnabled = false;
@@ -261,7 +308,7 @@ public class ZombieBody{
             for (Part p : parts.values()) {
                 p.physicsBody.setAwake(true);
             }
-        }
+        }*/
 
     }
 
