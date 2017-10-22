@@ -70,6 +70,8 @@ public class ZombieBody{
 
     private double time = 0;
 
+    private float getUpAngle = 0;
+
     public boolean physicsEnabled = false;
 
     public boolean hasPowerfulPart = false;
@@ -79,8 +81,6 @@ public class ZombieBody{
     public boolean isAnimating = true;
 
     public boolean isGettingUp = false;
-
-    private boolean isGetUpRotationCounterClockWise = true;
 
     public boolean isTouching = false;
 
@@ -117,7 +117,7 @@ public class ZombieBody{
                 parts.get(slot.getAttachment().getName()).draw(batch);
             }
         }
-        if(!physicsEnabled) {
+        if(isAnimating) {
             skeletonRenderer.draw(batch, skeleton);
         }
         update(delta);
@@ -239,6 +239,85 @@ public class ZombieBody{
     private void getUp(){
 
         if(isGettingUp){
+            float h = parts.get("left_leg").sprite.getHeight() + parts.get("torso").sprite.getHeight() + parts.get("head").sprite.getHeight();
+            float a = (float)Math.sqrt(h*h/1+Math.tan((6.28/360)*getUpAngle)*Math.tan((6.28/360)*getUpAngle));
+            float b = (float)Math.tan((6.28/360)*getUpAngle)*a;
+
+            Gdx.app.log("b", "a "+a+" b "+ b);
+
+            if(!(getUpAngle < 91 && getUpAngle > 89)) {
+
+                // Rotate counter-clockwise
+                if ((float) Math.toDegrees(parts.get("torso").physicsBody.getAngle()) < 0) {
+                    // left_leg is the origin of this arc/circle
+                    Vector3 pos = Environment.gameCamera.unproject(new Vector3(a, b, 0));
+                    getUpMouseJoint.setTarget(new Vector2(pos.x, Environment.gameCamera.viewportHeight - pos.y));
+                    getUpAngle = getUpAngle + 10;
+                }
+                // Rotate clockwise
+                else if((float) Math.toDegrees(parts.get("torso").physicsBody.getAngle()) > 0){
+                    // left_leg is the origin of this arc/circle
+                    Vector3 pos = Environment.gameCamera.unproject(new Vector3(a, b, 0));
+                    getUpMouseJoint.setTarget(new Vector2(pos.x, Environment.gameCamera.viewportHeight - pos.y));
+                    getUpAngle = getUpAngle - 10;
+                }
+
+
+
+
+                // Un-clump the body
+                for(Part p : parts.values()){
+                    if((float)Math.toDegrees(p.physicsBody.getAngle()) > 90){
+                        p.physicsBody.setTransform(p.physicsBody.getPosition(), p.physicsBody.getAngle() - (float)Math.toRadians(1));
+                    }
+                    else if((float)Math.toDegrees(p.physicsBody.getAngle()) < -90){
+                        p.physicsBody.setTransform(p.physicsBody.getPosition(), p.physicsBody.getAngle() + (float)Math.toRadians(1));
+                    }
+                }
+
+            }
+            else {
+                if(getUpMouseJoint != null){
+                    Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                    getUpMouseJoint = null;
+                }
+
+                isGettingUp = false;
+                isAnimating = true;
+            }
+        }
+        else{
+            for(Part p : parts.values()){
+                p.physicsBody.setAwake(false);
+            }
+
+            getUpAngle = (float) Math.toDegrees(parts.get("torso").physicsBody.getAngle());
+
+            MouseJointDef mouseJointDef = new MouseJointDef();
+
+            // Needs 2 bodies, first one not used, so we use an arbitrary body.
+            // http://www.binarytides.com/mouse-joint-box2d-javascript/
+            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyB = parts.get("head").physicsBody;
+            mouseJointDef.collideConnected = true;
+            mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());
+
+            // Makes the joint move body slower
+            mouseJointDef.dampingRatio = 20;
+
+            mouseJointDef.maxForce = 100000f;
+
+            // Destroy the current mouseJoint
+            if(getUpMouseJoint != null){
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            }
+            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+
+            isGettingUp = true;
+        }
+
+        /*
+        if(isGettingUp){
             if(!(skeleton.getRootBone().getRotation() > -1 && skeleton.getRootBone().getRotation() < 1)) {
                 Gdx.app.log("rot", ""+skeleton.getRootBone().getRotation());
                 if (isGetUpRotationCounterClockWise) {
@@ -263,7 +342,7 @@ public class ZombieBody{
             physicsEnabled = false;
             isGettingUp = true;
 
-        }
+        }*/
 
         /*if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
             isAnimating = true;

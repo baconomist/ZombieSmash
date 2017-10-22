@@ -72,7 +72,7 @@ public class Part{
 
     public void draw(SpriteBatch batch){
         if(state.equals("attached")) {
-            if (body.physicsEnabled) {
+            if (!body.isAnimating) {
                 sprite.draw(batch);
             }
         }
@@ -83,7 +83,7 @@ public class Part{
 
     public void update(){
 
-        if(state.equals("attached") && !body.physicsEnabled) {
+        if(state.equals("attached") && body.isAnimating) {
             physicsBody.setAwake(false);
 
 
@@ -125,6 +125,7 @@ public class Part{
                 physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
             }
+
 
 
         }
