@@ -117,8 +117,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 1,
             "name" : "fixture0",
@@ -150,8 +148,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 2,
             "name" : "fixture0",
@@ -183,8 +179,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 3,
             "name" : "fixture0",
@@ -220,8 +214,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 4,
             "name" : "fixture0",
@@ -257,8 +249,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 5,
             "name" : "fixture0",
@@ -290,8 +280,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 6,
             "name" : "fixture0",
@@ -327,8 +315,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 7,
             "name" : "fixture0",
@@ -348,8 +334,6 @@
           
           {
             "density" : 1.000002384185791,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 8,
             "name" : "fixture0",
@@ -399,8 +383,8 @@
         "name" : "left_arm",
         "position" : 
         {
-          "x" : 0.700367808341980,
-          "y" : 0.8803766369819641
+          "x" : 0.7148553729057312,
+          "y" : 0.8922300934791565
         },
         "type" : "dynamic"
       },
@@ -422,8 +406,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 9,
             "name" : "fixture1",
@@ -455,8 +437,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 10,
             "name" : "fixture1",
@@ -488,8 +468,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 11,
             "name" : "fixture1",
@@ -525,8 +503,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 12,
             "name" : "fixture1",
@@ -562,8 +538,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 13,
             "name" : "fixture1",
@@ -595,8 +569,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 14,
             "name" : "fixture1",
@@ -632,8 +604,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 15,
             "name" : "fixture1",
@@ -653,8 +623,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 16,
             "name" : "fixture1",
@@ -704,59 +672,10 @@
         "name" : "right_arm",
         "position" : 
         {
-          "x" : 0.4891538321971893,
-          "y" : 0.8710004687309265
+          "x" : 0.4773003756999970,
+          "y" : 0.8736345767974854
         },
         "type" : "dynamic"
-      },
-      
-      {
-        "angle" : 0,
-        "angularVelocity" : 0,
-        "awake" : true,
-        "fixture" : 
-        [
-          
-          {
-            "density" : 1,
-            "friction" : 0.2,
-            "id" : 17,
-            "name" : "fixture5",
-            "shapes" : 
-            [
-              
-              {
-                "type" : "polygon"
-              }
-            ],
-            "vertices" : 
-            {
-              "x" : 
-              [
-                -0.5270062088966370,
-                0.4806273579597473,
-                3.329719543457031,
-                -3.021687984466553
-              ],
-              "y" : 
-              [
-                -0.5872985124588013,
-                -0.5872985124588013,
-                0.4663625061511993,
-                0.4755679666996002
-              ]
-            }
-          }
-        ],
-        "id" : 3,
-        "linearVelocity" : 0,
-        "name" : "body0",
-        "position" : 
-        {
-          "x" : 0.7653686404228210,
-          "y" : -0.4860583245754242
-        },
-        "type" : "static"
       },
       
       {
@@ -988,8 +907,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 51,
             "name" : "fixture2",
@@ -1106,8 +1023,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65533,
             "friction" : 0.2,
             "id" : 52,
             "name" : "fixture2",
@@ -1392,8 +1307,8 @@
       {
         "anchorA" : 
         {
-          "x" : 0.1226844042539597,
-          "y" : -0.08303208649158478
+          "x" : 0.1384889930486679,
+          "y" : -0.1067389994859695
         },
         "anchorB" : 
         {

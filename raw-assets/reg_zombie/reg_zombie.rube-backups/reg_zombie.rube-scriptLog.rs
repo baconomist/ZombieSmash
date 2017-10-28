@@ -1,1 +1,20 @@
-//Restarted script log at 10/21/17 21:54:05
+//Restarted script log at 10/28/17 13:19:11
+getFixture(1).deselect();
+getFixture(15).deselect();
+getFixture(16).deselect();
+getFixture(14).deselect();
+getFixture(12).deselect();
+getFixture(13).deselect();
+getFixture(10).deselect();
+getFixture(11).deselect();
+getFixture(9).deselect();
+getFixture(7).deselect();
+getFixture(8).deselect();
+getFixture(5).deselect();
+getFixture(6).deselect();
+getFixture(4).deselect();
+getFixture(2).deselect();
+getFixture(3).deselect();
+getFixture(17).select();
+getFixture(17).deselect();
+getFixture(17).delete();
