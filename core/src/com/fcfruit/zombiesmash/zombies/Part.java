@@ -90,12 +90,14 @@ public class Part{
             if(name.contains("leg")){
 
                 Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
-                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight(), 0));
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
-                Gdx.app.log("rot", ""+(body.getSkeleton().findBone(name).getWorldRotationX()));
-                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
+
+                // Quarter of a circle counter-clockwise, in radians
+                rot += 1.57;
+                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
             }
 
@@ -117,11 +119,12 @@ public class Part{
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
 
+
+                // Quarter of a circle counter-clockwise, in radians
+                rot -= 1.57;
                 physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
             }
-
-
 
 
 
