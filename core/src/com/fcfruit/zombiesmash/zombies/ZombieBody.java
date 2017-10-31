@@ -140,7 +140,7 @@ public class ZombieBody{
             physicsEnabled = true;
         }
         else if(!isAnimating && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
-            getUp();
+            //getUp();
         }
 
     }
@@ -214,7 +214,7 @@ public class ZombieBody{
                 if (i.body == b) {
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
-                    sprite.setOrigin(i.center.x, i.center.y);
+                    //sprite.setOrigin(0.5f, 0.5f);
                     float width = sprite.getWidth();
                     sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
                     ANIMSCALE = sprite.getWidth()/width;

@@ -83,6 +83,7 @@ public class Part{
 
     public void update(){
 
+
         if(state.equals("attached") && body.isAnimating) {
             physicsBody.setAwake(false);
 
@@ -94,9 +95,6 @@ public class Part{
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
 
-
-                // Quarter of a circle counter-clockwise, in radians
-                rot += 1.57;
                 physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
             }
@@ -120,8 +118,6 @@ public class Part{
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
 
 
-                // Quarter of a circle counter-clockwise, in radians
-                rot -= 1.57;
                 physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
             }
@@ -132,7 +128,7 @@ public class Part{
 
         Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
-        sprite.setOrigin(sprite.getWidth() / 2, sprite.getHeight() / 2);
+        sprite.setOriginCenter();
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
 
     }
