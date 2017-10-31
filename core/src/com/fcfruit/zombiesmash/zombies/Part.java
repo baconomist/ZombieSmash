@@ -88,9 +88,10 @@ public class Part{
             physicsBody.setAwake(false);
 
 
-            if(name.contains("leg")){
 
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+            if(name.contains("arm")){
+
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
                         body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
@@ -99,12 +100,13 @@ public class Part{
 
             }
 
-            else if(name.contains("arm")){
+            else if(name.contains("leg")){
 
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
-                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight(), 0));
 
-                float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
+                // -180 degrees cus the api is messed up
+                float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX() - 180);
 
                 physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
 
