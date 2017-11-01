@@ -22,6 +22,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
@@ -70,8 +71,6 @@ public class ZombieBody{
 
     private double time = 0;
 
-    private float getUpAngle = 0;
-
     public boolean physicsEnabled = false;
 
     public boolean hasPowerfulPart = false;
@@ -87,6 +86,7 @@ public class ZombieBody{
     public ZombieBody(Zombie z){
 
         zombie = z;
+
 
         animationSetup();
 
@@ -109,6 +109,14 @@ public class ZombieBody{
         // Queue animations on track 0.
         state.setAnimation(0, "run", true);
 
+        state.addListener(new AnimationState.AnimationStateAdapter() {
+            @Override
+            public void complete(AnimationState.TrackEntry entry) {
+                super.complete(entry);
+
+            }
+        });
+
     }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
@@ -129,8 +137,11 @@ public class ZombieBody{
 
         updateParts();
 
-        if(isTouching){
+        if(isMoving && !isGettingUp){
             time = System.currentTimeMillis();
+        }
+
+        if(isTouching){
             if(getUpMouseJoint != null){
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
@@ -139,11 +150,16 @@ public class ZombieBody{
             isGettingUp = false;
             physicsEnabled = true;
         }
-        else if(!isAnimating && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
-            //getUp();
+        else if(physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
+            getUp();
+        }
+        else if(isGettingUp){
+            getUp();
         }
 
+
     }
+
 
     private void updateSkeleton(float delta){
         state.update(delta); // Update the animation time.
@@ -238,7 +254,7 @@ public class ZombieBody{
 
     private void getUp(){
 
-        if(isGettingUp){
+        /*if(isGettingUp){
             float h = parts.get("left_leg").sprite.getHeight() + parts.get("torso").sprite.getHeight() + parts.get("head").sprite.getHeight();
             float a = (float)Math.sqrt(h*h/1+Math.tan((6.28/360)*getUpAngle)*Math.tan((6.28/360)*getUpAngle));
             float b = (float)Math.tan((6.28/360)*getUpAngle)*a;
@@ -314,7 +330,7 @@ public class ZombieBody{
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
 
             isGettingUp = true;
-        }
+        }*/
 
         /*
         if(isGettingUp){
@@ -344,19 +360,22 @@ public class ZombieBody{
 
         }*/
 
-        /*if(isGettingUp && parts.get("head").physicsBody.getPosition().y >= 1.15){
+        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= Environment.gameCamera.viewportHeight - Environment.gameCamera.unproject(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight()/1.5f, 0)).y){
+
             isAnimating = true;
             isGettingUp = false;
             physicsEnabled = false;
-            setPosition(parts.get("torso").physicsBody.getPosition().x, parts.get("torso").physicsBody.getPosition().y);
+            setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
 
-            if(getUpMouseJoint != null){
+            if (getUpMouseJoint != null) {
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
+
+
         }
 
-        else if(!isGettingUp) {
+        else if (!isGettingUp){
             
             MouseJointDef mouseJointDef = new MouseJointDef();
             
@@ -367,8 +386,8 @@ public class ZombieBody{
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());
 
-            // Makes the joint move body slower
-            mouseJointDef.dampingRatio = 20;
+            // The higher the ratio, the slower the movement of body to mousejoint
+            mouseJointDef.dampingRatio = 4;
 
             mouseJointDef.maxForce = 100000f;
 
@@ -377,17 +396,12 @@ public class ZombieBody{
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
-            getUpMouseJoint.setTarget(new Vector2(parts.get("left_leg").physicsBody.getPosition().x, 1.5f));
+            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, 1.5f));
 
             isGettingUp = true;
 
             Gdx.app.log("joint", "jjj"+getUpMouseJoint);
         }
-        if(isGettingUp) {
-            for (Part p : parts.values()) {
-                p.physicsBody.setAwake(true);
-            }
-        }*/
 
     }
 
@@ -467,6 +481,23 @@ public class ZombieBody{
         }
 
         return null;
+
+    }
+
+    // Recursion!
+    public float getHeight(ArrayList<Part> p){
+        ArrayList<Part> pCopy = new ArrayList<Part>();
+        for(Part prt : p){
+            pCopy.add(prt);
+        }
+
+        if (p.size() == 0){
+            return 0;
+        }
+        else{
+            pCopy.remove(0);
+            return getHeight(pCopy) + p.get(0).sprite.getHeight();
+        }
 
     }
 
