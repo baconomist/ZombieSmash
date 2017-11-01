@@ -19,6 +19,8 @@ public class Zombie{
 
     private ZombieBody body;
 
+    public int id;
+
     public boolean physicsEnabled;
 
     public Zombie() {

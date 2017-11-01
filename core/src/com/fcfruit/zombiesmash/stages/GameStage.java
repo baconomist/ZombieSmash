@@ -31,25 +31,26 @@ public class GameStage extends Stage {
 
     public Viewport viewport;
 
-    private Zombie regZombie;
+    private ArrayList<Zombie> zombies = Environment.physics.zombies;
 
-    private ArrayList<Part> parts;
+    private ArrayList<Part> parts = Environment.physics.parts;
 
     private SpriteBatch spriteBatch;
 
     private SkeletonRenderer skeletonRenderer;
-
-    private float delta;
 
     public GameStage(Viewport v){
         super(v);
 
         viewport = v;
 
-        regZombie = new RegularZombie();
-        Environment.physics.addBody(regZombie);
-        regZombie.setPosition(1, 1);
-
+        Zombie z;
+        for(int i = 0; i < 10; i++) {
+            z = new RegularZombie();
+            z.id = i;
+            Environment.physics.addBody(z);
+            z.setPosition(i, 0);
+        }
         spriteBatch = new SpriteBatch();
 
         skeletonRenderer = new SkeletonRenderer();
@@ -63,14 +64,16 @@ public class GameStage extends Stage {
     public void draw() {
         super.draw();
 
-        delta = Gdx.graphics.getDeltaTime();
+        float delta = Gdx.graphics.getDeltaTime();
 
         // Viewport.getCamera() != Environment.gameCamera
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
 
-        regZombie.draw(spriteBatch, skeletonRenderer, delta);
+        for(Zombie z : this.zombies) {
+            z.draw(spriteBatch, skeletonRenderer, delta);
+        }
 
         parts = Environment.physics.parts;
 

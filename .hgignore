@@ -425,3 +425,4 @@ build/android-profile/profile-2017-08-02-21-56-40-021.rawproto
 build/**
 *.class
 *.jar
+raw-assets/reg_zombie/reg_zombie_rube.rube-backups/

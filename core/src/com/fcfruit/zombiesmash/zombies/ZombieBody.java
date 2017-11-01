@@ -67,17 +67,22 @@ public class ZombieBody{
 
     private MouseJoint getUpMouseJoint = null;
 
-    private double timeBeforeAnimate = 500;
+    private float speed = 50;
+
+    // Default direction is left
+    private int direction = 0;
+
+    private double timeBeforeAnimate = 5000;
 
     private double time = 0;
+
+    public String currentAnimation;
 
     public boolean physicsEnabled = false;
 
     public boolean hasPowerfulPart = false;
 
     public boolean isMoving = false;
-    
-    public boolean isAnimating = true;
 
     public boolean isGettingUp = false;
 
@@ -107,7 +112,8 @@ public class ZombieBody{
         state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
         // Queue animations on track 0.
-        state.setAnimation(0, "run", true);
+        this.currentAnimation = "run";
+        state.setAnimation(0, currentAnimation, true);
 
         state.addListener(new AnimationState.AnimationStateAdapter() {
             @Override
@@ -125,7 +131,7 @@ public class ZombieBody{
                 parts.get(slot.getAttachment().getName()).draw(batch);
             }
         }
-        if(isAnimating) {
+        if(!physicsEnabled) {
             skeletonRenderer.draw(batch, skeleton);
         }
         update(delta);
@@ -146,15 +152,28 @@ public class ZombieBody{
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
-            isAnimating = false;
             isGettingUp = false;
             physicsEnabled = true;
         }
-        else if(physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate){
-            getUp();
+        else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
+            if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
+                getUp();
+            } else if (isGettingUp) {
+                getUp();
+            }
         }
-        else if(isGettingUp){
-            getUp();
+        else{
+            //this.currentAnimation = "crawl";
+        }
+
+
+        if(!physicsEnabled){
+            if(this.direction == 0) {
+                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
+            else{
+                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
         }
 
 
@@ -184,6 +203,10 @@ public class ZombieBody{
                     }
                 });
             }
+        }
+
+        if(!this.currentAnimation.equals(state.getCurrent(0).getAnimation().getName())){
+            state.setAnimation(0, currentAnimation, true);
         }
 
     }
@@ -230,9 +253,10 @@ public class ZombieBody{
                 if (i.body == b) {
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
-                    //sprite.setOrigin(0.5f, 0.5f);
+                    sprite.setOriginCenter();
                     float width = sprite.getWidth();
                     sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
+                    sprite.setOriginCenter();
                     ANIMSCALE = sprite.getWidth()/width;
                 }
 
@@ -244,6 +268,12 @@ public class ZombieBody{
                     joint = j;
                     break;
                 }
+            }
+
+
+            for (Fixture f : b.getFixtureList()) {
+                //Make different zombies not collide with eachother
+                f.setUserData(this.zombie.id);
             }
 
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
@@ -362,7 +392,6 @@ public class ZombieBody{
 
         if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= Environment.gameCamera.viewportHeight - Environment.gameCamera.unproject(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight()/1.5f, 0)).y){
 
-            isAnimating = true;
             isGettingUp = false;
             physicsEnabled = false;
             setPosition(parts.get("torso").physicsBody.getPosition().x, 0);

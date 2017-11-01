@@ -72,7 +72,7 @@ public class Part{
 
     public void draw(SpriteBatch batch){
         if(state.equals("attached")) {
-            if (!body.isAnimating) {
+            if (body.physicsEnabled) {
                 sprite.draw(batch);
             }
         }
@@ -84,7 +84,7 @@ public class Part{
     public void update(){
 
 
-        if(state.equals("attached") && body.isAnimating) {
+        if(state.equals("attached") && !body.physicsEnabled) {
             physicsBody.setAwake(false);
 
 
@@ -130,7 +130,6 @@ public class Part{
 
         Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
-        sprite.setOriginCenter();
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
 
     }
