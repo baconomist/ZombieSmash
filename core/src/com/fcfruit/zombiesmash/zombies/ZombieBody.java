@@ -147,8 +147,15 @@ public class ZombieBody{
                 getUp();
             }
         }
-        else{
-            this.currentAnimation = "crawl";
+        else if(parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null)){
+            if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
+
+                this.physicsEnabled = false;
+                this.currentAnimation = "crawl";
+                setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
+
+
+            }
         }
 
 
@@ -231,7 +238,7 @@ public class ZombieBody{
         for(Body b : rubeScene.getBodies()) {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
-
+            Gdx.app.log("bodyName", bodyName);
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
             for (RubeImage i : rubeScene.getImages()) {

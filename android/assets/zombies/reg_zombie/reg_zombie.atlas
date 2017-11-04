@@ -25,6 +25,13 @@ right_arm
   orig: 238, 82
   offset: 1, 1
   index: -1
+right_leg
+  rotate: false
+  xy: 303, 380
+  size: 306, 129
+  orig: 308, 131
+  offset: 1, 1
+  index: -1
 left_leg
   rotate: false
   xy: 303, 380
@@ -38,11 +45,4 @@ torso
   size: 298, 203
   orig: 313, 237
   offset: 3, 13
-  index: -1
-underwear
-  rotate: false
-  xy: 611, 456
-  size: 184, 53
-  orig: 186, 55
-  offset: 1, 1
   index: -1
