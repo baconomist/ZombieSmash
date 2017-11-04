@@ -1,48 +1,48 @@
 
-reg_zombie.png
+police_zombie.png
 size: 1024,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 head
   rotate: false
-  xy: 2, 207
-  size: 299, 302
-  orig: 301, 304
+  xy: 251, 89
+  size: 268, 319
+  orig: 270, 321
   offset: 1, 1
   index: -1
 left_arm
   rotate: false
-  xy: 303, 298
-  size: 236, 80
-  orig: 238, 82
+  xy: 521, 316
+  size: 403, 92
+  orig: 405, 94
   offset: 1, 1
   index: -1
 right_arm
   rotate: false
-  xy: 303, 298
-  size: 236, 80
-  orig: 238, 82
+  xy: 521, 316
+  size: 403, 92
+  orig: 405, 94
   offset: 1, 1
   index: -1
 left_leg
   rotate: false
-  xy: 303, 380
-  size: 306, 129
-  orig: 308, 131
+  xy: 521, 2
+  size: 158, 312
+  orig: 160, 314
+  offset: 1, 1
+  index: -1
+right_leg
+  rotate: false
+  xy: 521, 2
+  size: 158, 312
+  orig: 160, 314
   offset: 1, 1
   index: -1
 torso
   rotate: false
-  xy: 2, 2
-  size: 298, 203
-  orig: 313, 237
-  offset: 3, 13
-  index: -1
-underwear
-  rotate: false
-  xy: 611, 456
-  size: 184, 53
-  orig: 186, 55
+  xy: 2, 64
+  size: 247, 344
+  orig: 249, 346
   offset: 1, 1
   index: -1

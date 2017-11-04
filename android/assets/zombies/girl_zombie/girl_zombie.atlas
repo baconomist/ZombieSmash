@@ -1,0 +1,48 @@
+
+girl_zombie.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 207, 168
+  size: 267, 299
+  orig: 269, 301
+  offset: 1, 1
+  index: -1
+left_arm
+  rotate: false
+  xy: 2, 2
+  size: 294, 74
+  orig: 296, 76
+  offset: 1, 1
+  index: -1
+left_leg
+  rotate: false
+  xy: 476, 152
+  size: 180, 315
+  orig: 182, 317
+  offset: 1, 1
+  index: -1
+right_arm
+  rotate: false
+  xy: 298, 79
+  size: 280, 71
+  orig: 282, 73
+  offset: 1, 1
+  index: -1
+right_leg
+  rotate: false
+  xy: 658, 131
+  size: 146, 336
+  orig: 148, 338
+  offset: 1, 1
+  index: -1
+torso
+  rotate: false
+  xy: 2, 78
+  size: 203, 389
+  orig: 205, 391
+  offset: 1, 1
+  index: -1

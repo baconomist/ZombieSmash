@@ -1,0 +1,55 @@
+
+big_zombie.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 1191, 310
+  size: 554, 537
+  orig: 556, 539
+  offset: 1, 1
+  index: -1
+left_arm
+  rotate: false
+  xy: 2, 2
+  size: 645, 217
+  orig: 647, 219
+  offset: 1, 1
+  index: -1
+right_arm
+  rotate: false
+  xy: 2, 2
+  size: 645, 217
+  orig: 647, 219
+  offset: 1, 1
+  index: -1
+left_leg 
+  rotate: false
+  xy: 1747, 184
+  size: 282, 663
+  orig: 284, 665
+  offset: 1, 1
+  index: -1
+right_leg
+  rotate: false
+  xy: 1747, 184
+  size: 282, 663
+  orig: 284, 665
+  offset: 1, 1
+  index: -1
+rock
+  rotate: false
+  xy: 640, 221
+  size: 549, 626
+  orig: 551, 628
+  offset: 1, 1
+  index: -1
+torso
+  rotate: false
+  xy: 2, 255
+  size: 636, 592
+  orig: 638, 594
+  offset: 1, 1
+  index: -1

@@ -134,7 +134,11 @@ public class ZombieBody{
                 getUpMouseJoint = null;
             }
             isGettingUp = false;
+
+            //Make the physics bodies unstuck, sometimes the animation goes into the ground.
+            this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
             physicsEnabled = true;
+
         }
         else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
@@ -144,7 +148,7 @@ public class ZombieBody{
             }
         }
         else{
-            //this.currentAnimation = "crawl";
+            this.currentAnimation = "crawl";
         }
 
 
