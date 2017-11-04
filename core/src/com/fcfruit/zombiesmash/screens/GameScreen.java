@@ -1,30 +1,17 @@
 package com.fcfruit.zombiesmash.screens;
 
-import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
-import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Physics;
 import com.fcfruit.zombiesmash.levels.Level;
-import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 import com.fcfruit.zombiesmash.stages.GameStage;
-
-
-import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-07-21.

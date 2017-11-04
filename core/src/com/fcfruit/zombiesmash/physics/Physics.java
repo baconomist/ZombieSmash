@@ -1,50 +1,18 @@
-package com.fcfruit.zombiesmash;
+package com.fcfruit.zombiesmash.physics;
 
-import com.badlogic.gdx.Game;
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.JointEdge;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
-import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJoint;
-import com.badlogic.gdx.physics.box2d.joints.DistanceJointDef;
-import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
-import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.Array;
-import com.fcfruit.zombiesmash.rube.RubeDefaults;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
-import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
-import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
-import com.fcfruit.zombiesmash.zombies.ZombieBody;
 
-
-import net.java.games.input.Mouse;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 import static java.util.Collections.min;
@@ -83,7 +51,7 @@ public class Physics {
         zombies = new ArrayList<Zombie>();
 
         world = new World(new Vector2(0, -25), true);
-        world.setContactListener(new Box2DCollisionListener());
+        world.setContactListener(new CollisionListener());
 
         world.setContactFilter(new ContactFilter());
 

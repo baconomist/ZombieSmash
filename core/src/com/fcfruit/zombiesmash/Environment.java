@@ -1,7 +1,5 @@
 package com.fcfruit.zombiesmash;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
@@ -22,7 +20,7 @@ public class Environment {
 
     public static OrthographicCamera gameCamera;
 
-    public static Physics physics;
+    public static com.fcfruit.zombiesmash.physics.Physics physics;
 
     }
 
