@@ -22,7 +22,7 @@ public class Part{
 
     public Sprite sprite;
 
-    public ZombieBody body;
+    public Zombie body;
 
     public Body physicsBody;
 
@@ -38,7 +38,7 @@ public class Part{
 
     String state;
 
-    public Part(String nm, Sprite s, Body b, Joint j, ZombieBody zbody){
+    public Part(String nm, Sprite s, Body b, Joint j, Zombie zbody){
         name = nm;
 
         sprite = s;

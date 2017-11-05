@@ -1,93 +1,424 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.physics.box2d.*;
+import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
+import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.esotericsoftware.spine.Slot;
+import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.rube.RubeScene;
+import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
+
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
- * Created by Lucas on 2017-07-21.
+ * Created by Lucas on 2017-07-30.
  */
 
-public class Zombie{
-
-    private ZombieBody body;
+public class Zombie {
+    private static float ANIMSCALE;
 
     public int id;
 
-    public boolean physicsEnabled;
+    private RubeScene rubeScene;
 
-    public Zombie() {
+    private TextureAtlas atlas;
+    private Skeleton skeleton;
+    private AnimationState state;
 
-        body = new ZombieBody(this);
+    public HashMap<String, Part> parts;
 
-        physicsEnabled = true;
+    private MouseJoint getUpMouseJoint = null;
+
+    private float speed = 50;
+
+    // Default direction is left
+    private int direction = 0;
+
+    private double timeBeforeAnimate = 5000;
+
+    private double time = 0;
+
+    public String currentAnimation;
+
+    public boolean physicsEnabled = false;
+
+    public boolean hasPowerfulPart = false;
+
+    public boolean isMoving = false;
+
+    public boolean isGettingUp = false;
+
+    public boolean isTouching = false;
+
+    public Zombie(){
+
+        animationSetup();
+
+    }
+
+    private void animationSetup(){
+        atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
+
+        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+        //stateData.setMix("run", "jump", 0.2f);
+        //stateData.setMix("jump", "run", 0.2f);
+
+        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
+
+        // Queue animations on track 0.
+        this.currentAnimation = "run";
+        state.setAnimation(0, currentAnimation, true);
+
+        state.addListener(new AnimationState.AnimationStateAdapter() {
+            @Override
+            public void complete(AnimationState.TrackEntry entry) {
+                super.complete(entry);
+
+            }
+        });
 
     }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
-        // Body.update() which is inside draw has to be called before everything, or else some instructions to skeleton will not function.
-        // I.E. skeleton.findBone("left_arm").setRotation(90); will not work before this body.draw() call
-
-        body.draw(batch, skeletonRenderer, delta);
-
+        for(Slot slot : skeleton.getDrawOrder()){
+            if(parts.get(slot.getAttachment().getName()) != null) {
+                parts.get(slot.getAttachment().getName()).draw(batch);
+            }
+        }
+        if(!physicsEnabled) {
+            skeletonRenderer.draw(batch, skeleton);
+        }
         update(delta);
     }
 
     private void update(float delta){
 
+        updateSkeleton(delta);
+
+        updateParts();
+
+        if(isMoving && !isGettingUp){
+            time = System.currentTimeMillis();
+        }
+
+        if(isTouching){
+            if(getUpMouseJoint != null){
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                getUpMouseJoint = null;
+            }
+            isGettingUp = false;
+
+            //Make the physics bodies unstuck, sometimes the animation goes into the ground.
+            this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
+            physicsEnabled = true;
+
+        }
+        else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
+            if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
+                getUp();
+            } else if (isGettingUp) {
+                getUp();
+            }
+        }
+        else if(parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null)){
+            if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
+
+                this.physicsEnabled = false;
+                this.currentAnimation = "crawl";
+                setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
+
+
+            }
+        }
+
+
+        if(!physicsEnabled){
+            if(this.direction == 0) {
+                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
+            else{
+                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
+        }
 
 
     }
 
+
+    private void updateSkeleton(float delta){
+        state.update(delta); // Update the animation time.
+
+        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+
+        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+
+        //parts.get("head").setRotation(-200.1f);
+        //skeleton.updateWorldTransform();
+        //parts.get("left_am").setRotation(-160);
+
+        //Always use this after any transformation change to skeleton:
+        //skeleton.updateWorldTransform();
+
+        for(Slot s : skeleton.getSlots()){
+            if(parts.get(s.getData().getName()) == null){
+                s.setAttachment(new Attachment("new attachement") {
+                    @Override
+                    public String getName() {
+                        return super.getName();
+                    }
+                });
+            }
+        }
+
+        if(!this.currentAnimation.equals(state.getCurrent(0).getAnimation().getName())){
+            state.setAnimation(0, currentAnimation, true);
+        }
+
+    }
+
+    private void updateParts(){
+
+        // Run update method for each body part
+        boolean ispowerfulpart = false;
+        boolean istouching = false;
+        boolean ismoving = false;
+        for(Part p : parts.values()){
+            p.update();
+            if(p.isPowerfulPart && !ispowerfulpart){
+                ispowerfulpart = true;
+            }
+            if(p.isTouching && !istouching){
+                istouching = true;
+            }
+            if(p.physicsBody.getLinearVelocity().x > 0.1 || p.physicsBody.getLinearVelocity().y > 0.1 && !ismoving) {
+                ismoving = true;
+            }
+        }
+
+        // Update body touching state
+        hasPowerfulPart = ispowerfulpart;
+        isTouching = istouching;
+        isMoving = ismoving;
+
+    }
+
+    public void constructPhysicsBody(World world){
+        RubeSceneLoader loader = new RubeSceneLoader(world);
+        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
+
+        parts = new HashMap<String, Part>();
+
+        for(Body b : rubeScene.getBodies()) {
+
+            String bodyName = (String) rubeScene.getCustom(b, "name");
+            Gdx.app.log("bodyName", bodyName);
+            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
+
+            for (RubeImage i : rubeScene.getImages()) {
+                if (i.body == b) {
+                    sprite.flip(i.flip, false);
+                    sprite.setColor(i.color);
+                    sprite.setOriginCenter();
+                    float width = sprite.getWidth();
+                    sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
+                    sprite.setOriginCenter();
+                    ANIMSCALE = sprite.getWidth()/width;
+                }
+
+            }
+
+            Joint joint = null;
+            for (Joint j : rubeScene.getJoints()) {
+                if (j.getBodyA() == b || j.getBodyB() == b) {
+                    joint = j;
+                    break;
+                }
+            }
+
+
+            for (Fixture f : b.getFixtureList()) {
+                //Make different zombies not collide with eachother
+                f.setUserData(this.id);
+            }
+
+            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
+
+        }
+        skeleton.getRootBone().setScale(ANIMSCALE);
+    }
+
+    private void getUp(){
+
+        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= Environment.gameCamera.viewportHeight - Environment.gameCamera.unproject(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight()/1.5f, 0)).y){
+
+            isGettingUp = false;
+            physicsEnabled = false;
+            setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
+
+            if (getUpMouseJoint != null) {
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                getUpMouseJoint = null;
+            }
+
+
+        }
+
+        else if (!isGettingUp){
+            
+            MouseJointDef mouseJointDef = new MouseJointDef();
+            
+            // Needs 2 bodies, first one not used, so we use an arbitrary body.
+            // http://www.binarytides.com/mouse-joint-box2d-javascript/
+            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyB = parts.get("head").physicsBody;
+            mouseJointDef.collideConnected = true;
+            mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());
+
+            // The higher the ratio, the slower the movement of body to mousejoint
+            mouseJointDef.dampingRatio = 4;
+
+            mouseJointDef.maxForce = 100000f;
+
+            // Destroy the current mouseJoint
+            if(getUpMouseJoint != null){
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            }
+            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, 1.5f));
+
+            isGettingUp = true;
+
+        }
+
+    }
+
+
+
     public void touchDown(float x, float y, int pointer){
-        body.touchDown(x, y, pointer);
+
+        for(String name : parts.keySet()){
+            parts.get(name).touchDown(x, y, pointer);
+        }
+
     }
 
     public void touchDragged(float x, float y, int pointer){
-        body.touchDragged(x, y, pointer);
+
+        for(String name : parts.keySet()){
+            parts.get(name).touchDragged(x, y, pointer);
+        }
+
     }
 
     public void touchUp(float x, float y, int pointer){
-        body.touchUp(x, y, pointer);
-    }
 
+        for(String name : parts.keySet()){
+            parts.get(name).touchUp(x, y, pointer);
+        }
 
-
-
-    public void constructPhysicsBody(World world){
-        body.constructPhysicsBody(world);
     }
 
     public void setPosition(float x, float y){
-        body.setPosition(x, y);
+        if(physicsEnabled){
+            parts.get("torso").setPosition(x, y);
+        }
+        else {
+            Vector3 pos = Environment.gameCamera.project(new Vector3(x, y, 0));
+            skeleton.setPosition(pos.x, pos.y);
+            skeleton.updateWorldTransform();
+        }
+
+
+
+
     }
 
+    public Vector2 getPosition(){
+        if(physicsEnabled){
+            return parts.get("torso").physicsBody.getPosition();
+        }
+        // Else, return animation position
+        // Camera doesn't take care of reverse y axis(starting from top)
+        Vector3 pos = Environment.gameCamera.unproject(new Vector3(skeleton.getRootBone().getWorldX(), skeleton.getRootBone().getWorldY() + ((RegionAttachment)skeleton.findSlot("torso").getAttachment()).getHeight()/2, 0));
+        return new Vector2(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+    }
+
+    public Array<Body> getPhysicsBodies(){
+        return rubeScene.getBodies();
+    }
+
+    public Skeleton getSkeleton(){
+        return skeleton;
+    }
+
+    public float getMass(){
+        float mass = 0;
+        for(Part p : parts.values()){
+            mass = mass + p.physicsBody.getMass();
+        }
+        return mass;
+    }
 
     public Part getPartFromPhysicsBody(Body physicsBody){
 
-        return body.getPartFromPhysicsBody(physicsBody);
+        for(Part p : parts.values()){
+            if(p.physicsBody.equals(physicsBody)){
+                return p;
+            }
+        }
+
+        return null;
+
+    }
+
+    // Recursion!
+    public float getHeight(ArrayList<Part> p){
+        ArrayList<Part> pCopy = new ArrayList<Part>();
+        for(Part prt : p){
+            pCopy.add(prt);
+        }
+
+        if (p.size() == 0){
+            return 0;
+        }
+        else{
+            pCopy.remove(0);
+            return getHeight(pCopy) + p.get(0).sprite.getHeight();
+        }
 
     }
 
     public HashMap<String, Part> getParts(){
-        return body.getParts();
+        return parts;
     }
 
-
     public void destroy(){
-        body.destroy();
+
     }
 
 
 }
-
-
-
-
-
-
-
-
