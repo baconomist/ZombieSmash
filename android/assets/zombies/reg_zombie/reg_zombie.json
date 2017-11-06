@@ -1,8 +1,8 @@
 {
-"skeleton": { "hash": "LdhuMGA7Bu6IibcA3tpknGSdHuw", "spine": "3.6.46", "width": 425.54, "height": 804 },
+"skeleton": { "hash": "RcdkAVbi+ngHua89b58jVYFPDOA", "spine": "3.6.47", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "x": 1.01, "y": -0.58 },
-	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": -18.13, "y": 250.33 },
+	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 75.28, "y": 283.07 },
 	{ "name": "head", "parent": "torso", "length": 214.57, "rotation": -6.26, "x": 196.55, "y": 1.02 },
 	{ "name": "left_shoulder", "parent": "torso", "length": 66.81, "rotation": -107.33, "x": 198.41, "y": 1.85 },
 	{ "name": "left_arm", "parent": "left_shoulder", "length": 121.77, "rotation": 8.12, "x": 54.92, "y": -1.3 },

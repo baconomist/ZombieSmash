@@ -70,8 +70,6 @@ public class Part{
         if(state.equals("attached") && !body.physicsEnabled) {
             physicsBody.setAwake(false);
 
-
-
             if(name.contains("arm")){
 
                 Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
@@ -112,7 +110,7 @@ public class Part{
         }
 
         Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight()/2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
 
     }
@@ -158,12 +156,15 @@ public class Part{
         mouseJointDef.target.set(x, y);
 
         // Makes the joint move body faster
-        mouseJointDef.frequencyHz = 10;
+        //mouseJointDef.frequencyHz = 10;
 
         // Idk what this does, may want to play with it
         // Default is 0.7, I do know that it makes things
         // A lot slower for the mousejoint though when you set it to 10
         //mouseJointDef.dampingRatio = 10;
+
+        // Makes the joint move body faster
+        mouseJointDef.dampingRatio = 0.1f;
 
         pointer = p;
         if(isPowerful) {

@@ -1,11 +1,9 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -23,12 +21,12 @@ import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 import java.util.HashMap;
 
 /**
- * Created by Lucas on 2017-07-21.
+ * Created by Lucas on 2017-11-05.
  */
 
-public class RegularZombie extends Zombie {
-
-    public RegularZombie(int id) {
+public class GirlZombie extends Zombie {
+    
+    public GirlZombie(int id){
         super(id);
 
         animationSetup();
@@ -37,10 +35,10 @@ public class RegularZombie extends Zombie {
 
     @Override
     public void animationSetup() {
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
+        atlas = new TextureAtlas(Gdx.files.internal("zombies/girl_zombie/girl_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(ANIMSCALE); // Load the skeleton at 100% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
+        json.setScale(ANIMSCALE);
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/girl_zombie/girl_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
@@ -66,7 +64,7 @@ public class RegularZombie extends Zombie {
     @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
-        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
+        rubeScene = loader.loadScene(Gdx.files.internal("zombies/girl_zombie/girl_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
 
@@ -81,7 +79,6 @@ public class RegularZombie extends Zombie {
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOriginCenter();
-                    //sprite.setScale(ANIMSCALE);
                     sprite.setSize(ANIMSCALE*sprite.getWidth(), ANIMSCALE*sprite.getHeight());
                     sprite.setOriginCenter();
                 }
@@ -105,15 +102,13 @@ public class RegularZombie extends Zombie {
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-
     }
 
     @Override
     void crawl(){
-        this.physicsEnabled = false;
-        this.currentAnimation = "crawl";
 
-        setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
     }
 
+
+    
 }

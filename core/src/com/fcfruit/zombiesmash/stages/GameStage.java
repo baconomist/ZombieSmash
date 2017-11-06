@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -37,11 +38,16 @@ public class GameStage extends Stage {
 
         Zombie z;
         for(int i = 0; i < 10; i++) {
-            z = new RegularZombie();
-            z.id = i;
+            z = new RegularZombie(i);
             Environment.physics.addBody(z);
             z.setPosition(i, 0);
         }
+        for(int i = 11; i < 20; i++) {
+            z = new GirlZombie(i);
+            Environment.physics.addBody(z);
+            z.setPosition(i - 10, 0);
+        }
+
         spriteBatch = new SpriteBatch();
 
         skeletonRenderer = new SkeletonRenderer();

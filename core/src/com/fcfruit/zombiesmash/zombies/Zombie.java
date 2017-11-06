@@ -34,17 +34,17 @@ import java.util.HashMap;
  */
 
 public class Zombie {
-    private static float ANIMSCALE;
+    static float ANIMSCALE = 0.3f;
 
     public int id;
 
-    private RubeScene rubeScene;
+    RubeScene rubeScene;
 
-    private TextureAtlas atlas;
-    private Skeleton skeleton;
-    private AnimationState state;
+    TextureAtlas atlas;
+    Skeleton skeleton;
+    AnimationState state;
 
-    public HashMap<String, Part> parts;
+    HashMap<String, Part> parts;
 
     private MouseJoint getUpMouseJoint = null;
 
@@ -57,51 +57,25 @@ public class Zombie {
 
     private double time = 0;
 
-    public String currentAnimation;
+    String currentAnimation;
 
-    public boolean physicsEnabled = false;
+    boolean physicsEnabled = false;
 
-    public boolean hasPowerfulPart = false;
+    boolean hasPowerfulPart = false;
 
-    public boolean isMoving = false;
+    private boolean isMoving = false;
 
-    public boolean isGettingUp = false;
+    private boolean isGettingUp = false;
 
-    public boolean isTouching = false;
+    private boolean isTouching = false;
 
-    public Zombie(){
 
-        animationSetup();
 
+    Zombie(int id) {
+        this.id = id;
     }
 
-    private void animationSetup(){
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
-        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
 
-        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
-        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
-        //stateData.setMix("run", "jump", 0.2f);
-        //stateData.setMix("jump", "run", 0.2f);
-
-        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
-
-        // Queue animations on track 0.
-        this.currentAnimation = "run";
-        state.setAnimation(0, currentAnimation, true);
-
-        state.addListener(new AnimationState.AnimationStateAdapter() {
-            @Override
-            public void complete(AnimationState.TrackEntry entry) {
-                super.complete(entry);
-
-            }
-        });
-
-    }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         for(Slot slot : skeleton.getDrawOrder()){
@@ -139,19 +113,14 @@ public class Zombie {
         }
         else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
-                getUp();
+                this.getUp();
             } else if (isGettingUp) {
-                getUp();
+                this.getUp();
             }
         }
         else if(parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null)){
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - time >= timeBeforeAnimate) {
-
-                this.physicsEnabled = false;
-                this.currentAnimation = "crawl";
-                setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
-
-
+                this.crawl();
             }
         }
 
@@ -175,13 +144,6 @@ public class Zombie {
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
 
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
-
-        //parts.get("head").setRotation(-200.1f);
-        //skeleton.updateWorldTransform();
-        //parts.get("left_am").setRotation(-160);
-
-        //Always use this after any transformation change to skeleton:
-        //skeleton.updateWorldTransform();
 
         for(Slot s : skeleton.getSlots()){
             if(parts.get(s.getData().getName()) == null){
@@ -226,50 +188,6 @@ public class Zombie {
 
     }
 
-    public void constructPhysicsBody(World world){
-        RubeSceneLoader loader = new RubeSceneLoader(world);
-        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
-
-        parts = new HashMap<String, Part>();
-
-        for(Body b : rubeScene.getBodies()) {
-
-            String bodyName = (String) rubeScene.getCustom(b, "name");
-            Gdx.app.log("bodyName", bodyName);
-            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-
-            for (RubeImage i : rubeScene.getImages()) {
-                if (i.body == b) {
-                    sprite.flip(i.flip, false);
-                    sprite.setColor(i.color);
-                    sprite.setOriginCenter();
-                    float width = sprite.getWidth();
-                    sprite.setSize(i.width * Physics.PPM, i.height * Physics.PPM);
-                    sprite.setOriginCenter();
-                    ANIMSCALE = sprite.getWidth()/width;
-                }
-
-            }
-
-            Joint joint = null;
-            for (Joint j : rubeScene.getJoints()) {
-                if (j.getBodyA() == b || j.getBodyB() == b) {
-                    joint = j;
-                    break;
-                }
-            }
-
-
-            for (Fixture f : b.getFixtureList()) {
-                //Make different zombies not collide with eachother
-                f.setUserData(this.id);
-            }
-
-            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
-
-        }
-        skeleton.getRootBone().setScale(ANIMSCALE);
-    }
 
     private void getUp(){
 
@@ -284,6 +202,8 @@ public class Zombie {
                 getUpMouseJoint = null;
             }
 
+            // Restart animation
+            state.setAnimation(0, currentAnimation, true);
 
         }
 
@@ -312,32 +232,6 @@ public class Zombie {
 
             isGettingUp = true;
 
-        }
-
-    }
-
-
-
-    public void touchDown(float x, float y, int pointer){
-
-        for(String name : parts.keySet()){
-            parts.get(name).touchDown(x, y, pointer);
-        }
-
-    }
-
-    public void touchDragged(float x, float y, int pointer){
-
-        for(String name : parts.keySet()){
-            parts.get(name).touchDragged(x, y, pointer);
-        }
-
-    }
-
-    public void touchUp(float x, float y, int pointer){
-
-        for(String name : parts.keySet()){
-            parts.get(name).touchUp(x, y, pointer);
         }
 
     }
@@ -415,10 +309,38 @@ public class Zombie {
     public HashMap<String, Part> getParts(){
         return parts;
     }
+    void crawl(){}
+    public void constructPhysicsBody(World world){}
+    public void animationSetup() {}
+    public void destroy(){}
 
-    public void destroy(){
+
+
+
+
+
+    public void touchDown(float x, float y, int pointer){
+
+        for(String name : parts.keySet()){
+            parts.get(name).touchDown(x, y, pointer);
+        }
 
     }
 
+    public void touchDragged(float x, float y, int pointer){
+
+        for(String name : parts.keySet()){
+            parts.get(name).touchDragged(x, y, pointer);
+        }
+
+    }
+
+    public void touchUp(float x, float y, int pointer){
+
+        for(String name : parts.keySet()){
+            parts.get(name).touchUp(x, y, pointer);
+        }
+
+    }
 
 }
