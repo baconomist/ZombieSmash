@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "3JFb4lYHPxH7gVKb1+sNsJhMGWA", "spine": "3.6.47", "width": 401.38, "height": 852.95 },
+"skeleton": { "hash": "sJKT1kQIKoIZUd5Yeak0yMovRfU", "spine": "3.6.47", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 111, "y": 347 },
@@ -32,12 +32,12 @@
 	}
 ],
 "slots": [
-	{ "name": "left_arm", "bone": "left_arm", "attachment": "left_arm" },
 	{ "name": "left_leg", "bone": "left_leg", "attachment": "left_leg" },
+	{ "name": "left_arm", "bone": "left_arm", "attachment": "left_arm" },
 	{ "name": "torso", "bone": "torso", "attachment": "torso" },
-	{ "name": "head", "bone": "head", "attachment": "head" },
+	{ "name": "right_leg", "bone": "right_leg", "attachment": "right_leg" },
 	{ "name": "right_arm", "bone": "right_arm", "attachment": "right_arm" },
-	{ "name": "right_leg", "bone": "right_leg", "attachment": "right_leg" }
+	{ "name": "head", "bone": "head", "attachment": "head" }
 ],
 "skins": {
 	"default": {

@@ -70,6 +70,7 @@ public class GameScreen implements Screen{
         // Game stage created @ begining of game,
         // So game menu sets input processor after
         // GameScreen if you don't put this here
+        // You will not have control of ui on this screen
         Gdx.input.setInputProcessor(inputMultiplexer);
     }
 

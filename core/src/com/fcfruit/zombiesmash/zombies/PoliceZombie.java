@@ -3,7 +3,6 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -14,6 +13,7 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.esotericsoftware.spine.attachments.SkeletonAttachment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
@@ -21,12 +21,12 @@ import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 import java.util.HashMap;
 
 /**
- * Created by Lucas on 2017-11-05.
+ * Created by Lucas on 2017-11-06.
  */
 
-public class GirlZombie extends Zombie {
-    
-    public GirlZombie(int id){
+public class PoliceZombie extends Zombie {
+
+    public PoliceZombie(int id) {
         super(id);
 
         animationSetup();
@@ -35,10 +35,10 @@ public class GirlZombie extends Zombie {
 
     @Override
     public void animationSetup() {
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/girl_zombie/girl_zombie.atlas"));
+        atlas = new TextureAtlas(Gdx.files.internal("zombies/police_zombie/police_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(1);
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/girl_zombie/girl_zombie.json"));
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/police_zombie/police_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
@@ -49,7 +49,7 @@ public class GirlZombie extends Zombie {
         state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
         // Queue animations on track 0.
-        this.currentAnimation = "run";
+        this.currentAnimation = "walk";
         state.setAnimation(0, currentAnimation, true);
 
         state.addListener(new AnimationState.AnimationStateAdapter() {
@@ -64,7 +64,7 @@ public class GirlZombie extends Zombie {
     @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
-        rubeScene = loader.loadScene(Gdx.files.internal("zombies/girl_zombie/girl_zombie_rube.json"));
+        rubeScene = loader.loadScene(Gdx.files.internal("zombies/police_zombie/police_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
 
@@ -76,6 +76,12 @@ public class GirlZombie extends Zombie {
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
+
+            /*
+            * Tomas scales images in spine
+            * to access that scale do:
+            * ((RegionAttachment)skeleton.findSlot(bodyName).getAttachment()).getScaleX()
+            */
 
             for (RubeImage i : rubeScene.getImages()) {
                 if (i.body == b) {
@@ -103,21 +109,25 @@ public class GirlZombie extends Zombie {
 
             for (Fixture f : b.getFixtureList()) {
                 // Makes different zombies not collide with each other
-                f.setUserData(this.id);
+                f.setUserData(this);
             }
 
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-        skeleton.getRootBone().setScale(scaleX, scaleY);
+
+
+
+        skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
 
     }
 
     @Override
     void crawl(){
+        this.physicsEnabled = false;
+        this.currentAnimation = "crawl";
 
+        setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
     }
-
-
     
 }

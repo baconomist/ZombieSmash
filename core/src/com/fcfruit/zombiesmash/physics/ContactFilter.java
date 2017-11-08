@@ -13,20 +13,31 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
 
-        if(fixtureA.getUserData() == fixtureB.getUserData()) {
+        if(fixtureA.getUserData() != null && fixtureB.getUserData() != null) {
 
-            if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0) {
-                return true;
-            } else {
-                return false;
+
+            if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id) {
+
+                if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0) {
+                    return true;
+                } else {
+                    return false;
+                }
+
             }
 
+
+
         }
 
-        if(fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody){
-            return true;
-        }
-        else{
+        if (fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody) {
+            if(fixtureA.getUserData() != null && !((Zombie) fixtureA.getUserData()).justTouched || fixtureB.getUserData() != null && !((Zombie) fixtureB.getUserData()).justTouched) {
+                return true;
+            }
+            else{
+                return true;
+            }
+        } else {
             return false;
         }
 

@@ -1,6 +1,8 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -34,7 +36,6 @@ import java.util.HashMap;
  */
 
 public class Zombie {
-    static float ANIMSCALE = 0.3f;
 
     public int id;
 
@@ -69,6 +70,7 @@ public class Zombie {
 
     private boolean isTouching = false;
 
+    public boolean justTouched = false;
 
 
     Zombie(int id) {
@@ -85,6 +87,7 @@ public class Zombie {
         }
         if(!physicsEnabled) {
             skeletonRenderer.draw(batch, skeleton);
+
         }
         update(delta);
     }
@@ -95,7 +98,7 @@ public class Zombie {
 
         updateParts();
 
-        if(isMoving && !isGettingUp){
+        if(isMoving && !isGettingUp || isTouching){
             time = System.currentTimeMillis();
         }
 
@@ -133,7 +136,6 @@ public class Zombie {
                 skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
             }
         }
-
 
     }
 
@@ -176,14 +178,15 @@ public class Zombie {
             if(p.isTouching && !istouching){
                 istouching = true;
             }
-            if(p.physicsBody.getLinearVelocity().x > 0.1 || p.physicsBody.getLinearVelocity().y > 0.1 && !ismoving) {
-                ismoving = true;
-            }
         }
 
         // Update body touching state
         hasPowerfulPart = ispowerfulpart;
+        justTouched = !isTouching && istouching;
         isTouching = istouching;
+        if(parts.get("torso").physicsBody.getLinearVelocity().x > 0.1 || parts.get("torso").physicsBody.getLinearVelocity().y > 0.1 && !ismoving) {
+            ismoving = true;
+        }
         isMoving = ismoving;
 
     }
@@ -191,7 +194,7 @@ public class Zombie {
 
     private void getUp(){
 
-        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= Environment.gameCamera.viewportHeight - Environment.gameCamera.unproject(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight()/1.5f, 0)).y){
+        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= Environment.gameCamera.viewportHeight - Environment.gameCamera.unproject(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)).y){
 
             isGettingUp = false;
             physicsEnabled = false;
@@ -208,9 +211,9 @@ public class Zombie {
         }
 
         else if (!isGettingUp){
-            
+
             MouseJointDef mouseJointDef = new MouseJointDef();
-            
+
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
             mouseJointDef.bodyA = Environment.physics.getGround();
@@ -251,7 +254,7 @@ public class Zombie {
 
     }
 
-    public Vector2 getPosition(){
+    Vector2 getPosition(){
         if(physicsEnabled){
             return parts.get("torso").physicsBody.getPosition();
         }
@@ -261,21 +264,6 @@ public class Zombie {
         return new Vector2(pos.x, Environment.gameCamera.viewportHeight - pos.y);
     }
 
-    public Array<Body> getPhysicsBodies(){
-        return rubeScene.getBodies();
-    }
-
-    public Skeleton getSkeleton(){
-        return skeleton;
-    }
-
-    public float getMass(){
-        float mass = 0;
-        for(Part p : parts.values()){
-            mass = mass + p.physicsBody.getMass();
-        }
-        return mass;
-    }
 
     public Part getPartFromPhysicsBody(Body physicsBody){
 
@@ -289,8 +277,12 @@ public class Zombie {
 
     }
 
+    public Skeleton getSkeleton(){
+        return skeleton;
+    }
+
     // Recursion!
-    public float getHeight(ArrayList<Part> p){
+    float getHeight(ArrayList<Part> p){
         ArrayList<Part> pCopy = new ArrayList<Part>();
         for(Part prt : p){
             pCopy.add(prt);
@@ -316,9 +308,6 @@ public class Zombie {
 
 
 
-
-
-
     public void touchDown(float x, float y, int pointer){
 
         for(String name : parts.keySet()){
@@ -341,6 +330,15 @@ public class Zombie {
             parts.get(name).touchUp(x, y, pointer);
         }
 
+    }
+
+
+    float calculateAnimScale(){
+        float total = 0;
+        for(Texture t: atlas.getTextures()){
+            total += t.getHeight();
+        }
+        return Environment.gameCamera.project(new Vector3(0f, 1.5f, 0f)).y/total;
     }
 
 }

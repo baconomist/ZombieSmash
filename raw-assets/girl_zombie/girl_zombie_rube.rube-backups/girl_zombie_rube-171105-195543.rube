@@ -505,8 +505,6 @@
           
           {
             "density" : 1,
-            "filter-categoryBits" : 2,
-            "filter-maskBits" : 65529,
             "friction" : 0.2,
             "id" : 7,
             "name" : "fixture4",

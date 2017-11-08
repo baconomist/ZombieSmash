@@ -39,7 +39,7 @@ public class RegularZombie extends Zombie {
     public void animationSetup() {
         atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(ANIMSCALE); // Load the skeleton at 100% the size it was in Spine.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
@@ -70,20 +70,26 @@ public class RegularZombie extends Zombie {
 
         parts = new HashMap<String, Part>();
 
+        float scaleX = 0;
+        float scaleY = 0;
+
         for(Body b : rubeScene.getBodies()) {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-
+            
             for (RubeImage i : rubeScene.getImages()) {
                 if (i.body == b) {
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOriginCenter();
-                    //sprite.setScale(ANIMSCALE);
-                    sprite.setSize(ANIMSCALE*sprite.getWidth(), ANIMSCALE*sprite.getHeight());
+                    scaleX = sprite.getWidth();
+                    scaleY = sprite.getHeight();
+                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
                     sprite.setOriginCenter();
+                    scaleX = sprite.getWidth()/scaleX;
+                    scaleY = sprite.getHeight()/scaleY;
                 }
 
             }
@@ -105,6 +111,7 @@ public class RegularZombie extends Zombie {
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
+        skeleton.getRootBone().setScale(scaleX, scaleY);
 
     }
 
