@@ -24,9 +24,9 @@ public class GameStage extends Stage {
 
     public Viewport viewport;
 
-    private ArrayList<Zombie> zombies = Environment.physics.zombies;
+    private ArrayList<Zombie> zombies = Environment.physics.getZombies();
 
-    private ArrayList<Part> parts = Environment.physics.parts;
+    private ArrayList<Part> parts = Environment.physics.getParts();
 
     private SpriteBatch spriteBatch;
 
@@ -77,8 +77,6 @@ public class GameStage extends Stage {
         for(Zombie z : this.zombies) {
             z.draw(spriteBatch, skeletonRenderer, delta);
         }
-
-        parts = Environment.physics.parts;
 
         for(Part p : parts){
             p.draw(spriteBatch);

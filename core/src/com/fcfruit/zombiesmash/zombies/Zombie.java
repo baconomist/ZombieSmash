@@ -332,13 +332,4 @@ public class Zombie {
 
     }
 
-
-    float calculateAnimScale(){
-        float total = 0;
-        for(Texture t: atlas.getTextures()){
-            total += t.getHeight();
-        }
-        return Environment.gameCamera.project(new Vector3(0f, 1.5f, 0f)).y/total;
-    }
-
 }

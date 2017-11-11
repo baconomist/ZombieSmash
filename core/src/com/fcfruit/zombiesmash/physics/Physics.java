@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -15,6 +16,11 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import box2dLight.DirectionalLight;
+import box2dLight.Light;
+import box2dLight.PointLight;
+import box2dLight.RayHandler;
+
 import static java.util.Collections.min;
 
 /**
@@ -25,14 +31,17 @@ import static java.util.Collections.min;
 
 public class Physics {
 
-    public static final float PPM = 192;
+    public static final float PIXELS_PER_METER = 192;
+    public static final float METERS_PER_PIXEL = 1/192;
 
-    public static final float STEP_TIME = 1f / 60f;
+    static final float STEP_TIME = 1f / 60f;
     static final int VELOCITY_ITERATIONS = 6;
     static final int POSITION_ITERATIONS = 2;
 
-    public ArrayList<Part> parts;
-    public ArrayList<Zombie> zombies;
+    ArrayList<Part> parts;
+    ArrayList<Zombie> zombies;
+
+    Lighting lighting;
 
     public World world;
 
@@ -55,8 +64,12 @@ public class Physics {
 
         world.setContactFilter(new ContactFilter());
 
-
         constructPhysicsBoundries();
+
+        lighting = new Lighting(world);
+
+
+
     }
 
 
@@ -65,6 +78,10 @@ public class Physics {
         updateParts();
         updateZombies();
         stepWorld(delta);
+
+        lighting.update();
+
+
         
     }
 
@@ -227,6 +244,14 @@ public class Physics {
 
     public Body getGround(){
         return ground;
+    }
+
+    public ArrayList<Part> getParts() {
+        return parts;
+    }
+
+    public ArrayList<Zombie> getZombies() {
+        return zombies;
     }
 
 }

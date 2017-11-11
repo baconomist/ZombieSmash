@@ -12,8 +12,6 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.attachments.RegionAttachment;
-import com.esotericsoftware.spine.attachments.SkeletonAttachment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
@@ -90,7 +88,7 @@ public class PoliceZombie extends Zombie {
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth();
                     scaleY = sprite.getHeight();
-                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
+                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth()/scaleX;
                     scaleY = sprite.getHeight()/scaleY;

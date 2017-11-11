@@ -1,0 +1,13 @@
+{
+  "graphics": {
+    "enableLight": true,
+    "lightIntensity": 1000
+  },
+
+  "audio" : {
+    "enableGameAudio" : false,
+    "musicVolume" : 100,
+    "sfxVolume" : 100
+  }
+
+}

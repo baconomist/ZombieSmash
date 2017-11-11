@@ -27,6 +27,18 @@ public class GameData {
 
         Gdx.app.log("coins", "" + coins);
 
-        }
+    }
+
+    public float getXp(){
+        return xp;
+    }
+
+    public int getCoins() {
+        return coins;
+    }
+
+    public int getLevelsCompleted() {
+        return levelsCompleted;
+    }
 
 }

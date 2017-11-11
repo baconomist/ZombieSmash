@@ -1,9 +1,11 @@
 package com.fcfruit.zombiesmash;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.screens.MainMenu;
 
@@ -25,8 +27,11 @@ public class ZombieSmash extends Game {
 		called after all game default game functions
 		are initialized
 		 */
+		Environment.gameData = new GameData();
+		Environment.settings = new Settings();
 
-		Environment.gameCamera = new OrthographicCamera(screenWidth/ com.fcfruit.zombiesmash.physics.Physics.PPM, screenHeight/ com.fcfruit.zombiesmash.physics.Physics.PPM);
+
+		Environment.gameCamera = new OrthographicCamera(screenWidth/Physics.PIXELS_PER_METER, screenHeight/Physics.PIXELS_PER_METER);
 		// Camera position/origin is in the middle
 		// Not bottom left
 		// see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
@@ -37,9 +42,6 @@ public class ZombieSmash extends Game {
 
 		Environment.physics = new com.fcfruit.zombiesmash.physics.Physics();
 		Environment.gameScreen = new GameScreen();
-
-
-		new GameData();
 
 
 		this.setScreen(new MainMenu());

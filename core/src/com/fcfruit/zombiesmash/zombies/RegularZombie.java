@@ -1,11 +1,8 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -15,7 +12,6 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
@@ -86,7 +82,7 @@ public class RegularZombie extends Zombie {
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth();
                     scaleY = sprite.getHeight();
-                    sprite.setSize(i.width*Physics.PPM, i.height*Physics.PPM);
+                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth()/scaleX;
                     scaleY = sprite.getHeight()/scaleY;

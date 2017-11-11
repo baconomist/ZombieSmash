@@ -16,6 +16,10 @@ public class Environment {
 
     public static ZombieSmash game = new ZombieSmash();
 
+    public static GameData gameData;
+
+    public static Settings settings;
+
     public static GameScreen gameScreen;
 
     public static OrthographicCamera gameCamera;
