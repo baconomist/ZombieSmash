@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Event;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
@@ -18,6 +19,7 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-11-06.
@@ -54,9 +56,16 @@ public class PoliceZombie extends Zombie {
         state.addListener(new AnimationState.AnimationStateAdapter() {
             @Override
             public void complete(AnimationState.TrackEntry entry) {
+                if(currentAnimation.equals("attack1")){
+                    timesCompleteAttack1++;
+                }
+                else{
+                    timesCompleteAttack1 = 0;
+                }
                 super.complete(entry);
             }
         });
+
 
     }
 
@@ -118,6 +127,23 @@ public class PoliceZombie extends Zombie {
 
 
         skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
+
+    }
+
+    @Override
+    void onObjective(){
+        this.attack();
+    }
+
+    @Override
+    void attack(){
+        if(timesCompleteAttack1 < 2){
+            this.currentAnimation = "attack1";
+        }
+        else{
+            this.currentAnimation = "attack2";
+        }
+
 
     }
 

@@ -1,4 +1,1 @@
-//Started script log at 11/17/17 09:27:38
-
-getFixture(1).select();
-getFixture(1).deselect();
+//Restarted script log at 11/18/17 14:35:34

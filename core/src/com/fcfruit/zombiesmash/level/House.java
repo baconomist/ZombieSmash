@@ -16,6 +16,8 @@ public class House extends Objective {
 
     House() {
 
+        super();
+
         RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.world);
         RubeScene rubeScene = loader.loadScene(Gdx.files.internal("maps/night_map_rube.json"));
 
@@ -23,7 +25,6 @@ public class House extends Objective {
         for(Fixture f : this.body.getFixtureList()){
             f.setUserData(this);
         }
-
 
     }
 }

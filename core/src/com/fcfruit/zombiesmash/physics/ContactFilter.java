@@ -15,7 +15,12 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
 
-        if(fixtureA.getUserData() instanceof House || fixtureB.getUserData() instanceof House){
+        if(fixtureA.getUserData() instanceof Objective && fixtureB.getUserData() instanceof Zombie){
+            ((Zombie)fixtureB.getUserData()).isAtObjective = true;
+            return false;
+        }
+        else if(fixtureB.getUserData() instanceof Objective && fixtureA.getUserData() instanceof Zombie){
+            ((Zombie)fixtureA.getUserData()).isAtObjective = true;
             return false;
         }
 

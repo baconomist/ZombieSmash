@@ -30,6 +30,7 @@ import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-07-30.
@@ -69,6 +70,12 @@ public class Zombie {
     private boolean isTouching = false;
 
     public boolean justTouched = false;
+
+    public boolean isAtObjective = false;
+
+    public int timesCompleteAttack1 = 0;
+
+    public float randomObjectiveX = 0;
 
 
     Zombie(int id) {
@@ -110,6 +117,7 @@ public class Zombie {
             //Make the physics bodies unstuck, sometimes the animation goes into the ground.
             this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
             physicsEnabled = true;
+            isAtObjective = false;
 
         }
         else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
@@ -127,12 +135,7 @@ public class Zombie {
 
 
         if(!physicsEnabled){
-            if(this.direction == 0) {
-                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            }
-            else{
-                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            }
+            this.move();
         }
 
     }
@@ -159,6 +162,7 @@ public class Zombie {
         if(!this.currentAnimation.equals(state.getCurrent(0).getAnimation().getName())){
             state.setAnimation(0, currentAnimation, true);
         }
+
 
     }
 
@@ -300,6 +304,32 @@ public class Zombie {
         return parts;
     }
     void crawl(){}
+    void onObjective(){}
+    void attack(){}
+    void move(){
+        if(isAtObjective && this.randomObjectiveX == 0){
+            this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt(200);
+        }
+        if(!isAtObjective) {
+            if (this.direction == 0) {
+                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            } else {
+                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
+            this.randomObjectiveX = 0;
+        }
+        else if(skeleton.getRootBone().getWorldX() < this.randomObjectiveX){
+            if (this.direction == 0) {
+                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            } else {
+                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
+        }
+        else{
+            this.onObjective();
+        }
+
+    }
     public void constructPhysicsBody(World world){}
     public void animationSetup() {}
     public void destroy(){}
