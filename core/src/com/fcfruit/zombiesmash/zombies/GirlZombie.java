@@ -13,6 +13,7 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
@@ -62,7 +63,7 @@ public class GirlZombie extends Zombie {
     @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
-        rubeScene = loader.loadScene(Gdx.files.internal("zombies/girl_zombie/girl_zombie_rube.json"));
+        RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/girl_zombie/girl_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
 

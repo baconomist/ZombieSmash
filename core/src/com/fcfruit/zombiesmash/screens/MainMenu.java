@@ -14,7 +14,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.levels.Level;
 
 /**
  * Created by Lucas on 2017-07-21.

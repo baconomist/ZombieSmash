@@ -3,6 +3,8 @@ package com.fcfruit.zombiesmash.physics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.fcfruit.zombiesmash.level.House;
+import com.fcfruit.zombiesmash.level.Objective;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
@@ -13,7 +15,11 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
 
-        if(fixtureA.getUserData() != null && fixtureB.getUserData() != null) {
+        if(fixtureA.getUserData() instanceof House || fixtureB.getUserData() instanceof House){
+            return false;
+        }
+
+        if (fixtureA.getUserData() != null && fixtureA.getUserData() instanceof Zombie && fixtureB.getUserData() != null && fixtureB.getUserData() instanceof Zombie) {
 
 
             if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id) {
@@ -27,19 +33,20 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             }
 
 
-
         }
 
+
         if (fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody) {
-            if(fixtureA.getUserData() != null && !((Zombie) fixtureA.getUserData()).justTouched || fixtureB.getUserData() != null && !((Zombie) fixtureB.getUserData()).justTouched) {
+
+            if (fixtureA.getUserData() != null && !((Zombie) fixtureA.getUserData()).justTouched || fixtureB.getUserData() != null && !((Zombie) fixtureB.getUserData()).justTouched) {
                 return true;
-            }
-            else{
+            } else {
                 return true;
             }
         } else {
             return false;
         }
+
 
     }
 }

@@ -31,17 +31,7 @@ public class ZombieSmash extends Game {
 		Environment.settings = new Settings();
 
 
-		Environment.gameCamera = new OrthographicCamera(screenWidth/Physics.PIXELS_PER_METER, screenHeight/Physics.PIXELS_PER_METER);
-		// Camera position/origin is in the middle
-		// Not bottom left
-		// see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
-		// Also cam.project(worldpos) is x and y from bottom left corner
-		// But cam.unproject(screenpos) is x and y from top left corner
-		Environment.gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
-		Environment.gameCamera.update();
 
-		Environment.physics = new com.fcfruit.zombiesmash.physics.Physics();
-		Environment.gameScreen = new GameScreen();
 
 
 		this.setScreen(new MainMenu());

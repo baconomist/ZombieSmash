@@ -15,6 +15,7 @@ public class Settings {
 
     private boolean enableLight;
     private int lightIntensity;
+    private float brightness;
 
     private boolean enableGameAudio;
     private float musicVolume;
@@ -26,6 +27,7 @@ public class Settings {
 
         enableLight = data.get("graphics").getBoolean("enableLight");
         lightIntensity = data.get("graphics").getInt("lightIntensity");
+        brightness = data.get("graphics").getFloat("brightness");
 
         enableGameAudio = data.get("audio").getBoolean("enableGameAudio");
         musicVolume = data.get("audio").getFloat("musicVolume");
@@ -42,6 +44,8 @@ public class Settings {
         return sfxVolume;
     }
 
+    public float getBrightness(){return brightness;}
+
     public int getLightIntensity() {
         return lightIntensity;
     }
@@ -53,4 +57,6 @@ public class Settings {
     public boolean isEnableLight() {
         return enableLight;
     }
+
+
 }

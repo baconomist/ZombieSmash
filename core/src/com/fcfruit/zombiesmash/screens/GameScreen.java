@@ -10,7 +10,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.levels.Level;
+import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.stages.GameStage;
 
 /**
@@ -18,8 +18,6 @@ import com.fcfruit.zombiesmash.stages.GameStage;
  */
 
 public class GameScreen implements Screen{
-
-    private Level level;
 
     public OrthographicCamera camera;
 
@@ -33,7 +31,7 @@ public class GameScreen implements Screen{
 
     private Box2DDebugRenderer debugRenderer;
 
-    public GameScreen(){
+    public GameScreen(Level lvl){
 
         camera = Environment.gameCamera;
 
@@ -48,7 +46,7 @@ public class GameScreen implements Screen{
         Gdx.app.log("sposx", ""+pos.x);
         Gdx.app.log("sposy", ""+pos.y);
 
-        game_stage = new GameStage(game_view);
+        game_stage = new GameStage(game_view, lvl);
 
         power_ups_view = new ExtendViewport(480, 270);
         power_ups_view.setScreenPosition(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 270);
@@ -94,8 +92,6 @@ public class GameScreen implements Screen{
 
         camera.update();
 
-        Environment.physics.update(delta);
-
         //debugRenderer.render(Environment.physics.getWorld(), camera.combined);
 
     }
@@ -129,8 +125,5 @@ public class GameScreen implements Screen{
 
     }
 
-    public void setLevel(Level lvl){
-        level = lvl;
-    }
 
 }

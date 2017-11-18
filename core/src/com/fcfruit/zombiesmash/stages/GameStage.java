@@ -8,6 +8,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
@@ -22,43 +23,23 @@ import java.util.ArrayList;
 
 public class GameStage extends Stage {
 
+    Level level;
+
     public Viewport viewport;
-
-    private ArrayList<Zombie> zombies = Environment.physics.getZombies();
-
-    private ArrayList<Part> parts = Environment.physics.getParts();
 
     private SpriteBatch spriteBatch;
 
     private SkeletonRenderer skeletonRenderer;
 
-    public GameStage(Viewport v){
+    public GameStage(Viewport v, Level lvl){
         super(v);
 
+        this.level = lvl;
         viewport = v;
-
-        Zombie z;
-        /*for(int i = 0; i < 10; i++) {
-            z = new RegularZombie(i);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }
-        for(int i = 0; i < 10; i++) {
-            z = new GirlZombie(i+10);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }*/
-        for(int i = 0; i < 10; i++) {
-            z = new PoliceZombie(i+20);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }
 
         spriteBatch = new SpriteBatch();
 
         skeletonRenderer = new SkeletonRenderer();
-
-
 
     }
 
@@ -67,22 +48,14 @@ public class GameStage extends Stage {
     public void draw() {
         super.draw();
 
-        float delta = Gdx.graphics.getDeltaTime();
-
         // Viewport.getCamera() != Environment.gameCamera
         spriteBatch.setProjectionMatrix(viewport.getCamera().combined);
 
         spriteBatch.begin();
-
-        for(Zombie z : this.zombies) {
-            z.draw(spriteBatch, skeletonRenderer, delta);
-        }
-
-        for(Part p : parts){
-            p.draw(spriteBatch);
-        }
-
+        level.draw(spriteBatch, skeletonRenderer);
         spriteBatch.end();
+
+        level.update();
 
     }
 

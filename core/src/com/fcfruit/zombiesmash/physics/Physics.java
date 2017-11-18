@@ -81,8 +81,6 @@ public class Physics {
 
         lighting.update();
 
-
-        
     }
 
     private void stepWorld(float delta) {

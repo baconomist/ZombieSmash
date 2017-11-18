@@ -39,8 +39,6 @@ public class Zombie {
 
     public int id;
 
-    RubeScene rubeScene;
-
     TextureAtlas atlas;
     Skeleton skeleton;
     AnimationState state;
