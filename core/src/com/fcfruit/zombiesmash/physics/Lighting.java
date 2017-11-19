@@ -35,7 +35,7 @@ public class Lighting {
 
     public void update(){
         if(rayHandler != null && Environment.settings.isEnableLight()) {
-            rayHandler.setCombinedMatrix(Environment.gameCamera);
+            rayHandler.setCombinedMatrix(Environment.physicsCamera);
             rayHandler.updateAndRender();
         }
         else if (Environment.settings.isEnableLight()){

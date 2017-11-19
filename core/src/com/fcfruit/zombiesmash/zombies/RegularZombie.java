@@ -102,7 +102,7 @@ public class RegularZombie extends Zombie {
 
             for (Fixture f : b.getFixtureList()) {
                 // Makes different zombies not collide with each other
-                f.setUserData(this.id);
+                f.setUserData(this);
             }
 
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));

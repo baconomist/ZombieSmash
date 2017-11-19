@@ -25,6 +25,8 @@ public class Environment {
 
     public static OrthographicCamera gameCamera;
 
+    public static OrthographicCamera physicsCamera;
+
     public static Physics physics;
 
     }

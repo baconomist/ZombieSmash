@@ -4,8 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.ExtendViewport;
@@ -19,8 +17,6 @@ import com.fcfruit.zombiesmash.stages.GameStage;
 
 public class GameScreen implements Screen{
 
-    public OrthographicCamera camera;
-
     private Stage game_stage;
     private Stage power_ups_stage;
 
@@ -30,21 +26,12 @@ public class GameScreen implements Screen{
     private InputMultiplexer inputMultiplexer;
 
     private Box2DDebugRenderer debugRenderer;
+    boolean b = true;
 
     public GameScreen(Level lvl){
 
-        camera = Environment.gameCamera;
-
-        game_view = new ExtendViewport(1920, 1080);
+        game_view = new ExtendViewport(Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight, Environment.gameCamera);
         game_view.apply();
-
-        Vector3 pos = camera.project(new Vector3(0, 0, 0));
-        Gdx.app.log("posx", ""+pos.x);
-        Gdx.app.log("posy", ""+pos.y);
-
-        pos = camera.unproject(new Vector3(192, 192, 0));
-        Gdx.app.log("sposx", ""+pos.x);
-        Gdx.app.log("sposy", ""+pos.y);
 
         game_stage = new GameStage(game_view, lvl);
 
@@ -90,9 +77,20 @@ public class GameScreen implements Screen{
         power_ups_view.apply();
         power_ups_stage.draw();
 
-        camera.update();
+        Environment.physicsCamera.update();
+        Environment.gameCamera.update();
 
-        debugRenderer.render(Environment.physics.getWorld(), camera.combined);
+        Environment.physicsCamera.position.x=10f;
+        Environment.gameCamera.position.x=10*192;
+        if(b) {
+            Environment.physics.constructPhysicsBoundries();
+        }
+
+        b=false;
+
+
+
+        debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }
 

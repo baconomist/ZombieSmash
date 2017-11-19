@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
@@ -73,36 +74,36 @@ public class Part{
 
             if(name.contains("arm")){
 
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
-                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
+                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0)));
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
 
-                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
 
             }
 
             else if(name.contains("leg")){
 
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
-                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0));
+                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0)));
 
                 // -180 degrees cus the api is messed up
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX() - 180);
 
-                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
 
             }
 
             else{
 
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
-                        body.getSkeleton().findBone(name).getWorldY() + sprite.getHeight()/2, 0));
+                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                        body.getSkeleton().findBone(name).getWorldY() + sprite.getHeight()/2, 0)));
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
 
 
-                physicsBody.setTransform(pos.x, Environment.gameCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
 
             }
 
@@ -110,8 +111,8 @@ public class Part{
 
         }
 
-        Vector3 pos = Environment.gameCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0));
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight()/2);
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight()/2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
 
     }
@@ -120,9 +121,10 @@ public class Part{
     QueryCallback callback = new QueryCallback() {
         @Override
         public boolean reportFixture (Fixture fixture) {
+
             // if the hit fixture's body is the ground body
             // we ignore it
-            if (fixture.getBody() == Environment.physics.getGround()) return true;
+            if (fixture.getBody().getType() == BodyDef.BodyType.StaticBody) return true;
 
             // if the hit point is inside the fixture of the body
             // we report it
@@ -130,7 +132,7 @@ public class Part{
                     .x, hitPoint
                     .y)) {
                 // Simplified if statement
-                // If body is fuxture body then touch is true, else false
+                // If body is fixture body then touch is true, else false
                 isTouching = fixture.getBody() == physicsBody;
                 return false;
             } else

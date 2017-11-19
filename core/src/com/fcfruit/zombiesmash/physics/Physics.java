@@ -1,7 +1,7 @@
 package com.fcfruit.zombiesmash.physics;
 
-import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
@@ -15,11 +15,6 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import box2dLight.DirectionalLight;
-import box2dLight.Light;
-import box2dLight.PointLight;
-import box2dLight.RayHandler;
 
 import static java.util.Collections.min;
 
@@ -68,8 +63,6 @@ public class Physics {
 
         lighting = new Lighting(world);
 
-
-
     }
 
 
@@ -113,18 +106,18 @@ public class Physics {
         wallFixture.friction = 1;
 
         PolygonShape wallShape = new PolygonShape();
-        wallShape.setAsBox(0, Environment.gameCamera.viewportHeight*2);
+        wallShape.setAsBox(0, Environment.physicsCamera.viewportHeight*2);
         wallFixture.shape = wallShape;
 
 
 
         wall_1 = world.createBody(walls);
         wall_1.createFixture(wallFixture);
-        wall_1.setTransform(0, 0, 0);
+        wall_1.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, 0, 0);
 
         wall_2 = world.createBody(walls);
         wall_2.createFixture(wallFixture);
-        wall_2.setTransform(Environment.gameCamera.viewportWidth, 0, 0);
+        wall_2.setTransform(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2, 0, 0);
 
         wallShape.dispose();
 
@@ -137,18 +130,16 @@ public class Physics {
         planeFixture.friction = 1;
 
         PolygonShape planeShape = new PolygonShape();
-        planeShape.setAsBox(Environment.gameCamera.viewportWidth, 0);
+        planeShape.setAsBox(Environment.physicsCamera.viewportWidth, 0);
         planeFixture.shape = planeShape;
-
-
 
         ground = world.createBody(plane);
         ground.createFixture(planeFixture);
-        ground.setTransform(0, 0, 0);
+        ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, 0, 0);
 
         roof = world.createBody(plane);
         roof.createFixture(planeFixture);
-        roof.setTransform(0, Environment.gameCamera.viewportHeight*2, 0);
+        roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight*2, 0);
 
         planeShape.dispose();
         

@@ -26,7 +26,7 @@ public class NightLevel extends Level{
 
         this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map.png")));
         this.objective = new House();
-        this.objective.setPosition(10, 2.5f);
+        this.objective.setPosition(9.5f, 2.5f);
 
 
         Zombie z;

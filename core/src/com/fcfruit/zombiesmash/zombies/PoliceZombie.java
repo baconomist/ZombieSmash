@@ -58,9 +58,11 @@ public class PoliceZombie extends Zombie {
             public void complete(AnimationState.TrackEntry entry) {
                 if(currentAnimation.equals("attack1")){
                     timesCompleteAttack1++;
+                    isAttacking = false;
                 }
-                else{
+                else if(currentAnimation.equals("attack2")){
                     timesCompleteAttack1 = 0;
+                    isAttacking = false;
                 }
                 super.complete(entry);
             }
@@ -136,19 +138,43 @@ public class PoliceZombie extends Zombie {
     }
 
     @Override
-    void attack(){
-        if(timesCompleteAttack1 < 2){
-            this.currentAnimation = "attack1";
+    void move(){
+        super.move();
+
+        if(this.isAttacking) {
+            this.attackTimer = System.currentTimeMillis();
         }
         else{
-            this.currentAnimation = "attack2";
+            this.currentAnimation = "walk";
         }
 
+        if(System.currentTimeMillis() - this.attackTimer > this.timeBeforeAttack){
+            this.attack();
+        }
+
+    }
+
+    @Override
+    void attack(){
+        super.attack();
+
+        if(!this.isCrawler) {
+            if (timesCompleteAttack1 < 2) {
+                this.currentAnimation = "attack1";
+            } else {
+                this.currentAnimation = "attack2";
+            }
+        }
+        else{
+            this.currentAnimation = "crawl_attack";
+        }
 
     }
 
     @Override
     void crawl(){
+        super.crawl();
+
         this.physicsEnabled = false;
         this.currentAnimation = "crawl";
 
