@@ -1,8 +1,8 @@
 {
-"skeleton": { "hash": "aqhJGJFv8PL0+/Lpy4BTE/rXDGY", "spine": "3.6.46", "width": 0, "height": 0 },
+"skeleton": { "hash": "PJmq1WjNCngWwhi6H7NcL8PUI5E", "spine": "3.6.47", "width": 764.14, "height": 855.16 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -2.92, "y": 2.81 },
-	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": -9.99, "y": 255.61 },
+	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": 172.74, "y": 262.9 },
 	{ "name": "head", "parent": "torso", "length": 199.55, "rotation": 0.51, "x": 245.46, "y": -20.88 },
 	{ "name": "left_shoulder", "parent": "torso", "length": 126.58, "rotation": -92.96, "x": 245.23, "y": 0.93, "scaleX": 0.752 },
 	{ "name": "left_arm", "parent": "left_shoulder", "length": 214.67, "rotation": 6.36, "x": 122.8, "y": -0.76 },
@@ -26,8 +26,8 @@
 		"parent": "root",
 		"length": 349.38,
 		"rotation": -116.55,
-		"x": -125.81,
-		"y": 599.46,
+		"x": 56.92,
+		"y": 606.75,
 		"scaleX": 0.904,
 		"scaleY": 0.904
 	}
@@ -44,25 +44,34 @@
 "skins": {
 	"default": {
 		"head": {
-			"head": { "x": 152.39, "y": 7.38, "scaleX": 0.532, "scaleY": 0.532, "rotation": -92.89, "width": 556, "height": 539 }
+			"head": { "x": 152.39, "y": 7.38, "scaleX": 0.532, "scaleY": 0.532, "rotation": -5.41, "width": 539, "height": 556 }
 		},
 		"left_arm": {
 			"left_arm": { "x": 144.5, "y": -4.67, "scaleX": 0.578, "scaleY": 0.461, "rotation": -1.61, "width": 647, "height": 219 }
 		},
 		"left_leg": {
-			"left_leg": { "path": "left_leg ", "x": 122.74, "y": -2.31, "scaleX": 0.457, "scaleY": 0.457, "rotation": 94.84, "width": 284, "height": 665 }
+			"left_leg": {
+				"path": "left_leg ",
+				"x": 122.74,
+				"y": -2.31,
+				"scaleX": 0.457,
+				"scaleY": 0.457,
+				"rotation": -167.83,
+				"width": 665,
+				"height": 284
+			}
 		},
 		"right_arm": {
 			"right_arm": { "x": 152.13, "y": -8.33, "scaleX": 0.573, "scaleY": 0.473, "width": 647, "height": 219 }
 		},
 		"right_leg": {
-			"right_leg": { "x": 118.44, "y": -1.31, "scaleX": 0.458, "scaleY": 0.458, "rotation": 88.65, "width": 284, "height": 665 }
+			"right_leg": { "x": 118.44, "y": -1.31, "scaleX": 0.458, "scaleY": 0.458, "rotation": 179.28, "width": 665, "height": 284 }
 		},
 		"rock": {
-			"rock": { "x": 150.21, "y": 4.69, "scaleX": 0.865, "scaleY": 0.865, "rotation": -60.3, "width": 551, "height": 628 }
+			"rock": { "x": 150.21, "y": 4.69, "scaleX": 0.865, "scaleY": 0.865, "rotation": 31.79, "width": 628, "height": 551 }
 		},
 		"torso": {
-			"torso": { "x": 145.95, "y": 22.46, "scaleX": 0.538, "scaleY": 0.538, "rotation": -83.39, "width": 638, "height": 594 }
+			"torso": { "x": 145.95, "y": 22.46, "scaleX": 0.538, "scaleY": 0.538, "rotation": 9.61, "width": 594, "height": 638 }
 		}
 	}
 },

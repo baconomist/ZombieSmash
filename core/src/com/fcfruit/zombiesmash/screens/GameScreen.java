@@ -26,7 +26,6 @@ public class GameScreen implements Screen{
     private InputMultiplexer inputMultiplexer;
 
     private Box2DDebugRenderer debugRenderer;
-    boolean b = true;
 
     public GameScreen(Level lvl){
 
@@ -82,11 +81,7 @@ public class GameScreen implements Screen{
 
         Environment.physicsCamera.position.x=10f;
         Environment.gameCamera.position.x=10*192;
-        if(b) {
-            Environment.physics.constructPhysicsBoundries();
-        }
 
-        b=false;
 
 
 

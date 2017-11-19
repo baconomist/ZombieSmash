@@ -248,8 +248,8 @@ public class Zombie {
             parts.get("torso").setPosition(x, y);
         }
         else {
-            Vector3 pos = Environment.physicsCamera.project(new Vector3(x, y, 0));
-            skeleton.setPosition(pos.x, pos.y);
+            Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
+            skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
             skeleton.updateWorldTransform();
         }
 
