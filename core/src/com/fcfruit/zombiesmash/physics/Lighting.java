@@ -29,7 +29,7 @@ public class Lighting {
             rayHandler = new RayHandler(world);
             rayHandler.setAmbientLight(0f, 0f, 0f, Environment.settings.getBrightness()/100f);
             lights = new ArrayList<Light>();
-            lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2, 3, 3));
+            lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2.5f, 5, 4.7f));
         }
     }
 

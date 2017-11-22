@@ -313,26 +313,26 @@ public class Zombie {
         this.isAttacking = true;
     }
     void move(){
-        if(isAtObjective && this.randomObjectiveX == 0){
-            this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt(300);
-        }
-        if(!isAtObjective && !isAttacking) {
-            if (this.direction == 0) {
-                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            } else {
-                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+        if(!isAttacking) {
+            if (isAtObjective && this.randomObjectiveX == 0) {
+                this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt(300);
             }
-            this.randomObjectiveX = 0;
-        }
-        else if(skeleton.getRootBone().getWorldX() < this.randomObjectiveX){
-            if (this.direction == 0) {
-                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            if (!isAtObjective && !isAttacking) {
+                if (this.direction == 0) {
+                    skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+                } else {
+                    skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+                }
+                this.randomObjectiveX = 0;
+            } else if (skeleton.getRootBone().getWorldX() < this.randomObjectiveX) {
+                if (this.direction == 0) {
+                    skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+                } else {
+                    skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+                }
             } else {
-                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+                this.onObjective();
             }
-        }
-        else{
-            this.onObjective();
         }
 
     }

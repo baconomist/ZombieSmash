@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
@@ -39,9 +40,14 @@ public class NightLevel extends Level{
             z = new GirlZombie(i+10);
             Environment.physics.addBody(z);
             z.setPosition(i, 0);
-        }*/
+        }
         for(int i = 0; i < 10; i++) {
             z = new PoliceZombie(i+20);
+            Environment.physics.addBody(z);
+            z.setPosition(i, 0);
+        }*/
+        for(int i = 0; i < 10; i++) {
+            z = new BigZombie(i+20);
             Environment.physics.addBody(z);
             z.setPosition(i, 0);
         }

@@ -12,22 +12,20 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.HashMap;
-import java.util.Random;
 
 /**
- * Created by Lucas on 2017-11-06.
+ * Created by Lucas on 2017-11-21.
  */
 
-public class PoliceZombie extends Zombie {
+public class BigZombie extends Zombie{
 
-    public PoliceZombie(int id) {
+    public BigZombie(int id) {
         super(id);
 
         animationSetup();
@@ -36,11 +34,10 @@ public class PoliceZombie extends Zombie {
 
     @Override
     public void animationSetup() {
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/police_zombie/police_zombie.atlas"));
-
+        atlas = new TextureAtlas(Gdx.files.internal("zombies/big_zombie/big_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/police_zombie/police_zombie.json"));
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/big_zombie/big_zombie.json"));
 
         skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
@@ -57,26 +54,16 @@ public class PoliceZombie extends Zombie {
         state.addListener(new AnimationState.AnimationStateAdapter() {
             @Override
             public void complete(AnimationState.TrackEntry entry) {
-                if(currentAnimation.equals("attack1")){
-                    timesCompleteAttack1++;
-                }
-                else if(currentAnimation.equals("attack2")){
-                    timesCompleteAttack1 = 0;
-                }
-                if(currentAnimation.contains("attack")){
-                    isAttacking = false;
-                }
                 super.complete(entry);
             }
         });
-
 
     }
 
     @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
-        RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/police_zombie/police_zombie_rube.json"));
+        RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/big_zombie/big_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
 
@@ -87,14 +74,12 @@ public class PoliceZombie extends Zombie {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
+            for(TextureAtlas.AtlasRegion r : atlas.getRegions()) {
+                Gdx.app.log("regions", "" +r.name);
+                Gdx.app.log("region", ""+atlas.findRegion("left_leg"));
+            }
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
-
-            /*
-            * Tomas scales images in spine
-            * to access that scale do:
-            * ((RegionAttachment)skeleton.findSlot(bodyName).getAttachment()).getScaleX()
-            */
 
             for (RubeImage i : rubeScene.getImages()) {
                 if (i.body == b) {
@@ -103,7 +88,7 @@ public class PoliceZombie extends Zombie {
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth();
                     scaleY = sprite.getHeight();
-                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
+                    sprite.setSize(i.width* Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth()/scaleX;
                     scaleY = sprite.getHeight()/scaleY;
@@ -128,68 +113,19 @@ public class PoliceZombie extends Zombie {
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-
-
-
-        skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
-
-    }
-
-    @Override
-    void onObjective(){
-        this.attack();
-    }
-
-    @Override
-    void move(){
-        super.move();
-
-        if(this.isAttacking) {
-            this.attackTimer = System.currentTimeMillis();
-        }
-        else if(!this.isCrawler){
-            this.currentAnimation = "walk";
-        }
-        else{
-            this.currentAnimation = "crawl";
-        }
-
-        if(System.currentTimeMillis() - this.attackTimer > this.timeBeforeAttack){
-            this.attack();
-        }
-
-    }
-
-    @Override
-    void attack(){
-        super.attack();
-
-        //If police zombie has an arm, he can still attack while walking
-        if(parts.get("left_arm") != null || parts.get("right_arm") != null) {
-            //If zombie is a crawler, play crawler animation
-            // else, do regular attack anims
-            if (!this.isCrawler) {
-                if (timesCompleteAttack1 < 2) {
-                    this.currentAnimation = "attack1";
-                } else {
-                    this.currentAnimation = "attack2";
-                }
-            } else {
-                this.currentAnimation = "crawl_attack";
-            }
-
-        }
+        skeleton.getRootBone().setScale(scaleX, scaleY);
 
     }
 
     @Override
     void crawl(){
-        super.crawl();
-
         this.physicsEnabled = false;
         this.currentAnimation = "crawl";
 
         setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
     }
-    
+
 }
+
+
+
