@@ -12,7 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.Skin;
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
 
 /**
@@ -33,7 +33,7 @@ public class MainMenu implements Screen{
 
     public MainMenu(){
 
-        stage = new Stage(new ExtendViewport(1920, 1080));
+        stage = new Stage(new StretchViewport(1920, 1080));
 
         Gdx.input.setInputProcessor(stage);
 
@@ -69,7 +69,6 @@ public class MainMenu implements Screen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stage.clear();// clears stage/screen
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 Environment.game.setScreen(new LevelSelect(self));
             }
         });
@@ -78,7 +77,6 @@ public class MainMenu implements Screen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stage.clear();// clears stage/screen
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 Environment.game.setScreen(new Shop(self));
             }
         });
@@ -87,7 +85,6 @@ public class MainMenu implements Screen{
             @Override
             public void changed(ChangeEvent event, Actor actor) {
                 stage.clear();// clears stage/screen
-                Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
                 Environment.game.setScreen(new Settings(self));
             }
         });

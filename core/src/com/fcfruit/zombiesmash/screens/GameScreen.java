@@ -4,9 +4,13 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.viewport.ExtendViewport;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.stages.GameStage;
@@ -20,8 +24,9 @@ public class GameScreen implements Screen{
     private Stage game_stage;
     private Stage power_ups_stage;
 
-    private ExtendViewport game_view;
-    private ExtendViewport power_ups_view;
+    private StretchViewport physics_view;
+    private StretchViewport game_view;
+    private StretchViewport power_ups_view;
 
     private InputMultiplexer inputMultiplexer;
 
@@ -29,12 +34,15 @@ public class GameScreen implements Screen{
 
     public GameScreen(Level lvl){
 
-        game_view = new ExtendViewport(Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight, Environment.gameCamera);
+        physics_view = new StretchViewport(Environment.physicsCamera.viewportWidth, Environment.physicsCamera.viewportHeight, Environment.physicsCamera);
+        physics_view.apply();
+
+        game_view = new StretchViewport(Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight, Environment.gameCamera);
         game_view.apply();
 
         game_stage = new GameStage(game_view, lvl);
 
-        power_ups_view = new ExtendViewport(480, 270);
+        power_ups_view = new StretchViewport(480, 270);
         power_ups_view.setScreenPosition(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 270);
 
         power_ups_stage = new Stage(power_ups_view);
@@ -60,9 +68,8 @@ public class GameScreen implements Screen{
 
     @Override
     public void render(float delta) {
-        // Clear the screen.
-        Gdx.gl.glClearColor(0, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
+
+        physics_view.apply();
 
         game_stage.act(delta);
         // viewport.apply() needs to be called if you have multiple viewports before drawing, see docs.
@@ -85,16 +92,17 @@ public class GameScreen implements Screen{
 
 
 
-        //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
+
+        debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }
 
     @Override
     public void resize(int width, int height) {
-        power_ups_stage.getViewport().update(width, height);
-
         // Resize viewport to screen size.
         game_view.update(width, height);
+        physics_view.update(width, height);
+        power_ups_view.update(width, height);
 
     }
 

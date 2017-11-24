@@ -1,12 +1,19 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.PixmapIO;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.badlogic.gdx.utils.BufferUtils;
+import com.badlogic.gdx.utils.ScreenUtils;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
@@ -18,6 +25,7 @@ import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Random;
 
@@ -87,8 +95,7 @@ public class PoliceZombie extends Zombie {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
-            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-
+            Sprite sprite = new Sprite(new TextureRegion(atlas.findRegion(bodyName)));
 
             /*
             * Tomas scales images in spine
@@ -127,9 +134,14 @@ public class PoliceZombie extends Zombie {
 
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
+
+
         }
 
-
+       /* for(Texture tt : t){
+            tt.getTextureData().prepare();
+            PixmapIO.writePNG(Gdx.files.local("i/"+"a" + ".png"), tt.getTextureData().consumePixmap());
+        }*/
 
         skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
 

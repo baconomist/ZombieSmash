@@ -25,7 +25,7 @@ right_arm
   orig: 647, 219
   offset: 1, 1
   index: -1
-left_leg 
+left_leg
   rotate: false
   xy: 2, 2
   size: 663, 282

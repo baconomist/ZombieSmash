@@ -31,11 +31,11 @@ public class NightLevel extends Level{
 
 
         Zombie z;
-        /*for(int i = 0; i < 10; i++) {
+        for(int i = 0; i < 10; i++) {
             z = new RegularZombie(i);
             Environment.physics.addBody(z);
             z.setPosition(i, 0);
-        }
+        }/*
         for(int i = 0; i < 10; i++) {
             z = new GirlZombie(i+10);
             Environment.physics.addBody(z);
@@ -45,12 +45,12 @@ public class NightLevel extends Level{
             z = new PoliceZombie(i+20);
             Environment.physics.addBody(z);
             z.setPosition(i, 0);
-        }*/
+        }
         for(int i = 0; i < 10; i++) {
             z = new BigZombie(i+20);
             Environment.physics.addBody(z);
             z.setPosition(i, 0);
-        }
+        }*/
 
     }
 

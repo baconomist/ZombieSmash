@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -74,12 +75,7 @@ public class BigZombie extends Zombie{
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
-            for(TextureAtlas.AtlasRegion r : atlas.getRegions()) {
-                Gdx.app.log("regions", "" +r.name);
-                Gdx.app.log("region", ""+atlas.findRegion("left_leg"));
-            }
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-
 
             for (RubeImage i : rubeScene.getImages()) {
                 if (i.body == b) {
@@ -88,7 +84,7 @@ public class BigZombie extends Zombie{
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth();
                     scaleY = sprite.getHeight();
-                    sprite.setSize(i.width* Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
+                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
                     scaleX = sprite.getWidth()/scaleX;
                     scaleY = sprite.getHeight()/scaleY;
@@ -113,16 +109,8 @@ public class BigZombie extends Zombie{
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-        skeleton.getRootBone().setScale(scaleX, scaleY);
+        skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
 
-    }
-
-    @Override
-    void crawl(){
-        this.physicsEnabled = false;
-        this.currentAnimation = "crawl";
-
-        setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
     }
 
 }

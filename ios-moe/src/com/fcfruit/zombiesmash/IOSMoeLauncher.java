@@ -17,7 +17,7 @@ public class IOSMoeLauncher extends IOSApplication.Delegate {
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
         config.useAccelerometer = false;
-        return new IOSApplication(new ZombieSmash(), config);
+        return new IOSApplication(Environment.game, config);
     }
 
     public static void main(String[] argv) {
