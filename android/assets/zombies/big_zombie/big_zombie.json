@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "zItDt7yYKHGqF16cpgFDhDYXG4o", "spine": "3.6.47", "width": 766.56, "height": 855.16 },
+"skeleton": { "hash": "HZGYCv8RXPi3cU4FsbI5lXj0KWU", "spine": "3.6.47", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -2.92, "y": 2.81 },
 	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": 172.74, "y": 262.9 },
@@ -44,25 +44,25 @@
 "skins": {
 	"default": {
 		"head": {
-			"head": { "x": 152.39, "y": 7.38, "scaleX": 0.532, "scaleY": 0.532, "rotation": -5.41, "width": 539, "height": 556 }
+			"head": { "x": 152.39, "y": 7.38, "rotation": -5.41, "width": 286, "height": 295 }
 		},
 		"left_arm": {
-			"left_arm": { "x": 144.5, "y": -4.67, "scaleX": 0.578, "scaleY": 0.461, "rotation": -1.61, "width": 647, "height": 219 }
+			"left_arm": { "x": 144.5, "y": -4.67, "rotation": -1.61, "width": 369, "height": 103 }
 		},
 		"left_leg": {
-			"left_leg": { "x": 122.74, "y": -2.31, "scaleX": 0.457, "scaleY": 0.457, "rotation": -167.83, "width": 665, "height": 284 }
+			"left_leg": { "x": 122.74, "y": -2.31, "rotation": -167.83, "width": 306, "height": 131 }
 		},
 		"right_arm": {
-			"right_arm": { "x": 152.13, "y": -8.33, "scaleX": 0.573, "scaleY": 0.473, "width": 647, "height": 219 }
+			"right_arm": { "x": 152.13, "y": -8.33, "width": 369, "height": 103 }
 		},
 		"right_leg": {
-			"right_leg": { "x": 118.44, "y": -1.31, "scaleX": 0.458, "scaleY": 0.458, "rotation": 179.28, "width": 665, "height": 284 }
+			"right_leg": { "x": 118.44, "y": -1.31, "rotation": 179.28, "width": 306, "height": 131 }
 		},
 		"rock": {
-			"rock": { "x": 150.21, "y": 4.69, "scaleX": 0.865, "scaleY": 0.865, "rotation": -154.72, "width": 628, "height": 551 }
+			"rock": { "x": 150.21, "y": 4.69, "rotation": -154.72, "width": 540, "height": 474 }
 		},
 		"torso": {
-			"torso": { "x": 145.95, "y": 22.46, "scaleX": 0.538, "scaleY": 0.538, "rotation": 9.61, "width": 594, "height": 638 }
+			"torso": { "x": 147.27, "y": 22.61, "rotation": 9.61, "width": 321, "height": 345 }
 		}
 	}
 },

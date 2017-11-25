@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "0LSijdqLnTMDWuyrhN6XEZrMLqo", "spine": "3.6.47", "width": 0, "height": 0 },
+"skeleton": { "hash": "M0QKT3zehdhDNgzXp+ukx+hyphU", "spine": "3.6.47", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 109.45, "y": 259.06 },
@@ -71,22 +71,22 @@
 "skins": {
 	"default": {
 		"head": {
-			"head": { "x": 137.41, "y": -1.99, "scaleX": 0.863, "scaleY": 0.879, "rotation": -3.52, "width": 321, "height": 270 }
+			"head": { "x": 137.41, "y": -1.99, "rotation": -3.52, "width": 276, "height": 238 }
 		},
 		"left_arm": {
 			"left_arm": { "x": 170.34, "y": 19.39, "rotation": 6.86, "width": 405, "height": 94 }
 		},
 		"left_leg": {
-			"left_leg": { "x": 123.68, "y": 7.17, "scaleX": 0.821, "scaleY": 0.821, "rotation": -174.68, "width": 314, "height": 160 }
+			"left_leg": { "x": 123.68, "y": 7.17, "rotation": -174.68, "width": 254, "height": 130 }
 		},
 		"right_arm": {
 			"right_arm": { "x": 161.15, "y": 19.38, "rotation": 3.02, "width": 405, "height": 94 }
 		},
 		"right_leg": {
-			"right_leg": { "x": 136.4, "y": 11.85, "scaleX": 0.885, "scaleY": 0.885, "rotation": 175.06, "width": 314, "height": 160 }
+			"right_leg": { "x": 136.4, "y": 11.85, "rotation": 175.06, "width": 276, "height": 141 }
 		},
 		"torso": {
-			"torso": { "x": 92.68, "y": 1.07, "scaleX": 0.717, "scaleY": 0.717, "rotation": 0.23, "width": 346, "height": 249 }
+			"torso": { "x": 92.68, "y": 1.07, "rotation": 0.23, "width": 249, "height": 179 }
 		}
 	}
 },
