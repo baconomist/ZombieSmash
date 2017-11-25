@@ -69,6 +69,7 @@ public class GameStage extends Stage {
     public boolean touchDragged(int screenX, int screenY, int pointer) {
         Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchDragged(vector.x, vector.y, pointer);
+
         return super.touchDragged(screenX, screenY, pointer);
     }
 

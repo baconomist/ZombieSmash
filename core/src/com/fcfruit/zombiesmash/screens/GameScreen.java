@@ -13,6 +13,7 @@ import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.level.Level;
+import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.stages.GameStage;
 
 /**
@@ -69,6 +70,7 @@ public class GameScreen implements Screen{
     @Override
     public void render(float delta) {
 
+
         physics_view.apply();
 
         game_stage.act(delta);
@@ -83,8 +85,13 @@ public class GameScreen implements Screen{
         power_ups_view.apply();
         power_ups_stage.draw();
 
+
+        Environment.gameCamera.position.x += 10;
+        Environment.physicsCamera.position.x += 10/192f;
+
         Environment.physicsCamera.update();
         Environment.gameCamera.update();
+        Environment.physics.constructPhysicsBoundries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
