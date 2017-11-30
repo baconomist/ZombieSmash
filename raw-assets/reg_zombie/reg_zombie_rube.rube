@@ -570,81 +570,111 @@
     [
       
       {
-        "aspectScale" : 1,
-        "body" : 2,
-        "center" : 0,
-        "file" : "images/torso.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 2,
-        "name" : "torso",
-        "opacity" : 0.5,
-        "scale" : 0.4081859588623047
-      },
-      
-      {
+        "angle" : -0.03631305694580078,
         "aspectScale" : 1,
         "body" : 14,
-        "center" : 0,
+        "center" : 
+        {
+          "x" : -0.0004199743852950633,
+          "y" : -0.001256346702575684
+        },
         "file" : "images/head.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 7,
-        "name" : "head",
+        "id" : 5,
+        "name" : "image0",
         "opacity" : 0.5,
-        "scale" : 0.5152574777603149
+        "scale" : 0.5055593252182007
       },
       
       {
+        "angle" : 0.02082981914281845,
         "aspectScale" : 1,
         "body" : 10,
-        "center" : 0,
+        "center" : 
+        {
+          "x" : 0.01290947198867798,
+          "y" : -0.0009375810623168945
+        },
         "file" : "images/left_arm.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 0.1442420333623886
+      },
+      
+      {
+        "angle" : 0.0327843539416790,
+        "aspectScale" : 1,
+        "body" : 15,
+        "center" : 
+        {
+          "x" : 0.005727063864469528,
+          "y" : 0.001197466743178666
+        },
+        "file" : "images/right_arm.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 7,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "scale" : 0.1405082195997238
+      },
+      
+      {
+        "angle" : 0.03823769092559815,
+        "aspectScale" : 1,
+        "body" : 2,
+        "center" : 
+        {
+          "x" : -0.01072949171066284,
+          "y" : -0.001829027663916349
+        },
+        "file" : "images/torso.png",
         "filter" : 1,
         "flip" : false,
         "id" : 8,
-        "name" : "left_arm",
+        "name" : "image3",
         "opacity" : 0.5,
-        "scale" : 0.1450431346893311
+        "scale" : 0.3945000767707825
       },
       
       {
+        "angle" : 0.01207017898559570,
         "aspectScale" : 1,
-        "body" : 15,
-        "center" : 0,
-        "file" : "images/left_arm.png",
+        "body" : 21,
+        "center" : 
+        {
+          "x" : -0.003589332103729248,
+          "y" : 0.0002869965101126581
+        },
+        "file" : "images/left_leg.png",
         "filter" : 1,
         "flip" : false,
         "id" : 9,
-        "name" : "left_arm",
+        "name" : "image4",
         "opacity" : 0.5,
-        "scale" : 0.1450431346893311
+        "scale" : 0.2107645720243454
       },
       
       {
-        "aspectScale" : 1,
-        "body" : 21,
-        "center" : 0,
-        "file" : "images/left_leg.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 12,
-        "name" : "right_leg",
-        "opacity" : 0.5,
-        "scale" : 0.2170448303222656
-      },
-      
-      {
+        "angle" : 0.02056765556335449,
         "aspectScale" : 1,
         "body" : 22,
-        "center" : 0,
-        "file" : "images/left_leg.png",
+        "center" : 
+        {
+          "x" : -0.005977332592010498,
+          "y" : -0.004973530303686857
+        },
+        "file" : "images/right_leg.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 13,
-        "name" : "right_leg",
+        "id" : 10,
+        "name" : "image5",
         "opacity" : 0.5,
-        "scale" : 0.2170448303222656
+        "scale" : 0.2110228985548019
       }
     ],
     "metajoint" : 

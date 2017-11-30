@@ -1,33 +1,25 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Random;
 
 /**
  * Created by Lucas on 2017-11-06.
@@ -35,7 +27,7 @@ import java.util.Random;
 
 public class PoliceZombie extends Zombie {
 
-    public PoliceZombie(int id) {
+    public PoliceZombie(Integer id) {
         super(id);
 
         animationSetup();
@@ -73,6 +65,7 @@ public class PoliceZombie extends Zombie {
                 }
                 if(currentAnimation.contains("attack")){
                     isAttacking = false;
+                    Environment.level.objective.onHit();
                 }
                 super.complete(entry);
             }
@@ -81,39 +74,25 @@ public class PoliceZombie extends Zombie {
 
     }
 
-    @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
         RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/police_zombie/police_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
 
-        float scaleX = 0;
-        float scaleY = 0;
-
         for(Body b : rubeScene.getBodies()) {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
-            Sprite sprite = new Sprite(new TextureRegion(atlas.findRegion(bodyName)));
-
-            /*
-            * Tomas scales images in spine
-            * to access that scale do:
-            * ((RegionAttachment)skeleton.findSlot(bodyName).getAttachment()).getScaleX()
-            */
+            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
             for (RubeImage i : rubeScene.getImages()) {
                 if (i.body == b) {
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOriginCenter();
-                    scaleX = sprite.getWidth();
-                    scaleY = sprite.getHeight();
-                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
+                    sprite.setSize(i.width* Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
-                    scaleX = sprite.getWidth()/scaleX;
-                    scaleY = sprite.getHeight()/scaleY;
                 }
 
             }
@@ -134,16 +113,14 @@ public class PoliceZombie extends Zombie {
 
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
-
-
         }
+        skeleton.getRootBone().setScale(parts.get("head").sprite.getWidth()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), parts.get("head").sprite.getHeight()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight());
 
-       /* for(Texture tt : t){
-            tt.getTextureData().prepare();
-            PixmapIO.writePNG(Gdx.files.local("i/"+"a" + ".png"), tt.getTextureData().consumePixmap());
-        }*/
+        state.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
 
-        skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
+        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+
+        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
     }
 

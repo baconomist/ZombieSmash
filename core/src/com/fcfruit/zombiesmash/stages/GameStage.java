@@ -16,18 +16,15 @@ import com.fcfruit.zombiesmash.level.Level;
 
 public class GameStage extends Stage {
 
-    Level level;
-
     public Viewport viewport;
 
     private SpriteBatch spriteBatch;
 
     private SkeletonRenderer skeletonRenderer;
 
-    public GameStage(Viewport v, Level lvl){
+    public GameStage(Viewport v){
         super(v);
 
-        this.level = lvl;
         viewport = v;
 
         spriteBatch = new SpriteBatch();
@@ -45,10 +42,12 @@ public class GameStage extends Stage {
         spriteBatch.setProjectionMatrix(Environment.gameCamera.combined);
 
         spriteBatch.begin();
-        level.draw(spriteBatch, skeletonRenderer);
+        Environment.level.draw(spriteBatch, skeletonRenderer);
         spriteBatch.end();
 
-        level.update();
+        Environment.physics.update(Gdx.graphics.getDeltaTime());
+
+        Environment.level.update();
 
     }
 

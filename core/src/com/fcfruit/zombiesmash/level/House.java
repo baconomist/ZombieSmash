@@ -19,7 +19,7 @@ public class House extends Objective {
         super();
 
         RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.world);
-        RubeScene rubeScene = loader.loadScene(Gdx.files.internal("maps/night_map_rube.json"));
+        RubeScene rubeScene = loader.loadScene(Gdx.files.internal("maps/night_map/night_map_rube.json"));
 
         this.body = rubeScene.getBodies().get(0);
         for(Fixture f : this.body.getFixtureList()){

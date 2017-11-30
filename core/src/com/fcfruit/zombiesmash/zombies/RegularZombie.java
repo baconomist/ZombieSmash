@@ -12,6 +12,7 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -25,7 +26,7 @@ import java.util.HashMap;
 
 public class RegularZombie extends Zombie {
 
-    public RegularZombie(int id) {
+    public RegularZombie(Integer id) {
         super(id);
 
         animationSetup();
@@ -60,33 +61,25 @@ public class RegularZombie extends Zombie {
 
     }
 
-    @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
         RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
 
-        float scaleX = 0;
-        float scaleY = 0;
-
         for(Body b : rubeScene.getBodies()) {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
             Gdx.app.log("bodyName", bodyName);
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-            
+
             for (RubeImage i : rubeScene.getImages()) {
                 if (i.body == b) {
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOriginCenter();
-                    scaleX = sprite.getWidth();
-                    scaleY = sprite.getHeight();
-                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
+                    sprite.setSize(i.width* Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
-                    scaleX = sprite.getWidth()/scaleX;
-                    scaleY = sprite.getHeight()/scaleY;
                 }
 
             }
@@ -108,10 +101,15 @@ public class RegularZombie extends Zombie {
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-        skeleton.getRootBone().setScale(scaleX, scaleY);
+        skeleton.getRootBone().setScale(parts.get("head").sprite.getWidth()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), parts.get("head").sprite.getHeight()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight());
+
+        state.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
+
+        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+
+        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
     }
-
     @Override
     void crawl(){
         this.physicsEnabled = false;

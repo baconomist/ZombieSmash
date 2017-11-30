@@ -46,7 +46,9 @@ public class CollisionListener implements ContactListener {
                 if (part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).x > 20 || part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).x > 20
                         || part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).y > 20 || part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).y > 20) {
 
-                    part.setState("waiting_for_detach");
+                    if(part.isDetachable) {
+                        part.setState("waiting_for_detach");
+                    }
 
                 }
                 

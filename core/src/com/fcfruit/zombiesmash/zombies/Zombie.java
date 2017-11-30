@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
@@ -15,6 +16,10 @@ import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.rube.RubeScene;
+import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 
 import java.util.ArrayList;
@@ -85,12 +90,12 @@ public class Zombie {
 
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
-        for(Slot slot : skeleton.getDrawOrder()){
-            if(parts.get(slot.getAttachment().getName()) != null) {
+        for (Slot slot : skeleton.getDrawOrder()) {
+            if (parts.get(slot.getAttachment().getName()) != null) {
                 parts.get(slot.getAttachment().getName()).draw(batch);
             }
         }
-        if(!physicsEnabled) {
+        if (!physicsEnabled) {
             skeletonRenderer.draw(batch, skeleton);
 
         }
@@ -195,8 +200,8 @@ public class Zombie {
 
 
     private void getUp(){
-
-        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)).y){
+        // -0.1f to give it wiggle room to detect get up
+        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)))).y) - 0.1f){
 
             isGettingUp = false;
             physicsEnabled = false;
@@ -235,7 +240,8 @@ public class Zombie {
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
-            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, 1.5f));
+            Gdx.app.log("a", "" + (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)))).y));
+            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)))).y));
 
             isGettingUp = true;
 
@@ -336,9 +342,7 @@ public class Zombie {
         }
 
     }
-    void onGetUp(){
-        this.currentAnimation = "walk";
-    }
+    void onGetUp(){}
     public void constructPhysicsBody(World world){}
     public void animationSetup() {}
     public void destroy(){}

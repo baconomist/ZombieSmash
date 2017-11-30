@@ -1,7 +1,6 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,11 +12,13 @@ import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -26,7 +27,7 @@ import java.util.HashMap;
 
 public class BigZombie extends Zombie{
 
-    public BigZombie(int id) {
+    public BigZombie(Integer id) {
         super(id);
 
         animationSetup();
@@ -61,15 +62,11 @@ public class BigZombie extends Zombie{
 
     }
 
-    @Override
     public void constructPhysicsBody(World world){
         RubeSceneLoader loader = new RubeSceneLoader(world);
         RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/big_zombie/big_zombie_rube.json"));
 
         parts = new HashMap<String, Part>();
-
-        float scaleX = 0;
-        float scaleY = 0;
 
         for(Body b : rubeScene.getBodies()) {
 
@@ -82,12 +79,8 @@ public class BigZombie extends Zombie{
                     sprite.flip(i.flip, false);
                     sprite.setColor(i.color);
                     sprite.setOriginCenter();
-                    scaleX = sprite.getWidth();
-                    scaleY = sprite.getHeight();
-                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
+                    sprite.setSize(i.width* Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
                     sprite.setOriginCenter();
-                    scaleX = sprite.getWidth()/scaleX;
-                    scaleY = sprite.getHeight()/scaleY;
                 }
 
             }
@@ -109,8 +102,27 @@ public class BigZombie extends Zombie{
             parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
-        skeleton.getRootBone().setScale(scaleX + 0.06f, scaleY + 0.06f);
+        skeleton.getRootBone().setScale(parts.get("head").sprite.getWidth()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), parts.get("head").sprite.getHeight()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight());
 
+        parts.get("rock").isDetachable = false;
+
+        state.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
+
+        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+
+        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+
+    }
+
+    @Override
+    float getHeight(ArrayList<Part> prts){
+        float total = 0;
+        for(Part p : prts){
+            if(!p.getName().equals("rock")) {
+                total += p.sprite.getHeight();
+            }
+        }
+        return total;
     }
 
 }

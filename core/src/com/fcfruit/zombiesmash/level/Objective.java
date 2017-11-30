@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -13,9 +14,15 @@ public class Objective {
 
     Body body;
 
+    float health = 100;
 
     public void setPosition(float x, float y){
         this.body.setTransform(x, y, this.body.getAngle());
+    }
+
+    public void onHit(){
+        health--;
+        Gdx.app.log("Objective", "health: "+health);
     }
 
 }

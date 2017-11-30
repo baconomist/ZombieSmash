@@ -38,6 +38,8 @@ public class Part{
 
     public boolean isPowerfulPart = false;
 
+    public boolean isDetachable = true;
+
     String state;
 
     public Part(String nm, Sprite s, Body b, Joint j, Zombie zbody){

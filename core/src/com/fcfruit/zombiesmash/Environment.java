@@ -1,6 +1,8 @@
 package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.fcfruit.zombiesmash.level.Level;
+import com.fcfruit.zombiesmash.level.Objective;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
@@ -16,6 +18,8 @@ public class Environment {
 
 
     public static ZombieSmash game = new ZombieSmash();
+
+    public static Level level;
 
     public static GameData gameData;
 

@@ -33,7 +33,7 @@ public class GameScreen implements Screen{
 
     private Box2DDebugRenderer debugRenderer;
 
-    public GameScreen(Level lvl){
+    public GameScreen(){
 
         physics_view = new StretchViewport(Environment.physicsCamera.viewportWidth, Environment.physicsCamera.viewportHeight, Environment.physicsCamera);
         physics_view.apply();
@@ -41,7 +41,7 @@ public class GameScreen implements Screen{
         game_view = new StretchViewport(Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight, Environment.gameCamera);
         game_view.apply();
 
-        game_stage = new GameStage(game_view, lvl);
+        game_stage = new GameStage(game_view);
 
         power_ups_view = new StretchViewport(480, 270);
         power_ups_view.setScreenPosition(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 270);
@@ -86,12 +86,12 @@ public class GameScreen implements Screen{
         power_ups_stage.draw();
 
 
-        Environment.gameCamera.position.x += 10;
-        Environment.physicsCamera.position.x += 10/192f;
+        //Environment.gameCamera.position.x += 10;
+        //Environment.physicsCamera.position.x += 10/192f;
 
         Environment.physicsCamera.update();
         Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundries();
+        //Environment.physics.constructPhysicsBoundries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
@@ -100,7 +100,7 @@ public class GameScreen implements Screen{
 
 
 
-        debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
+        //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }
 

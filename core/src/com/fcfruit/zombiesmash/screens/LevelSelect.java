@@ -27,6 +27,7 @@ public class LevelSelect implements Screen{
 
     @Override
     public void render(float delta){
+
         Environment.gameCamera = new OrthographicCamera(Environment.game.screenWidth, Environment.game.screenHeight);
         Environment.gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
         Environment.gameCamera.update();
@@ -41,7 +42,9 @@ public class LevelSelect implements Screen{
         Environment.physicsCamera.update();
 
         Environment.physics = new Physics();
-        Environment.gameScreen = new GameScreen(new NightLevel(1));
+        Environment.level = new NightLevel(1);
+        
+        Environment.gameScreen = new GameScreen();
         Environment.game.setScreen(Environment.gameScreen);
     }
 
