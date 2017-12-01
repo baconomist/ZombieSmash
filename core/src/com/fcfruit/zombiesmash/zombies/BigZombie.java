@@ -114,16 +114,7 @@ public class BigZombie extends Zombie{
 
     }
 
-    @Override
-    float getHeight(ArrayList<Part> prts){
-        float total = 0;
-        for(Part p : prts){
-            if(!p.getName().equals("rock")) {
-                total += p.sprite.getHeight();
-            }
-        }
-        return total;
-    }
+
 
 }
 

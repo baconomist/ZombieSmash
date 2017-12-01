@@ -70,7 +70,6 @@ public class Part{
 
     public void update(){
 
-
         if(state.equals("attached") && !body.physicsEnabled) {
             physicsBody.setAwake(false);
 
@@ -108,8 +107,6 @@ public class Part{
                 physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
 
             }
-
-
 
         }
 

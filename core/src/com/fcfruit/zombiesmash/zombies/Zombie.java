@@ -112,6 +112,15 @@ public class Zombie {
             getUpTimer = System.currentTimeMillis();
         }
 
+        if(justTouched){
+            //Make the physics bodies unstuck, sometimes the animation goes into the ground.
+            this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
+            // Un-freezes the zombie when holding click
+            for(Part p : parts.values()){
+                p.physicsBody.setAwake(true);
+            }
+        }
+
         if(isTouching){
             if(getUpMouseJoint != null){
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
@@ -119,12 +128,11 @@ public class Zombie {
             }
             isGettingUp = false;
 
-            //Make the physics bodies unstuck, sometimes the animation goes into the ground.
-            this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
             physicsEnabled = true;
             isAtObjective = false;
 
         }
+
         else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate) {
                 this.getUp();
@@ -201,7 +209,7 @@ public class Zombie {
 
     private void getUp(){
         // -0.1f to give it wiggle room to detect get up
-        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)))).y) - 0.1f){
+        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight() - parts.get("head").sprite.getHeight()/2, 0)))).y) - 0.1f){
 
             isGettingUp = false;
             physicsEnabled = false;
@@ -240,12 +248,14 @@ public class Zombie {
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
-            Gdx.app.log("a", "" + (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)))).y));
-            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(new ArrayList<Part>(this.parts.values())) - parts.get("head").sprite.getHeight(), 0)))).y));
+            Gdx.app.log("a", "" + (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
+            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
 
             isGettingUp = true;
 
         }
+
+        Gdx.app.log("h", ""+parts.get("head").physicsBody.getTransform().getPosition().y);
 
     }
 
@@ -292,7 +302,7 @@ public class Zombie {
     }
 
     // Recursion!
-    float getHeight(ArrayList<Part> p){
+    /*float getHeight(ArrayList<Part> p){
         ArrayList<Part> pCopy = new ArrayList<Part>();
         for(Part prt : p){
             pCopy.add(prt);
@@ -306,6 +316,16 @@ public class Zombie {
             return getHeight(pCopy) + p.get(0).sprite.getHeight();
         }
 
+    }*/
+
+    float getHeight(){
+        float total = 0;
+
+        total += parts.get("head").sprite.getHeight();
+        total += parts.get("torso").sprite.getHeight();
+        total += parts.get("left_leg").sprite.getHeight();
+
+        return total;
     }
 
     public HashMap<String, Part> getParts(){
