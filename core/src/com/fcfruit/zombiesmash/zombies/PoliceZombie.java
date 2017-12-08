@@ -3,6 +3,7 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -71,7 +72,6 @@ public class PoliceZombie extends Zombie {
             }
         });
 
-
     }
 
     public void constructPhysicsBody(World world){
@@ -122,11 +122,8 @@ public class PoliceZombie extends Zombie {
 
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
-    }
+        parts.get("torso").isDetachable = false;
 
-    @Override
-    void onObjective(){
-        this.attack();
     }
 
     @Override

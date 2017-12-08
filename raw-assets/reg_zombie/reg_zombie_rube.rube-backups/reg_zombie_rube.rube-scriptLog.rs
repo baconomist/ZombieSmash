@@ -1,1 +1,3 @@
-//Restarted script log at 11/25/17 16:50:51
+//Started script log at 12/01/17 23:10:56
+
+getJoint(10).select();

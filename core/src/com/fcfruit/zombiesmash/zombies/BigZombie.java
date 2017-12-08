@@ -3,6 +3,7 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -13,6 +14,7 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -36,6 +38,7 @@ public class BigZombie extends Zombie{
 
     @Override
     public void animationSetup() {
+
         atlas = new TextureAtlas(Gdx.files.internal("zombies/big_zombie/big_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
@@ -56,9 +59,20 @@ public class BigZombie extends Zombie{
         state.addListener(new AnimationState.AnimationStateAdapter() {
             @Override
             public void complete(AnimationState.TrackEntry entry) {
+                if(currentAnimation.equals("attack1")){
+                    timesCompleteAttack1++;
+                }
+                else if(currentAnimation.equals("attack2")){
+                    timesCompleteAttack1 = 0;
+                }
+                if(currentAnimation.contains("attack")){
+                    isAttacking = false;
+                    Environment.level.objective.onHit();
+                }
                 super.complete(entry);
             }
         });
+
 
     }
 
@@ -104,17 +118,29 @@ public class BigZombie extends Zombie{
         }
         skeleton.getRootBone().setScale(parts.get("head").sprite.getWidth()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), parts.get("head").sprite.getHeight()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight());
 
-        parts.get("rock").isDetachable = false;
-
         state.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
 
         state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
 
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
+        parts.get("rock").isDetachable = false;
+        parts.get("torso").isDetachable = false;
+
+
     }
 
+    @Override
+    void attack() {
+        super.attack();
 
+        if (timesCompleteAttack1 < 2) {
+            this.currentAnimation = "attack1";
+        } else {
+            this.currentAnimation = "attack2";
+        }
+
+    }
 
 }
 

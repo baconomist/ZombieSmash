@@ -5,6 +5,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.level.House;
 import com.fcfruit.zombiesmash.level.Objective;
+import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
@@ -15,12 +16,11 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
 
-        if(fixtureA.getUserData() instanceof Objective && fixtureB.getUserData() instanceof Zombie){
-            ((Zombie)fixtureB.getUserData()).isAtObjective = true;
+        if (fixtureA.getUserData() instanceof Objective && fixtureB.getUserData() instanceof Zombie) {
+            ((Zombie) fixtureB.getUserData()).isAtObjective = true;
             return false;
-        }
-        else if(fixtureB.getUserData() instanceof Objective && fixtureA.getUserData() instanceof Zombie){
-            ((Zombie)fixtureA.getUserData()).isAtObjective = true;
+        } else if (fixtureB.getUserData() instanceof Objective && fixtureA.getUserData() instanceof Zombie) {
+            ((Zombie) fixtureA.getUserData()).isAtObjective = true;
             return false;
         }
 
@@ -40,13 +40,16 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
         }
 
+        if(fixtureA.getBody().getUserData() instanceof PowerUp || fixtureB.getBody().getUserData() instanceof PowerUp){
+            return true;
+        }
+
 
         if (fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody) {
             return true;
         } else {
             return false;
         }
-
 
     }
 }

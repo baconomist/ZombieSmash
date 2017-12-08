@@ -3,5 +3,24 @@
     "quantity":1,
     "init_delay": 0,
     "spawn_delay": 0
+  },
+
+  "police_zombie":{
+    "quantity":1,
+    "init_delay": 1,
+    "spawn_delay": 0
+  },
+
+  "girl_zombie":{
+    "quantity":1,
+    "init_delay": 0,
+    "spawn_delay": 0
+  },
+  "reg_zombie":{
+    "quantity":30,
+    "init_delay": 0,
+    "spawn_delay": 0
   }
+
+
 }

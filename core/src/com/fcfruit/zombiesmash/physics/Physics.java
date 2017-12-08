@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.power_ups.PowerUp;
+import com.fcfruit.zombiesmash.power_ups.Rock;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -35,6 +37,7 @@ public class Physics {
 
     ArrayList<Part> parts;
     ArrayList<Zombie> zombies;
+    ArrayList<PowerUp> powerUps;
 
     Lighting lighting;
 
@@ -53,6 +56,7 @@ public class Physics {
 
         parts = new ArrayList<Part>();
         zombies = new ArrayList<Zombie>();
+        powerUps = new ArrayList<PowerUp>();
 
         world = new World(new Vector2(0, -25), true);
         world.setContactListener(new CollisionListener());
@@ -69,10 +73,13 @@ public class Physics {
     public void update(float delta){
 
         updateParts();
+        updatePowerUps();
         updateZombies();
+
         stepWorld(delta);
 
         lighting.update();
+
 
     }
 
@@ -207,6 +214,12 @@ public class Physics {
         }
     }
 
+    private void updatePowerUps(){
+        for(PowerUp p : powerUps){
+            p.update();
+        }
+    }
+
     public void addBody(Object o){
 
         if(o instanceof Zombie){
@@ -242,5 +255,7 @@ public class Physics {
     public ArrayList<Zombie> getZombies() {
         return zombies;
     }
+
+    public ArrayList<PowerUp> getPowerUps(){return powerUps;}
 
 }

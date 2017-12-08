@@ -28,7 +28,7 @@ public class Lighting {
         world = w;
         if(Environment.settings.isEnableLight()) {
             rayHandler = new RayHandler(world);
-            rayHandler.setAmbientLight(0f, 0f, 0f, Environment.settings.getBrightness()/100f);
+            rayHandler.setAmbientLight(0f, 0f, 0f, 0.7f);
             lights = new ArrayList<Light>();
             lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2.5f, 5, 4.7f));
         }
@@ -41,7 +41,7 @@ public class Lighting {
         }
         else if (Environment.settings.isEnableLight()){
             rayHandler = new RayHandler(world);
-            rayHandler.setAmbientLight(0f, 0f, 0f, 0.35f);
+            rayHandler.setAmbientLight(0f, 0f, 0f, 0.7f);
             lights = new ArrayList<Light>();
             lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2, 3, 3));
         }

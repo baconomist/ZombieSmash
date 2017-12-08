@@ -1,20 +1,11 @@
 {
-"skeleton": { "hash": "M0QKT3zehdhDNgzXp+ukx+hyphU", "spine": "3.6.47", "width": 0, "height": 0 },
+"skeleton": { "hash": "yKNZ9RcsgH0y0ueR6RzYkpTmyls", "spine": "3.6.48", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 109.45, "y": 259.06 },
 	{ "name": "head", "parent": "torso", "length": 214.57, "rotation": -3.57, "x": 189.06, "y": -2.71 },
 	{ "name": "left_shoulder", "parent": "torso", "length": 66.81, "rotation": -107.33, "x": 212.16, "y": -2.46 },
-	{
-		"name": "left_arm",
-		"parent": "left_shoulder",
-		"length": 121.77,
-		"rotation": 8.12,
-		"x": 12.85,
-		"y": -17.31,
-		"scaleX": 0.812,
-		"scaleY": 0.812
-	},
+	{ "name": "left_arm", "parent": "left_shoulder", "length": 121.77, "rotation": 8.12, "x": 12.85, "y": -17.31 },
 	{
 		"name": "left_hip",
 		"parent": "torso",
@@ -25,27 +16,9 @@
 		"shearX": -5.4,
 		"shearY": 2.97
 	},
-	{
-		"name": "left_leg",
-		"parent": "left_hip",
-		"length": 255.59,
-		"rotation": -94.48,
-		"x": 25.72,
-		"y": 11.65,
-		"scaleX": 0.945,
-		"scaleY": 0.945
-	},
+	{ "name": "left_leg", "parent": "left_hip", "length": 255.59, "rotation": -94.48, "x": 25.72, "y": 11.65 },
 	{ "name": "right_shoulder", "parent": "torso", "length": 89.4, "rotation": 106.63, "x": 211.96, "y": 2.62 },
-	{
-		"name": "right_arm",
-		"parent": "right_shoulder",
-		"length": 192.42,
-		"rotation": 157.99,
-		"x": 37.42,
-		"y": 23.97,
-		"scaleX": 0.804,
-		"scaleY": 0.804
-	},
+	{ "name": "right_arm", "parent": "right_shoulder", "length": 192.42, "rotation": 157.99, "x": 26.75, "y": 34.93 },
 	{ "name": "right_hip", "parent": "torso", "length": 81.31, "rotation": 99.54, "x": -11.76, "y": -1.39, "shearY": 2.58 },
 	{
 		"name": "right_leg",
@@ -54,8 +27,6 @@
 		"rotation": 80,
 		"x": 34.85,
 		"y": -15.18,
-		"scaleX": 0.896,
-		"scaleY": 0.896,
 		"shearX": -6.37,
 		"shearY": 2.96
 	}
@@ -71,24 +42,29 @@
 "skins": {
 	"default": {
 		"head": {
-			"head": { "x": 137.41, "y": -1.99, "rotation": -3.52, "width": 276, "height": 238 }
+			"head": { "x": 137.41, "y": -1.99, "rotation": -5.17, "width": 276, "height": 238 }
 		},
 		"left_arm": {
 			"left_arm": { "x": 170.34, "y": 19.39, "rotation": 6.86, "width": 405, "height": 94 }
 		},
 		"left_leg": {
-			"left_leg": { "x": 123.68, "y": 7.17, "rotation": -174.68, "width": 254, "height": 130 }
+			"left_leg": { "x": 123.68, "y": 7.17, "rotation": -177.34, "width": 254, "height": 130 }
 		},
 		"right_arm": {
 			"right_arm": { "x": 161.15, "y": 19.38, "rotation": 3.02, "width": 405, "height": 94 }
 		},
 		"right_leg": {
-			"right_leg": { "x": 136.4, "y": 11.85, "rotation": 175.06, "width": 276, "height": 141 }
+			"right_leg": { "x": 136.4, "y": 11.85, "rotation": 178, "width": 276, "height": 141 }
 		},
 		"torso": {
-			"torso": { "x": 92.68, "y": 1.07, "rotation": 0.23, "width": 249, "height": 179 }
+			"torso": { "x": 92.68, "y": 1.07, "rotation": -2.5, "width": 249, "height": 179 }
 		}
 	}
+},
+"events": {
+	"attack": {},
+	"crawl": {},
+	"step": {}
 },
 "animations": {
 	"attack1": {
@@ -143,7 +119,11 @@
 					{ "time": 1.3333, "angle": 2.74 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0, "name": "attack" },
+			{ "time": 0.8333, "name": "attack" }
+		]
 	},
 	"attack2": {
 		"bones": {
@@ -213,7 +193,15 @@
 					{ "time": 1.5, "angle": 4.52 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0, "name": "attack" },
+			{ "time": 0.1667, "name": "attack" },
+			{ "time": 0.3333, "name": "attack" },
+			{ "time": 0.5, "name": "attack" },
+			{ "time": 0.6667, "name": "attack" },
+			{ "time": 0.8333, "name": "attack" }
+		]
 	},
 	"crawl": {
 		"bones": {
@@ -275,7 +263,10 @@
 					{ "time": 0.6667, "angle": 3.08 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0.5, "name": "crawl" }
+		]
 	},
 	"crawl_attack": {
 		"bones": {
@@ -296,6 +287,10 @@
 					{ "time": 0, "angle": -283.52 },
 					{ "time": 0.1667, "angle": -222.3 },
 					{ "time": 0.5, "angle": -285.62 }
+				],
+				"translate": [
+					{ "time": 0, "x": 5.82, "y": 12.12 },
+					{ "time": 0.1667, "x": 10.37, "y": 24.78 }
 				]
 			},
 			"left_arm": {
@@ -337,7 +332,11 @@
 					{ "time": 1, "angle": 2.38 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0, "name": "attack" },
+			{ "time": 0.5, "name": "attack" }
+		]
 	},
 	"poison_potion": {
 		"bones": {
@@ -449,7 +448,11 @@
 					{ "time": 0.5, "x": 3.89, "y": -3.59 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0.0667, "name": "attack" },
+			{ "time": 0.2667, "name": "attack" }
+		]
 	},
 	"walk": {
 		"bones": {
@@ -503,7 +506,11 @@
 					{ "time": 0.6667, "angle": 3.32 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0.1667, "name": "step" },
+			{ "time": 0.5, "name": "step" }
+		]
 	}
 }
 }

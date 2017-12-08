@@ -1,1 +1,3 @@
-//Restarted script log at 11/25/17 16:50:54
+//Started script log at 12/02/17 12:19:36
+
+getBody(20).select();

@@ -1,8 +1,12 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -12,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 
 /**
@@ -38,7 +43,19 @@ public class Part{
 
     public boolean isPowerfulPart = false;
 
+    boolean isMoving = false;
+
+    boolean isOnGround = false;
+
     public boolean isDetachable = true;
+
+    public Polygon polygon;
+
+    public boolean polygonTouched = false;
+
+    private double timeBeforeOptimize = 500;
+    private double optimizationTimer = System.currentTimeMillis();
+    private boolean optimize = true;
 
     String state;
 
@@ -55,6 +72,10 @@ public class Part{
 
         state = "attached";
 
+        polygon = new Polygon();
+        polygon.setVertices(new float[]{0, 0, sprite.getWidth(), 0, sprite.getWidth(), sprite.getHeight(), 0, sprite.getHeight()});
+        polygon.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
+
     }
 
     public void draw(SpriteBatch batch){
@@ -63,22 +84,34 @@ public class Part{
                 sprite.draw(batch);
             }
         }
-        else{
+        else {
             sprite.draw(batch);
         }
+
     }
 
     public void update(){
 
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight()/2);
+        sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
+
+        //make polygon follow part
+        polygon.setPosition(sprite.getX(), sprite.getY());
+        polygon.setRotation(sprite.getRotation());
+
         if(state.equals("attached") && !body.physicsEnabled) {
             physicsBody.setAwake(false);
+            physicsBody.setActive(false);
 
             if(name.contains("arm")){
 
-                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
+                pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX() + sprite.getWidth()/4,
                         body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0)));
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
+
+                sprite.setRotation(body.getSkeleton().findBone(name).getWorldRotationX());
 
                 physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
 
@@ -86,7 +119,7 @@ public class Part{
 
             else if(name.contains("leg")){
 
-                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
                         body.getSkeleton().findBone(name).getWorldY() - sprite.getHeight()/2, 0)));
 
                 // -180 degrees cus the api is messed up
@@ -96,9 +129,20 @@ public class Part{
 
             }
 
+            else if(name.equals("rock")){
+                pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX() - sprite.getWidth()/4,
+                        body.getSkeleton().findBone(name).getWorldY() - sprite.getWidth()/4, 0)));
+
+                float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
+
+                sprite.setRotation(body.getSkeleton().findBone(name).getWorldRotationX());
+
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
+            }
+
             else{
 
-                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
+                pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(body.getSkeleton().findBone(name).getWorldX(),
                         body.getSkeleton().findBone(name).getWorldY() + sprite.getHeight()/2, 0)));
 
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
@@ -110,34 +154,36 @@ public class Part{
 
         }
 
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight()/2);
-        sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
+        if(state.equals("attached") && body.physicsEnabled){
+            physicsBody.setActive(true);
+        }
+
+        if(state.equals("detached") && optimize){
+            physicsBody.setActive(false);
+        }
+        else if(state.equals("attached") && body.optimize){
+            physicsBody.setActive(false);
+        }
+
+        if(isTouching || isMoving || !isOnGround || polygonTouched){
+            optimize = false;
+            optimizationTimer = System.currentTimeMillis();
+        }
+        else if(System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize){
+            optimize = true;
+        }
+
+        if(polygonTouched){
+            physicsBody.setActive(true);
+        }
+
+        isMoving = physicsBody.getLinearVelocity().x > 0.1 || physicsBody.getLinearVelocity().y > 0.1;
+        isOnGround = physicsBody.getTransform().getPosition().y < 0.5f;
+
+
 
     }
 
-    Vector2 hitPoint = new Vector2();
-    QueryCallback callback = new QueryCallback() {
-        @Override
-        public boolean reportFixture (Fixture fixture) {
-
-            // if the hit fixture's body is the ground body
-            // we ignore it
-            if (fixture.getBody().getType() == BodyDef.BodyType.StaticBody) return true;
-
-            // if the hit point is inside the fixture of the body
-            // we report it
-            if (fixture.testPoint(hitPoint
-                    .x, hitPoint
-                    .y)) {
-                // Simplified if statement
-                // If body is fixture body then touch is true, else false
-                isTouching = fixture.getBody() == physicsBody;
-                return false;
-            } else
-                return true;
-        }
-    };
 
     public void createMouseJoint(float x, float y, int p, boolean isPowerful){
 
@@ -189,10 +235,12 @@ public class Part{
     }
 
     public void touchDown(float x, float y, int p){
-
         if(mouseJoint == null) {
-            hitPoint.set(x, y);
-            Environment.physics.getWorld().QueryAABB(callback, hitPoint.x - 0.1f, hitPoint.y - 0.1f, hitPoint.x + 0.1f, hitPoint.y + 0.1f);
+
+            if(polygonTouched){
+                isTouching = true;
+            }
+
             if(state.equals("attached") && isTouching) {
                 if(!body.hasPowerfulPart) {
                     isPowerfulPart = true;
@@ -227,13 +275,14 @@ public class Part{
     public void touchUp(float x, float y, int p){
 
         if(mouseJoint != null && pointer == p){
-
             Environment.physics.getWorld().destroyJoint(mouseJoint);
             mouseJoint = null;
             isTouching = false;
             isPowerfulPart = false;
-
+            polygonTouched = false;
         }
+
+
 
 
     }

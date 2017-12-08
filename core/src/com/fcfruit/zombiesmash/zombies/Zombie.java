@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.*;
@@ -34,6 +35,8 @@ public class Zombie {
 
     public int id;
 
+    float scale;
+
     TextureAtlas atlas;
     Skeleton skeleton;
     AnimationState state;
@@ -50,10 +53,11 @@ public class Zombie {
 
     double timeBeforeAnimate = 5000;
     double timeBeforeAttack = 3000;
-
+    double timeBeforeOptimize = 500;
 
     double getUpTimer = System.currentTimeMillis();
     double attackTimer = System.currentTimeMillis();
+    double optimizationTimer = System.currentTimeMillis();
 
 
     String currentAnimation;
@@ -67,21 +71,23 @@ public class Zombie {
 
     private boolean isGettingUp = false;
 
-    private boolean isTouching = false;
+    public boolean isTouching = false;
 
     public boolean justTouched = false;
 
     public boolean isAtObjective = false;
 
+    boolean isOnGround = false;
+
     boolean isAttacking = false;
 
     boolean isCrawler = false;
-
 
     int timesCompleteAttack1 = 0;
 
     float randomObjectiveX = 0;
 
+    public boolean optimize = false;
 
     Zombie(int id) {
         this.id = id;
@@ -97,7 +103,6 @@ public class Zombie {
         }
         if (!physicsEnabled) {
             skeletonRenderer.draw(batch, skeleton);
-
         }
         update(delta);
     }
@@ -147,9 +152,20 @@ public class Zombie {
         }
 
 
+
         if(!physicsEnabled){
             this.move();
         }
+
+
+        if(isTouching || isMoving || !isOnGround || isGettingUp){
+            optimize = false;
+            optimizationTimer = System.currentTimeMillis();
+        }
+        else if(System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize){
+            optimize = true;
+        }
+
 
     }
 
@@ -184,7 +200,6 @@ public class Zombie {
         // Run update method for each body part
         boolean ispowerfulpart = false;
         boolean istouching = false;
-        boolean ismoving = false;
         for(Part p : parts.values()){
             p.update();
             if(p.isPowerfulPart && !ispowerfulpart){
@@ -199,15 +214,14 @@ public class Zombie {
         hasPowerfulPart = ispowerfulpart;
         justTouched = !isTouching && istouching;
         isTouching = istouching;
-        if(parts.get("torso").physicsBody.getLinearVelocity().x > 0.1 || parts.get("torso").physicsBody.getLinearVelocity().y > 0.1 && !ismoving) {
-            ismoving = true;
-        }
-        isMoving = ismoving;
+        isMoving = parts.get("torso").isMoving;
+        isOnGround = parts.get("torso").isOnGround;
 
     }
 
 
     private void getUp(){
+
         // -0.1f to give it wiggle room to detect get up
         if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight() - parts.get("head").sprite.getHeight()/2, 0)))).y) - 0.1f){
 
@@ -280,7 +294,7 @@ public class Zombie {
         }
         // Else, return animation position
         // Camera doesn't take care of reverse y axis(starting from top)
-        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(skeleton.getRootBone().getWorldX(), skeleton.getRootBone().getWorldY() + ((RegionAttachment)skeleton.findSlot("torso").getAttachment()).getHeight()/2, 0));
+        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(skeleton.getX(), skeleton.getY(), 0));
         return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
     }
 
@@ -328,13 +342,23 @@ public class Zombie {
         return total;
     }
 
+    float getWidth(){
+        float total = 0;
+
+        total += parts.get("left_arm").sprite.getWidth();
+        total += parts.get("torso").sprite.getWidth();
+        total += parts.get("right_arm").sprite.getWidth();
+
+        return total;
+    }
+
     public HashMap<String, Part> getParts(){
         return parts;
     }
     void crawl(){
         this.isCrawler = true;
     }
-    void onObjective(){}
+    void onObjective(){this.attack();}
     void attack(){
         this.isAttacking = true;
     }
@@ -369,14 +393,11 @@ public class Zombie {
 
 
 
-    public void touchDown(float x, float y, int pointer){
-
-        for(String name : parts.keySet()){
+    public void touchDown(float x, float y, int pointer) {
+        for (String name : parts.keySet()) {
             parts.get(name).touchDown(x, y, pointer);
         }
-
     }
-
     public void touchDragged(float x, float y, int pointer){
 
         for(String name : parts.keySet()){
