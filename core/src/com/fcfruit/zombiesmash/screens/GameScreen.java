@@ -33,6 +33,8 @@ public class GameScreen implements Screen{
 
     private Box2DDebugRenderer debugRenderer;
 
+    int i = 0;
+
     public GameScreen(){
 
         physics_view = new StretchViewport(Environment.physicsCamera.viewportWidth, Environment.physicsCamera.viewportHeight, Environment.physicsCamera);
@@ -89,15 +91,22 @@ public class GameScreen implements Screen{
         //Environment.gameCamera.position.x += 10;
         //Environment.physicsCamera.position.x += 10/192f;
 
-        Environment.physicsCamera.update();
-        Environment.gameCamera.update();
+        if(i == 0) {
+
+            Environment.gameCamera.position.x = 10 * 192f;
+            Environment.physicsCamera.position.x = 10;
+            Environment.gameCamera.update();
+            Environment.physicsCamera.update();
+            Environment.physics.constructPhysicsBoundries();
+
+            Environment.physicsCamera.update();
+            Environment.gameCamera.update();
+        }
+        i++;
         //Environment.physics.constructPhysicsBoundries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
-
-
-
 
 
         //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);

@@ -42,6 +42,7 @@ public class LevelSelect implements Screen{
         Environment.physicsCamera.update();
 
         Environment.physics = new Physics();
+
         Environment.level = new NightLevel(1);
         
         Environment.gameScreen = new GameScreen();

@@ -30,9 +30,9 @@ public class Level {
 
     public Objective objective;
 
-    private ArrayList<Zombie> zombies = Environment.physics.getZombies();
+    public ArrayList<Zombie> zombies = Environment.physics.getZombies();
 
-    private ArrayList<Part> parts = Environment.physics.getParts();
+    public ArrayList<Part> parts = Environment.physics.getParts();
 
     private float level_timer = 0;
 

@@ -63,7 +63,7 @@ public class GameStage extends Stage {
 
         shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(Zombie z : Environment.physics.getZombies()) {
+        for(Zombie z : Environment.level.zombies) {
             for(Part p : z.getParts().values()) {
                 //shapeRenderer.polygon(p.polygon.getTransformedVertices());
             }
@@ -71,6 +71,7 @@ public class GameStage extends Stage {
         for(Part p : Environment.physics.getParts()){
             //shapeRenderer.polygon(p.polygon.getTransformedVertices());
         }
+        shapeRenderer.polygon(Environment.level.objective.polygon.getTransformedVertices());
         shapeRenderer.end();
 
         Environment.physics.update(Gdx.graphics.getDeltaTime());
@@ -91,8 +92,7 @@ public class GameStage extends Stage {
 
         Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
 
-
-        for(Zombie z : Environment.physics.getZombies()){
+        for(Zombie z : Environment.level.zombies){
             for(Part p : z.getParts().values()) {
                 if (p.polygon.contains(pos.x, pos.y)) {
                     touchedParts.add(p);
@@ -114,7 +114,7 @@ public class GameStage extends Stage {
 
         Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchDown(vector.x, vector.y, pointer);
-        Gdx.app.log("touch", ""+Environment.physicsCamera.unproject(new Vector3(0, Gdx.input.getY(), 0)).y);
+        Gdx.app.log("touch", ""+Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0)).x);
 
 
         return super.touchDown(screenX, screenY, pointer, button);

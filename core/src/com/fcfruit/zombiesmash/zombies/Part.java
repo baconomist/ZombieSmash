@@ -330,10 +330,22 @@ public class Part{
         else if(s.equals("detached")){
             state = s;
         }
+        else if(s.equals("waiting_for_destroy")){
+            state = s;
+        }
+        else if(s.equals("destroyed")){
+            state = s;
+        }
+
     }
 
     public void destroy(){
-
+        if(bodyJoint != null){
+            Environment.physics.getWorld().destroyJoint(bodyJoint);
+            body.parts.remove(name);
+        }
+        Environment.physics.getWorld().destroyBody(physicsBody);
+        setState("destroyed");
     }
 
 }

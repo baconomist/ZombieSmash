@@ -31,6 +31,8 @@ public class RegularZombie extends Zombie {
     public RegularZombie(Integer id) {
         super(id);
 
+        type = "reg";
+
         animationSetup();
 
     }
@@ -80,59 +82,6 @@ public class RegularZombie extends Zombie {
 
     }
 
-    public void constructPhysicsBody(World world){
-        RubeSceneLoader loader = new RubeSceneLoader(world);
-        RubeScene rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_rube.json"));
-
-        parts = new HashMap<String, Part>();
-
-        for(Body b : rubeScene.getBodies()) {
-
-            String bodyName = (String) rubeScene.getCustom(b, "name");
-            Gdx.app.log("bodyName", bodyName);
-            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-
-            for (RubeImage i : rubeScene.getImages()) {
-                if (i.body == b) {
-                    sprite.flip(i.flip, false);
-                    sprite.setColor(i.color);
-                    sprite.setOriginCenter();
-                    sprite.setSize(i.width* Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
-                    sprite.setOriginCenter();
-                }
-
-            }
-
-            Joint joint = null;
-            for (Joint j : rubeScene.getJoints()) {
-                if (j.getBodyA() == b || j.getBodyB() == b) {
-                    joint = j;
-                    break;
-                }
-            }
-
-
-            for (Fixture f : b.getFixtureList()) {
-                // Makes different zombies not collide with each other
-                f.setUserData(this);
-            }
-
-            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
-
-        }
-
-        skeleton.getRootBone().setScale(parts.get("head").sprite.getWidth()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getWidth(), parts.get("head").sprite.getHeight()/((RegionAttachment)skeleton.findSlot("head").getAttachment()).getHeight());
-
-        state.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
-
-        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
-
-        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
-        
-        parts.get("torso").isDetachable = false;
-
-
-    }
 
     @Override
     void onGetUp(){

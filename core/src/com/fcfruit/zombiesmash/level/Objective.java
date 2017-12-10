@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -12,12 +13,13 @@ import com.fcfruit.zombiesmash.Environment;
 
 public class Objective {
 
-    Body body;
+    public Polygon polygon;
 
     float health = 100;
 
     public void setPosition(float x, float y){
-        this.body.setTransform(x, y, this.body.getAngle());
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
+        this.polygon.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
     }
 
     public void onHit(){

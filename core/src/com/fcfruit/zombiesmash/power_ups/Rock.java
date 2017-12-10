@@ -4,6 +4,7 @@ package com.fcfruit.zombiesmash.power_ups;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -30,6 +31,9 @@ public class Rock extends PowerUp{
 
         sprite.setSize(scene.getImages().get(0).width*Physics.PIXELS_PER_METER, scene.getImages().get(0).height* Physics.PIXELS_PER_METER);
         sprite.setOriginCenter();
+
+        polygon = new Polygon(new float[]{0, 0, sprite.getWidth(), 0, sprite.getWidth(), sprite.getHeight(), 0, sprite.getHeight()});
+        polygon.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 
         Gdx.app.log("rock created", ""+sprite);
 

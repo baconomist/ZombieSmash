@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.fcfruit.zombiesmash.Environment;
@@ -20,6 +21,8 @@ public class PowerUp {
 
     Body physicsBody;
 
+    Polygon polygon;
+
     public void draw(Batch batch){
 
         sprite.draw(batch);
@@ -30,6 +33,9 @@ public class PowerUp {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight()/2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
+
+        polygon.setPosition(sprite.getX(), sprite.getY());
+        polygon.setRotation(sprite.getRotation());
     }
 
 }

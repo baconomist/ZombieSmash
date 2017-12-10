@@ -206,9 +206,10 @@ public class Physics {
             }
             for(Part p : copy.values()){
                 if(p.getState().equals("waiting_for_detach")) {
-
                     p.detach();
-
+                }
+                else if(p.getState().equals("waiting_for_destroy")){
+                    p.destroy();
                 }
             }
         }
@@ -223,7 +224,7 @@ public class Physics {
     public void addBody(Object o){
 
         if(o instanceof Zombie){
-            ((Zombie)o).constructPhysicsBody(world);
+            ((Zombie)o).constructPhysicsBody(world, ((Zombie)o).getDirection() == 1);
             zombies.add((Zombie) o);
         }
         else if (o instanceof Part){

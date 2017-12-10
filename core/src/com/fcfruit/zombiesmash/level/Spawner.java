@@ -62,10 +62,14 @@ public class Spawner {
     void spawnZombie(){
 
         try {
+
             tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.physics.getZombies().size() + 1);
-            tempZombie.setPosition(-0.5f, 0);
+            tempZombie.setPosition(13, 0);
+
+            tempZombie.setDirection(1);
             Environment.physics.addBody(tempZombie);
             spawned += 1;
+
         } catch (InstantiationException e) {
             e.printStackTrace();
         } catch (IllegalAccessException e) {

@@ -2,5 +2,9 @@
     {
         "merged": "C:\\Users\\Lucas\\Desktop\\Projects\\Android\\ZombieSmash\\android\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_launcher.png",
         "source": "C:\\Users\\Lucas\\Desktop\\Projects\\Android\\ZombieSmash\\android\\res\\drawable-xxxhdpi\\ic_launcher.png"
+    },
+    {
+        "merged": "F:\\ZombieSmash\\android\\build\\intermediates\\res\\merged\\debug\\drawable-xxxhdpi\\ic_launcher.png",
+        "source": "F:\\ZombieSmash\\android\\res\\drawable-xxxhdpi\\ic_launcher.png"
     }
 ]

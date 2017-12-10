@@ -33,8 +33,9 @@ public class NightLevel extends Level{
         this.lvlNum = lvlnum;
 
         this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map/night_map.png")));
+
         this.objective = new House();
-        this.objective.setPosition(9.5f, 2.5f);
+        this.objective.setPosition(7f, 0f);
 
         this.json = new JsonReader();
         this.data = json.parse(Gdx.files.internal("maps/night_map/levels/"+this.lvlNum+".json"));
