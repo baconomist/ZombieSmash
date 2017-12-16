@@ -1,14 +1,6 @@
 [
     {
-        "merged": "D:\\Users\\lucas\\Desktop\\Projects\\ZombieSmash\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_launcher.png",
-        "source": "D:\\Users\\lucas\\Desktop\\Projects\\ZombieSmash\\android\\res\\drawable-mdpi\\ic_launcher.png"
-    },
-    {
         "merged": "F:\\ZombieSmash\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_launcher.png",
         "source": "F:\\ZombieSmash\\android\\res\\drawable-mdpi\\ic_launcher.png"
-    },
-    {
-        "merged": "C:\\Users\\Lucas\\Desktop\\Projects\\Android\\ZombieSmash\\android\\build\\intermediates\\res\\merged\\debug\\drawable-mdpi\\ic_launcher.png",
-        "source": "C:\\Users\\Lucas\\Desktop\\Projects\\Android\\ZombieSmash\\android\\res\\drawable-mdpi\\ic_launcher.png"
     }
 ]

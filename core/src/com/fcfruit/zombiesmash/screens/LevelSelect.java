@@ -16,7 +16,7 @@ import com.fcfruit.zombiesmash.physics.Physics;
 
 public class LevelSelect implements Screen{
 
-    public LevelSelect(MainMenu mainMenu){
+    public LevelSelect(){
 
     }
 

@@ -168,7 +168,7 @@ public class Physics {
         }
 
         Vector3 pos = Environment.physicsCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        powerUps.add(new Rock(pos.x, pos.y));
+        //powerUps.add(new Rock(pos.x, pos.y));
 
     }
 
