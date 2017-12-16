@@ -79,6 +79,8 @@ public class Zombie {
 
     public boolean isAtObjective = false;
 
+    public boolean alive = true;
+
     boolean isOnGround = false;
 
     boolean isAttacking = false;
@@ -151,6 +153,9 @@ public class Zombie {
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate) {
                 this.crawl();
             }
+        }
+        else{
+            this.alive = false;
         }
 
 
@@ -492,9 +497,6 @@ public class Zombie {
             return 1;
         }
     }
-    public void destroy(){}
-
-
 
     public void touchDown(float x, float y, int pointer) {
         for (String name : parts.keySet()) {
@@ -516,5 +518,7 @@ public class Zombie {
         }
 
     }
+
+    public void destroy(){}
 
 }

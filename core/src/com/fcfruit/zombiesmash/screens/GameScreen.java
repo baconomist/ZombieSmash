@@ -74,7 +74,6 @@ public class GameScreen implements Screen{
     @Override
     public void render(float delta) {
 
-
         physics_view.apply();
 
         game_stage.act(delta);
@@ -116,11 +115,14 @@ public class GameScreen implements Screen{
             Environment.gameCamera.update();
         }
 
+        Gdx.app.log("pos", ""+Environment.gameCamera.position.x);
+
 
             //Environment.physics.constructPhysicsBoundries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
+
 
 
         //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);

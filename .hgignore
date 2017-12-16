@@ -426,3 +426,7 @@ build/**
 *.class
 *.jar
 raw-assets/reg_zombie/reg_zombie_rube.rube-backups/
+android/assets/hs_err_pid2724.log
+android/assets/hs_err_pid12736.log
+android/assets/hs_err_pid10336.log
+.idea/libraries/desktop_desktop_1_0.xml

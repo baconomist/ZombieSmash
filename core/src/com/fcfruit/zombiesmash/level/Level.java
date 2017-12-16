@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
@@ -22,6 +23,13 @@ import java.util.HashMap;
 
 public class Level {
 
+    static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
+    static{
+        positions.put("left", new Vector2(Environment.physicsCamera.viewportWidth/2, 0));
+        positions.put("right", new Vector2(Environment.physicsCamera.viewportWidth*1.4f, 0));
+        positions.put("middle", new Vector2(10, 0));
+    }
+
     public int lvlNum;
 
     JsonReader json;
@@ -37,9 +45,19 @@ public class Level {
 
     public ArrayList<Part> parts = Environment.physics.getParts();
 
+    public boolean levelEnd = false;
+
+    ArrayList<Spawner> spawners;
+
     private float level_timer = 0;
 
     private float spawn_timer = 0;
+
+    int currentPosition;
+
+    boolean zombiesDead = false;
+
+    boolean movingCamera = false;
 
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer){
@@ -65,6 +83,26 @@ public class Level {
         // it doesn't draw the sprites, only the light
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
 
+
+        for(Zombie z : zombies){
+            if(z.alive){
+                zombiesDead = false;
+                break;
+            }
+            else{
+                zombiesDead = true;
+            }
+
+        }
+
+    }
+
+    public void updateCamera(){
+        Environment.gameCamera.position.x = positions.get(data.get(currentPosition).name).x*192;
+        Environment.gameCamera.update();
+        Environment.physicsCamera.position.x = positions.get(data.get(currentPosition).name).x;
+        Environment.physicsCamera.update();
+        Environment.physics.constructPhysicsBoundries();
     }
 
 }

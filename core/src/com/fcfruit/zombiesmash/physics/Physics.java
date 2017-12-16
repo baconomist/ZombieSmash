@@ -252,6 +252,9 @@ public class Physics {
         for(Part p : parts){
             p.destroy();
         }
+        zombies = new ArrayList<Zombie>();
+        parts = new ArrayList<Part>();
+        powerUps = new ArrayList<PowerUp>();
     }
 
     public World getWorld(){

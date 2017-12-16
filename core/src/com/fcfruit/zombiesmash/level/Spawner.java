@@ -3,6 +3,8 @@ package com.fcfruit.zombiesmash.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.math.EarClippingTriangulator;
+import com.badlogic.gdx.math.Vector;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
@@ -20,9 +22,25 @@ import java.util.HashMap;
 
 public class Spawner {
 
-    HashMap<String, Class> zombieType;
+    static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
+    static{
+        positions.put("left", new Vector2(-1, 0));
+        positions.put("right", new Vector2(21, 0));
+        positions.put("middle_left", new Vector2(3, 0));
+        positions.put("middle_right", new Vector2(16, 0));
+    }
+
+    static HashMap<String, Class> zombieType = new HashMap<String, Class>();
+    static{
+        zombieType.put("reg_zombie", RegularZombie.class);
+        zombieType.put("girl_zombie", GirlZombie.class);
+        zombieType.put("police_zombie", PoliceZombie.class);
+        zombieType.put("big_zombie", BigZombie.class);
+    }
 
     String type;
+
+    JsonValue data;
 
     int spawned;
 
@@ -37,7 +55,9 @@ public class Spawner {
 
     Zombie tempZombie;
 
-    public Spawner(JsonValue data){
+    public Spawner(JsonValue d){
+
+        data = d;
 
         spawned = 0;
         timer = System.currentTimeMillis();
@@ -48,15 +68,6 @@ public class Spawner {
         spawn_delay = data.getFloat("spawn_delay");
 
         initDelayEnabled = init_delay != 0;
-
-
-        zombieType = new HashMap<String, Class>();
-        zombieType.put("reg_zombie", RegularZombie.class);
-        zombieType.put("girl_zombie", GirlZombie.class);
-        zombieType.put("police_zombie", PoliceZombie.class);
-        zombieType.put("big_zombie", BigZombie.class);
-
-
     }
 
     void spawnZombie(){
@@ -64,9 +75,14 @@ public class Spawner {
         try {
 
             tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.physics.getZombies().size() + 1);
-            tempZombie.setPosition(15, 0);
-
-            tempZombie.setDirection(1);
+            Gdx.app.log("bb", ""+data.getString("position"));
+            tempZombie.setPosition(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y);
+            if(data.getString("position").contains("left")) {
+                tempZombie.setDirection(0);
+            }
+            else if(data.getString("position").contains("right")){
+                tempZombie.setDirection(1);
+            }
             Environment.physics.addBody(tempZombie);
             spawned += 1;
 

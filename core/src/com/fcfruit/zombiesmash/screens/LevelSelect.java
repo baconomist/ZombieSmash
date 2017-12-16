@@ -9,6 +9,8 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
 
+import static com.fcfruit.zombiesmash.Environment.level;
+
 
 /**
  * Created by Lucas on 2017-07-22.
@@ -43,10 +45,13 @@ public class LevelSelect implements Screen{
 
         Environment.physics = new Physics();
 
-        Environment.level = new NightLevel(1);
+        level = new NightLevel(1);
         
         Environment.gameScreen = new GameScreen();
+        level.updateCamera();
         Environment.game.setScreen(Environment.gameScreen);
+
+
     }
 
     @Override

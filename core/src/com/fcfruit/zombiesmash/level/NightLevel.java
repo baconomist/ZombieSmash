@@ -24,13 +24,10 @@ import java.util.ArrayList;
 
 public class NightLevel extends Level{
 
-    ArrayList<Spawner> spawners;
-
-
-
     public NightLevel(int lvlnum){
 
         this.lvlNum = lvlnum;
+
 
         this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map/night_map.png")));
 
@@ -41,41 +38,63 @@ public class NightLevel extends Level{
         this.data = json.parse(Gdx.files.internal("maps/night_map/levels/"+this.lvlNum+".json"));
 
         this.spawners = new ArrayList<Spawner>();
-        for(JsonValue v : this.data){
+        for(JsonValue v : this.data.get(0)){
             this.spawners.add(new Spawner(v));
         }
 
-
-        /*Zombie z;
-        for(int i = 0; i < 10; i++) {
-            z = new RegularZombie(i);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }
-        for(int i = 0; i < 10; i++) {
-            z = new GirlZombie(i+10);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }
-        for(int i = 0; i < 10; i++) {
-            z = new PoliceZombie(i+20);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }
-        for(int i = 0; i < 10; i++) {
-            z = new BigZombie(i+20);
-            Environment.physics.addBody(z);
-            z.setPosition(i, 0);
-        }*/
+        currentPosition = 0;
 
     }
+
+
 
     @Override
     public void update(){
-        for(Spawner s : spawners){
-            s.update();
+        if (!movingCamera) {
+            super.update();
+            for (Spawner s : spawners) {
+                s.update();
+            }
+
+
+            if (zombiesDead) {
+                if (this.data.size - 1 == this.currentPosition) {
+                    this.levelEnd = true;
+                } else {
+                    this.currentPosition += 1;
+                    Environment.physics.clearBodies();
+                    zombies = Environment.physics.getZombies();
+                    parts = Environment.physics.getParts();
+                    powerUps = Environment.physics.getPowerUps();
+                    this.spawners = new ArrayList<Spawner>();
+                    for (JsonValue v : this.data.get(currentPosition)) {
+                        this.spawners.add(new Spawner(v));
+                    }
+                    zombiesDead = false;
+                    movingCamera = true;
+                }
+            }
+        }
+        else if(Environment.physicsCamera.position.x - positions.get(data.get(currentPosition).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(currentPosition).name).x < -0.1f ){
+
+                if(Environment.physicsCamera.position.x < positions.get(data.get(currentPosition).name).x) {
+                    Environment.gameCamera.position.x += 5f;
+                    Environment.physicsCamera.position.x += 5f / 192f;
+                }
+                else{
+                    Environment.gameCamera.position.x -= 5f;
+                    Environment.physicsCamera.position.x -= 5f / 192f;
+                }
+                Environment.gameCamera.update();
+                Environment.physicsCamera.update();
+        }
+        else{
+            movingCamera = false;
+            Environment.physics.constructPhysicsBoundries();
         }
     }
+
+
 
 
 }

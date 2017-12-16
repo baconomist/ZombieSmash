@@ -1,11 +1,11 @@
 {
 
-  "left":{
+  "right":{
     "big_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
-      "position":"left"
+      "position":"right"
     }
   },
   "middle":{
