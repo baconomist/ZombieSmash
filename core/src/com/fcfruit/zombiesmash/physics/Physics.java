@@ -265,6 +265,12 @@ public class Physics {
         return ground;
     }
 
+    public Body getRoof(){return roof;}
+
+    public Body getWall_1(){return wall_1;}
+
+    public Body getWall_2(){return wall_2;}
+
     public ArrayList<Part> getParts() {
         return parts;
     }

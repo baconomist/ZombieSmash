@@ -115,8 +115,6 @@ public class GameScreen implements Screen{
             Environment.gameCamera.update();
         }
 
-        Gdx.app.log("pos", ""+Environment.gameCamera.position.x);
-
 
             //Environment.physics.constructPhysicsBoundries();
 

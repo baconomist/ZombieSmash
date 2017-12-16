@@ -81,6 +81,8 @@ public class Zombie {
 
     public boolean alive = true;
 
+    public boolean enteredLevel = false;
+
     boolean isOnGround = false;
 
     boolean isAttacking = false;
@@ -116,6 +118,12 @@ public class Zombie {
         updateSkeleton(delta);
 
         updateParts();
+
+        if(this.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
+                && this.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f){
+            enteredLevel = true;
+            Gdx.app.log("entered", "a");
+        }
 
         if(isMoving && !isGettingUp || isTouching){
             getUpTimer = System.currentTimeMillis();

@@ -39,7 +39,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
 
         if (fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody) {
-            return true;
+            return (fixtureA.getUserData() instanceof Zombie && ((Zombie) fixtureA.getUserData()).enteredLevel) || (fixtureB.getUserData() instanceof Zombie && ((Zombie) fixtureB.getUserData()).enteredLevel);
         } else {
             return false;
         }
