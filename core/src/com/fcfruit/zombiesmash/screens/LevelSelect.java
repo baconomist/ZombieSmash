@@ -5,9 +5,12 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.viewport.StretchViewport;
+import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.stages.LevelSelectStage;
 
 import static com.fcfruit.zombiesmash.Environment.level;
 
@@ -18,45 +21,34 @@ import static com.fcfruit.zombiesmash.Environment.level;
 
 public class LevelSelect implements Screen{
 
-    public LevelSelect(){
+    LevelSelectStage stage;
 
+    Viewport viewport;
+
+    public LevelSelect(){
+        viewport = new StretchViewport(Environment.game.screenWidth, Environment.game.screenHeight);
+        stage = new LevelSelectStage(viewport);
+
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void show() {
-
+        Gdx.input.setInputProcessor(stage);
     }
 
     @Override
     public void render(float delta){
-
-        Environment.gameCamera = new OrthographicCamera(Environment.game.screenWidth, Environment.game.screenHeight);
-        Environment.gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
-        Environment.gameCamera.update();
-
-        Environment.physicsCamera = new OrthographicCamera(Environment.game.screenWidth/Physics.PIXELS_PER_METER, Environment.game.screenHeight/Physics.PIXELS_PER_METER);
-        // Camera position/origin is in the middle
-        // Not bottom left
-        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
-        // Also cam.project(worldpos) is x and y from bottom left corner
-        // But cam.unproject(screenpos) is x and y from top left corner
-        Environment.physicsCamera.position.set(Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight/2, 0);
-        Environment.physicsCamera.update();
-
-        Environment.physics = new Physics();
-
-        level = new NightLevel(1);
-        
-        Environment.gameScreen = new GameScreen();
-        level.updateCamera();
-        Environment.game.setScreen(Environment.gameScreen);
-
-
+        stage.act();
+        stage.draw();
     }
 
     @Override
     public void resize(int width, int height) {
-
+        // use true here to center the camera
+        // that's what you probably want in case of UI
+        viewport.update(width, height, true);
+        stage.getViewport().update(width, height, true);
     }
 
     @Override
@@ -78,4 +70,5 @@ public class LevelSelect implements Screen{
     public void dispose() {
 
     }
+
 }

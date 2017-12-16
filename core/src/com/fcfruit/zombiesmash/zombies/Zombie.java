@@ -122,7 +122,6 @@ public class Zombie {
         if(this.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
                 && this.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f){
             enteredLevel = true;
-            Gdx.app.log("entered", "a");
         }
 
         if(isMoving && !isGettingUp || isTouching){
@@ -257,6 +256,8 @@ public class Zombie {
 
             // Restart animation
             state.setAnimation(0, currentAnimation, true);
+
+            this.checkDirection();
 
         }
 
@@ -503,6 +504,19 @@ public class Zombie {
         }
         else{
             return 1;
+        }
+    }
+
+    void checkDirection(){
+        int previous_direction = this.direction;
+        if(this.getPosition().x < Environment.level.objective.getPosition().x){
+            this.direction = 0;
+        }
+        else{
+            this.direction = 1;
+        }
+        if(previous_direction != this.direction){
+            onDirectionChange();
         }
     }
 

@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
@@ -20,6 +21,11 @@ public class Objective {
     public void setPosition(float x, float y){
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
         this.polygon.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+    }
+
+    public Vector2 getPosition(){
+        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(polygon.getX(), polygon.getY(), 0));
+        return new Vector2(pos.x, pos.y);
     }
 
     public void onHit(){

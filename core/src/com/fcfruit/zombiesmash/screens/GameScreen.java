@@ -4,17 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputMultiplexer;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.PixmapIO;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.BufferUtils;
-import com.badlogic.gdx.utils.IntIntMap;
-import com.badlogic.gdx.utils.ScreenUtils;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.stages.GameStage;
 
@@ -54,8 +47,9 @@ public class GameScreen implements Screen{
 
         inputMultiplexer = new InputMultiplexer();
 
-        inputMultiplexer.addProcessor(game_stage);
         inputMultiplexer.addProcessor(power_ups_stage);
+        inputMultiplexer.addProcessor(game_stage);
+
 
         debugRenderer = new Box2DDebugRenderer();
 
