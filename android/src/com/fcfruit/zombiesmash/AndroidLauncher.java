@@ -1,5 +1,7 @@
 package com.fcfruit.zombiesmash;
 
+import android.app.ActivityManager;
+import android.content.Context;
 import android.os.*;
 
 import com.badlogic.gdx.Gdx;
@@ -14,4 +16,17 @@ public class AndroidLauncher extends AndroidApplication {
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 		initialize(Environment.game, config);
 	}
+
+	@Override
+	protected void onPause() {
+		super.onPause();
+		// Disable recent apps button
+		ActivityManager activityManager = (ActivityManager) getApplicationContext()
+				.getSystemService(Context.ACTIVITY_SERVICE);
+		// If apk version matches required for this function call
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			activityManager.moveTaskToFront(getTaskId(), 0);
+		}
+	}
+
 }

@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.Game;
@@ -7,6 +8,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.screens.MainMenu;
@@ -33,6 +35,10 @@ public class ZombieSmash extends Game {
 		 */
 		Environment.gameData = new GameData();
 		Environment.settings = new Settings();
+
+		if(Gdx.app.getType() == Application.ApplicationType.Android){
+			Gdx.input.setCatchBackKey(true);
+		}
 
 
 
