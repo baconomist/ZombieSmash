@@ -17,7 +17,10 @@ public class House extends Objective {
 
     House() {
 
-        polygon = new Polygon(new float[]{0, 0, 1050, 0, 1050, 700, 0, 700});
+        width = 1050;
+        height = 700;
+
+        polygon = new Polygon(new float[]{0, 0, width, 0, width, height, 0, height});
 
     }
 

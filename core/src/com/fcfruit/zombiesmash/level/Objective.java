@@ -18,6 +18,9 @@ public class Objective {
 
     float health = 100;
 
+    float width;
+    float height;
+
     public void setPosition(float x, float y){
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
         this.polygon.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
@@ -34,5 +37,15 @@ public class Objective {
     }
 
     public float getHealth(){return health;}
+
+    public float getWidth(){
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(width, 0, 0)));
+        return pos.x;
+    }
+
+    public float getHeight(){
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(0, height, 0)));
+        return Environment.physicsCamera.viewportHeight - pos.y;
+    }
 
 }
