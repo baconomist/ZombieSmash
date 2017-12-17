@@ -29,6 +29,15 @@ import java.util.HashMap;
 
 public class BigZombie extends Zombie{
 
+    static{
+        partsToStayAlive.add("head");
+        partsToStayAlive.add("torso");
+        partsToStayAlive.add("left_arm");
+        partsToStayAlive.add("right_arm");
+        partsToStayAlive.add("left_leg");
+        partsToStayAlive.add("right_leg");
+    }
+
     public BigZombie(Integer id) {
         super(id);
 

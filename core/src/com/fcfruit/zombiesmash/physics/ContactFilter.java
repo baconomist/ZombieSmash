@@ -37,9 +37,13 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             return true;
         }
 
+        if(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")){
+            return (fixtureA.getUserData() instanceof Zombie && ((Zombie) fixtureA.getUserData()).enteredLevel) || (fixtureB.getUserData() instanceof Zombie && ((Zombie) fixtureB.getUserData()).enteredLevel);
+        }
+
 
         if (fixtureA.getBody().getType() == BodyDef.BodyType.StaticBody || fixtureB.getBody().getType() == BodyDef.BodyType.StaticBody) {
-            return (fixtureA.getUserData() instanceof Zombie && ((Zombie) fixtureA.getUserData()).enteredLevel) || (fixtureB.getUserData() instanceof Zombie && ((Zombie) fixtureB.getUserData()).enteredLevel);
+            return true;
         } else {
             return false;
         }

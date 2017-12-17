@@ -21,12 +21,26 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-11-05.
  */
 
 public class GirlZombie extends Zombie {
+
+    static{
+        partsToStayAlive.add("head");
+        partsToStayAlive.add("torso");
+        if(new Random().nextInt(2) == 0) {
+            partsToStayAlive.add("left_arm");
+        }
+        else {
+            partsToStayAlive.add("right_arm");
+        }
+        partsToStayAlive.add("left_leg");
+        partsToStayAlive.add("right_leg");
+    }
     
     public GirlZombie(Integer id){
         super(id);

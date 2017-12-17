@@ -122,10 +122,12 @@ public class Physics {
 
         wall_1 = world.createBody(walls);
         wall_1.createFixture(wallFixture);
+        wall_1.getFixtureList().get(0).setUserData("wall");
         wall_1.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, 0, 0);
 
         wall_2 = world.createBody(walls);
         wall_2.createFixture(wallFixture);
+        wall_2.getFixtureList().get(0).setUserData("wall");
         wall_2.setTransform(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2, 0, 0);
 
         wallShape.dispose();
@@ -144,10 +146,12 @@ public class Physics {
 
         ground = world.createBody(plane);
         ground.createFixture(planeFixture);
+        ground.getFixtureList().get(0).setUserData("ground");
         ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, 0, 0);
 
         roof = world.createBody(plane);
         roof.createFixture(planeFixture);
+        roof.getFixtureList().get(0).setUserData("roof");
         roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight*2, 0);
 
         planeShape.dispose();

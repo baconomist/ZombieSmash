@@ -33,6 +33,8 @@ import java.util.Random;
 
 public class Zombie {
 
+    static ArrayList<String> partsToStayAlive = new ArrayList<String>();
+
     public int id;
 
     public String type;
@@ -119,9 +121,18 @@ public class Zombie {
 
         updateParts();
 
-        if(this.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
-                && this.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f){
-            enteredLevel = true;
+        if(!enteredLevel){
+            boolean elvl = false;
+            for(Part p : parts.values()){
+                if(p.physicsBody.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
+                        && p.physicsBody.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f){
+                    elvl = true;
+                }
+                else{
+                    elvl = false;
+                }
+            }
+            enteredLevel = elvl;
         }
 
         if(isMoving && !isGettingUp || isTouching){
@@ -135,6 +146,7 @@ public class Zombie {
             for(Part p : parts.values()){
                 p.physicsBody.setAwake(true);
             }
+
         }
 
         if(isTouching){
@@ -158,14 +170,21 @@ public class Zombie {
         }
         else if(parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null)){
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate) {
+                this.checkDirection();
                 this.crawl();
             }
         }
-        else{
-            this.alive = false;
+        if(alive){
+            for(String name : partsToStayAlive){
+                if(parts.get(name) != null){
+                    alive = true;
+                }
+                else{
+                    alive = false;
+                    break;
+                }
+            }
         }
-
-
 
         if(!physicsEnabled){
             this.move();
@@ -256,8 +275,6 @@ public class Zombie {
 
             // Restart animation
             state.setAnimation(0, currentAnimation, true);
-
-            this.checkDirection();
 
         }
 
@@ -389,8 +406,9 @@ public class Zombie {
                     this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt(300);
                 }
                 else{
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt(200);
+                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt(300);
                 }
+
             }
             if (!isAtObjective && !isAttacking) {
                 if (this.direction == 0) {
@@ -399,7 +417,7 @@ public class Zombie {
                     skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
                 }
                 this.randomObjectiveX = 0;
-            } else if (skeleton.getRootBone().getWorldX() < this.randomObjectiveX) {
+            } else if (skeleton.getRootBone().getWorldX() < this.randomObjectiveX && this.direction == 0 || skeleton.getRootBone().getWorldX() > this.randomObjectiveX && this.direction == 1) {
                 if (this.direction == 0) {
                     skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
                 } else {
@@ -411,7 +429,7 @@ public class Zombie {
         }
 
     }
-    void onGetUp(){}
+    void onGetUp(){this.checkDirection();}
 
     private void onDirectionChange(){
         if(this.direction == 1){
@@ -509,7 +527,7 @@ public class Zombie {
 
     void checkDirection(){
         int previous_direction = this.direction;
-        if(this.getPosition().x < Environment.level.objective.getPosition().x){
+        if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2){
             this.direction = 0;
         }
         else{
