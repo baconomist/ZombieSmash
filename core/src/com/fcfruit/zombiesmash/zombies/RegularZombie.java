@@ -29,19 +29,12 @@ import java.util.Random;
 
 public class RegularZombie extends Zombie {
 
-    static{
-        partsToStayAlive.add("head");
-        partsToStayAlive.add("torso");
-        if(new Random().nextInt(2) == 0) {
-            partsToStayAlive.add("left_arm");
-        }
-        else {
-            partsToStayAlive.add("right_arm");
-        }
-    }
-
     public RegularZombie(Integer id) {
         super(id);
+
+        partsToStayAlive.add("head");
+        partsToStayAlive.add("torso");
+        partsToStayAlive.add(new String[]{"left_arm", "right_arm"});
 
         type = "reg";
 
@@ -78,17 +71,18 @@ public class RegularZombie extends Zombie {
         state.addListener(new AnimationState.AnimationStateAdapter() {
             @Override
             public void complete(AnimationState.TrackEntry entry) {
-                if(currentAnimation.equals("attack1")){
-                    timesCompleteAttack1++;
+                if(alive) {
+                    if (currentAnimation.equals("attack1")) {
+                        timesCompleteAttack1++;
+                    } else if (currentAnimation.equals("attack2")) {
+                        timesCompleteAttack1 = 0;
+                    }
+                    if (currentAnimation.contains("attack")) {
+                        isAttacking = false;
+                        Environment.level.objective.onHit();
+                    }
+                    super.complete(entry);
                 }
-                else if(currentAnimation.equals("attack2")){
-                    timesCompleteAttack1 = 0;
-                }
-                if(currentAnimation.contains("attack")){
-                    isAttacking = false;
-                    Environment.level.objective.onHit();
-                }
-                super.complete(entry);
             }
         });
 

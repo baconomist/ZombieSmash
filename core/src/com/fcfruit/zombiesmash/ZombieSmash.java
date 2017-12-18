@@ -40,10 +40,6 @@ public class ZombieSmash extends Game {
 			Gdx.input.setCatchBackKey(true);
 		}
 
-
-
-
-
 		this.setScreen(new MainMenu());
 
 

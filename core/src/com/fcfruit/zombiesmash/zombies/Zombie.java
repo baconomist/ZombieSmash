@@ -33,7 +33,7 @@ import java.util.Random;
 
 public class Zombie {
 
-    static ArrayList<String> partsToStayAlive = new ArrayList<String>();
+    ArrayList partsToStayAlive = new ArrayList();
 
     public int id;
 
@@ -121,19 +121,6 @@ public class Zombie {
 
         updateParts();
 
-        if(!enteredLevel){
-            boolean elvl = false;
-            for(Part p : parts.values()){
-                if(p.physicsBody.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
-                        && p.physicsBody.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f){
-                    elvl = true;
-                }
-                else{
-                    elvl = false;
-                }
-            }
-            enteredLevel = elvl;
-        }
 
         if(isMoving && !isGettingUp || isTouching){
             getUpTimer = System.currentTimeMillis();
@@ -175,18 +162,34 @@ public class Zombie {
             }
         }
         if(alive){
-            for(String name : partsToStayAlive){
-                if(parts.get(name) != null){
-                    alive = true;
+            for(Object o : partsToStayAlive){
+                if(o instanceof String){
+                    if (parts.get((String) o) != null) {
+                        alive = true;
+                    } else {
+                        alive = false;
+                        break;
+                    }
                 }
-                else{
-                    alive = false;
-                    break;
+                else if(o instanceof String[]){
+                    for(String s : (String[]) o) {
+                        if (parts.get(s) != null) {
+                            alive = true;
+                            break;
+                        } else {
+                            alive = false;
+                        }
+                    }
                 }
             }
+
+            if(!alive){
+                onDeath();
+            }
+
         }
 
-        if(!physicsEnabled){
+        if(!physicsEnabled && !this.isGettingUp){
             this.move();
         }
 
@@ -223,8 +226,6 @@ public class Zombie {
             state.setAnimation(0, currentAnimation, true);
         }
 
-
-
     }
 
     private void updateParts(){
@@ -233,6 +234,7 @@ public class Zombie {
         boolean ispowerfulpart = false;
         boolean istouching = false;
         boolean isatobjective = false;
+        boolean elvl = true;
         for(Part p : parts.values()){
             p.update();
             if(p.isPowerfulPart && !ispowerfulpart){
@@ -244,6 +246,14 @@ public class Zombie {
             if(!isatobjective && Environment.level.objective.polygon.contains(p.polygon.getX(), p.polygon.getY())){
                 isatobjective = true;
             }
+            if(elvl) {
+                if (p.physicsBody.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
+                        && p.physicsBody.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f) {
+                    elvl = true;
+                } else {
+                    elvl = false;
+                }
+            }
         }
 
         // Update body touching state
@@ -253,6 +263,7 @@ public class Zombie {
         isMoving = parts.get("torso").isMoving;
         isOnGround = parts.get("torso").isOnGround;
         isAtObjective = isatobjective;
+        enteredLevel = elvl;
 
     }
 
@@ -524,6 +535,8 @@ public class Zombie {
             return 1;
         }
     }
+
+    public void onDeath(){}
 
     void checkDirection(){
         int previous_direction = this.direction;

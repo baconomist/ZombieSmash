@@ -29,18 +29,16 @@ import java.util.HashMap;
 
 public class BigZombie extends Zombie{
 
-    static{
+    public BigZombie(Integer id) {
+        super(id);
+
         partsToStayAlive.add("head");
         partsToStayAlive.add("torso");
         partsToStayAlive.add("left_arm");
         partsToStayAlive.add("right_arm");
         partsToStayAlive.add("left_leg");
         partsToStayAlive.add("right_leg");
-    }
-
-    public BigZombie(Integer id) {
-        super(id);
-
+        
         this.type = "big";
 
         animationSetup();
@@ -70,17 +68,18 @@ public class BigZombie extends Zombie{
         state.addListener(new AnimationState.AnimationStateAdapter() {
             @Override
             public void complete(AnimationState.TrackEntry entry) {
-                if(currentAnimation.equals("attack1")){
-                    timesCompleteAttack1++;
+                if(alive) {
+                    if (currentAnimation.equals("attack1")) {
+                        timesCompleteAttack1++;
+                    } else if (currentAnimation.equals("attack2")) {
+                        timesCompleteAttack1 = 0;
+                    }
+                    if (currentAnimation.contains("attack")) {
+                        isAttacking = false;
+                        Environment.level.objective.onHit();
+                    }
+                    super.complete(entry);
                 }
-                else if(currentAnimation.equals("attack2")){
-                    timesCompleteAttack1 = 0;
-                }
-                if(currentAnimation.contains("attack")){
-                    isAttacking = false;
-                    Environment.level.objective.onHit();
-                }
-                super.complete(entry);
             }
         });
 

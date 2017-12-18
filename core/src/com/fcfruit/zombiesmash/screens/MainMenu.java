@@ -63,7 +63,7 @@ public class MainMenu implements Screen{
     @Override
     public void render(float delta) {
         if(!stage.mute) {
-            music.play();
+            //music.play();
         }
         else{
             music.stop();
