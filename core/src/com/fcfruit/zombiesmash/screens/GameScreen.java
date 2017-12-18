@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.stages.GameStage;
+import com.fcfruit.zombiesmash.stages.GameUIStage;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -18,11 +19,11 @@ import com.fcfruit.zombiesmash.stages.GameStage;
 public class GameScreen implements Screen{
 
     private Stage game_stage;
-    private Stage power_ups_stage;
+    private Stage ui_stage;
 
     private StretchViewport physics_view;
     private StretchViewport game_view;
-    private StretchViewport power_ups_view;
+    private StretchViewport ui_view;
 
     private InputMultiplexer inputMultiplexer;
 
@@ -40,14 +41,13 @@ public class GameScreen implements Screen{
 
         game_stage = new GameStage(game_view);
 
-        power_ups_view = new StretchViewport(480, 270);
-        power_ups_view.setScreenPosition(Gdx.graphics.getWidth()/4, Gdx.graphics.getHeight() - 270);
-
-        power_ups_stage = new Stage(power_ups_view);
+        ui_view = new StretchViewport(Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight);
+        ui_view.apply();
+        ui_stage = new GameUIStage(ui_view);
 
         inputMultiplexer = new InputMultiplexer();
 
-        inputMultiplexer.addProcessor(power_ups_stage);
+        inputMultiplexer.addProcessor(ui_stage);
         inputMultiplexer.addProcessor(game_stage);
 
 
@@ -76,11 +76,11 @@ public class GameScreen implements Screen{
         game_view.apply();
         game_stage.draw();
 
-        power_ups_stage.act(delta);
+        ui_stage.act(delta);
         // viewport.apply() needs to be called if you have multiple viewports before drawing, see docs.
         // Sets gl viewport
-        power_ups_view.apply();
-        power_ups_stage.draw();
+        ui_view.apply();
+        ui_stage.draw();
 
 
         //Environment.gameCamera.position.x += 10;
@@ -126,7 +126,7 @@ public class GameScreen implements Screen{
         // Resize viewport to screen size.
         game_view.update(width, height);
         physics_view.update(width, height);
-        power_ups_view.update(width, height);
+        ui_view.update(width, height);
 
     }
 
