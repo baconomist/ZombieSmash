@@ -19,7 +19,9 @@ public class HealthBar {
     }
 
     public void setPercent(float percent){
-        overlay.setSize(overlay.getTexture().getWidth()*(percent/100), overlay.getHeight());
+        if(percent > -1 || percent < 101) {
+            overlay.setSize(overlay.getTexture().getWidth() * (percent / 100), overlay.getHeight());
+        }
     }
 
     public void draw(Batch batch) {
