@@ -31,8 +31,6 @@ public class GameStage extends Stage {
 
     private SkeletonRenderer skeletonRenderer;
 
-    BitmapFont text;
-
     ShapeRenderer shapeRenderer;
 
     public GameStage(Viewport v){
@@ -44,7 +42,6 @@ public class GameStage extends Stage {
 
         skeletonRenderer = new SkeletonRenderer();
 
-        text = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
         shapeRenderer = new ShapeRenderer();
     }
 
@@ -58,7 +55,6 @@ public class GameStage extends Stage {
 
         spriteBatch.begin();
         Environment.level.draw(spriteBatch, skeletonRenderer);
-        text.draw(spriteBatch, ""+Environment.level.objective.getHealth(), 100, 100);
         spriteBatch.end();
 
         shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
