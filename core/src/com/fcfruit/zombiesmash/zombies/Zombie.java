@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -17,6 +18,8 @@ import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Star;
+import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -113,6 +116,7 @@ public class Zombie {
             skeletonRenderer.draw(batch, skeleton);
         }
         update(delta);
+
     }
 
     private void update(float delta){
@@ -120,6 +124,14 @@ public class Zombie {
         updateSkeleton(delta);
 
         updateParts();
+
+        // Prevents zombie from being totally lost out of the map
+        if(!enteredLevel && this.getPosition().x < -1){
+            this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth/2 + 1), 0);
+        }
+        else if(!enteredLevel && this.getPosition().y > 21){
+            this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth/2 + 1, 0);
+        }
 
 
         if(isMoving && !isGettingUp || isTouching){
@@ -148,14 +160,14 @@ public class Zombie {
 
         }
 
-        else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null) {
+        else if(parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null && this.alive) {
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate) {
                 this.getUp();
             } else if (isGettingUp) {
                 this.getUp();
             }
         }
-        else if(parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null)){
+        else if(parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null) && this.alive){
             if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate) {
                 this.checkDirection();
                 this.crawl();
@@ -408,7 +420,8 @@ public class Zombie {
     }
     void onObjective(){this.attack();}
     void attack(){
-        this.isAttacking = true;
+        // Only attack if inside the level
+        this.isAttacking = this.enteredLevel;
     }
     void move(){
         if(!isAttacking) {
@@ -536,7 +549,28 @@ public class Zombie {
         }
     }
 
-    public void onDeath(){}
+    public void onDeath(){
+        Random rand = new Random();
+        int ammount_points = rand.nextInt(2);
+        String s = "";
+        for(int i = 0; i <= ammount_points; i++){
+            int type = rand.nextInt(10);
+            if(type <= 2) {
+                type = 0;
+                s = "stars/gold_star.png";
+            }
+            if(type > 2 && type <= 5){
+                type = 1;
+                s = "stars/silver_star.png";
+            }
+            if(type > 5){
+                type = 2;
+                s = "stars/bronze_star.png";
+            }
+            Gdx.app.log("type", s);
+            Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, this.getPosition().y, type));
+        }
+    }
 
     void checkDirection(){
         int previous_direction = this.direction;

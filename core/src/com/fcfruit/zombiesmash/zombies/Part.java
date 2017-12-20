@@ -37,7 +37,7 @@ public class Part{
 
     private MouseJoint mouseJoint = null;
 
-    private int pointer;
+    private int pointer = -1;
 
     public boolean isTouching = false;
 
@@ -269,7 +269,6 @@ public class Part{
             }
         }
 
-
     }
 
     public void touchUp(float x, float y, int p){
@@ -280,10 +279,8 @@ public class Part{
             isTouching = false;
             isPowerfulPart = false;
             polygonTouched = false;
+            pointer = -1;
         }
-
-
-
 
     }
 

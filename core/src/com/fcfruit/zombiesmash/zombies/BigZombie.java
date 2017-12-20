@@ -38,7 +38,7 @@ public class BigZombie extends Zombie{
         partsToStayAlive.add("right_arm");
         partsToStayAlive.add("left_leg");
         partsToStayAlive.add("right_leg");
-        
+
         this.type = "big";
 
         animationSetup();
