@@ -3,12 +3,14 @@ package com.fcfruit.zombiesmash.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
@@ -31,6 +33,9 @@ public class GameUIStage extends Stage {
     ImageButton pause_button;
 
     SpriteBatch spriteBatch;
+
+    Sprite starCountImage;
+    BitmapFont starCount;
 
     public GameUIStage(Viewport v){
         super(v);
@@ -63,6 +68,13 @@ public class GameUIStage extends Stage {
 
         spriteBatch = new SpriteBatch();
 
+        starCountImage = new Sprite(new Texture("stars/bronze_star.png"));
+        starCountImage.setSize(70, 70);
+        starCountImage.setPosition(getWidth() - starCountImage.getWidth()*3, getHeight()-pause_button.getHeight()-starCountImage.getHeight());
+
+        starCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
+        starCount.getData().setScale(2);
+
     }
 
     @Override
@@ -71,6 +83,8 @@ public class GameUIStage extends Stage {
         spriteBatch.setProjectionMatrix(getCamera().combined);
         spriteBatch.begin();
         healthBar.draw(spriteBatch);
+        starCountImage.draw(spriteBatch);
+        starCount.draw(spriteBatch, ""+Environment.level.starsTouched, starCountImage.getX() + starCountImage.getWidth(), starCountImage.getY() + starCountImage.getHeight()/2);
         spriteBatch.end();
         healthBar.setPercent(Environment.level.objective.getHealth());
     }

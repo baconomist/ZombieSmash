@@ -10,6 +10,7 @@ import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Star;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.power_ups.Rock;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -33,13 +34,14 @@ public class Physics {
     public static final float PIXELS_PER_METER = 192;
     public static final float METERS_PER_PIXEL = 1/192;
 
-    static final float STEP_TIME = 1f / 60f;
+    static final float STEP_TIME = 1f / 40f;
     static final int VELOCITY_ITERATIONS = 6;
     static final int POSITION_ITERATIONS = 2;
 
     ArrayList<Part> parts;
     ArrayList<Zombie> zombies;
     ArrayList<PowerUp> powerUps;
+    ArrayList<Star> stars;
 
     Lighting lighting;
 
@@ -59,6 +61,7 @@ public class Physics {
         parts = new ArrayList<Part>();
         zombies = new ArrayList<Zombie>();
         powerUps = new ArrayList<PowerUp>();
+        stars = new ArrayList<Star>();
 
         world = new World(new Vector2(0, -25), true);
         world.setContactListener(new CollisionListener());
@@ -247,6 +250,11 @@ public class Physics {
         else if (o instanceof Part){
             parts.add((Part)o);
         }
+        else if (o instanceof Star){
+            stars.add((Star)o);
+        }
+
+
     }
 
     public void clearBodies(){
@@ -284,5 +292,7 @@ public class Physics {
     }
 
     public ArrayList<PowerUp> getPowerUps(){return powerUps;}
+
+    public ArrayList<Star> getStars(){return stars;}
 
 }

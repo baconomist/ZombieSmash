@@ -50,6 +50,9 @@ public class NightLevel extends Level{
 
     @Override
     public void update(){
+
+        currentCameraPosition = this.data.get(currentPosition).name;
+
         if (!movingCamera) {
             super.update();
             for (Spawner s : spawners) {

@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Star;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -23,7 +24,7 @@ import java.util.HashMap;
 
 public class Level {
 
-    static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
+    public static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
     static{
         positions.put("left", new Vector2(Environment.physicsCamera.viewportWidth/2, 0));
         positions.put("right", new Vector2(Environment.physicsCamera.viewportWidth*1.4f, 0));
@@ -45,6 +46,10 @@ public class Level {
 
     public ArrayList<Part> parts = Environment.physics.getParts();
 
+    public ArrayList<Star> stars = Environment.physics.getStars();
+
+    public int starsTouched = 0;
+
     public boolean levelEnd = false;
 
     ArrayList<Spawner> spawners;
@@ -54,6 +59,8 @@ public class Level {
     private float spawn_timer = 0;
 
     int currentPosition;
+
+    public String currentCameraPosition;
 
     boolean zombiesDead = false;
 
@@ -73,6 +80,10 @@ public class Level {
 
         for(PowerUp pow : this.powerUps){
             pow.draw(batch);
+        }
+
+        for(Star s : this.stars){
+            s.draw(batch);
         }
 
     }
