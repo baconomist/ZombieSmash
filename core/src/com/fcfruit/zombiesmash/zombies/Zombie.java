@@ -100,11 +100,11 @@ public class Zombie {
 
     public boolean optimize = false;
 
+    public Polygon polygon;
+
     Zombie(int id) {
         this.id = id;
     }
-
-
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         for (Slot slot : skeleton.getDrawOrder()) {
@@ -125,6 +125,10 @@ public class Zombie {
 
         updateParts();
 
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x, this.getPosition().y, 0)));
+        // Center polygon with polygon width/2(polygon.getVerticies[2]/2) and polygon height/2(polygon.getVerticies[5]/2)
+        polygon.setPosition(pos.x - polygon.getVertices()[2]/2, Environment.gameCamera.viewportHeight - pos.y - polygon.getVertices()[5]/2);
+        polygon.setRotation(this.getRotation());
         // Prevents zombie from being totally lost out of the map
         if(!enteredLevel && this.getPosition().x < -1){
             this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth/2 + 1), 0);
@@ -349,13 +353,11 @@ public class Zombie {
     }
 
     Vector2 getPosition(){
-        if(physicsEnabled){
-            return parts.get("torso").physicsBody.getPosition();
-        }
-        // Else, return animation position
-        // Camera doesn't take care of reverse y axis(starting from top)
-        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(skeleton.getX(), skeleton.getY(), 0));
-        return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
+        return parts.get("torso").physicsBody.getPosition();
+    }
+
+    float getRotation(){
+        return (float)Math.toDegrees(parts.get("torso").physicsBody.getAngle());
     }
 
 
@@ -407,7 +409,6 @@ public class Zombie {
 
         total += parts.get("left_arm").sprite.getWidth();
         total += parts.get("torso").sprite.getWidth();
-        total += parts.get("right_arm").sprite.getWidth();
 
         return total;
     }
@@ -531,6 +532,10 @@ public class Zombie {
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
         parts.get("torso").isDetachable = false;
+
+
+        polygon = new Polygon(new float[]{0, 0, this.getWidth(), 0, this.getWidth(), this.getHeight(), 0, this.getHeight()});
+        polygon.setOrigin(this.getWidth()/2, this.getHeight()/2);
 
     }
     public void animationSetup() {}

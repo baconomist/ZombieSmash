@@ -201,7 +201,7 @@ public class Part{
         mouseJointDef.bodyA = Environment.physics.getGround();
         mouseJointDef.bodyB = physicsBody;
         mouseJointDef.collideConnected = true;
-        mouseJointDef.target.set(x, y);
+        mouseJointDef.target.set(physicsBody.getPosition());
 
         // Makes the joint move body faster
         //mouseJointDef.frequencyHz = 10;
@@ -230,6 +230,7 @@ public class Part{
             Environment.physics.getWorld().destroyJoint(mouseJoint);
         }
         mouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+        mouseJoint.setTarget(new Vector2(x, y));
 
         physicsBody.setAwake(true);
     }

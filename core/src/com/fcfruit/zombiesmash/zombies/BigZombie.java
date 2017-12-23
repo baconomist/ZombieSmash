@@ -93,6 +93,7 @@ public class BigZombie extends Zombie{
 
         parts.get("rock").isDetachable = false;
 
+
     }
 
     @Override

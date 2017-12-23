@@ -60,9 +60,7 @@ public class GameStage extends Stage {
         shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for(Zombie z : Environment.level.zombies) {
-            for(Part p : z.getParts().values()) {
-                //shapeRenderer.polygon(p.polygon.getTransformedVertices());
-            }
+            shapeRenderer.polygon(z.polygon.getTransformedVertices());
         }
         for(Part p : Environment.physics.getParts()){
             //shapeRenderer.polygon(p.polygon.getTransformedVertices());
@@ -87,14 +85,22 @@ public class GameStage extends Stage {
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
+        ArrayList<Zombie> touchedZombies = new ArrayList<Zombie>();
         ArrayList<Part> touchedParts = new ArrayList<Part>();
 
         Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
 
         for(Zombie z : Environment.level.zombies){
-            for(Part p : z.getParts().values()) {
-                if (p.polygon.contains(pos.x, pos.y)) {
-                    touchedParts.add(p);
+            if(z.polygon.contains(pos.x, pos.y)) {
+                boolean partTouched = false;
+                for (Part p : z.getParts().values()) {
+                    if (p.polygon.contains(pos.x, pos.y)) {
+                        touchedParts.add(p);
+                        partTouched = true;
+                    }
+                }
+                if(!partTouched){
+                    touchedZombies.add(z);
                 }
             }
 
@@ -108,6 +114,9 @@ public class GameStage extends Stage {
 
         if(touchedParts.size() > 0) {
             touchedParts.get(0).polygonTouched = true;
+        }
+        else if(touchedZombies.size() > 0){
+            touchedZombies.get(0).getParts().get("torso").polygonTouched = true;
         }
 
 
