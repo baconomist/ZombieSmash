@@ -27,7 +27,7 @@ public class Objective {
     }
 
     public Vector2 getPosition(){
-        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(polygon.getX(), polygon.getY(), 0));
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(polygon.getX(), polygon.getY(), 0)));
         return new Vector2(pos.x, pos.y);
     }
 

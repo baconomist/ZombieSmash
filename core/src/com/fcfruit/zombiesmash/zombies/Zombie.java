@@ -428,10 +428,12 @@ public class Zombie {
         if(!isAttacking) {
             if (isAtObjective && this.randomObjectiveX == 0) {
                 if(this.direction == 0) {
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt(300);
+                    Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)));
+                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)pos.x);
                 }
                 else{
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt(300);
+                    Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - (Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2), 0, 0)));
+                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)pos.x);
                 }
 
             }

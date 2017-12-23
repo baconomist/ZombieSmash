@@ -261,11 +261,13 @@ public class Part{
 
     public void touchDragged(float x, float y, int p){
 
-        if (mouseJoint != null && pointer == p) {
-            mouseJoint.setTarget(new Vector2(x, y));
-            if(state.equals("attached")){
-                if(!body.hasPowerfulPart){
-                    mouseJoint.setMaxForce(10000f * physicsBody.getMass());
+        if(!Gdx.input.justTouched()) {
+            if (mouseJoint != null && pointer == p) {
+                mouseJoint.setTarget(new Vector2(x, y));
+                if (state.equals("attached")) {
+                    if (!body.hasPowerfulPart) {
+                        mouseJoint.setMaxForce(10000f * physicsBody.getMass());
+                    }
                 }
             }
         }

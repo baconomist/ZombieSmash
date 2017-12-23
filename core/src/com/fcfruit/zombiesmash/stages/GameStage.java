@@ -60,7 +60,7 @@ public class GameStage extends Stage {
         shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for(Zombie z : Environment.level.zombies) {
-            shapeRenderer.polygon(z.polygon.getTransformedVertices());
+            //shapeRenderer.polygon(z.polygon.getTransformedVertices());
         }
         for(Part p : Environment.physics.getParts()){
             //shapeRenderer.polygon(p.polygon.getTransformedVertices());
