@@ -7,15 +7,12 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.rube.RubeDefaults;
-import com.fcfruit.zombiesmash.ui.HealthBar;
+import com.fcfruit.zombiesmash.ui.Slider;
 
 /**
  * Created by Lucas on 2017-12-17.
@@ -28,7 +25,7 @@ public class GameUIStage extends Stage {
     ImageButton pow_btn_3;
     ImageButton pow_btn_4;
 
-    HealthBar healthBar;
+    Slider healthBar;
 
     ImageButton pause_button;
 
@@ -36,6 +33,7 @@ public class GameUIStage extends Stage {
 
     Sprite starCountImage;
     BitmapFont starCount;
+
 
     public GameUIStage(Viewport v){
         super(v);
@@ -62,7 +60,7 @@ public class GameUIStage extends Stage {
 
         addActor(pause_button);
 
-        healthBar = new HealthBar(new Sprite(new Texture(Gdx.files.internal("gui/game_ui/health_box.png"))),
+        healthBar = new Slider(new Sprite(new Texture(Gdx.files.internal("gui/game_ui/health_box.png"))),
                 new Sprite(new Texture(Gdx.files.internal("gui/game_ui/health_overlay.png"))));
         healthBar.setPosition(getWidth() - healthBar.getWidth() - pause_button.getWidth(), getHeight() - healthBar.getHeight());
 
@@ -74,6 +72,7 @@ public class GameUIStage extends Stage {
 
         starCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
         starCount.getData().setScale(2);
+
 
     }
 

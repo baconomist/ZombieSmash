@@ -23,6 +23,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.stages.MainMenuStage;
+import com.fcfruit.zombiesmash.stages.SettingsStage;
 
 
 import java.util.ArrayList;
@@ -43,15 +44,18 @@ public class MainMenu implements Screen{
 
     Music music;
 
+    public boolean show_settings_stage = false;
+
+    Stage settings;
+
 
     public MainMenu(){
         viewport = new StretchViewport(Environment.game.screenWidth, Environment.game.screenHeight);
-        stage = new MainMenuStage(viewport);
+        stage = new MainMenuStage(viewport, this);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
 
-
-        Gdx.input.setInputProcessor(stage);
+        settings = new SettingsStage(new StretchViewport(Environment.game.screenWidth, Environment.game.screenHeight), this);
 
     }
 
@@ -69,8 +73,18 @@ public class MainMenu implements Screen{
             music.stop();
         }
 
+        Gdx.input.setInputProcessor(stage);
+        stage.getViewport().apply();
         stage.act();
         stage.draw();
+
+        if(show_settings_stage){
+            Gdx.input.setInputProcessor(settings);
+            settings.getViewport().apply();
+            settings.act();
+            settings.draw();
+        }
+
 
     }
 
@@ -80,6 +94,7 @@ public class MainMenu implements Screen{
         // that's what you probably want in case of UI
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
+        settings.getViewport().update(width, height, true);
     }
 
     @Override

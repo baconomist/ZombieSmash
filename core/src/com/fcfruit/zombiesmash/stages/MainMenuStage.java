@@ -24,6 +24,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.rube.loader.serializers.Vector2Serializer;
 import com.fcfruit.zombiesmash.screens.LevelSelect;
+import com.fcfruit.zombiesmash.screens.MainMenu;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.io.IOException;
@@ -35,6 +36,8 @@ import java.util.ArrayList;
  */
 
 public class MainMenuStage extends Stage {
+
+    MainMenu mainMenu;
 
     Sprite background;
 
@@ -49,7 +52,7 @@ public class MainMenuStage extends Stage {
     ImageButton ui = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/mute_button.png")))));
 
     ImageButton play_button;
-    ImageButton options_button;
+    ImageButton settings_button;
     ImageButton mute_button;
     ImageButton rate_button;
 
@@ -58,8 +61,10 @@ public class MainMenuStage extends Stage {
     private JsonReader json;
     private JsonValue data;
 
-    public MainMenuStage(Viewport v){
+    public MainMenuStage(Viewport v, MainMenu m){
         super(v);
+
+        mainMenu = m;
 
         background = new Sprite(new Texture(Gdx.files.internal("gui/main_menu/background.png")));
         background.setSize(1920, 1080);
@@ -81,12 +86,13 @@ public class MainMenuStage extends Stage {
             }
         });
 
-        options_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/options_button.png")))));
-        options_button.setPosition(data.get("options_button").getFloat("x"), data.get("options_button").getFloat("y"));
-        options_button.addListener(new ClickListener(){
+        settings_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/settings_button.png")))));
+        settings_button.setPosition(data.get("settings_button").getFloat("x"), data.get("settings_button").getFloat("y"));
+        settings_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 Gdx.app.log("cloick", "opt");
+                mainMenu.show_settings_stage = true;
                 return super.touchDown(event, x, y, pointer, button);
             }
         });
@@ -123,7 +129,7 @@ public class MainMenuStage extends Stage {
 
         //addActor(ui);
         addActor(play_button);
-        addActor(options_button);
+        addActor(settings_button);
         addActor(mute_button);
         addActor(rate_button);
 
