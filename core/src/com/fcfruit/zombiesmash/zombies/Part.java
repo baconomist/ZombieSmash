@@ -37,7 +37,7 @@ public class Part{
 
     private MouseJoint mouseJoint = null;
 
-    private int pointer = -1;
+    public int pointer = -1;
 
     public boolean isTouching = false;
 
@@ -260,15 +260,10 @@ public class Part{
     }
 
     public void touchDragged(float x, float y, int p){
-
-        if(!Gdx.input.justTouched()) {
-            if (mouseJoint != null && pointer == p) {
-                mouseJoint.setTarget(new Vector2(x, y));
-                if (state.equals("attached")) {
-                    if (!body.hasPowerfulPart) {
-                        mouseJoint.setMaxForce(10000f * physicsBody.getMass());
-                    }
-                }
+        if (mouseJoint != null && pointer == p) {
+            mouseJoint.setTarget(new Vector2(x, y));
+            if (state.equals("attached") && !body.hasPowerfulPart) {
+                mouseJoint.setMaxForce(10000f * physicsBody.getMass());
             }
         }
 

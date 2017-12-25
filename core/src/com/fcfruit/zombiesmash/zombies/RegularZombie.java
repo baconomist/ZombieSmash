@@ -107,16 +107,16 @@ public class RegularZombie extends Zombie {
     void attack() {
         super.attack();
 
-        //if(!this.isCrawler) {
+        if(!this.isCrawler) {
             if (timesCompleteAttack1 < 2) {
                 this.currentAnimation = "attack1";
             } else {
                 this.currentAnimation = "attack2";
             }
-        //}
-       // else{
-            //this.currentAnimation = "crawl_attack";
-        //}
+        }
+        else{
+            this.currentAnimation = "crawl_attack";
+        }
 
     }
 

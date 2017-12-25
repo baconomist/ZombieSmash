@@ -429,11 +429,11 @@ public class Zombie {
             if (isAtObjective && this.randomObjectiveX == 0) {
                 if(this.direction == 0) {
                     Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)));
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)pos.x);
+                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)Math.abs(pos.x));
                 }
                 else{
                     Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - (Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2), 0, 0)));
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)pos.x);
+                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)Math.abs(pos.x));
                 }
 
             }
@@ -575,7 +575,7 @@ public class Zombie {
                 s = "stars/bronze_star.png";
             }
             Gdx.app.log("type", s);
-            Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, this.getPosition().y, type));
+            Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, 1.5f, type));
         }
     }
 
