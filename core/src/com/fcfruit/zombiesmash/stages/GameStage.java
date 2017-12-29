@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
@@ -17,7 +18,10 @@ import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
+import org.lwjgl.Sys;
+
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-08-05.
@@ -32,8 +36,6 @@ public class GameStage extends Stage {
     private SkeletonRenderer skeletonRenderer;
 
     ShapeRenderer shapeRenderer;
-
-    float previousDeltaX = 0;
 
     public GameStage(Viewport v){
         super(v);
@@ -120,24 +122,23 @@ public class GameStage extends Stage {
             touchedZombies.get(0).getParts().get("torso").polygonTouched = true;
         }
 
-        if(touchedParts.size() > 0 || touchedZombies.size() > 0) {
-            Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-            Environment.physics.touchDown(vector.x, vector.y, pointer);
-        }
+        Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
+        Environment.physics.touchDown(vector.x, vector.y, pointer);
 
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
-        if((Gdx.input.getDeltaX(pointer) - previousDeltaX < 50 && Gdx.input.getDeltaX(pointer) - previousDeltaX > -50) || (Gdx.input.getDeltaX(pointer) < 300 && Gdx.input.getDeltaX(pointer) > -300)) {
+
+        if(Gdx.input.getDeltaX(pointer) < 300 && Gdx.input.getDeltaX(pointer) > -300){
             Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
             Environment.physics.touchDragged(vector.x, vector.y, pointer);
         }
         else{
             touchUp(screenX, screenY, pointer, 0);
         }
-        previousDeltaX = Gdx.input.getDeltaX(pointer);
+
         return super.touchDragged(screenX, screenY, pointer);
     }
 
@@ -145,8 +146,11 @@ public class GameStage extends Stage {
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+
+
         Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchUp(vector.x, vector.y, pointer);
+
         return super.touchUp(screenX, screenY, pointer, button);
     }
 }

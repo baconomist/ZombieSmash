@@ -260,6 +260,7 @@ public class Part{
     }
 
     public void touchDragged(float x, float y, int p){
+
         if (mouseJoint != null && pointer == p) {
             mouseJoint.setTarget(new Vector2(x, y));
             if (state.equals("attached") && !body.hasPowerfulPart) {
