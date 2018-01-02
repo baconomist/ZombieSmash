@@ -15,3 +15,4 @@ android/assets/hs_err_pid10336.log
 .gradle/3.3/tasks/_android_compileDebugJavaWithJavac/localClassSetAnalysis/localClassSetAnalysis.bin
 android/libs/x86/libgdx-bullet.so
 android/android.iml
+.hg_archival.txt
