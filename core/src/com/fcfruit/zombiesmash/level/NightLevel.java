@@ -29,7 +29,7 @@ public class NightLevel extends Level{
         this.lvlNum = lvlnum;
 
 
-        this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map/night_map.png")));
+        this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map/night_map_new.png")));
 
         this.objective = new House();
         this.objective.setPosition(7f, 0f);

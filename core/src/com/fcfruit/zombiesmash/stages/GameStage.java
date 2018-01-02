@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.stages;
 
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -127,12 +128,13 @@ public class GameStage extends Stage {
             touchedZombies.get(0).getParts().get("torso").polygonTouched = true;
         }
 
-        Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-        Environment.physics.touchDown(vector.x, vector.y, pointer);
+        pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
+        Environment.physics.touchDown(pos.x, pos.y, pointer);
 
         Gdx.app.log("touchDown", ""+screenX);
 
-        lastScreenX.put(pointer, screenX);
+        pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+        lastScreenX.put(pointer, (int)pos.x);
 
         return super.touchDown(screenX, screenY, pointer, button);
     }
@@ -140,17 +142,25 @@ public class GameStage extends Stage {
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-        if(screenX - lastScreenX.get(pointer) < 220 && screenX - lastScreenX.get(pointer) > -220){
-            Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-            Environment.physics.touchDragged(vector.x, vector.y, pointer);
-            Gdx.app.log("touchDragged", "dragged "+screenX);
+        if(Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS) {
+            Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+
+            if (pos.x - lastScreenX.get(pointer) < 220 && pos.x - lastScreenX.get(pointer) > -220) {
+                pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
+                Environment.physics.touchDragged(pos.x, pos.y, pointer);
+                Gdx.app.log("touchDragged", "dragged " + pos.x);
+            } else {
+                Gdx.app.log("touchDragged", "" + (pos.x - lastScreenX.get(pointer)));
+                touchUp(screenX, screenY, pointer, 0);
+            }
+
+            pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+            lastScreenX.put(pointer, (int) pos.x);
         }
         else{
-            Gdx.app.log("touchDragged", ""+(screenX - lastScreenX.get(pointer)));
-            touchUp(screenX, screenY, pointer, 0);
+            Vector3 pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
+            Environment.physics.touchDragged(pos.x, pos.y, pointer);
         }
-
-        lastScreenX.put(pointer, screenX);
 
 
         return super.touchDragged(screenX, screenY, pointer);

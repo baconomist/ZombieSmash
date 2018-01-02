@@ -51,7 +51,6 @@ public class Star extends Sprite {
 
     @Override
     public void draw(Batch batch) {
-        super.draw(batch);
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
         this.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
         this.rotate(30*Gdx.graphics.getDeltaTime());
@@ -66,6 +65,9 @@ public class Star extends Sprite {
         if(this.getBoundingRectangle().contains(pos.x, pos.y) && Gdx.input.justTouched()){
             onTouchDown();
         }
+
+        super.draw(batch);
+
     }
 
     void onTouchDown(){
