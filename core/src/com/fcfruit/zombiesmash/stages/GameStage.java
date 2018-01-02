@@ -37,6 +37,8 @@ public class GameStage extends Stage {
 
     ShapeRenderer shapeRenderer;
 
+    HashMap<Integer, Integer> lastScreenX;
+
     public GameStage(Viewport v){
         super(v);
 
@@ -47,6 +49,9 @@ public class GameStage extends Stage {
         skeletonRenderer = new SkeletonRenderer();
 
         shapeRenderer = new ShapeRenderer();
+
+        lastScreenX = new HashMap<Integer, Integer>();
+        lastScreenX.put(0, 0);
     }
 
 
@@ -125,19 +130,28 @@ public class GameStage extends Stage {
         Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchDown(vector.x, vector.y, pointer);
 
+        Gdx.app.log("touchDown", ""+screenX);
+
+        lastScreenX.put(pointer, screenX);
+
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer) {
 
-        if(Gdx.input.getDeltaX(pointer) < 300 && Gdx.input.getDeltaX(pointer) > -300){
+        if(screenX - lastScreenX.get(pointer) < 220 && screenX - lastScreenX.get(pointer) > -220){
             Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
             Environment.physics.touchDragged(vector.x, vector.y, pointer);
+            Gdx.app.log("touchDragged", "dragged "+screenX);
         }
         else{
+            Gdx.app.log("touchDragged", ""+(screenX - lastScreenX.get(pointer)));
             touchUp(screenX, screenY, pointer, 0);
         }
+
+        lastScreenX.put(pointer, screenX);
+
 
         return super.touchDragged(screenX, screenY, pointer);
     }
@@ -147,9 +161,10 @@ public class GameStage extends Stage {
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
 
-
         Vector3 vector = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchUp(vector.x, vector.y, pointer);
+
+        Gdx.app.log("touchUp", ""+screenX);
 
         return super.touchUp(screenX, screenY, pointer, button);
     }
