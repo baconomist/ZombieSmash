@@ -12,7 +12,10 @@ import com.badlogic.gdx.physics.box2d.*;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
@@ -68,6 +71,7 @@ public class Zombie {
 
 
     String currentAnimation;
+    String moveAnimation;
 
 
     public boolean physicsEnabled = false;
@@ -106,6 +110,7 @@ public class Zombie {
         this.id = id;
     }
 
+
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         for (Slot slot : skeleton.getDrawOrder()) {
             if (parts.get(slot.getAttachment().getName()) != null) {
@@ -135,6 +140,10 @@ public class Zombie {
         }
         else if(!enteredLevel && this.getPosition().y > 21){
             this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth/2 + 1, 0);
+        }
+
+        if(this.getPosition().x < 0 || this.getPosition().x > 10){
+            Gdx.app.log("position", ""+this.getPosition().x);
         }
 
 
@@ -205,7 +214,7 @@ public class Zombie {
 
         }
 
-        if(!physicsEnabled && !this.isGettingUp){
+        if(!physicsEnabled && !this.isGettingUp && !this.isAttacking){
             this.move();
         }
 
@@ -326,14 +335,12 @@ public class Zombie {
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
-            Gdx.app.log("a", "" + (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
             getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
 
             isGettingUp = true;
 
         }
 
-        Gdx.app.log("h", ""+parts.get("head").physicsBody.getTransform().getPosition().y);
 
     }
 
@@ -419,41 +426,47 @@ public class Zombie {
     void crawl(){
         this.isCrawler = true;
     }
-    void onObjective(){this.attack();}
+    void onObjective(){
+        this.checkDirection();
+        this.attack();
+    }
     void attack(){
         // Only attack if inside the level
         this.isAttacking = this.enteredLevel;
     }
     void move(){
-        if(!isAttacking) {
-            if (isAtObjective && this.randomObjectiveX == 0) {
-                if(this.direction == 0) {
-                    Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)));
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)Math.abs(pos.x));
-                }
-                else{
-                    Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - (Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2), 0, 0)));
-                    this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)Math.abs(pos.x));
-                }
 
+        this.currentAnimation = this.moveAnimation;
+
+        if (isAtObjective && this.randomObjectiveX == 0) {
+            if(this.direction == 0) {
+                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)));
+                this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)Math.abs(pos.x));
             }
-            if (!isAtObjective && !isAttacking) {
-                if (this.direction == 0) {
-                    skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-                } else {
-                    skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-                }
-                this.randomObjectiveX = 0;
-            } else if (skeleton.getRootBone().getWorldX() < this.randomObjectiveX && this.direction == 0 || skeleton.getRootBone().getWorldX() > this.randomObjectiveX && this.direction == 1) {
-                if (this.direction == 0) {
-                    skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-                } else {
-                    skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-                }
+            else{
+                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - (Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2), 0, 0)));
+                this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)Math.abs(pos.x));
+            }
+
+        }
+        if (!isAtObjective && !isAttacking) {
+            if (this.direction == 0) {
+                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
             } else {
-                this.onObjective();
+                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            }
+            this.randomObjectiveX = 0;
+        } else if (skeleton.getRootBone().getWorldX() < this.randomObjectiveX && this.direction == 0 || skeleton.getRootBone().getWorldX() > this.randomObjectiveX && this.direction == 1) {
+            if (this.direction == 0) {
+                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
+            } else {
+                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
             }
         }
+        else {
+            this.onObjective();
+        }
+
 
     }
     void onGetUp(){this.checkDirection();}
@@ -477,6 +490,24 @@ public class Zombie {
             constructPhysicsBody(Environment.physics.getWorld(), false);
         }
     }
+    void checkDirection(){
+        int previous_direction = this.direction;
+        if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/4){
+            this.direction = 0;
+        }
+        else if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2){
+            this.direction = 1;
+        }
+        else if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2 + Environment.level.objective.getWidth()/4){
+            this.direction = 0;
+        }
+        else{
+            this.direction = 1;
+        }
+        if(previous_direction != this.direction){
+            onDirectionChange();
+        }
+    }
 
     public void constructPhysicsBody(World world, boolean flip){
         RubeSceneLoader loader = new RubeSceneLoader(world);
@@ -493,7 +524,6 @@ public class Zombie {
         for(Body b : rubeScene.getBodies()) {
 
             String bodyName = (String) rubeScene.getCustom(b, "name");
-            Gdx.app.log("bodyName", bodyName);
             Sprite sprite = new Sprite(atlas.findRegion(bodyName));
 
             for (RubeImage i : rubeScene.getImages()) {
@@ -540,7 +570,50 @@ public class Zombie {
         polygon.setOrigin(this.getWidth()/2, this.getHeight()/2);
 
     }
-    public void animationSetup() {}
+    public void animationSetup() {
+        atlas = new TextureAtlas(Gdx.files.internal("zombies/"+this.type+"_zombie/"+this.type+"_zombie.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/"+this.type+"_zombie/"+this.type+"_zombie.json"));
+
+        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+        //stateData.setMix("run", "jump", 0.2f);
+        //stateData.setMix("jump", "run", 0.2f);
+
+        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
+
+        // Queue animations on track 0.
+        this.currentAnimation = this.moveAnimation;
+        state.setAnimation(0, currentAnimation, true);
+
+        state.addListener(new AnimationState.AnimationStateAdapter() {
+            @Override
+            public void complete(AnimationState.TrackEntry entry) {
+                super.complete(entry);
+            }
+        });
+
+        state.addListener(new AnimationState.AnimationStateAdapter() {
+            @Override
+            public void complete(AnimationState.TrackEntry entry) {
+                if(alive) {
+                    if (currentAnimation.equals("attack1")) {
+                        timesCompleteAttack1++;
+                    } else if (currentAnimation.equals("attack2")) {
+                        timesCompleteAttack1 = 0;
+                    }
+                    if (currentAnimation.contains("attack")) {
+                        isAttacking = false;
+                        Environment.level.objective.onHit();
+                    }
+                    super.complete(entry);
+                }
+            }
+        });
+
+    }
     public void setDirection(int i){
         if(this.direction != i){
             this.direction = i;
@@ -574,21 +647,7 @@ public class Zombie {
                 type = 2;
                 s = "stars/bronze_star.png";
             }
-            Gdx.app.log("type", s);
             Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, 1.5f, type));
-        }
-    }
-
-    void checkDirection(){
-        int previous_direction = this.direction;
-        if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2){
-            this.direction = 0;
-        }
-        else{
-            this.direction = 1;
-        }
-        if(previous_direction != this.direction){
-            onDirectionChange();
         }
     }
 

@@ -32,6 +32,8 @@ public class RegularZombie extends Zombie {
     public RegularZombie(Integer id) {
         super(id);
 
+        this.moveAnimation = "run";
+
         partsToStayAlive.add("head");
         partsToStayAlive.add("torso");
         partsToStayAlive.add(new String[]{"left_arm", "right_arm"});
@@ -39,52 +41,6 @@ public class RegularZombie extends Zombie {
         type = "reg";
 
         animationSetup();
-
-    }
-
-    @Override
-    public void animationSetup() {
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/reg_zombie/reg_zombie.atlas"));
-        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/reg_zombie/reg_zombie.json"));
-
-        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
-        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
-        //stateData.setMix("run", "jump", 0.2f);
-        //stateData.setMix("jump", "run", 0.2f);
-
-        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
-
-        // Queue animations on track 0.
-        this.currentAnimation = "run";
-        state.setAnimation(0, currentAnimation, true);
-
-        state.addListener(new AnimationState.AnimationStateAdapter() {
-            @Override
-            public void complete(AnimationState.TrackEntry entry) {
-                super.complete(entry);
-            }
-        });
-
-        state.addListener(new AnimationState.AnimationStateAdapter() {
-            @Override
-            public void complete(AnimationState.TrackEntry entry) {
-                if(alive) {
-                    if (currentAnimation.equals("attack1")) {
-                        timesCompleteAttack1++;
-                    } else if (currentAnimation.equals("attack2")) {
-                        timesCompleteAttack1 = 0;
-                    }
-                    if (currentAnimation.contains("attack")) {
-                        isAttacking = false;
-                        Environment.level.objective.onHit();
-                    }
-                    super.complete(entry);
-                }
-            }
-        });
 
     }
 
