@@ -48,12 +48,50 @@
     <splitter split-orientation="horizontal" split-proportion="0.5">
       <split-first>
         <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-          <file leaf-file-name="SuicideZombie.java" pinned="false" current-in-tab="true">
+          <file leaf-file-name="SuicideZombie.java" pinned="false" current-in-tab="false">
             <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="631">
-                  <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+                <state relative-caret-position="682">
+                  <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
                   <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+          <file leaf-file-name="Zombie.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="759">
+                  <caret line="399" column="9" selection-start-line="399" selection-start-column="9" selection-end-line="399" selection-end-column="9" />
+                  <folding>
+                    <element signature="docComment;class#Zombie#0" expanded="false" />
+                    <element signature="method#draw#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#update#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#updateSkeleton#0;class#Zombie#0" expanded="false" />
+                    <element signature="class#7648:7843" expanded="false" />
+                    <element signature="method#updateParts#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#getUp#0;class#Zombie#0" expanded="false" />
+                    <element signature="e#10301#10368#0" expanded="false" />
+                    <element signature="method#setPosition#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#getPartFromPhysicsBody#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#getHeight#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#getWidth#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#getDistanceToObjective#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#attack#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#move#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#onGetUp#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#checkDirection#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#onDirectionChange#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#setDirection#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#getDirection#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#constructPhysicsBody#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#animationSetup#0;class#Zombie#0" expanded="false" />
+                    <element signature="e#20171#20211#0" expanded="false" />
+                    <element signature="method#onDeath#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#touchDown#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#touchDragged#0;class#Zombie#0" expanded="false" />
+                    <element signature="method#touchUp#0;class#Zombie#0" expanded="false" />
+                  </folding>
                 </state>
               </provider>
             </entry>
@@ -65,8 +103,8 @@
           <file leaf-file-name="RegularZombie.java" pinned="false" current-in-tab="true">
             <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/RegularZombie.java">
               <provider selected="true" editor-type-id="text-editor">
-                <state relative-caret-position="614">
-                  <caret line="76" column="5" selection-start-line="47" selection-start-column="3" selection-end-line="76" selection-end-column="5" />
+                <state relative-caret-position="393">
+                  <caret line="63" column="23" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="23" />
                   <folding />
                 </state>
               </provider>
@@ -5807,9 +5845,25 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/RegularZombie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="393">
+          <caret line="63" column="23" selection-start-line="63" selection-start-column="23" selection-end-line="63" selection-end-column="23" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="682">
+          <caret line="47" column="20" selection-start-line="47" selection-start-column="20" selection-end-line="47" selection-end-column="20" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1635">
+        <state relative-caret-position="759">
           <caret line="399" column="9" selection-start-line="399" selection-start-column="9" selection-end-line="399" selection-end-column="9" />
           <folding>
             <element signature="docComment;class#Zombie#0" expanded="false" />
@@ -5840,22 +5894,6 @@
             <element signature="method#touchDragged#0;class#Zombie#0" expanded="false" />
             <element signature="method#touchUp#0;class#Zombie#0" expanded="false" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/RegularZombie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="614">
-          <caret line="76" column="5" selection-start-line="47" selection-start-column="3" selection-end-line="76" selection-end-column="5" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="631">
-          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
-          <folding />
         </state>
       </provider>
     </entry>
