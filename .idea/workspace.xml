@@ -12,11 +12,7 @@
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/ZombieSmash.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/ZombieSmash.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Physics.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Physics.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/LevelSelect.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/LevelSelect.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/MainMenu.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/MainMenu.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/LevelSelectStage.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/LevelSelectStage.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -51,11 +47,11 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Physics.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="Physics.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Physics.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="35" column="40" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+            <state relative-caret-position="425">
+              <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
               <folding>
                 <element signature="docComment;class#Physics#0" expanded="false" />
                 <element signature="method#touchDragged#0;class#Physics#0" expanded="false" />
@@ -68,6 +64,16 @@
                 <element signature="method#getWall_2#0;class#Physics#0" expanded="false" />
                 <element signature="method#getPowerUps#0;class#Physics#0" expanded="false" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Lighting.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="391">
+              <caret line="33" column="109" selection-start-line="33" selection-start-column="109" selection-end-line="33" selection-end-column="109" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -4459,7 +4465,6 @@
         <option value="$PROJECT_DIR$/ios-moe/src/com/fcfruit/zombiesmash/IOSMoeLauncher.java" />
         <option value="$PROJECT_DIR$/android/assets/Settings.json" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Assets.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Environment.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/power_ups/PowerUp.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/power_ups/Rock.java" />
@@ -4506,6 +4511,7 @@
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/LevelSelectStage.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/MainMenu.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Physics.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java" />
       </list>
     </option>
   </component>
@@ -5541,14 +5547,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/CollisionListener.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="30" column="0" selection-start-line="30" selection-start-column="0" selection-end-line="30" selection-end-column="0" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/android/AndroidManifest.xml">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="51">
@@ -5954,8 +5952,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Physics.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="35" column="40" selection-start-line="35" selection-start-column="40" selection-end-line="35" selection-end-column="40" />
+        <state relative-caret-position="425">
+          <caret line="49" column="16" selection-start-line="49" selection-start-column="16" selection-end-line="49" selection-end-column="16" />
           <folding>
             <element signature="docComment;class#Physics#0" expanded="false" />
             <element signature="method#touchDragged#0;class#Physics#0" expanded="false" />
@@ -5968,6 +5966,14 @@
             <element signature="method#getWall_2#0;class#Physics#0" expanded="false" />
             <element signature="method#getPowerUps#0;class#Physics#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="391">
+          <caret line="33" column="109" selection-start-line="33" selection-start-column="109" selection-end-line="33" selection-end-column="109" />
+          <folding />
         </state>
       </provider>
     </entry>
