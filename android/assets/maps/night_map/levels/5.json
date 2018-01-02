@@ -1,0 +1,26 @@
+{
+  "left": {
+    "big_zombie": {
+      "quantity": 3,
+      "init_delay": 0,
+      "spawn_delay": 1,
+      "position":"left"
+    }
+  },
+  "middle":{
+    "big_zombie": {
+      "quantity": 3,
+      "init_delay": 0,
+      "spawn_delay": 1,
+      "position":"middle_left"
+    }
+  },
+  "right":{
+    "big_zombie": {
+      "quantity": 3,
+      "init_delay": 0,
+      "spawn_delay": 1,
+      "position":"left"
+    }
+  }
+}
