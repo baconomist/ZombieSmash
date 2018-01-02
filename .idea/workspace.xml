@@ -11,9 +11,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/PoliceZombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/PoliceZombie.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java" />
+      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -47,64 +45,36 @@
     <favorites_list name="ZombieSmash" />
   </component>
   <component name="FileEditorManager">
-    <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="Zombie.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="292">
-              <caret line="432" column="13" selection-start-line="432" selection-start-column="13" selection-end-line="432" selection-end-column="13" />
-              <folding>
-                <element signature="docComment;class#Zombie#0" expanded="false" />
-                <element signature="method#draw#0;class#Zombie#0" expanded="false" />
-                <element signature="method#updateSkeleton#0;class#Zombie#0" expanded="false" />
-                <element signature="class#7648:7843" expanded="false" />
-                <element signature="method#updateParts#0;class#Zombie#0" expanded="false" />
-                <element signature="method#getUp#0;class#Zombie#0" expanded="false" />
-                <element signature="e#10301#10368#0" expanded="false" />
-                <element signature="method#setPosition#0;class#Zombie#0" expanded="false" />
-                <element signature="method#getPartFromPhysicsBody#0;class#Zombie#0" expanded="false" />
-                <element signature="method#getHeight#0;class#Zombie#0" expanded="false" />
-                <element signature="method#getWidth#0;class#Zombie#0" expanded="false" />
-                <element signature="e#13592#13593#0" expanded="true" />
-                <element signature="e#13621#13622#0" expanded="true" />
-                <element signature="method#onGetUp#0;class#Zombie#0" expanded="false" />
-                <element signature="method#checkDirection#0;class#Zombie#0" expanded="false" />
-                <element signature="method#onDirectionChange#0;class#Zombie#0" expanded="false" />
-                <element signature="method#setDirection#0;class#Zombie#0" expanded="false" />
-                <element signature="method#getDirection#0;class#Zombie#0" expanded="false" />
-                <element signature="method#constructPhysicsBody#0;class#Zombie#0" expanded="false" />
-                <element signature="method#animationSetup#0;class#Zombie#0" expanded="false" />
-                <element signature="e#20171#20211#0" expanded="false" />
-                <element signature="method#onDeath#0;class#Zombie#0" expanded="false" />
-                <element signature="method#touchDown#0;class#Zombie#0" expanded="false" />
-                <element signature="method#touchDragged#0;class#Zombie#0" expanded="false" />
-                <element signature="method#touchUp#0;class#Zombie#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PoliceZombie.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/PoliceZombie.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="65" column="58" selection-start-line="65" selection-start-column="58" selection-end-line="65" selection-end-column="58" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BigZombie.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="580">
-              <caret line="61" column="14" selection-start-line="61" selection-start-column="14" selection-end-line="61" selection-end-column="14" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-    </leaf>
+    <splitter split-orientation="horizontal" split-proportion="0.5">
+      <split-first>
+        <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+          <file leaf-file-name="SuicideZombie.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="631">
+                  <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-first>
+      <split-second>
+        <leaf>
+          <file leaf-file-name="RegularZombie.java" pinned="false" current-in-tab="true">
+            <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/RegularZombie.java">
+              <provider selected="true" editor-type-id="text-editor">
+                <state relative-caret-position="614">
+                  <caret line="76" column="5" selection-start-line="47" selection-start-column="3" selection-end-line="76" selection-end-column="5" />
+                  <folding />
+                </state>
+              </provider>
+            </entry>
+          </file>
+        </leaf>
+      </split-second>
+    </splitter>
   </component>
   <component name="FileTemplateManagerImpl">
     <option name="RECENT_TEMPLATES">
@@ -4447,7 +4417,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/ios/src/com/fcfruit/zombiesmash/IOSLauncher.java" />
         <option value="$PROJECT_DIR$/ios-moe/src/com/fcfruit/zombiesmash/IOSMoeLauncher.java" />
         <option value="$PROJECT_DIR$/android/assets/Settings.json" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Assets.java" />
@@ -4498,6 +4467,7 @@
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Lighting.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/PoliceZombie.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java" />
       </list>
     </option>
   </component>
@@ -5467,17 +5437,6 @@
     </watches-manager>
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/android/AndroidManifest.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="3" column="0" selection-start-line="3" selection-start-column="0" selection-end-line="3" selection-end-column="71" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="android-manifest">
-        <state />
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/android/assets/gui/defaultSkin/uiskin.json">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -5678,18 +5637,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/RegularZombie.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="357">
-          <caret line="42" column="25" selection-start-line="42" selection-start-column="25" selection-end-line="42" selection-end-column="25" />
-          <folding>
-            <element signature="imports" expanded="false" />
-            <element signature="e#1440#1441#0" expanded="false" />
-            <element signature="e#1485#1486#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/android/assets/hs_err_pid19788.log">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="0">
@@ -5852,13 +5799,22 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/PoliceZombie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="49" column="13" selection-start-line="49" selection-start-column="13" selection-end-line="49" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Zombie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="292">
-          <caret line="432" column="13" selection-start-line="432" selection-start-column="13" selection-end-line="432" selection-end-column="13" />
+        <state relative-caret-position="1635">
+          <caret line="399" column="9" selection-start-line="399" selection-start-column="9" selection-end-line="399" selection-end-column="9" />
           <folding>
             <element signature="docComment;class#Zombie#0" expanded="false" />
             <element signature="method#draw#0;class#Zombie#0" expanded="false" />
+            <element signature="method#update#0;class#Zombie#0" expanded="false" />
             <element signature="method#updateSkeleton#0;class#Zombie#0" expanded="false" />
             <element signature="class#7648:7843" expanded="false" />
             <element signature="method#updateParts#0;class#Zombie#0" expanded="false" />
@@ -5868,8 +5824,9 @@
             <element signature="method#getPartFromPhysicsBody#0;class#Zombie#0" expanded="false" />
             <element signature="method#getHeight#0;class#Zombie#0" expanded="false" />
             <element signature="method#getWidth#0;class#Zombie#0" expanded="false" />
-            <element signature="e#13592#13593#0" expanded="true" />
-            <element signature="e#13621#13622#0" expanded="true" />
+            <element signature="method#getDistanceToObjective#0;class#Zombie#0" expanded="false" />
+            <element signature="method#attack#0;class#Zombie#0" expanded="false" />
+            <element signature="method#move#0;class#Zombie#0" expanded="false" />
             <element signature="method#onGetUp#0;class#Zombie#0" expanded="false" />
             <element signature="method#checkDirection#0;class#Zombie#0" expanded="false" />
             <element signature="method#onDirectionChange#0;class#Zombie#0" expanded="false" />
@@ -5886,10 +5843,18 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/PoliceZombie.java">
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/RegularZombie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="65" column="58" selection-start-line="65" selection-start-column="58" selection-end-line="65" selection-end-column="58" />
+        <state relative-caret-position="614">
+          <caret line="76" column="5" selection-start-line="47" selection-start-column="3" selection-end-line="76" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/SuicideZombie.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="631">
+          <caret line="53" column="5" selection-start-line="53" selection-start-column="5" selection-end-line="53" selection-end-column="5" />
           <folding />
         </state>
       </provider>
