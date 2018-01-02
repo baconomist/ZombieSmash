@@ -586,7 +586,7 @@ public class Zombie {
         polygon.setOrigin(this.getWidth()/2, this.getHeight()/2);
 
     }
-    public void animationSetup() {
+    void animationSetup() {
         atlas = new TextureAtlas(Gdx.files.internal("zombies/"+this.type+"_zombie/"+this.type+"_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
@@ -632,7 +632,7 @@ public class Zombie {
     }
 
 
-    public void onDeath(){
+    void onDeath(){
         Random rand = new Random();
         int ammount_points = rand.nextInt(2);
         String s = "";

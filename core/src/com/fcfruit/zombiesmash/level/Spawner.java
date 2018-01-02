@@ -11,6 +11,7 @@ import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
+import com.fcfruit.zombiesmash.zombies.SuicideZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.lang.reflect.InvocationTargetException;
@@ -36,6 +37,7 @@ public class Spawner {
         zombieType.put("girl_zombie", GirlZombie.class);
         zombieType.put("police_zombie", PoliceZombie.class);
         zombieType.put("big_zombie", BigZombie.class);
+        zombieType.put("suicide_zombie", SuicideZombie.class);
     }
 
     String type;
