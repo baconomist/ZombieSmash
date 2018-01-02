@@ -55,7 +55,7 @@ public class Zombie {
 
     private MouseJoint getUpMouseJoint = null;
 
-    private float speed = 50;
+    private float speed = 100;
 
     // Default direction is left
     private int direction = 0;
@@ -410,7 +410,6 @@ public class Zombie {
 
         return total;
     }
-
     float getWidth(){
         float total = 0;
 
@@ -420,6 +419,10 @@ public class Zombie {
         return total;
     }
 
+    float getDistanceToObjective(){
+        return Math.abs(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)).x);
+    }
+
     public HashMap<String, Part> getParts(){
         return parts;
     }
@@ -427,7 +430,6 @@ public class Zombie {
         this.isCrawler = true;
     }
     void onObjective(){
-        this.checkDirection();
         this.attack();
     }
     void attack(){
@@ -439,15 +441,15 @@ public class Zombie {
         this.currentAnimation = this.moveAnimation;
 
         if (isAtObjective && this.randomObjectiveX == 0) {
+            this.checkDirection();
             if(this.direction == 0) {
-                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)));
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(this.getDistanceToObjective(), 0, 0));
                 this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)Math.abs(pos.x));
             }
             else{
-                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - (Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2), 0, 0)));
+                Vector3 pos = Environment.gameCamera.unproject(new Vector3(this.getDistanceToObjective(), 0, 0));
                 this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)Math.abs(pos.x));
             }
-
         }
         if (!isAtObjective && !isAttacking) {
             if (this.direction == 0) {
@@ -471,6 +473,24 @@ public class Zombie {
     }
     void onGetUp(){this.checkDirection();}
 
+    void checkDirection(){
+        int previous_direction = this.direction;
+        if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/4){
+            this.direction = 0;
+        }
+        else if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2){
+            this.direction = 1;
+        }
+        else if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2 + Environment.level.objective.getWidth()/4){
+            this.direction = 0;
+        }
+        else{
+            this.direction = 1;
+        }
+        if(previous_direction != this.direction){
+            onDirectionChange();
+        }
+    }
     private void onDirectionChange(){
         if(this.direction == 1){
             skeleton.setFlipX(true);
@@ -490,22 +510,18 @@ public class Zombie {
             constructPhysicsBody(Environment.physics.getWorld(), false);
         }
     }
-    void checkDirection(){
-        int previous_direction = this.direction;
-        if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/4){
-            this.direction = 0;
+    public void setDirection(int i){
+        if(this.direction != i){
+            this.direction = i;
+            onDirectionChange();
         }
-        else if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2){
-            this.direction = 1;
-        }
-        else if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2 + Environment.level.objective.getWidth()/4){
-            this.direction = 0;
+    }
+    public int getDirection(){
+        if(direction == 0){
+            return 0;
         }
         else{
-            this.direction = 1;
-        }
-        if(previous_direction != this.direction){
-            onDirectionChange();
+            return 1;
         }
     }
 
@@ -614,20 +630,7 @@ public class Zombie {
         });
 
     }
-    public void setDirection(int i){
-        if(this.direction != i){
-            this.direction = i;
-            onDirectionChange();
-        }
-    }
-    public int getDirection(){
-        if(direction == 0){
-            return 0;
-        }
-        else{
-            return 1;
-        }
-    }
+
 
     public void onDeath(){
         Random rand = new Random();

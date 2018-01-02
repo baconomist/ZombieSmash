@@ -63,10 +63,9 @@ public class PoliceZombie extends Zombie {
 
         if(this.enteredLevel && System.currentTimeMillis() - this.attackTimer > this.timeBeforeAttack){
             this.attack();
-        }
-        else{
             this.attackTimer = System.currentTimeMillis();
         }
+
 
 
     }
