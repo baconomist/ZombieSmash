@@ -1,38 +1,20 @@
 package com.fcfruit.zombiesmash.stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.ai.btree.utils.DistributionAdapters;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Button;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageTextButton;
-import com.badlogic.gdx.scenes.scene2d.ui.Label;
-import com.badlogic.gdx.scenes.scene2d.ui.Skin;
-import com.badlogic.gdx.scenes.scene2d.ui.Table;
-import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
-import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
-import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.Align;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.ui.CustomImageButton;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-12-16.
@@ -102,11 +84,11 @@ public class LevelSelectStage extends Stage {
 
 
     void onLevelSelect(int level){
-        Environment.gameCamera = new OrthographicCamera(Environment.game.screenWidth, Environment.game.screenHeight);
+        Environment.gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
         Environment.gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
         Environment.gameCamera.update();
 
-        Environment.physicsCamera = new OrthographicCamera(Environment.game.screenWidth/ Physics.PIXELS_PER_METER, Environment.game.screenHeight/Physics.PIXELS_PER_METER);
+        Environment.physicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
         // Camera position/origin is in the middle
         // Not bottom left
         // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems

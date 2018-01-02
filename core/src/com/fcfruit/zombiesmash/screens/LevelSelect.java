@@ -2,17 +2,11 @@ package com.fcfruit.zombiesmash.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.level.NightLevel;
-import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.stages.LevelSelectStage;
-
-import static com.fcfruit.zombiesmash.Environment.level;
 
 
 /**
@@ -26,7 +20,7 @@ public class LevelSelect implements Screen{
     Viewport viewport;
 
     public LevelSelect(){
-        viewport = new StretchViewport(Environment.game.screenWidth, Environment.game.screenHeight);
+        viewport = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
         stage = new LevelSelectStage(viewport);
 
         Gdx.input.setInputProcessor(stage);

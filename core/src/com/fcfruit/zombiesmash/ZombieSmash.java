@@ -16,8 +16,8 @@ import com.fcfruit.zombiesmash.screens.MainMenu;
 
 public class ZombieSmash extends Game {
 
-	public static float screenWidth = 1920;
-	public static float screenHeight = 1080;
+	public static float WIDTH = 1920;
+	public static float HEIGHT = 1080;
 
 	FPSLogger logger = new FPSLogger();
 

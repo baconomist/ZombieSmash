@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Star;
+import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.power_ups.Rock;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -31,8 +32,11 @@ import static java.util.Collections.min;
 
 public class Physics {
 
-    public static final float PIXELS_PER_METER = 192;
-    public static final float METERS_PER_PIXEL = 1/192;
+    public static final float WIDTH = 10;
+    public static final float HEIGHT = 5.625f;
+
+    public static final float PIXELS_PER_METER = ZombieSmash.WIDTH/WIDTH;
+    public static final float METERS_PER_PIXEL = 1/PIXELS_PER_METER;
 
     static final float STEP_TIME = 1f / 40f;
     static final int VELOCITY_ITERATIONS = 6;
