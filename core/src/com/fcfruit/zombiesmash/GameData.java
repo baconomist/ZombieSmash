@@ -25,8 +25,6 @@ public class GameData {
         xp = data.getFloat("xp");
         levelsCompleted = data.getInt("levelsCompleted");
 
-        Gdx.app.log("coins", "" + coins);
-
     }
 
     public float getXp(){

@@ -34,7 +34,6 @@ public class CustomImageButton extends Sprite {
     public void draw(SpriteBatch batch){
         super.draw(batch);
         font.draw(batch, text, this.getX() + this.getWidth()/2, this.getY() + this.getHeight()/2);
-        Gdx.app.log("thois", ""+this.getY() + " " + this.getBoundingRectangle().getY());
     }
 
     public void setUserData(Object object){

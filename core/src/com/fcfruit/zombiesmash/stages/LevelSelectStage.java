@@ -84,7 +84,6 @@ public class LevelSelectStage extends Stage {
             if(c.getBoundingRectangle().contains(pos.x, pos.y)){
                 c.touchDown();
                 onLevelSelect((Integer)c.getUserData());
-                Gdx.app.log("a", ""+c.getUserData());
                 break;
             }
         }

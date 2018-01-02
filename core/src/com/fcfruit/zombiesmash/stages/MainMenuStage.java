@@ -79,7 +79,6 @@ public class MainMenuStage extends Stage {
         play_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("cloick", "play");
 
                 Environment.game.setScreen(new LevelSelect());
                 return super.touchDown(event, x, y, pointer, button);
@@ -91,7 +90,6 @@ public class MainMenuStage extends Stage {
         settings_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("cloick", "opt");
                 mainMenu.show_settings_stage = true;
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -102,7 +100,6 @@ public class MainMenuStage extends Stage {
         mute_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("cloick", "mute");
                 mute = !mute;
                 if(mute){
                     mute_button.setChecked(false);
@@ -120,7 +117,6 @@ public class MainMenuStage extends Stage {
         rate_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("cloick", "rate");
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

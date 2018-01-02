@@ -75,7 +75,6 @@ public class Spawner {
         try {
 
             tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.physics.getZombies().size() + 1);
-            Gdx.app.log("bb", ""+data.getString("position"));
             tempZombie.setPosition(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y);
             if(data.getString("position").contains("left")) {
                 tempZombie.setDirection(0);

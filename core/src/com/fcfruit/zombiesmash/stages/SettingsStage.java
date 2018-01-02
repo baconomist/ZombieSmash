@@ -89,7 +89,6 @@ public class SettingsStage extends Stage {
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
                 mainMenu.show_settings_stage = false;
-                Gdx.app.log("a", "ba");
                 return super.touchDown(event, x, y, pointer, button);
             }
         });

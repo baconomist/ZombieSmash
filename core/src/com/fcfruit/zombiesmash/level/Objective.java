@@ -33,7 +33,7 @@ public class Objective {
 
     public void onHit(){
         health--;
-        Gdx.app.log("Objective", "health: "+health);
+
     }
 
     public float getHealth(){return health;}
