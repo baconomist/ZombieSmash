@@ -1,0 +1,97 @@
+
+blood.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+1
+  rotate: false
+  xy: 1806, 1791
+  size: 229, 159
+  orig: 229, 159
+  offset: 0, 0
+  index: -1
+10
+  rotate: false
+  xy: 2, 1464
+  size: 641, 486
+  orig: 641, 486
+  offset: 0, 0
+  index: -1
+11
+  rotate: false
+  xy: 452, 293
+  size: 394, 312
+  orig: 394, 312
+  offset: 0, 0
+  index: -1
+12
+  rotate: false
+  xy: 2, 2
+  size: 426, 298
+  orig: 426, 298
+  offset: 0, 0
+  index: -1
+13
+  rotate: false
+  xy: 2, 302
+  size: 448, 303
+  orig: 448, 303
+  offset: 0, 0
+  index: -1
+2
+  rotate: false
+  xy: 1706, 1376
+  size: 340, 205
+  orig: 340, 205
+  offset: 0, 0
+  index: -1
+3
+  rotate: false
+  xy: 636, 1016
+  size: 414, 236
+  orig: 414, 236
+  offset: 0, 0
+  index: -1
+4
+  rotate: false
+  xy: 645, 1254
+  size: 428, 254
+  orig: 428, 254
+  offset: 0, 0
+  index: -1
+5
+  rotate: false
+  xy: 1255, 1334
+  size: 449, 247
+  orig: 449, 247
+  offset: 0, 0
+  index: -1
+6
+  rotate: false
+  xy: 1255, 1583
+  size: 549, 367
+  orig: 549, 367
+  offset: 0, 0
+  index: -1
+7
+  rotate: false
+  xy: 2, 607
+  size: 586, 387
+  orig: 586, 387
+  offset: 0, 0
+  index: -1
+8
+  rotate: false
+  xy: 645, 1510
+  size: 608, 440
+  orig: 608, 440
+  offset: 0, 0
+  index: -1
+9
+  rotate: false
+  xy: 2, 996
+  size: 632, 466
+  orig: 632, 466
+  offset: 0, 0
+  index: -1

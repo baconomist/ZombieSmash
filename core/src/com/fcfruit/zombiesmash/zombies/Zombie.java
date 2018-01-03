@@ -114,7 +114,7 @@ public class Zombie {
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         for (Slot slot : skeleton.getDrawOrder()) {
             if (parts.get(slot.getAttachment().getName()) != null) {
-                parts.get(slot.getAttachment().getName()).draw(batch);
+                parts.get(slot.getAttachment().getName()).draw(batch, skeletonRenderer, delta);
             }
         }
         if (!physicsEnabled) {

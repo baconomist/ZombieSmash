@@ -16,8 +16,10 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.Blood;
 
 /**
  * Created by Lucas on 2017-08-01.
@@ -59,6 +61,8 @@ public class Part{
 
     String state;
 
+    Blood blood = new Blood(this);
+
     public Part(String nm, Sprite s, Body b, Joint j, Zombie zbody){
         name = nm;
 
@@ -78,7 +82,7 @@ public class Part{
 
     }
 
-    public void draw(SpriteBatch batch){
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         if(state.equals("attached")) {
             if (body.physicsEnabled) {
                 sprite.draw(batch);
@@ -87,6 +91,8 @@ public class Part{
         else {
             sprite.draw(batch);
         }
+
+        blood.draw(batch, skeletonRenderer, delta);
 
     }
 

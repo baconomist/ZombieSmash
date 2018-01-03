@@ -75,7 +75,7 @@ public class Level {
         }
 
         for(Part p : this.parts){
-            p.draw(batch);
+            p.draw(batch, skeletonRenderer, Gdx.graphics.getDeltaTime());
         }
 
         for(PowerUp pow : this.powerUps){

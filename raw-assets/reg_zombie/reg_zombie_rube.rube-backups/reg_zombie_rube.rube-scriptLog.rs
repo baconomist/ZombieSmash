@@ -14,3 +14,4 @@ getFixture(2).select();
 getFixture(2).deselect();
 getJoint(11).select();
 getJoint(11).deselect();
+getJoint(9).select();
