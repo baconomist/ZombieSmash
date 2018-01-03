@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.ui.TextArea;
 import com.badlogic.gdx.scenes.scene2d.ui.TextField;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
@@ -22,6 +23,7 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
 import org.lwjgl.Sys;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -100,6 +102,9 @@ public class GameStage extends Stage {
 
         Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
 
+        Collections.reverse(Environment.level.zombies);
+        Collections.reverse(Environment.level.parts);
+
         for (Zombie z : Environment.level.zombies) {
             if (z.polygon.contains(pos.x, pos.y)) {
                 boolean partTouched = false;
@@ -124,9 +129,16 @@ public class GameStage extends Stage {
 
         if (touchedParts.size() > 0) {
             touchedParts.get(0).polygonTouched = true;
+            //touchedParts.get(0).polygonTouched = true;
+
         } else if (touchedZombies.size() > 0) {
             touchedZombies.get(0).getParts().get("torso").polygonTouched = true;
+            //touchedZombies.get(0).getParts().get("torso").polygonTouched = true;
         }
+
+
+        Collections.reverse(Environment.level.zombies);
+        Collections.reverse(Environment.level.parts);
 
         pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
         Environment.physics.touchDown(pos.x, pos.y, pointer);
@@ -178,4 +190,20 @@ public class GameStage extends Stage {
 
         return super.touchUp(screenX, screenY, pointer, button);
     }
+
+    Object getFirstMatch(ArrayList one, ArrayList two){
+
+        for(Object o : one){
+            for(Object obj : two){
+                if(o.equals(obj)){
+                    return o;
+                }
+            }
+        }
+
+        return null;
+
+    }
+
+
 }

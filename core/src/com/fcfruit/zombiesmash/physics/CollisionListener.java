@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -35,7 +36,7 @@ public class CollisionListener implements ContactListener {
 
                 }
 
-                if (part != null && !part.getName().equals("torso")) {
+                if (part != null && part.isDetachable) {
 
                     // Recode body so either when torso is detached, it becomes a part, or the body is always the torso
                     // If name is torso, torso body joint is probably null, and you call a world mehod bodyjoint.getreactionforce
@@ -44,9 +45,7 @@ public class CollisionListener implements ContactListener {
                     if (part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).x > 20 || part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).x > 20
                             || part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).y > 20 || part.bodyJoint.getReactionForce(1f / com.fcfruit.zombiesmash.physics.Physics.STEP_TIME).y > 20) {
 
-                        if (part.isDetachable) {
-                            part.setState("waiting_for_detach");
-                        }
+                        part.setState("waiting_for_detach");
 
                     }
 
