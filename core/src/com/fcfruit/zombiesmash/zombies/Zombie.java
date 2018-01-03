@@ -55,7 +55,7 @@ public class Zombie {
 
     private MouseJoint getUpMouseJoint = null;
 
-    private float speed = 100;
+    private float speed = 200;
 
     // Default direction is left
     private int direction = 0;
@@ -134,16 +134,18 @@ public class Zombie {
         // Center polygon with polygon width/2(polygon.getVerticies[2]/2) and polygon height/2(polygon.getVerticies[5]/2)
         polygon.setPosition(pos.x - polygon.getVertices()[2]/2, Environment.gameCamera.viewportHeight - pos.y - polygon.getVertices()[5]/2);
         polygon.setRotation(this.getRotation());
+
+
         // Prevents zombie from being totally lost out of the map
         if(!enteredLevel && this.getPosition().x < -1){
             this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth/2 + 1), 0);
+            this.speed = 400;
+            this.checkDirection();
         }
         else if(!enteredLevel && this.getPosition().y > 21){
             this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth/2 + 1, 0);
-        }
-
-        if(this.getPosition().x < 0 || this.getPosition().x > 10){
-            Gdx.app.log("position", ""+this.getPosition().x);
+            this.speed = 400;
+            this.checkDirection();
         }
 
 
@@ -288,6 +290,9 @@ public class Zombie {
         isMoving = parts.get("torso").isMoving;
         isOnGround = parts.get("torso").isOnGround;
         isAtObjective = isatobjective;
+        if(!enteredLevel && elvl){
+            this.onEnteredLevel();
+        }
         enteredLevel = elvl;
 
     }
@@ -420,7 +425,11 @@ public class Zombie {
     }
 
     float getDistanceToObjective(){
-        return Math.abs(Environment.physicsCamera.project(new Vector3((Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2) - this.getPosition().x, 0, 0)).x);
+        //this is broken
+        if(this.direction == 0) {
+            return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3/4) - this.getPosition().x);
+        }
+        return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6/4) - this.getPosition().x);
     }
 
     public HashMap<String, Part> getParts(){
@@ -443,12 +452,12 @@ public class Zombie {
         if (isAtObjective && this.randomObjectiveX == 0) {
             this.checkDirection();
             if(this.direction == 0) {
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(this.getDistanceToObjective(), 0, 0));
-                this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)Math.abs(pos.x));
+                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getDistanceToObjective(), 0, 0)));
+                this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int)pos.x);
             }
             else{
-                Vector3 pos = Environment.gameCamera.unproject(new Vector3(this.getDistanceToObjective(), 0, 0));
-                this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)Math.abs(pos.x));
+                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getDistanceToObjective(), 0, 0)));
+                this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int)pos.x);
             }
         }
         if (!isAtObjective && !isAttacking) {
@@ -631,6 +640,13 @@ public class Zombie {
 
     }
 
+    void onEnteredLevel(){
+        this.speed = this.getSpeed();
+    }
+
+    float getSpeed(){
+        return 200;
+    }
 
     void onDeath(){
         Random rand = new Random();
