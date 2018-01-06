@@ -43,6 +43,13 @@
     
     {
       "class" : "body",
+      "displayName" : "isPart",
+      "name" : "isPart",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "body",
       "comboboxEntries" : 
       [
         
@@ -114,6 +121,11 @@
           {
             "name" : "name",
             "string" : "left_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -192,6 +204,11 @@
           {
             "name" : "name",
             "string" : "left_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -270,6 +287,11 @@
           {
             "name" : "name",
             "string" : "torso"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -346,6 +368,11 @@
           {
             "name" : "name",
             "string" : "head"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -424,6 +451,11 @@
           {
             "name" : "name",
             "string" : "rock"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -502,6 +534,11 @@
           {
             "name" : "name",
             "string" : "right_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -580,6 +617,11 @@
           {
             "name" : "name",
             "string" : "right_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 

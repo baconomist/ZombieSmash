@@ -38,6 +38,50 @@
       "bitplane32"
     ]
   },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "body",
+      "comboboxEntries" : 
+      [
+        
+        {
+          "entry" : "head"
+        },
+        
+        {
+          "entry" : "left_arm"
+        },
+        
+        {
+          "entry" : "right_arm"
+        },
+        
+        {
+          "entry" : "torso"
+        },
+        
+        {
+          "entry" : "left_leg"
+        },
+        
+        {
+          "entry" : "right_leg"
+        }
+      ],
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    },
+    
+    {
+      "class" : "body",
+      "displayName" : "isPart",
+      "name" : "isPart",
+      "type" : "bool"
+    }
+  ],
   "metaworld" : 
   {
     "allowSleep" : true,
@@ -73,6 +117,11 @@
           {
             "name" : "name",
             "string" : "torso"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -149,6 +198,11 @@
           {
             "name" : "name",
             "string" : "left_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -227,6 +281,11 @@
           {
             "name" : "name",
             "string" : "left_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -305,6 +364,11 @@
           {
             "name" : "name",
             "string" : "right_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -383,6 +447,11 @@
           {
             "name" : "name",
             "string" : "head"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -461,6 +530,11 @@
           {
             "name" : "name",
             "string" : "grenade"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -539,6 +613,11 @@
           {
             "name" : "name",
             "string" : "right_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 

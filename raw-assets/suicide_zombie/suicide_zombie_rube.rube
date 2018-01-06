@@ -77,6 +77,13 @@
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
+    },
+    
+    {
+      "class" : "body",
+      "displayName" : "isPart",
+      "name" : "isPart",
+      "type" : "bool"
     }
   ],
   "metaworld" : 
@@ -114,6 +121,11 @@
           {
             "name" : "name",
             "string" : "left_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -183,6 +195,30 @@
       },
       
       {
+        "angle" : 0,
+        "angularVelocity" : 0,
+        "awake" : true,
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "bloodJoint"
+          }
+        ],
+        "id" : 2,
+        "linearVelocity" : 0,
+        "massData-mass" : 1,
+        "name" : "body0",
+        "position" : 
+        {
+          "x" : 0.3752720355987549,
+          "y" : 0.8254007101058960
+        },
+        "type" : "dynamic"
+      },
+      
+      {
         "angle" : 1.570796370506287,
         "angularVelocity" : 0,
         "awake" : true,
@@ -192,6 +228,11 @@
           {
             "name" : "name",
             "string" : "grenade"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -270,6 +311,11 @@
           {
             "name" : "name",
             "string" : "right_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -348,6 +394,11 @@
           {
             "name" : "name",
             "string" : "torso"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -424,6 +475,11 @@
           {
             "name" : "name",
             "string" : "head"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -502,6 +558,11 @@
           {
             "name" : "name",
             "string" : "right_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -580,6 +641,11 @@
           {
             "name" : "name",
             "string" : "left_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -873,6 +939,24 @@
         "referenceAngle" : 0,
         "type" : "revolute",
         "upperLimit" : 0
+      },
+      
+      {
+        "anchorA" : 0,
+        "anchorB" : 
+        {
+          "x" : -0.2082580029964447,
+          "y" : -0.05116249993443489
+        },
+        "bodyA" : 2,
+        "bodyB" : 6,
+        "collideConnected" : false,
+        "dampingRatio" : 0,
+        "frequency" : 0,
+        "id" : 6,
+        "name" : "joint7",
+        "referenceAngle" : 0,
+        "type" : "weld"
       },
       
       {

@@ -38,6 +38,23 @@
       "bitplane32"
     ]
   },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "body",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    },
+    
+    {
+      "class" : "body",
+      "displayName" : "isPart",
+      "name" : "isPart",
+      "type" : "bool"
+    }
+  ],
   "metaworld" : 
   {
     "allowSleep" : true,
@@ -73,6 +90,11 @@
           {
             "name" : "name",
             "string" : "torso"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -149,6 +171,11 @@
           {
             "name" : "name",
             "string" : "head"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -227,6 +254,11 @@
           {
             "name" : "name",
             "string" : "left_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -305,6 +337,11 @@
           {
             "name" : "name",
             "string" : "right_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -383,6 +420,11 @@
           {
             "name" : "name",
             "string" : "left_arm"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 
@@ -461,6 +503,11 @@
           {
             "name" : "name",
             "string" : "right_leg"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "isPart"
           }
         ],
         "fixture" : 

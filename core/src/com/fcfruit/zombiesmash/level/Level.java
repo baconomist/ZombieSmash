@@ -1,11 +1,9 @@
 package com.fcfruit.zombiesmash.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
@@ -70,12 +68,12 @@ public class Level {
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer){
         sprite.draw(batch);
 
-        for(Zombie z : this.zombies) {
-            z.draw(batch, skeletonRenderer, Gdx.graphics.getDeltaTime());
+        for(Part p : this.parts){
+            p.draw(batch);
         }
 
-        for(Part p : this.parts){
-            p.draw(batch, skeletonRenderer, Gdx.graphics.getDeltaTime());
+        for(Zombie z : this.zombies) {
+            z.draw(batch, skeletonRenderer, Gdx.graphics.getDeltaTime());
         }
 
         for(PowerUp pow : this.powerUps){

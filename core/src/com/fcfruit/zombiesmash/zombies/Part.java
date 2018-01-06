@@ -1,25 +1,20 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.PolygonRegion;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Rectangle;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.QueryCallback;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
-import com.esotericsoftware.spine.SkeletonRenderer;
-import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.zombies.Zombie;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2017-08-01.
@@ -35,7 +30,8 @@ public class Part{
 
     public Body physicsBody;
 
-    public Joint bodyJoint;
+    private Joint bodyJoint;
+    private Vector2 initialJointPosition;
 
     private MouseJoint mouseJoint = null;
 
@@ -45,9 +41,9 @@ public class Part{
 
     public boolean isPowerfulPart = false;
 
-    boolean isMoving = false;
+    public boolean isMoving = false;
 
-    boolean isOnGround = false;
+    public boolean isOnGround = false;
 
     public boolean isDetachable = true;
 
@@ -55,24 +51,33 @@ public class Part{
 
     public boolean polygonTouched = false;
 
+
     private double timeBeforeOptimize = 500;
     private double optimizationTimer = System.currentTimeMillis();
     private boolean optimize = true;
 
     String state;
 
-    Blood blood = new Blood(this);
+    ArrayList<Blood> blood;
 
-    public Part(String nm, Sprite s, Body b, Joint j, Zombie zbody){
-        name = nm;
 
-        sprite = s;
+    public Part(String name, Sprite sprite, Body physicsBody, Joint bodyJoint, Zombie zombie){
+        this.name = name;
 
-        physicsBody = b;
+        this.sprite = sprite;
 
-        bodyJoint = j;
+        this.physicsBody = physicsBody;
 
-        body = zbody;
+        this.bodyJoint = bodyJoint;
+
+        RevoluteJoint j = (RevoluteJoint) bodyJoint;
+        if (physicsBody == j.getBodyA()) {
+            initialJointPosition = j.getLocalAnchorA();
+        } else {
+            initialJointPosition = j.getLocalAnchorB();
+        }
+
+        body = zombie;
 
         state = "attached";
 
@@ -80,9 +85,17 @@ public class Part{
         polygon.setVertices(new float[]{0, 0, sprite.getWidth(), 0, sprite.getWidth(), sprite.getHeight(), 0, sprite.getHeight()});
         polygon.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 
+        blood = new ArrayList<Blood>();
+
     }
 
-    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
+    public void draw(SpriteBatch batch){
+
+        for (Blood b : blood) {
+            b.draw(batch);
+        }
+
+
         if(state.equals("attached")) {
             if (body.physicsEnabled) {
                 sprite.draw(batch);
@@ -92,11 +105,13 @@ public class Part{
             sprite.draw(batch);
         }
 
-        blood.draw(batch, skeletonRenderer, delta);
-
     }
 
     public void update(){
+
+        if(state.equals("detached")){
+            blood.add(new Blood(this.physicsBody.getPosition().x, this.physicsBody.getPosition().y, initialJointPosition.y, initialJointPosition.x, this.sprite.getRotation() + 90));
+        }
 
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
         sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight()/2);
@@ -189,7 +204,6 @@ public class Part{
 
 
     }
-
 
     public void createMouseJoint(float x, float y, int p, boolean isPowerful){
 
@@ -305,8 +319,10 @@ public class Part{
             body = null;
         }*/
 
-        Environment.physics.getWorld().destroyJoint(bodyJoint);
 
+
+
+        Environment.physics.getWorld().destroyJoint(bodyJoint);
         bodyJoint = null;
         body.parts.remove(name);
         body = null;
@@ -320,6 +336,10 @@ public class Part{
     }
 
     public String getState(){return state;}
+
+    public Joint getBodyJoint(){
+        return bodyJoint;
+    }
 
     public void setPosition(float x, float y){
         physicsBody.setTransform(x, y, physicsBody.getAngle());
@@ -342,10 +362,6 @@ public class Part{
     }
 
     public void destroy(){
-        if(bodyJoint != null){
-            Environment.physics.getWorld().destroyJoint(bodyJoint);
-            body.parts.remove(name);
-        }
         Environment.physics.getWorld().destroyBody(physicsBody);
         setState("destroyed");
     }

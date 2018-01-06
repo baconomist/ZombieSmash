@@ -13,7 +13,6 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Star;
 import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
-import com.fcfruit.zombiesmash.power_ups.Rock;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -237,6 +236,7 @@ public class Physics {
                 }
             }
         }
+
     }
 
     private void updatePowerUps(){

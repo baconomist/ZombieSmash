@@ -37,7 +37,7 @@ import java.util.Random;
  * Created by Lucas on 2017-07-30.
  */
 
-public class Zombie {
+public class Zombie{
 
     ArrayList partsToStayAlive = new ArrayList();
 
@@ -51,7 +51,7 @@ public class Zombie {
     Skeleton skeleton;
     AnimationState state;
 
-    HashMap<String, Part> parts = new HashMap<String, Part>();
+    public HashMap<String, Part> parts = new HashMap<String, Part>();
 
     private MouseJoint getUpMouseJoint = null;
 
@@ -76,7 +76,7 @@ public class Zombie {
 
     public boolean physicsEnabled = false;
 
-    boolean hasPowerfulPart = false;
+    public boolean hasPowerfulPart = false;
 
     private boolean isMoving = false;
 
@@ -114,7 +114,7 @@ public class Zombie {
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta){
         for (Slot slot : skeleton.getDrawOrder()) {
             if (parts.get(slot.getAttachment().getName()) != null) {
-                parts.get(slot.getAttachment().getName()).draw(batch, skeletonRenderer, delta);
+                parts.get(slot.getAttachment().getName()).draw(batch);
             }
         }
         if (!physicsEnabled) {
@@ -157,7 +157,7 @@ public class Zombie {
             //Make the physics bodies unstuck, sometimes the animation goes into the ground.
             this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
             // Un-freezes the zombie when holding click
-            for(Part p : parts.values()){
+            for(com.fcfruit.zombiesmash.zombies.Part p : parts.values()){
                 p.physicsBody.setAwake(true);
             }
 
@@ -262,7 +262,7 @@ public class Zombie {
         boolean istouching = false;
         boolean isatobjective = false;
         boolean elvl = true;
-        for(Part p : parts.values()){
+        for(com.fcfruit.zombiesmash.zombies.Part p : parts.values()){
             p.update();
             if(p.isPowerfulPart && !ispowerfulpart){
                 ispowerfulpart = true;
@@ -373,7 +373,7 @@ public class Zombie {
     }
 
 
-    public Part getPartFromPhysicsBody(Body physicsBody){
+    public com.fcfruit.zombiesmash.zombies.Part getPartFromPhysicsBody(Body physicsBody){
 
         for(Part p : parts.values()){
             if(p.physicsBody.equals(physicsBody)){
@@ -432,7 +432,7 @@ public class Zombie {
         return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6/4) - this.getPosition().x);
     }
 
-    public HashMap<String, Part> getParts(){
+    public HashMap<String, com.fcfruit.zombiesmash.zombies.Part> getParts(){
         return parts;
     }
     void crawl(){
@@ -508,7 +508,7 @@ public class Zombie {
             skeleton.setFlipX(false);
         }
 
-        for (Part p : parts.values()) {
+        for (com.fcfruit.zombiesmash.zombies.Part p : parts.values()) {
             p.setState("waiting_for_destroy");
         }
 
@@ -548,35 +548,37 @@ public class Zombie {
 
         for(Body b : rubeScene.getBodies()) {
 
-            String bodyName = (String) rubeScene.getCustom(b, "name");
-            Sprite sprite = new Sprite(atlas.findRegion(bodyName));
+            if((Boolean) rubeScene.getCustom(b, "isPart")) {
 
-            for (RubeImage i : rubeScene.getImages()) {
-                if (i.body == b) {
-                    sprite.flip(flip, false);
-                    sprite.setColor(i.color);
-                    sprite.setOriginCenter();
-                    sprite.setSize(i.width*Physics.PIXELS_PER_METER, i.height*Physics.PIXELS_PER_METER);
-                    sprite.setOriginCenter();
+                String bodyName = (String) rubeScene.getCustom(b, "name");
+                Sprite sprite = new Sprite(atlas.findRegion(bodyName));
+
+                for (RubeImage i : rubeScene.getImages()) {
+                    if (i.body == b) {
+                        sprite.flip(flip, false);
+                        sprite.setColor(i.color);
+                        sprite.setOriginCenter();
+                        sprite.setSize(i.width * Physics.PIXELS_PER_METER, i.height * Physics.PIXELS_PER_METER);
+                        sprite.setOriginCenter();
+                    }
+
                 }
 
-            }
-
-            Joint joint = null;
-            for (Joint j : rubeScene.getJoints()) {
-                if (j.getBodyA() == b || j.getBodyB() == b) {
-                    joint = j;
-                    break;
+                Joint joint = null;
+                for(Joint j : rubeScene.getJoints()){
+                    if(j.getBodyA() == b || j.getBodyB() == b){
+                        joint = j;
+                        break;
+                    }
                 }
+
+                for (Fixture f : b.getFixtureList()) {
+                    // Makes different zombies not collide with each other
+                    f.setUserData(this);
+                }
+
+                parts.put(bodyName, new com.fcfruit.zombiesmash.zombies.Part(bodyName, sprite, b, joint,  this));
             }
-
-
-            for (Fixture f : b.getFixtureList()) {
-                // Makes different zombies not collide with each other
-                f.setUserData(this);
-            }
-
-            parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
 
         }
 
@@ -589,7 +591,6 @@ public class Zombie {
         skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
         parts.get("torso").isDetachable = false;
-
 
         polygon = new Polygon(new float[]{0, 0, this.getWidth(), 0, this.getWidth(), this.getHeight(), 0, this.getHeight()});
         polygon.setOrigin(this.getWidth()/2, this.getHeight()/2);
