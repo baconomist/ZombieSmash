@@ -106,19 +106,4 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         return this.drawableEntity.getSize();
     }
 
-    @Override
-    public void onTouchDown() {
-
-    }
-
-    @Override
-    public void onTouchDragged() {
-
-    }
-
-    @Override
-    public void onTouchUp() {
-
-    }
-
 }
