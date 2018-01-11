@@ -8,10 +8,13 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.Objective;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2017-09-18.
@@ -68,5 +71,11 @@ public class    Environment {
 
     public static Physics physics;
 
-    }
+    // Add items touched down on touch_down to this list
+    // Clear this at the beginning of touch_down
+    // Used so interactive items can decide to activate if only they have been touched,
+    // Not 3 things at once being touched
+    public static ArrayList<InteractiveEntityInterface> touchedDownItems = new ArrayList<InteractiveEntityInterface>();
+
+}
 

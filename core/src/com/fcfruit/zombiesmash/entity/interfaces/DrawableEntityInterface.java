@@ -1,4 +1,4 @@
-package com.fcfruit.zombiesmash.entity;
+package com.fcfruit.zombiesmash.entity.interfaces;
 
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -12,6 +12,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 public interface DrawableEntityInterface {
 
     void draw(SpriteBatch batch);
+    void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer);
 
     void update(float delta);
 
@@ -22,7 +23,5 @@ public interface DrawableEntityInterface {
     void setAngle(float angle);
 
     Vector2 getSize();
-
-    Body getPhysicsBody();
 
 }

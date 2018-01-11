@@ -1,15 +1,13 @@
 package com.fcfruit.zombiesmash.entity;
 
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 
 /**
  * Created by Lucas on 2018-01-06.
  */
 
-public class DetachableEntity implements DetachableEntityInterface
+public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface
 {
     private Joint joint;
     private String state;

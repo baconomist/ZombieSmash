@@ -1,52 +1,52 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
-import com.fcfruit.zombiesmash.entity.DetachableEntityInterface;
-import com.fcfruit.zombiesmash.entity.DrawableEntity;
-import com.fcfruit.zombiesmash.entity.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.InteractiveEntityInterface;
-import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 
 /**
  * Created by Lucas on 2018-01-07.
  */
 
 public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface {
-    private DrawableEntity drawableEntity;
+    private String name;
+
+    private DrawablePhysicsEntity drawableEntity;
     private DetachableEntity detachableEntity;
+    private InteractivePhysicsEntity interactivePhysicsEntity;
 
-    private Joint joint;
+    private Joint bodyJoint;
 
+    public NewPart(String name, Sprite sprite, Body physicsBody, Joint bodyJoint){
+        this.name = name;
 
-    public NewPart(Sprite sprite, Body physicsBody, Joint joint){
-        this.drawableEntity = new DrawableEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(joint);
+        this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
+        this.detachableEntity = new DetachableEntity(null);
 
-        this.joint = joint;
+        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
+        size.y = Environment.gameCamera.viewportHeight - size.y;
+        Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
+        polygon.setOrigin(size.x/2, size.y/2);
+        this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
+
+        this.bodyJoint = bodyJoint;
     }
 
     @Override
     public void detach() {
         this.detachableEntity.detach();
-    }
-
-    @Override
-    public void setState(String state) {
-        this.detachableEntity.setState(state);
-    }
-
-    @Override
-    public String getState() {
-        return this.detachableEntity.getState();
     }
 
     @Override
@@ -57,6 +57,39 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     @Override
     public void update(float delta) {
         this.drawableEntity.update(delta);
+    }
+
+
+
+    @Override
+    public void onTouchDown(float x, float y, int p) {
+        this.interactivePhysicsEntity.onTouchDown(x, y, p);
+    }
+
+    @Override
+    public void onTouchDragged(float x, float y, int p) {
+        this.interactivePhysicsEntity.onTouchDragged(x, y, p);
+    }
+
+    @Override
+    public void onTouchUp(float x, float y, int p) {
+        this.interactivePhysicsEntity.onTouchUp(x, y, p);
+    }
+
+
+
+    public Body getPhysicsBody() {
+        return this.drawableEntity.getPhysicsBody();
+    }
+
+    @Override
+    public void setState(String state) {
+        this.detachableEntity.setState(state);
+    }
+
+    @Override
+    public String getState() {
+        return this.detachableEntity.getState();
     }
 
     @Override
@@ -85,17 +118,15 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
-    public void onTouchDown() {
-
+    public boolean isTouching()
+    {
+        return false;
     }
 
+    // Unused
     @Override
-    public void onTouchDragged() {
-
-    }
-
-    @Override
-    public void onTouchUp() {
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
 
     }
 }

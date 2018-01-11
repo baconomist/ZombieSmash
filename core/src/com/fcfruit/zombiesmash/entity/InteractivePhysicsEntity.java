@@ -7,29 +7,55 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 
 /**
  * Created by lucas on 2018-01-07.
  */
 
-public class InteractivePhysicsEntity implements InteractiveEntityInterface {
+public class InteractivePhysicsEntity implements InteractiveEntityInterface
+{
 
     private boolean isTouching;
+    private boolean powerfulJoint;
+
     private int pointer;
 
     private Body physicsBody;
     private Polygon polygon;
     private MouseJoint mouseJoint;
     
-    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon){
+    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon)
+    {
         this.isTouching = false;
         this.pointer = -1;
 
         this.physicsBody = physicsBody;
         this.polygon = polygon;
+
+        this.powerfulJoint = true;
     }
-    
-    void createMouseJoint(float x, float y){
+
+    public void update(float delta){
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
+        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        // Center the polygon on physics body
+        polygon.setPosition(pos.x - polygon.getVertices()[2]/2, pos.y - polygon.getVertices()[5]/2);
+        polygon.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
+        
+        if(!isTouching){
+            this.physicsBody.setActive(false);
+            this.physicsBody.setAwake(false);
+        }
+        else{
+            this.physicsBody.setActive(true);
+            this.physicsBody.setAwake(true);
+        }
+
+    }
+
+    void createMouseJoint(float x, float y)
+    {
 
         /*
         To make dragging faster:
@@ -58,8 +84,17 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface {
         // Makes the joint move body faster
         mouseJointDef.dampingRatio = 0.1f;
 
-        // Force applied to body to get to point
-        mouseJointDef.maxForce = 10000f * this.physicsBody.getMass();
+        if(this.powerfulJoint)
+        {
+            // Force applied to body to get to point
+            mouseJointDef.maxForce = 100000f * this.physicsBody.getMass();
+
+        }
+        else
+        {
+            // Force applied to body to get to point
+            mouseJointDef.maxForce = 1000f * this.physicsBody.getMass();
+        }
 
         // Destroy the current mouseJoint
         if(mouseJoint != null){
@@ -72,30 +107,55 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface {
     }
 
     @Override
-    public void onTouchDown(float x, float y, int p) {
+    public void onTouchDown(float x, float y, int p)
+    {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
-        if(polygon.contains(pos.x, Environment.gameCamera.viewportHeight - pos.y)){
-            isTouching = true;
-            pointer = p;
-        }
-        if(mouseJoint == null && isTouching) {
+        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+
+        if(Environment.touchedDownItems.size() < 1 && this.polygon.contains(pos.x,  pos.y) && mouseJoint == null){
+            this.pointer = p;
+            this.isTouching = true;
+            Environment.touchedDownItems.add(this);
             createMouseJoint(x, y);
         }
     }
 
     @Override
-    public void onTouchDragged(float x, float y, int p) {
-        if(pointer == p){
+    public void onTouchDragged(float x, float y, int p)
+    {
+        if (mouseJoint != null && pointer == p) {
+            mouseJoint.setTarget(new Vector2(x, y));
+            if (this.powerfulJoint) {
+                mouseJoint.setMaxForce(10000f * physicsBody.getMass());
+            }
+        }
 
+    }
+
+    @Override
+    public void onTouchUp(float x, float y, int p)
+    {
+        if(mouseJoint != null && pointer == p){
+            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            mouseJoint = null;
+            isTouching = false;
+            pointer = -1;
         }
     }
 
     @Override
-    public void onTouchUp(float x, float y, int p) {
-        if(pointer == p){
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
-            pointer = -1;
-            isTouching = false;
-        }
+    public boolean isTouching()
+    {
+        return isTouching;
     }
+
+    public boolean isUsingPowerfulJoint()
+    {
+        return powerfulJoint;
+    }
+
+    public void setUsingPowerfulJoint(boolean using){
+        this.powerfulJoint = using;
+    }
+
 }
