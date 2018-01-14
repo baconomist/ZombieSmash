@@ -29,6 +29,7 @@
 		581773AB1E37A2DB004E28A9 /* OpenGLES.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581773A41E37A2DB004E28A9 /* OpenGLES.framework */; };
 		581773AC1E37A2DB004E28A9 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581773A51E37A2DB004E28A9 /* QuartzCore.framework */; };
 		581773AE1E37A7EF004E28A9 /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 581773AD1E37A7EF004E28A9 /* UIKit.framework */; };
+		58EAB4FBECA8D7F443637D31 /* moe-main-interfaces.m in Sources */ = {isa = PBXBuildFile; fileRef = FAEEE36A094235396480C4DF /* moe-main-interfaces.m */; };
 		C995F7171EAA5D0A003E34E1 /* assets in Resources */ = {isa = PBXBuildFile; fileRef = C995F7161EAA5D0A003E34E1 /* assets */; };
 /* End PBXBuildFile section */
 
@@ -57,10 +58,11 @@
 		581773AD1E37A7EF004E28A9 /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		5863B87B1DA682C800E46B6A /* ios-moe-Test.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ios-moe-Test.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		5863B88E1DA682C800E46B6A /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		58C6F5241DA66CB600309CB6 /* ZombieSmash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "ZombieSmash.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		58C6F5241DA66CB600309CB6 /* ZombieSmash.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ZombieSmash.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		58C6F5381DA66CB600309CB6 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		8084D1F0A307440EC73CBFCA /* main.cpp */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.cpp.cpp; path = main.cpp; sourceTree = "<group>"; };
 		C995F7161EAA5D0A003E34E1 /* assets */ = {isa = PBXFileReference; lastKnownFileType = folder; name = assets; path = ../../android/assets; sourceTree = "<group>"; };
+		FAEEE36A094235396480C4DF /* moe-main-interfaces.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; name = "moe-main-interfaces.m"; path = "../build/moe/main/ui-headers/moe-main-interfaces.m"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -129,6 +131,7 @@
 				5863B87C1DA682C800E46B6A /* ios-moe-Test */,
 				58C6F5251DA66CB600309CB6 /* Products */,
 				5817739E1E37A2DA004E28A9 /* Frameworks */,
+				F50E80389E0CA2D30766EA28 /* Multi-OS Engine */,
 			);
 			sourceTree = "<group>";
 		};
@@ -170,6 +173,14 @@
 			);
 			name = "Supporting Files";
 			sourceTree = "<group>";
+		};
+		F50E80389E0CA2D30766EA28 /* Multi-OS Engine */ = {
+			isa = PBXGroup;
+			name = "Multi-OS Engine";
+			sourceTree = "<group>";
+			children = (
+				FAEEE36A094235396480C4DF /* moe-main-interfaces.m */,
+			);
 		};
 /* End PBXGroup section */
 
@@ -321,6 +332,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				16479D2CDCAC394B9A9722FE /* main.cpp in Sources */,
+				58EAB4FBECA8D7F443637D31 /* moe-main-interfaces.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -355,7 +367,7 @@
 					"$(inherited)",
 					"${MOE_OTHER_LDFLAGS}",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fcfruit.zombiesmash";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fcfruit.zombiesmash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 			};
@@ -389,7 +401,7 @@
 					"$(inherited)",
 					"${MOE_OTHER_LDFLAGS}",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fcfruit.zombiesmash";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fcfruit.zombiesmash;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				STRIP_STYLE = "non-global";
 			};
@@ -513,8 +525,8 @@
 					"${MOE_OTHER_LDFLAGS}",
 					"$(LIBGDX_NATIVES)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fcfruit.zombiesmash";
-				PRODUCT_NAME = "ZombieSmash";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fcfruit.zombiesmash;
+				PRODUCT_NAME = ZombieSmash;
 				STRIP_STYLE = "non-global";
 			};
 			name = Debug;
@@ -549,8 +561,8 @@
 					"${MOE_OTHER_LDFLAGS}",
 					"$(LIBGDX_NATIVES)",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "com.fcfruit.zombiesmash";
-				PRODUCT_NAME = "ZombieSmash";
+				PRODUCT_BUNDLE_IDENTIFIER = com.fcfruit.zombiesmash;
+				PRODUCT_NAME = ZombieSmash;
 				STRIP_STYLE = "non-global";
 			};
 			name = Release;

@@ -7,30 +7,6 @@
       "spawn_delay": 1,
       "position":"left"
     }
-  },
-  "middle":{
-    "big_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_left"
-    },
-    "big_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_right"
-    }
-  },
-  "right":{
-    "big_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position": "right"
-    }
   }
-
-
 
 }

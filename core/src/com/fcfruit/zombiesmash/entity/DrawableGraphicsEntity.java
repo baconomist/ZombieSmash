@@ -18,15 +18,10 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
 {
 
     private Sprite sprite;
-    private Skeleton skeleton;
 
     public DrawableGraphicsEntity(Sprite sprite)
     {
         this.sprite = sprite;
-    }
-
-    public DrawableGraphicsEntity(Skeleton skeleton){
-        this.skeleton = skeleton;
     }
 
     @Override
@@ -36,76 +31,50 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
     }
 
     @Override
-    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
-    {
-        skeletonRenderer.draw(batch, skeleton);
-    }
-
-    @Override
-    public void update(float delta)
-    {
-
-    }
-
-    @Override
     public Vector2 getPosition()
     {
-        if(this.sprite != null){
-            Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.sprite.getX(), this.sprite.getY(), 0)));
-            return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
-        }
-        else if(this.skeleton != null){
-            Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getRootBone().getX(), this.skeleton.getRootBone().getY(), 0)));
-            return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
-        }
-
-        return null;
-
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.sprite.getX(), this.sprite.getY(), 0)));
+        return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
     }
 
     @Override
-    public void setPosition(Vector2 vector2)
+    public void setPosition(Vector2 position)
     {
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(vector2, 0)));
-        if(this.sprite != null){
-            this.sprite.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
-        }
-        else if(this.skeleton != null){
-            this.skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
-        }
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
+        this.sprite.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
     }
 
     @Override
     public float getAngle()
     {
-        if(this.sprite != null){
-           return this.sprite.getRotation();
-        }
-        else if(this.skeleton != null){
-            return this.skeleton.getRootBone().getWorldRotationX();
-        }
-        return 0;
+        return this.sprite.getRotation();
     }
 
     @Override
     public void setAngle(float angle)
     {
-        if(this.sprite != null){
-            this.sprite.setRotation(angle);
-        }
-        else if(this.skeleton != null){
-           this.skeleton.getRootBone().setRotation(angle);
-        }
+        this.sprite.setRotation(angle);
     }
 
     @Override
     public Vector2 getSize()
     {
-        if(this.sprite != null){
-            Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.sprite.getWidth(), this.sprite.getHeight(), 0)));
-            return new Vector2(size.x, size.y - Environment.physicsCamera.viewportHeight);
-        }
-        return null;
+        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.sprite.getWidth(), this.sprite.getHeight(), 0)));
+        return new Vector2(size.x, size.y - Environment.physicsCamera.viewportHeight);
+    }
+
+    public Sprite getSprite(){
+        return this.sprite;
+    }
+
+    // Unused
+    @Override
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+    }
+    @Override
+    public void update(float delta)
+    {
     }
 
 }

@@ -70,11 +70,16 @@ public class Part{
 
         this.bodyJoint = bodyJoint;
 
-        RevoluteJoint j = (RevoluteJoint) bodyJoint;
-        if (physicsBody == j.getBodyA()) {
-            initialJointPosition = j.getLocalAnchorA();
-        } else {
-            initialJointPosition = j.getLocalAnchorB();
+        if(bodyJoint instanceof RevoluteJoint)
+        {
+            RevoluteJoint j = (RevoluteJoint) bodyJoint;
+            if (physicsBody == j.getBodyA())
+            {
+                initialJointPosition = j.getLocalAnchorA();
+            } else
+            {
+                initialJointPosition = j.getLocalAnchorB();
+            }
         }
 
         body = zombie;

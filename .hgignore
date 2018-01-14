@@ -18,3 +18,9 @@ android/libs/x86/libgdx-bullet.so
 android/android.iml
 .hg_archival.txt
 
+ios-moe/xcode/native/ios/libgdx.a
+ios-moe/xcode/native/ios/libgdx-freetype.a
+ios-moe/xcode/native/ios/libgdx-bullet.a
+ios-moe/xcode/native/ios/libgdx-box2d.a
+ios-moe/xcode/native/ios/libObjectAL.a
+ios-moe/proguard.append.cfg

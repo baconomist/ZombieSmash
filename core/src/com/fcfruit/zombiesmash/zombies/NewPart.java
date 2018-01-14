@@ -20,107 +20,119 @@ import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface {
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface
+{
     private String name;
 
     private DrawablePhysicsEntity drawableEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 
-    private Joint bodyJoint;
-
-    public NewPart(String name, Sprite sprite, Body physicsBody, Joint bodyJoint){
+    public NewPart(String name, Sprite sprite, Body physicsBody, Joint bodyJoint)
+    {
         this.name = name;
 
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(null);
+        this.detachableEntity = new DetachableEntity(bodyJoint);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
-        polygon.setOrigin(size.x/2, size.y/2);
+        polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.bodyJoint = bodyJoint;
     }
 
     @Override
-    public void detach() {
+    public void detach()
+    {
         this.detachableEntity.detach();
     }
 
     @Override
-    public void draw(SpriteBatch batch) {
+    public void draw(SpriteBatch batch)
+    {
         this.drawableEntity.draw(batch);
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float delta)
+    {
         this.drawableEntity.update(delta);
+        this.interactivePhysicsEntity.update(delta);
     }
 
 
-
     @Override
-    public void onTouchDown(float x, float y, int p) {
+    public void onTouchDown(float x, float y, int p)
+    {
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 
     @Override
-    public void onTouchDragged(float x, float y, int p) {
+    public void onTouchDragged(float x, float y, int p)
+    {
         this.interactivePhysicsEntity.onTouchDragged(x, y, p);
     }
 
     @Override
-    public void onTouchUp(float x, float y, int p) {
+    public void onTouchUp(float x, float y, int p)
+    {
         this.interactivePhysicsEntity.onTouchUp(x, y, p);
     }
 
 
-
-    public Body getPhysicsBody() {
+    public Body getPhysicsBody()
+    {
         return this.drawableEntity.getPhysicsBody();
     }
 
     @Override
-    public void setState(String state) {
+    public void setState(String state)
+    {
         this.detachableEntity.setState(state);
     }
 
     @Override
-    public String getState() {
+    public String getState()
+    {
         return this.detachableEntity.getState();
     }
 
     @Override
-    public Vector2 getPosition() {
+    public Vector2 getPosition()
+    {
         return this.drawableEntity.getPosition();
     }
 
     @Override
-    public void setPosition(Vector2 position) {
+    public void setPosition(Vector2 position)
+    {
         this.drawableEntity.setPosition(position);
     }
 
     @Override
-    public float getAngle() {
+    public float getAngle()
+    {
         return this.drawableEntity.getAngle();
     }
 
     @Override
-    public void setAngle(float angle) {
+    public void setAngle(float angle)
+    {
         this.drawableEntity.setAngle(angle);
     }
 
     @Override
-    public Vector2 getSize() {
+    public Vector2 getSize()
+    {
         return this.drawableEntity.getSize();
     }
 
     @Override
     public boolean isTouching()
     {
-        return false;
+        return interactivePhysicsEntity.isTouching();
     }
 
     // Unused
@@ -130,3 +142,4 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
 
     }
 }
+
