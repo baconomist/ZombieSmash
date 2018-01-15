@@ -76,4 +76,9 @@ public class InteractiveGraphicsEntity implements InteractiveEntityInterface
         return isTouching;
     }
 
+    @Override
+    public Polygon getPolygon()
+    {
+        return this.polygon;
+    }
 }

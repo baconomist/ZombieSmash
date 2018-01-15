@@ -93,6 +93,13 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
         return this.atlas;
     }
 
+    public AnimationState getState(){return this.state;}
+
+    public void restartAnimation(){
+        // Restart animation
+        state.setAnimation(0, this.animation, true);
+    }
+
     @Override
     public Vector2 getSize()
     {

@@ -1,5 +1,7 @@
 package com.fcfruit.zombiesmash.entity.interfaces;
 
+import com.badlogic.gdx.math.Polygon;
+
 /**
  * Created by Lucas on 2018-01-06.
  */
@@ -12,5 +14,7 @@ public interface InteractiveEntityInterface {
     void onTouchUp(float x, float y, int p);
 
     boolean isTouching();
+
+    Polygon getPolygon();
 
 }

@@ -158,4 +158,10 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
         this.powerfulJoint = using;
     }
 
+    @Override
+    public Polygon getPolygon()
+    {
+        return this.polygon;
+    }
+
 }
