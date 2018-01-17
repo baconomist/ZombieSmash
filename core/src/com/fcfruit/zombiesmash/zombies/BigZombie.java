@@ -27,9 +27,11 @@ import java.util.HashMap;
  * Created by Lucas on 2017-11-21.
  */
 
-public class BigZombie extends Zombie{
+public class BigZombie extends NewZombie
+{
 
-    public BigZombie(Integer id) {
+    public BigZombie(Integer id)
+    {
         super(id);
 
         this.moveAnimation = "walk";
@@ -40,31 +42,6 @@ public class BigZombie extends Zombie{
         partsToStayAlive.add("right_arm");
         partsToStayAlive.add("left_leg");
         partsToStayAlive.add("right_leg");
-
-        this.type = "big";
-
-        animationSetup();
-
-    }
-
-    @Override
-    public void constructPhysicsBody(World world, boolean flip){
-
-        super.constructPhysicsBody(world, flip);
-
-        parts.get("rock").isDetachable = false;
-
-
-    }
-
-    @Override
-    void attack() {
-        super.attack();
-        if (timesCompleteAttack1 < 2) {
-            this.currentAnimation = "attack1";
-        } else {
-            this.currentAnimation = "attack2";
-        }
 
     }
 

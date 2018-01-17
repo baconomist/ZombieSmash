@@ -160,6 +160,12 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         return this.interactivePhysicsEntity.isTouching();
     }
 
+    @Override
+    public Polygon getPolygon()
+    {
+        return this.interactivePhysicsEntity.getPolygon();
+    }
+
     // Unused
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)

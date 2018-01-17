@@ -31,9 +31,8 @@ public class Objective {
         return new Vector2(pos.x, pos.y);
     }
 
-    public void onHit(){
-        health--;
-
+    public void takeDamage(float damage){
+        health -= damage;
     }
 
     public float getHealth(){return health;}

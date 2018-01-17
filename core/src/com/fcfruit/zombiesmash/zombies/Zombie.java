@@ -419,7 +419,7 @@ public class Zombie
     }
 
 
-    public com.fcfruit.zombiesmash.zombies.Part getPartFromPhysicsBody(Body physicsBody)
+    public Part getPartFromPhysicsBody(Body physicsBody)
     {
 
         for (Part p : parts.values())
@@ -741,7 +741,7 @@ public class Zombie
                     if (currentAnimation.contains("attack"))
                     {
                         isAttacking = false;
-                        Environment.level.objective.onHit();
+                        //Environment.level.objective.onHit();
                     }
                     super.complete(entry);
                 }

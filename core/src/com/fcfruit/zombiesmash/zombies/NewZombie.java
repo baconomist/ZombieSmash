@@ -3,6 +3,7 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -12,22 +13,22 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
-import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
-import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
-import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -35,6 +36,7 @@ import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-07-30.
@@ -42,9 +44,12 @@ import java.util.HashMap;
 
 public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface
 {
+
+    // Animations
+    String moveAnimation;
+
     // Identifiers
     private int id;
-    private String type;
 
     // Composition
     private AnimatableGraphicsEntity animatableGraphicsEntity;
@@ -57,13 +62,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
 
     // Zombie Specific Fields
-    private boolean isInLevel;
-    private boolean isAtObjective;
     private boolean isAnimating;
+    private int timesCompleteAttack1;
     private int direction;
     private int speed;
-    private boolean isAlive;
-    private ArrayList partsToStayAlive;
+    ArrayList partsToStayAlive;
 
     // Get up Fields
     private double getUpTimer;
@@ -71,23 +74,28 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private boolean isGettingUp;
     private MouseJoint getUpMouseJoint;
 
+    // Optimization
+    private double optimizationTimer;
+    private double timeBeforeOptimize;
+    private boolean optimizationEnabled;
 
-    public NewZombie(int id, AnimatableGraphicsEntity animatableGraphicsEntity, InteractiveGraphicsEntity interactiveGraphicsEntity)
+
+    public NewZombie(int id)
     {
         this.id = id;
 
-        this.animatableGraphicsEntity = animatableGraphicsEntity;
-        this.interactiveGraphicsEntity = interactiveGraphicsEntity;
+        this.animationSetup();
+        this.interactiveEntitySetup();
 
-        this.isInLevel = false;
         this.isAnimating = false;
-        this.isAtObjective = false;
+        this.timesCompleteAttack1 = 0;
         this.speed = 200;
-        this.isAlive = true;
         this.partsToStayAlive = new ArrayList();
 
         this.timeBeforeGetup = 5000;
         this.isGettingUp = false;
+
+        this.timeBeforeOptimize = 2500;
 
     }
 
@@ -115,12 +123,13 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void update(float delta)
     {
-        if(this.isAlive)
+        this.updateEntities(delta);
+        if (this.isAlive())
         {
-            this.handleLevelBounds();
-            this.checkObjectiveStatus();
+
             this.handleGetup();
-            this.checkState();
+            // May cause problems if running constantly in loop, idk
+            this.checkDirection();
 
             if (this.isTouching())
             {
@@ -131,8 +140,30 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             {
                 this.onAnimate();
             }
+
+            if (this.isTouching() || this.isGettingUp)
+            {
+                this.optimizationEnabled = false;
+                optimizationTimer = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize)
+            {
+                this.optimizationEnabled = true;
+            }
+
         }
 
+    }
+
+    public void updateEntities(float delta){
+        for(DrawableEntityInterface drawableEntityInterface : drawableEntities.values()){
+            drawableEntityInterface.update(delta);
+        }
+        for(InteractiveEntityInterface interactiveEntityInterface : interactiveEntities.values()){
+            interactiveEntityInterface.update(delta);
+            if(optimizationEnabled && interactiveEntityInterface instanceof InteractivePhysicsEntity){
+                ((InteractivePhysicsEntity) interactiveEntityInterface).optimize();
+            }
+        }
     }
 
 
@@ -161,10 +192,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         RubeScene rubeScene;
         if (flip)
         {
-            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.type + "_zombie/" + this.type + "_zombie_flip_rube.json"));
+            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie_flip_rube.json"));
         } else
         {
-            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.type + "_zombie/" + this.type + "_zombie_rube.json"));
+            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
         }
 
         this.drawableEntities = new HashMap<String, DrawableEntityInterface>();
@@ -222,42 +253,29 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
 
-        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
-
-        Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
-        polygon.setOrigin(size.x / 2, size.y / 2);
-        this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
-
 
     }
 
-    public void handleLevelBounds()
+    private boolean isInLevel()
     {
+        boolean isInLevel = false;
         for (DrawableEntityInterface i : drawableEntities.values())
         {
             if (i.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
                     && i.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f)
             {
-                this.isInLevel = true;
+                isInLevel = true;
             } else
             {
-                this.isInLevel = false;
-                break;
+                isInLevel = false;
             }
         }
 
+        return isInLevel;
 
-        // Prevents zombie from being totally lost out of the map
-        if (!this.isInLevel)
-        {
-            this.checkDirection();
-            this.speed = 800;
-        }
     }
 
-
-    void checkDirection()
+    private void checkDirection()
     {
         int previous_direction = this.direction;
         if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 4)
@@ -281,15 +299,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onDirectionChange()
     {
-        if (this.direction == 1)
-        {
-            this.animatableGraphicsEntity.getSkeleton().setFlipX(true);
-            constructPhysicsBody(Environment.physics.getWorld(), true);
-        } else
-        {
-            this.animatableGraphicsEntity.getSkeleton().setFlipX(false);
-            constructPhysicsBody(Environment.physics.getWorld(), false);
-        }
+        this.animatableGraphicsEntity.getSkeleton().setFlipX(this.direction == 1);
+        constructPhysicsBody(Environment.physics.getWorld(), this.direction == 1);
     }
 
     public void setDirection(int direction)
@@ -306,19 +317,33 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         return this.direction;
     }
 
-    private void checkObjectiveStatus()
+    private boolean isAtObjective()
     {
+        boolean isAtObjective = false;
         for (InteractiveEntityInterface i : this.interactiveEntities.values())
         {
             if (Environment.level.objective.polygon.contains(i.getPolygon().getX(), i.getPolygon().getY()))
             {
-                this.isAtObjective = true;
+                isAtObjective = true;
             } else
             {
-                this.isAtObjective = false;
+                isAtObjective = false;
                 break;
             }
         }
+
+        return isAtObjective;
+
+    }
+
+    private boolean isJustAtObjective()
+    {
+        return !this.isAttacking() && this.isAtObjective();
+    }
+
+    private boolean isAttacking()
+    {
+        return this.animatableGraphicsEntity.getAnimation().contains("attack");
     }
 
     private void handleGetup()
@@ -363,32 +388,43 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     }
 
-    private void checkState(){
-
-        for(Object o : partsToStayAlive){
-            if(o instanceof String){
-                if (detachableEntities.get(o) != null) {
-                    this.isAlive = true;
-                } else {
-                    this.isAlive = false;
+    private boolean isAlive()
+    {
+        boolean isAlive = false;
+        for (Object o : partsToStayAlive)
+        {
+            if (o instanceof String)
+            {
+                if (detachableEntities.get(o) != null)
+                {
+                    isAlive = true;
+                } else
+                {
+                    isAlive = false;
                     break;
                 }
-            }
-            else if(o instanceof String[]){
-                for(String s : (String[]) o) {
-                    if (detachableEntities.get(s) != null) {
-                        this.isAlive = true;
+            } else if (o instanceof String[])
+            {
+                for (String s : (String[]) o)
+                {
+                    if (detachableEntities.get(s) != null)
+                    {
+                        isAlive = true;
                         break;
-                    } else {
-                        this.isAlive = false;
+                    } else
+                    {
+                        isAlive = false;
                     }
                 }
             }
         }
 
-        if(!this.isAlive){
+        if (!isAlive)
+        {
             this.onDeath();
         }
+
+        return isAlive;
     }
 
     private void onTouching()
@@ -399,11 +435,26 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.getUpMouseJoint = null;
         }
         this.isGettingUp = false;
-        this.isAtObjective = false;
         this.getUpTimer = System.currentTimeMillis();
     }
 
     private void onAnimate()
+    {
+        this.detachAnimationLimbs();
+
+        if (this.isJustAtObjective())
+        {
+            this.onObjectiveOnce();
+        } else if (this.isAtObjective())
+        {
+            this.onObjective();
+        }
+
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
+        this.getUpTimer = System.currentTimeMillis();
+    }
+
+    private void detachAnimationLimbs()
     {
         // Do not draw detached parts in animation
         for (Slot s : this.animatableGraphicsEntity.getSkeleton().getSlots())
@@ -422,9 +473,120 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 });
             }
         }
+    }
 
-        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
-        this.getUpTimer = System.currentTimeMillis();
+    private void move(final Vector2 moveByPos)
+    {
+        final Vector2 initialPos = this.getPosition();
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                boolean finishedMove = false;
+                while (!finishedMove)
+                {
+                    if (initialPos.x < initialPos.x + moveByPos.x)
+                    {
+                        setDirection(0);
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                    }
+                    if (initialPos.x > initialPos.x + moveByPos.x)
+                    {
+                        setDirection(1);
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                    }
+                    if (initialPos.y < initialPos.y + moveByPos.y)
+                    {
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                    }
+                    if (initialPos.y > initialPos.y + moveByPos.y)
+                    {
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                    }
+                    finishedMove = initialPos.x == initialPos.x + moveByPos.x && initialPos.y == initialPos.y + moveByPos.y;
+                }
+            }
+        });
+
+    }
+
+    private void moveTo(final Vector2 moveToPos)
+    {
+        final Vector2 initialPos = this.getPosition();
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                boolean finishedMove = false;
+                while (!finishedMove)
+                {
+                    if (initialPos.x < moveToPos.x)
+                    {
+                        setDirection(0);
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                    }
+                    if (initialPos.x > moveToPos.x)
+                    {
+                        setDirection(1);
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                    }
+                    if (initialPos.y < moveToPos.y)
+                    {
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                    }
+                    if (initialPos.y > moveToPos.y)
+                    {
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                    }
+                    finishedMove = initialPos.x == moveToPos.x && initialPos.y == moveToPos.y;
+                }
+            }
+        });
+    }
+
+    private void onObjectiveOnce()
+    {
+        if (this.direction == 0)
+        {
+            this.move(new Vector2(new Random().nextInt((int) this.getDistanceToObjective()), 0));
+        } else
+        {
+            this.move(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective()), 0));
+        }
+    }
+
+    private void onObjective()
+    {
+        if (this.timesCompleteAttack1 < 2)
+        {
+            this.animatableGraphicsEntity.setAnimation("attack1");
+        } else
+        {
+            this.animatableGraphicsEntity.setAnimation("attack2");
+        }
+    }
+
+    private void onAttack1Complete()
+    {
+        Environment.level.objective.takeDamage(0.5f);
+        this.timesCompleteAttack1++;
+    }
+
+    private void onAttack2Complete()
+    {
+        Environment.level.objective.takeDamage(1f);
+        this.timesCompleteAttack1 = 0;
+    }
+
+    private float getDistanceToObjective()
+    {
+        if (this.direction == 0)
+        {
+            return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
+        }
+        return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
     }
 
     private boolean hasRequiredPartsForGetup()
@@ -433,7 +595,59 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 && interactiveEntities.get("right_leg") != null;
     }
 
-    private void onDeath(){}
+    private void interactiveEntitySetup()
+    {
+        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
+        size.y = Environment.gameCamera.viewportHeight - size.y;
+        Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
+        polygon.setOrigin(size.x / 2, size.y / 2);
+        this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
+    }
+
+    private void animationSetup()
+    {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie.json"));
+
+        Skeleton skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+
+        AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
+
+        state.addListener(new AnimationState.AnimationStateAdapter()
+        {
+            @Override
+            public void complete(AnimationState.TrackEntry entry)
+            {
+                onAnimationComplete(entry);
+                super.complete(entry);
+            }
+        });
+
+        this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
+
+    }
+
+    private void onAnimationComplete(AnimationState.TrackEntry entry)
+    {
+        if (entry.getAnimation().getName().equals("attack"))
+        {
+            this.onAttack1Complete();
+        } else if (entry.getAnimation().getName().equals("attack2"))
+        {
+            this.onAttack2Complete();
+        } else
+        {
+            this.move(new Vector2(0.1f, 0.1f));
+        }
+    }
+
+    private void onDeath()
+    {
+    }
 
 
     @Override

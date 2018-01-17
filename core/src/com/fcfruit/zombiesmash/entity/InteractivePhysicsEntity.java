@@ -42,15 +42,6 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
         // Center the polygon on physics body
         polygon.setPosition(pos.x - polygon.getVertices()[2]/2, pos.y - polygon.getVertices()[5]/2);
         polygon.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
-        
-        if(!isTouching){
-            this.physicsBody.setActive(false);
-            this.physicsBody.setAwake(false);
-        }
-        else{
-            this.physicsBody.setActive(true);
-            this.physicsBody.setAwake(true);
-        }
 
     }
 
@@ -113,6 +104,7 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
         pos.y = Environment.gameCamera.viewportHeight - pos.y;
 
         if(Environment.touchedDownItems.size() < 1 && this.polygon.contains(pos.x,  pos.y) && mouseJoint == null){
+            this.disableOptimization();
             this.pointer = p;
             this.isTouching = true;
             Environment.touchedDownItems.add(this);
@@ -124,6 +116,7 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
     public void onTouchDragged(float x, float y, int p)
     {
         if (mouseJoint != null && pointer == p) {
+            this.disableOptimization();
             mouseJoint.setTarget(new Vector2(x, y));
             if (this.powerfulJoint) {
                 mouseJoint.setMaxForce(10000f * physicsBody.getMass());
@@ -149,6 +142,12 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
         return isTouching;
     }
 
+    @Override
+    public Polygon getPolygon()
+    {
+        return this.polygon;
+    }
+
     public boolean isUsingPowerfulJoint()
     {
         return powerfulJoint;
@@ -158,10 +157,16 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
         this.powerfulJoint = using;
     }
 
-    @Override
-    public Polygon getPolygon()
-    {
-        return this.polygon;
+    public void optimize(){
+        this.physicsBody.setActive(false);
+        this.physicsBody.setAwake(false);
     }
+
+    public void disableOptimization(){
+        this.physicsBody.setActive(true);
+        this.physicsBody.setAwake(true);
+    }
+
+
 
 }
