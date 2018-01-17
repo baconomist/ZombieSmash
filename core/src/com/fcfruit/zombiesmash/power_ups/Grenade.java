@@ -56,7 +56,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
-        polygon.setOrigin(size.x/2, size.y/2);
+        polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.joints = joints;
@@ -65,11 +65,13 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     @Override
     public void detach()
     {
-        if(this.joints.length == 0){
+        if (this.joints.length == 0)
+        {
             this.detachableEntity.detach();
-        }
-        else {
-            for (Joint joint : this.joints) {
+        } else
+        {
+            for (Joint joint : this.joints)
+            {
                 Environment.physics.getWorld().destroyJoint(joint);
             }
         }
@@ -164,6 +166,18 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     public Polygon getPolygon()
     {
         return this.interactivePhysicsEntity.getPolygon();
+    }
+
+    @Override
+    public boolean shouldDetach()
+    {
+        return this.detachableEntity.shouldDetach();
+    }
+
+    @Override
+    public void dispose()
+    {
+
     }
 
     // Unused

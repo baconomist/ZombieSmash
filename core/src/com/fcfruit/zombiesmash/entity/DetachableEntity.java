@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash.entity;
 
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.physics.Physics;
 
 /**
  * Created by Lucas on 2018-01-06.
@@ -21,7 +22,6 @@ public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfac
     {
         Environment.physics.getWorld().destroyJoint(joint);
         joint = null;
-        Environment.physics.addBody(this);
         this.setState("detached");
     }
 
@@ -42,4 +42,10 @@ public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfac
         return this.state;
     }
 
+    @Override
+    public boolean shouldDetach()
+    {
+        return this.joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || this.joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
+                || this.joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || this.joint.getReactionForce(1f / Physics.STEP_TIME).y > 20;
+    }
 }

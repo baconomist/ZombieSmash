@@ -3,19 +3,9 @@ package com.fcfruit.zombiesmash.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
-import com.fcfruit.zombiesmash.zombies.BigZombie;
-import com.fcfruit.zombiesmash.zombies.GirlZombie;
-import com.fcfruit.zombiesmash.zombies.PoliceZombie;
-import com.fcfruit.zombiesmash.zombies.RegularZombie;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 
@@ -23,12 +13,13 @@ import java.util.ArrayList;
  * Created by Lucas on 2017-11-18.
  */
 
-public class NightLevel extends Level{
+public class NightLevel extends Level
+{
 
-    public NightLevel(int lvlnum){
+    public NightLevel(int level_id)
+    {
 
-        this.lvlNum = lvlnum;
-
+        super(level_id);
 
         this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map/night_map_new.png")));
         // Move to the left to show only playable map
@@ -38,69 +29,83 @@ public class NightLevel extends Level{
         this.objective.setPosition(7f, 0f);
 
         this.json = new JsonReader();
-        this.data = json.parse(Gdx.files.internal("maps/night_map/levels/"+this.lvlNum+".json"));
+        this.data = json.parse(Gdx.files.internal("maps/night_map/levels/" + this.level_id + ".json"));
 
         this.spawners = new ArrayList<Spawner>();
-        for(JsonValue v : this.data.get(0)){
+        for (JsonValue v : this.data.get(0))
+        {
             this.spawners.add(new Spawner(v));
         }
 
-        currentPosition = 0;
-
     }
 
+    public void moveCameraToNextPosition()
+    {
+        new Thread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                while (isCameraMoving)
+                {
+                    if (Environment.physicsCamera.position.x < positions.get(currentCameraPosition).x)
+                    {
+                        Environment.physicsCamera.position.x += 0.1f * Gdx.graphics.getDeltaTime();
+                    } else if (Environment.physicsCamera.position.x > positions.get(currentCameraPosition).x)
+                    {
+                        Environment.physicsCamera.position.x -= 0.1f * Gdx.graphics.getDeltaTime();
+                    } else
+                    {
+                        isCameraMoving = false;
+                    }
+                    updateCamera();
+                }
+            }
+        }).start();
+    }
 
 
     @Override
-    public void update(){
+    public void update(float delta)
+    {
 
-        currentCameraPosition = this.data.get(currentPosition).name;
+        this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
 
-        if (!movingCamera) {
-            super.update();
-            for (Spawner s : spawners) {
-                s.update();
+        if (!isCameraMoving)
+        {
+            super.update(delta);
+            for (Spawner spawner : spawners)
+            {
+                spawner.update();
             }
 
 
-            if (zombiesDead) {
-                if (this.data.size - 1 == this.currentPosition) {
+            if (zombiesDead)
+            {
+                if (this.data.size - 1 == this.currentJsonItem)
+                {
                     this.levelEnd = true;
-                } else {
-                    this.currentPosition += 1;
-                    Environment.physics.clearBodies();
-                    zombies = Environment.physics.getZombies();
-                    parts = Environment.physics.getParts();
-                    powerUps = Environment.physics.getPowerUps();
+                } else
+                {
+
+                    this.clear();
+
+                    this.currentJsonItem += 1;
                     this.spawners = new ArrayList<Spawner>();
-                    for (JsonValue v : this.data.get(currentPosition)) {
-                        this.spawners.add(new Spawner(v));
+
+                    for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
+                    {
+                        this.spawners.add(new Spawner(jsonValue));
                     }
-                    zombiesDead = false;
-                    movingCamera = true;
+
+                    this.isCameraMoving = true;
+                    this.zombiesDead = false;
+                    this.moveCameraToNextPosition();
                 }
             }
         }
-        else if(Environment.physicsCamera.position.x - positions.get(data.get(currentPosition).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(currentPosition).name).x < -0.1f ){
 
-                if(Environment.physicsCamera.position.x < positions.get(data.get(currentPosition).name).x) {
-                    Environment.gameCamera.position.x += 5f;
-                    Environment.physicsCamera.position.x += 5f / 192f;
-                }
-                else{
-                    Environment.gameCamera.position.x -= 5f;
-                    Environment.physicsCamera.position.x -= 5f / 192f;
-                }
-                Environment.gameCamera.update();
-                Environment.physicsCamera.update();
-        }
-        else{
-            movingCamera = false;
-            Environment.physics.constructPhysicsBoundries();
-        }
     }
-
-
 
 
 }

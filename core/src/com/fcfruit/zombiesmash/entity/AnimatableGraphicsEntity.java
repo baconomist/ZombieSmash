@@ -112,6 +112,12 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
         return new Vector2(size.x, size.y);
     }
 
+    @Override
+    public void dispose()
+    {
+
+    }
+
     // Unused
     @Override
     public void draw(SpriteBatch batch)

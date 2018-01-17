@@ -135,6 +135,24 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         return interactivePhysicsEntity.isTouching();
     }
 
+    @Override
+    public Polygon getPolygon()
+    {
+        return this.interactivePhysicsEntity.getPolygon();
+    }
+
+    @Override
+    public boolean shouldDetach()
+    {
+        return detachableEntity.shouldDetach();
+    }
+
+    @Override
+    public void dispose()
+    {
+
+    }
+
     // Unused
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)

@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Star;
 import com.fcfruit.zombiesmash.ZombieSmash;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.zombies.Part;
@@ -29,24 +30,20 @@ import static java.util.Collections.min;
 
 //Important!!!!!!!!! Maybe add pixels per meter later on! or ppm! https://gamedev.stackexchange.com/questions/87917/box2d-meters-and-pixels
 
-public class Physics {
+public class Physics
+{
 
     public static final float WIDTH = 10;
     public static final float HEIGHT = 5.625f;
 
-    public static final float PIXELS_PER_METER = ZombieSmash.WIDTH/WIDTH;
-    public static final float METERS_PER_PIXEL = 1/PIXELS_PER_METER;
+    public static final float PIXELS_PER_METER = ZombieSmash.WIDTH / WIDTH;
+    public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;
 
-    static final float STEP_TIME = 1f / 40f;
-    static final int VELOCITY_ITERATIONS = 6;
-    static final int POSITION_ITERATIONS = 2;
+    public static final float STEP_TIME = 1f / 40f;
+    private static final int VELOCITY_ITERATIONS = 6;
+    private static final int POSITION_ITERATIONS = 2;
 
-    ArrayList<Part> parts;
-    ArrayList<Zombie> zombies;
-    ArrayList<PowerUp> powerUps;
-    ArrayList<Star> stars;
-
-    Lighting lighting;
+    private Lighting lighting;
 
     public World world;
 
@@ -59,59 +56,58 @@ public class Physics {
 
     public RubeScene scene;
 
-    public Physics(){
+    public Physics()
+    {
 
-        parts = new ArrayList<Part>();
-        zombies = new ArrayList<Zombie>();
-        powerUps = new ArrayList<PowerUp>();
-        stars = new ArrayList<Star>();
+        this.world = new World(new Vector2(0, -25), true);
+        this.world.setContactListener(new CollisionListener());
 
-        world = new World(new Vector2(0, -25), true);
-        world.setContactListener(new CollisionListener());
+        this.world.setContactFilter(new ContactFilter());
 
-        world.setContactFilter(new ContactFilter());
+        this.constructPhysicsBoundries();
 
-        constructPhysicsBoundries();
-
-        lighting = new Lighting(world);
+        this.lighting = new Lighting(world);
 
     }
 
 
-    public void update(float delta){
+    public void update(float delta)
+    {
 
-        updateParts();
-        updatePowerUps();
-        updateZombies();
+        this.stepWorld(delta);
 
-        stepWorld(delta);
-
-        lighting.update();
-
+        this.lighting.update();
 
     }
 
-    private void stepWorld(float delta) {
-        accumulator += Math.min(delta, 0.25f);
+    private void stepWorld(float delta)
+    {
+        this.accumulator += Math.min(delta, 0.25f);
 
-        if (accumulator >= STEP_TIME) {
-            accumulator -= STEP_TIME;
-            world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
+        if (this.accumulator >= STEP_TIME)
+        {
+            this.accumulator -= STEP_TIME;
+            this.world.step(STEP_TIME, VELOCITY_ITERATIONS, POSITION_ITERATIONS);
         }
     }
 
-    public void constructPhysicsBoundries(){
-        if(ground != null){
-            world.destroyBody(ground);
+    public void constructPhysicsBoundries()
+    {
+        if (this.ground != null)
+        {
+            this.world.destroyBody(this.ground);
         }
-        if(roof != null){
-            world.destroyBody(roof);
+        if (this.roof != null)
+        {
+            this.world.destroyBody(this.roof);
         }
-        if(wall_1 != null){
-            world.destroyBody(wall_1);
+        if (this.wall_1 != null)
+        {
+            this.world.destroyBody(this.wall_1);
         }
-        if(wall_2 != null){
-            world.destroyBody(wall_2);
+        if (this.wall_2 != null)
+        {
+            this.world.destroyBody(this.wall_2);
         }
 
         BodyDef walls = new BodyDef();
@@ -121,23 +117,21 @@ public class Physics {
         wallFixture.friction = 1;
 
         PolygonShape wallShape = new PolygonShape();
-        wallShape.setAsBox(0, Environment.physicsCamera.viewportHeight*2);
+        wallShape.setAsBox(0, Environment.physicsCamera.viewportHeight * 2);
         wallFixture.shape = wallShape;
 
 
+        this.wall_1 = this.world.createBody(walls);
+        this.wall_1.createFixture(wallFixture);
+        this.wall_1.getFixtureList().get(0).setUserData("wall");
+        this.wall_1.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
 
-        wall_1 = world.createBody(walls);
-        wall_1.createFixture(wallFixture);
-        wall_1.getFixtureList().get(0).setUserData("wall");
-        wall_1.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, 0, 0);
-
-        wall_2 = world.createBody(walls);
-        wall_2.createFixture(wallFixture);
-        wall_2.getFixtureList().get(0).setUserData("wall");
-        wall_2.setTransform(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2, 0, 0);
+        this.wall_2 = this.world.createBody(walls);
+        this.wall_2.createFixture(wallFixture);
+        this.wall_2.getFixtureList().get(0).setUserData("wall");
+        this.wall_2.setTransform(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2, 0, 0);
 
         wallShape.dispose();
-
 
 
         BodyDef plane = new BodyDef();
@@ -150,153 +144,45 @@ public class Physics {
         planeShape.setAsBox(Environment.physicsCamera.viewportWidth, 0);
         planeFixture.shape = planeShape;
 
-        ground = world.createBody(plane);
-        ground.createFixture(planeFixture);
-        ground.getFixtureList().get(0).setUserData("ground");
-        ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, 0, 0);
+        this.ground = this.world.createBody(plane);
+        this.ground.createFixture(planeFixture);
+        this.ground.getFixtureList().get(0).setUserData("this.ground");
+        this.ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
 
-        roof = world.createBody(plane);
-        roof.createFixture(planeFixture);
-        roof.getFixtureList().get(0).setUserData("roof");
-        roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight*2, 0);
+        this.roof = this.world.createBody(plane);
+        this.roof.createFixture(planeFixture);
+        this.roof.getFixtureList().get(0).setUserData("this.roof");
+        this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
 
         planeShape.dispose();
-        
-    }
-
-    
-
-
-    public void touchDown(float x, float y, int pointer){
-
-        for(Zombie z : zombies){
-            z.touchDown(x, y, pointer);
-        }
-
-        for(Part p : parts){
-            p.touchDown(x, y, pointer);
-        }
-
-        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(Gdx.input.getX(), Gdx.input.getY(), 0));
-        //powerUps.add(new Rock(pos.x, pos.y));
 
     }
 
-    public void touchDragged(float x, float y, int pointer){
 
-        for(Zombie z : zombies){
-            z.touchDragged(x, y, pointer);
-        }
-
-        for(Part p : parts){
-            p.touchDragged(x, y, pointer);
-        }
-
-    }
-
-    public void touchUp(float x, float y, int pointer){
-
-        for(Zombie z : zombies){
-            z.touchUp(x, y, pointer);
-        }
-
-        for(Part p : parts){
-            p.touchUp(x, y, pointer);
-        }
-
-    }
-
-    private void updateParts(){
-        for(Part p : parts){
-            p.update();
-        }
-    }
-
-    private void updateZombies(){
-
-        for(Zombie z : zombies){
-            HashMap<String, Part> copy = new HashMap<String, Part>();
-            for(HashMap.Entry<String, Part> e: z.getParts().entrySet()){
-                copy.put(e.getKey(), e.getValue());
-            }
-            for(Part p : copy.values()){
-                if(p.getState().equals("waiting_for_detach")) {
-                    p.detach();
-                }
-                else if(p.getState().equals("waiting_for_destroy")){
-                    p.destroy();
-                }
-                for(PowerUp pow : powerUps){
-                    if(Intersector.overlapConvexPolygons(pow.polygon, p.polygon))
-                    {
-                        if(p.body != null){
-                            p.body.physicsEnabled = true;
-                        }
-                    }
-                }
-            }
-        }
-
-    }
-
-    private void updatePowerUps(){
-        for(PowerUp p : powerUps){
-            p.update();
-        }
-    }
-
-    public void addBody(Object o){
-
-        if(o instanceof Zombie){
-            ((Zombie)o).constructPhysicsBody(world, ((Zombie)o).getDirection() == 1);
-            zombies.add((Zombie) o);
-        }
-        else if (o instanceof Part){
-            parts.add((Part)o);
-        }
-        else if (o instanceof Star){
-            stars.add((Star)o);
-        }
-
-
-    }
-
-    public void clearBodies(){
-        for(Zombie z : zombies){
-            z.destroy();
-        }
-        for(Part p : parts){
-            p.destroy();
-        }
-        zombies = new ArrayList<Zombie>();
-        parts = new ArrayList<Part>();
-        powerUps = new ArrayList<PowerUp>();
-    }
-
-    public World getWorld(){
+    public World getWorld()
+    {
         return world;
     }
 
-    public Body getGround(){
+    public Body getGround()
+    {
         return ground;
     }
 
-    public Body getRoof(){return roof;}
-
-    public Body getWall_1(){return wall_1;}
-
-    public Body getWall_2(){return wall_2;}
-
-    public ArrayList<Part> getParts() {
-        return parts;
+    public Body getRoof()
+    {
+        return roof;
     }
 
-    public ArrayList<Zombie> getZombies() {
-        return zombies;
+    public Body getWall_1()
+    {
+        return wall_1;
     }
 
-    public ArrayList<PowerUp> getPowerUps(){return powerUps;}
+    public Body getWall_2()
+    {
+        return wall_2;
+    }
 
-    public ArrayList<Star> getStars(){return stars;}
 
 }

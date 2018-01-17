@@ -67,6 +67,12 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
         return this.sprite;
     }
 
+    @Override
+    public void dispose()
+    {
+
+    }
+
     // Unused
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)

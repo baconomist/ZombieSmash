@@ -146,12 +146,12 @@ public class Zombie
         // Prevents zombie from being totally lost out of the map
         if (!enteredLevel && this.getPosition().x < -1)
         {
-            this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
+            //this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
             this.speed = 400;
             this.checkDirection();
         } else if (!enteredLevel && this.getPosition().y > 21)
         {
-            this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
+            //this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
             this.speed = 400;
             this.checkDirection();
         }
@@ -783,7 +783,7 @@ public class Zombie
                 type = 2;
                 s = "stars/bronze_star.png";
             }
-            Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, 1.5f, type));
+            //Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, 1.5f, type));
         }
     }
 

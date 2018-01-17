@@ -24,4 +24,6 @@ public interface DrawableEntityInterface {
 
     Vector2 getSize();
 
+    void dispose();
+
 }

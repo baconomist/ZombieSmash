@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.level;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -8,28 +7,32 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Star;
-import com.fcfruit.zombiesmash.power_ups.PowerUp;
-import com.fcfruit.zombiesmash.zombies.Part;
-import com.fcfruit.zombiesmash.zombies.Zombie;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-11-18.
  */
 
-public class Level {
+public class Level
+{
 
     public static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
-    static{
-        positions.put("left", new Vector2(Environment.physicsCamera.viewportWidth/2, 0));
-        positions.put("right", new Vector2(Environment.physicsCamera.viewportWidth*1.4f, 0));
+
+    static
+    {
+        positions.put("left", new Vector2(Environment.physicsCamera.viewportWidth / 2, 0));
+        positions.put("right", new Vector2(Environment.physicsCamera.viewportWidth * 1.4f, 0));
         positions.put("middle", new Vector2(10, 0));
     }
 
-    public int lvlNum;
+    public int level_id;
 
     JsonReader json;
     JsonValue data;
@@ -38,80 +41,128 @@ public class Level {
 
     public Objective objective;
 
-    public ArrayList<Zombie> zombies = Environment.physics.getZombies();
-
-    public ArrayList<PowerUp> powerUps = Environment.physics.getPowerUps();
-
-    public ArrayList<Part> parts = Environment.physics.getParts();
-
-    public ArrayList<Star> stars = Environment.physics.getStars();
+    private ArrayList<DrawableEntityInterface> drawableEntities;
 
     public int starsTouched = 0;
 
-    public boolean levelEnd = false;
+    boolean levelEnd = false;
 
     ArrayList<Spawner> spawners;
 
-    private float level_timer = 0;
+    String currentCameraPosition;
 
-    private float spawn_timer = 0;
-
-    int currentPosition;
-
-    public String currentCameraPosition;
+    int currentJsonItem;
 
     boolean zombiesDead = false;
 
-    boolean movingCamera = false;
+    boolean isCameraMoving = false;
+
+    public Level(int level_id)
+    {
+        this.level_id = level_id;
+        this.currentJsonItem = 0;
+        this.drawableEntities = new ArrayList<DrawableEntityInterface>();
+    }
 
 
-    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer){
-        sprite.draw(batch);
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+        this.sprite.draw(batch);
 
-        for(Part p : this.parts){
-            p.draw(batch);
-        }
-
-        for(Zombie z : this.zombies) {
-            z.draw(batch, skeletonRenderer, Gdx.graphics.getDeltaTime());
-        }
-
-        for(PowerUp pow : this.powerUps){
-            pow.draw(batch);
-        }
-
-        for(Star s : this.stars){
-            s.draw(batch);
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
+        {
+            drawableEntity.draw(batch);
+            drawableEntity.draw(batch, skeletonRenderer);
         }
 
     }
 
-    public void update(){
+    public void onTouchDown(float x, float y, int pointer)
+    {
+
+        Collections.reverse(this.drawableEntities);
+
+        for(DrawableEntityInterface drawableEntity : this.drawableEntities){
+            if(drawableEntity instanceof InteractiveEntityInterface){
+                ((InteractiveEntityInterface) drawableEntity).onTouchDown(x, y, pointer);
+            }
+        }
+
+        Collections.reverse(this.drawableEntities);
+
+    }
+
+    public void onTouchDragged(float x, float y, int pointer)
+    {
+        for (DrawableEntityInterface drawableEntity : drawableEntities)
+        {
+            if (drawableEntity instanceof InteractiveEntityInterface)
+            {
+                ((InteractiveEntityInterface) drawableEntity).onTouchDragged(x, y, pointer);
+            }
+        }
+    }
+
+    public void onTouchUp(float x, float y, int pointer)
+    {
+        for (DrawableEntityInterface drawableEntity : drawableEntities)
+        {
+            if (drawableEntity instanceof InteractiveEntityInterface)
+            {
+                ((InteractiveEntityInterface) drawableEntity).onTouchUp(x, y, pointer);
+            }
+        }
+    }
+
+    public void update(float delta)
+    {
         // Can't be put in draw bcuz it takes too long
         // When it takes too long in a spritebatch call,
         // it doesn't draw the sprites, only the light
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
 
 
-        for(Zombie z : zombies){
-            if(z.alive){
-                zombiesDead = false;
-                break;
-            }
-            else{
-                zombiesDead = true;
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
+        {
+            drawableEntity.update(delta);
+
+            if (drawableEntity instanceof DetachableEntityInterface)
+            {
+                if (((DetachableEntityInterface) drawableEntity).getState().equals("waiting_for_detach"))
+                {
+                    ((DetachableEntityInterface) drawableEntity).detach();
+                }
             }
 
         }
 
     }
 
-    public void updateCamera(){
-        Environment.gameCamera.position.x = positions.get(data.get(currentPosition).name).x*192;
-        Environment.gameCamera.update();
-        Environment.physicsCamera.position.x = positions.get(data.get(currentPosition).name).x;
+    public void updateCamera()
+    {
         Environment.physicsCamera.update();
+        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * 192;
+        Environment.gameCamera.update();
         Environment.physics.constructPhysicsBoundries();
+    }
+
+    public void addDrawableEntity(DrawableEntityInterface drawableEntity)
+    {
+        this.drawableEntities.add(drawableEntity);
+    }
+
+    public ArrayList<DrawableEntityInterface> getDrawableEntities()
+    {
+        return this.drawableEntities;
+    }
+
+    public void clear()
+    {
+        for (DrawableEntityInterface drawableEntity : drawableEntities)
+        {
+            drawableEntity.dispose();
+        }
+        drawableEntities = new ArrayList<DrawableEntityInterface>();
     }
 
 

@@ -82,5 +82,9 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
         return physicsBody;
     }
 
+    @Override
+    public void dispose()
+    {
 
+    }
 }

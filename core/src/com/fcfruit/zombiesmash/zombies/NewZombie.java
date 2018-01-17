@@ -67,6 +67,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private int direction;
     private int speed;
     ArrayList partsToStayAlive;
+    HashMap<String, Class> specialParts;
 
     // Get up Fields
     private double getUpTimer;
@@ -84,9 +85,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         this.id = id;
 
-        this.animationSetup();
-        this.interactiveEntitySetup();
-
         this.isAnimating = false;
         this.timesCompleteAttack1 = 0;
         this.speed = 200;
@@ -99,12 +97,19 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     }
 
+    public void setup(){
+        // Need to have seperate function here because reflection does not work in constructor
+        this.animationSetup();
+        this.interactiveEntitySetup();
+        this.createPhysicsBodies();
+    }
+
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
         this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
 
-        if (isTouching() || !this.isAnimating)
+        /*if (isTouching() || !this.isAnimating)
         {
             for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
             {
@@ -116,7 +121,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         } else
         {
             this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
-        }
+        }*/
 
     }
 
@@ -126,6 +131,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
+            Gdx.app.log("update", "a");
 
             this.handleGetup();
             // May cause problems if running constantly in loop, idk
@@ -186,16 +192,19 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     }
 
 
-    public void constructPhysicsBody(World world, boolean flip)
+    public void createPhysicsBodies()
     {
+        boolean flip = this.direction == 1;
+        World world = Environment.physics.getWorld();
+
         RubeSceneLoader loader = new RubeSceneLoader(world);
         RubeScene rubeScene;
         if (flip)
         {
-            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie_flip_rube.json"));
+            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_flip_rube.json"));
         } else
         {
-            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
+            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
         }
 
         this.drawableEntities = new HashMap<String, DrawableEntityInterface>();
@@ -238,13 +247,34 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     }
                 }
 
-                for (Fixture f : b.getFixtureList())
+                for (Fixture fixture : b.getFixtureList())
                 {
                     // Makes different zombies not collide with each other
-                    f.setUserData(this);
+                    fixture.setUserData(this);
                 }
 
-                drawableEntities.put(bodyName, new NewPart(bodyName, sprite, b, joint));
+                boolean specialPart = false;
+                for(String name : specialParts.keySet()){
+                    if(bodyName.equals(name)){
+                        try
+                        {
+                            specialParts.get(name).getDeclaredConstructor(Integer.class).newInstance();
+                            specialPart = true;
+                            break;
+                        }
+                        catch (Exception e){
+                            e.printStackTrace();
+                        }
+                    }
+                }
+                if(!specialPart)
+                {
+                    NewPart part = new NewPart(bodyName, sprite, b, joint);
+                    this.drawableEntities.put(bodyName, part);
+                    this.interactiveEntities.put(bodyName, part);
+                    this.detachableEntities.put(bodyName, part);
+
+                }
             }
 
         }
@@ -300,7 +330,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private void onDirectionChange()
     {
         this.animatableGraphicsEntity.getSkeleton().setFlipX(this.direction == 1);
-        constructPhysicsBody(Environment.physics.getWorld(), this.direction == 1);
+        this.createPhysicsBodies();
     }
 
     public void setDirection(int direction)
@@ -390,7 +420,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private boolean isAlive()
     {
-        boolean isAlive = false;
+        for(String s : detachableEntities.keySet()){
+            Gdx.app.log("baba", ""+s);
+        }
+
+        boolean isAlive = true;
         for (Object o : partsToStayAlive)
         {
             if (o instanceof String)
@@ -507,7 +541,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     finishedMove = initialPos.x == initialPos.x + moveByPos.x && initialPos.y == initialPos.y + moveByPos.y;
                 }
             }
-        });
+        }).start();
 
     }
 
@@ -543,7 +577,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     finishedMove = initialPos.x == moveToPos.x && initialPos.y == moveToPos.y;
                 }
             }
-        });
+        }).start();
     }
 
     private void onObjectiveOnce()
@@ -606,10 +640,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void animationSetup()
     {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie.atlas"));
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getName().replace("Zombie", "").toLowerCase() + "_zombie.json"));
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.json"));
 
         Skeleton skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
@@ -649,6 +683,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
     }
 
+    @Override
+    public void dispose()
+    {
+
+    }
 
     @Override
     public Vector2 getPosition()

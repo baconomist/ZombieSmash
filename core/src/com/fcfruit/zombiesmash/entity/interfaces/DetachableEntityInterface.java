@@ -9,4 +9,5 @@ public interface DetachableEntityInterface
     void detach();
     void setState(String state);
     String getState();
+    boolean shouldDetach();
 }

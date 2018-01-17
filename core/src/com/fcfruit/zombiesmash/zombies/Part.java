@@ -331,7 +331,7 @@ public class Part{
         bodyJoint = null;
         body.parts.remove(name);
         body = null;
-        Environment.physics.addBody(this);
+        //Environment.physics.addBody(this);
         setState("detached");
 
     }

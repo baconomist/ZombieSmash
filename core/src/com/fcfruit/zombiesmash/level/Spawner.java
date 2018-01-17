@@ -1,14 +1,11 @@
 package com.fcfruit.zombiesmash.level;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.InputProcessor;
-import com.badlogic.gdx.math.EarClippingTriangulator;
-import com.badlogic.gdx.math.Vector;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
@@ -21,10 +18,13 @@ import java.util.HashMap;
  * Created by Lucas on 2017-11-27.
  */
 
-public class Spawner {
+public class Spawner
+{
 
     static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
-    static{
+
+    static
+    {
         positions.put("left", new Vector2(-1, 0));
         positions.put("right", new Vector2(21, 0));
         positions.put("middle_left", new Vector2(3, 0));
@@ -32,7 +32,9 @@ public class Spawner {
     }
 
     static HashMap<String, Class> zombieType = new HashMap<String, Class>();
-    static{
+
+    static
+    {
         zombieType.put("reg_zombie", RegularZombie.class);
         zombieType.put("girl_zombie", GirlZombie.class);
         zombieType.put("police_zombie", PoliceZombie.class);
@@ -44,73 +46,78 @@ public class Spawner {
 
     JsonValue data;
 
-    int spawned;
+    private int spawnedZombies;
 
-    double timer;
+    private double timer;
 
-    boolean initDelayEnabled;
+    private boolean initDelayEnabled;
 
-    int quantity;
-    float init_delay;
-    float spawn_delay;
+    private int quantity;
+    private float init_delay;
+    private float spawn_delay;
 
+    public Spawner(JsonValue data)
+    {
 
-    Zombie tempZombie;
+        this.data = data;
 
-    public Spawner(JsonValue d){
+        this.spawnedZombies = 0;
+        this.timer = System.currentTimeMillis();
 
-        data = d;
+        this.type = data.name;
+        this.quantity = data.getInt("quantity");
+        this.init_delay = data.getFloat("init_delay");
+        this.spawn_delay = data.getFloat("spawn_delay");
 
-        spawned = 0;
-        timer = System.currentTimeMillis();
+        this.initDelayEnabled = init_delay != 0;
 
-        type = data.name;
-        quantity = data.getInt("quantity");
-        init_delay = data.getFloat("init_delay");
-        spawn_delay = data.getFloat("spawn_delay");
-
-        initDelayEnabled = init_delay != 0;
     }
 
-    void spawnZombie(){
+    private void spawnZombie()
+    {
 
-        try {
+        try
+        {
+            NewZombie tempZombie;
+            tempZombie = (NewZombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
+            tempZombie.setup();
 
-            tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.physics.getZombies().size() + 1);
-            tempZombie.setPosition(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y);
-            if(data.getString("position").contains("left")) {
+            if (data.getString("position").contains("left"))
+            {
                 tempZombie.setDirection(0);
-            }
-            else if(data.getString("position").contains("right")){
+            } else if (data.getString("position").contains("right"))
+            {
                 tempZombie.setDirection(1);
             }
-            Environment.physics.addBody(tempZombie);
-            spawned += 1;
 
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
+            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
+
+
+
+            Environment.level.addDrawableEntity(tempZombie);
+            this.spawnedZombies += 1;
+
+        } catch (Exception e)
+        {
             e.printStackTrace();
         }
 
-
-
     }
 
-    public void update(){
-        if(quantity > spawned) {
-            if (initDelayEnabled && System.currentTimeMillis() - timer >= init_delay * 1000) {
-                initDelayEnabled = false;
+    public void update()
+    {
+        if (this.quantity > this.spawnedZombies)
+        {
+            if (this.initDelayEnabled && System.currentTimeMillis() - this.timer >= this.init_delay * 1000)
+            {
+                this.initDelayEnabled = false;
                 spawnZombie();
-                timer = System.currentTimeMillis();
+                this.timer = System.currentTimeMillis();
             }
 
-            if (!initDelayEnabled && System.currentTimeMillis() - timer >= spawn_delay * 1000) {
-                timer = System.currentTimeMillis();
+            if (!initDelayEnabled && System.currentTimeMillis() - timer >= spawn_delay * 1000)
+            {
+                this.timer = System.currentTimeMillis();
                 spawnZombie();
             }
         }
