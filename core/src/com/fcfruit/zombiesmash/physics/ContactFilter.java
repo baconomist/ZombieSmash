@@ -12,17 +12,22 @@ import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilter {
     @Override
-    public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB) {
+    public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB)
+    {
 
 
-        if (fixtureA.getUserData() != null && fixtureA.getUserData() instanceof NewZombie && fixtureB.getUserData() != null && fixtureB.getUserData() instanceof NewZombie) {
+        if (fixtureA.getUserData() != null && fixtureA.getUserData() instanceof NewZombie && fixtureB.getUserData() != null && fixtureB.getUserData() instanceof NewZombie)
+        {
 
 
-            if (((NewZombie) fixtureA.getUserData()).id == ((NewZombie) fixtureB.getUserData()).id) {
+            if (((NewZombie) fixtureA.getUserData()).id == ((NewZombie) fixtureB.getUserData()).id)
+            {
 
-                if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0) {
+                if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
+                {
                     return true;
-                } else {
+                } else
+                {
                     return false;
                 }
 
@@ -31,14 +36,10 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
         }
 
-        Gdx.app.log("baba", ""+fixtureA.getBody().getUserData() + " " + fixtureB.getBody().getUserData());
-        Gdx.app.log("baba", ""+fixtureA.getUserData() + " " + fixtureB.getUserData());
+        //Gdx.app.log("baba", ""+fixtureA.getBody().getUserData() + " " + fixtureB.getBody().getUserData());
+        // Gdx.app.log("baba", ""+fixtureA.getUserData() + " " + fixtureB.getUserData());
 
-        //if(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")){
-            return (fixtureA.getUserData() instanceof NewZombie && ((NewZombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof NewZombie && ((NewZombie) fixtureB.getUserData()).isInLevel());
-        //}
-
-       // return true;
+        return !(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")) || (fixtureA.getUserData() instanceof NewZombie && ((NewZombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof NewZombie && ((NewZombie) fixtureB.getUserData()).isInLevel());
 
     }
 }

@@ -23,7 +23,6 @@ import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -63,6 +62,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     // Zombie Specific Fields
     private boolean isAnimating;
+    private boolean isMoving;
     private int timesCompleteAttack1;
     private int direction;
     private int speed;
@@ -86,8 +86,9 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.id = id;
 
         this.isAnimating = false;
+        this.isMoving = false;
         this.timesCompleteAttack1 = 0;
-        this.speed = 200;
+        this.speed = 1;
         this.partsToStayAlive = new ArrayList();
 
         this.timeBeforeGetup = 5000;
@@ -101,7 +102,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         // Need to have seperate function here because reflection does not work in constructor
         this.animationSetup();
         this.interactiveEntitySetup();
-        this.createPhysicsBodies();
+        this.constructPhysicsBodies();
     }
 
     @Override
@@ -131,10 +132,9 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
+            //this.move(new Vector2(0.1f, 0));
 
             this.handleGetup();
-            // May cause problems if running constantly in loop, idk
-            //this.checkDirection();
 
             if (this.isTouching())
             {
@@ -191,7 +191,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     }
 
 
-    public void createPhysicsBodies()
+    public void constructPhysicsBodies()
     {
         boolean flip = this.direction == 1;
         World world = Environment.physics.getWorld();
@@ -331,7 +331,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private void onDirectionChange()
     {
         this.animatableGraphicsEntity.getSkeleton().setFlipX(this.direction == 1);
-        this.createPhysicsBodies();
+        this.constructPhysicsBodies();
     }
 
     public void setDirection(int direction)
@@ -421,9 +421,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private boolean isAlive()
     {
-        for(String s : detachableEntities.keySet()){
-            Gdx.app.log("baba", ""+s);
-        }
 
         boolean isAlive = true;
         for (Object o : partsToStayAlive)
@@ -518,29 +515,33 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             @Override
             public void run()
             {
+
                 boolean finishedMove = false;
-                while (!finishedMove)
+                while (!finishedMove && !isMoving)
                 {
+                    isMoving = true;
                     if (initialPos.x < initialPos.x + moveByPos.x)
                     {
                         setDirection(0);
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed * Gdx.graphics.getDeltaTime(), getPosition().y));
                     }
-                    if (initialPos.x > initialPos.x + moveByPos.x)
+                    else if (initialPos.x > initialPos.x + moveByPos.x)
                     {
                         setDirection(1);
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed * Gdx.graphics.getDeltaTime(), getPosition().y));
                     }
                     if (initialPos.y < initialPos.y + moveByPos.y)
                     {
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed * Gdx.graphics.getDeltaTime()));
                     }
-                    if (initialPos.y > initialPos.y + moveByPos.y)
+                    else if (initialPos.y > initialPos.y + moveByPos.y)
                     {
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed * Gdx.graphics.getDeltaTime()));
                     }
-                    finishedMove = initialPos.x == initialPos.x + moveByPos.x && initialPos.y == initialPos.y + moveByPos.y;
+                    finishedMove = (initialPos.x < initialPos.x + moveByPos.x + 1 && initialPos.x > initialPos.x + moveByPos.x - 1) && (initialPos.y < initialPos.y + moveByPos.y + 1 && initialPos.y > initialPos.y + moveByPos.y - 1);
+                    Gdx.app.log("baba", ""+animatableGraphicsEntity.getPosition().x);
                 }
+                isMoving = false;
             }
         }).start();
 
@@ -555,28 +556,30 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             public void run()
             {
                 boolean finishedMove = false;
-                while (!finishedMove)
+                while (!finishedMove && !isMoving)
                 {
+                    isMoving = true;
                     if (initialPos.x < moveToPos.x)
                     {
                         setDirection(0);
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x * speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
                     }
                     if (initialPos.x > moveToPos.x)
                     {
                         setDirection(1);
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x + speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x * speed / 100 * Gdx.graphics.getDeltaTime(), getPosition().y));
                     }
                     if (initialPos.y < moveToPos.y)
                     {
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y * speed / 100 * Gdx.graphics.getDeltaTime()));
                     }
                     if (initialPos.y > moveToPos.y)
                     {
-                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y + speed / 100 * Gdx.graphics.getDeltaTime()));
+                        animatableGraphicsEntity.setPosition(new Vector2(getPosition().x, getPosition().y * speed / 100 * Gdx.graphics.getDeltaTime()));
                     }
                     finishedMove = initialPos.x == moveToPos.x && initialPos.y == moveToPos.y;
                 }
+                isMoving = false;
             }
         }).start();
     }
@@ -676,7 +679,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.onAttack2Complete();
         } else
         {
-            this.move(new Vector2(0.1f, 0.1f));
+            this.move(new Vector2(0.1f, 0));
         }
     }
 

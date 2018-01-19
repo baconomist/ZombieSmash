@@ -54,7 +54,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     @Override
     public Vector2 getPosition()
     {
-        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getRootBone().getX(), this.skeleton.getRootBone().getY(), 0)));
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getX(), this.skeleton.getY(), 0)));
         return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
     }
 
@@ -62,7 +62,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     public void setPosition(Vector2 position)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
-        this.skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+        this.skeleton.setPosition(pos.x, pos.y);
     }
 
     @Override
