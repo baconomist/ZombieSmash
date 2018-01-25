@@ -24,3 +24,4 @@ ios-moe/xcode/native/ios/libgdx-bullet.a
 ios-moe/xcode/native/ios/libgdx-box2d.a
 ios-moe/xcode/native/ios/libObjectAL.a
 ios-moe/proguard.append.cfg
+.idea/dictionaries/Lucas.xml

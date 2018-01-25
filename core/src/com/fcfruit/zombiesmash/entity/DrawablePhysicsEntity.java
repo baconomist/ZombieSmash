@@ -18,11 +18,13 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
 {
     private Sprite sprite;
     private Body physicsBody;
+    private Vector2 position;
 
     public DrawablePhysicsEntity(Sprite sprite, Body physicsBody)
     {
         this.sprite = sprite;
         this.physicsBody = physicsBody;
+        this.position = new Vector2();
     }
 
     @Override
@@ -47,8 +49,7 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
     @Override
     public Vector2 getPosition()
     {
-        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(sprite.getX(), sprite.getY(), 0)));
-        return new Vector2(pos.x, Environment.physicsCamera.viewportHeight - pos.y);
+        return this.position;
     }
 
     @Override
@@ -56,6 +57,7 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
         sprite.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+        this.position = position;
     }
 
     @Override

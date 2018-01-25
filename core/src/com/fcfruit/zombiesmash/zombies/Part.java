@@ -228,7 +228,7 @@ public class Part{
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(physicsBody.getPosition());
 
-        // Makes the joint move body faster
+        // Makes the joint moveBy body faster
         //mouseJointDef.frequencyHz = 10;
 
         // Idk what this does, may want to play with it
@@ -236,7 +236,7 @@ public class Part{
         // A lot slower for the mousejoint though when you set it to 10
         //mouseJointDef.dampingRatio = 10;
 
-        // Makes the joint move body faster
+        // Makes the joint moveBy body faster
         mouseJointDef.dampingRatio = 0.1f;
 
         pointer = p;

@@ -91,7 +91,7 @@ public class Spawner
                 tempZombie.setDirection(1);
             }
 
-            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
+            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x - 2, positions.get(data.getString("position")).y));
 
 
 

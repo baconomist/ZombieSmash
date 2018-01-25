@@ -26,7 +26,7 @@ import static java.util.Collections.min;
 public class Physics
 {
 
-    public static final float WIDTH = 10;
+    public static final float WIDTH = 10f;
     public static final float HEIGHT = 5.625f;
 
     public static final float PIXELS_PER_METER = ZombieSmash.WIDTH / WIDTH;

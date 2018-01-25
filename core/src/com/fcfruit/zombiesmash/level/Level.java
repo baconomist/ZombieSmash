@@ -141,7 +141,7 @@ public class Level
     public void updateCamera()
     {
         Environment.physicsCamera.update();
-        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * 192;
+        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * 192f;
         Environment.gameCamera.update();
         Environment.physics.constructPhysicsBoundries();
     }
