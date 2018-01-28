@@ -2,14 +2,18 @@ package com.fcfruit.zombiesmash.level;
 
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 
 import java.util.ArrayList;
@@ -73,18 +77,19 @@ public class Level
         {
             drawableEntity.draw(batch);
             drawableEntity.draw(batch, skeletonRenderer);
+
         }
 
     }
 
-    public void onTouchDown(float x, float y, int pointer)
+    public void onTouchDown(float screenX, float screenY, int pointer)
     {
 
         Collections.reverse(this.drawableEntities);
 
         for(DrawableEntityInterface drawableEntity : this.drawableEntities){
             if(drawableEntity instanceof InteractiveEntityInterface){
-                ((InteractiveEntityInterface) drawableEntity).onTouchDown(x, y, pointer);
+                ((InteractiveEntityInterface) drawableEntity).onTouchDown(screenX, screenY, pointer);
             }
         }
 
@@ -92,24 +97,24 @@ public class Level
 
     }
 
-    public void onTouchDragged(float x, float y, int pointer)
+    public void onTouchDragged(float screenX, float screenY, int pointer)
     {
         for (DrawableEntityInterface drawableEntity : drawableEntities)
         {
             if (drawableEntity instanceof InteractiveEntityInterface)
             {
-                ((InteractiveEntityInterface) drawableEntity).onTouchDragged(x, y, pointer);
+                ((InteractiveEntityInterface) drawableEntity).onTouchDragged(screenX, screenY, pointer);
             }
         }
     }
 
-    public void onTouchUp(float x, float y, int pointer)
+    public void onTouchUp(float screenX, float screenY, int pointer)
     {
         for (DrawableEntityInterface drawableEntity : drawableEntities)
         {
             if (drawableEntity instanceof InteractiveEntityInterface)
             {
-                ((InteractiveEntityInterface) drawableEntity).onTouchUp(x, y, pointer);
+                ((InteractiveEntityInterface) drawableEntity).onTouchUp(screenX, screenY, pointer);
             }
         }
     }

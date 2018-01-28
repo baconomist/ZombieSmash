@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "fW2WAEE3tP+8tt9NgVNPaduYwM4", "spine": "3.6.50", "width": 505.55, "height": 699.41 },
+"skeleton": { "hash": "aYuogmmzKyvhq/yKJFkHWWkc2qo", "spine": "3.6.50", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "grenade", "parent": "root", "length": 174.72, "rotation": -87.4, "x": 364.76, "y": 464.99 },
@@ -39,10 +39,18 @@
 	{ "name": "head", "bone": "head", "attachment": "head" },
 	{ "name": "grenade", "bone": "grenade", "attachment": "grenade" },
 	{ "name": "right_leg", "bone": "right_leg", "attachment": "right_leg" },
-	{ "name": "right_arm", "bone": "right_arm", "attachment": "right_arm" }
+	{ "name": "right_arm", "bone": "right_arm", "attachment": "right_arm" },
+	{ "name": "bounding_box", "bone": "root", "attachment": "bounding_box" }
 ],
 "skins": {
 	"default": {
+		"bounding_box": {
+			"bounding_box": {
+				"type": "boundingbox",
+				"vertexCount": 4,
+				"vertices": [ -29.91, 1.18, 452.59, 16.37, 413.48, 692.38, -64.98, 677.35 ]
+			}
+		},
 		"grenade": {
 			"grenade": { "x": 70.53, "y": 0.37, "rotation": -164.38, "width": 137, "height": 117 }
 		},

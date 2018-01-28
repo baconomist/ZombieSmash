@@ -110,14 +110,14 @@ public class GameScreen implements Screen{
         }
 
 
-            //Environment.physics.constructPhysicsBoundries();
+        //Environment.physics.constructPhysicsBoundries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
 
 
 
-        //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
+        debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }
 

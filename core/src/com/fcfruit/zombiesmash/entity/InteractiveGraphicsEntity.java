@@ -36,16 +36,16 @@ public class InteractiveGraphicsEntity implements InteractiveEntityInterface
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getPosition(), 0)));
         pos.y = Environment.gameCamera.viewportHeight - pos.y;
         // Center the polygon on physics body
-        polygon.setPosition(pos.x - polygon.getVertices()[2] / 2, pos.y - polygon.getVertices()[5] / 2);
+        polygon.setPosition(pos.x - (polygon.getVertices()[2]/ 2), pos.y);
         polygon.setRotation(this.drawableEntity.getAngle());
 
     }
 
     @Override
-    public void onTouchDown(float x, float y, int p)
+    public void onTouchDown(float screenX, float screenY, int p)
     {
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+
+        Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
 
         if (Environment.touchedDownItems.size() < 1 && this.polygon.contains(pos.x, pos.y))
         {
@@ -56,12 +56,12 @@ public class InteractiveGraphicsEntity implements InteractiveEntityInterface
     }
 
     @Override
-    public void onTouchDragged(float x, float y, int p)
+    public void onTouchDragged(float screenX, float screenY, int p)
     {
     }
 
     @Override
-    public void onTouchUp(float x, float y, int p)
+    public void onTouchUp(float screenX, float screenY, int p)
     {
         if (pointer == p)
         {

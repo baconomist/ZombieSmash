@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "8FcV5Zpe+6VAhAf3xmDhvJs8XOE", "spine": "3.6.50", "width": 0, "height": 0 },
+"skeleton": { "hash": "MI54m0mVyBLHMFsYBbm10dvdIbI", "spine": "3.6.50", "width": 0, "height": 0 },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -2.92, "y": 2.81 },
 	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": 172.74, "y": 262.9 },
@@ -30,10 +30,18 @@
 	{ "name": "torso", "bone": "torso", "attachment": "torso" },
 	{ "name": "head", "bone": "head", "attachment": "head" },
 	{ "name": "right_arm", "bone": "right_arm", "attachment": "right_arm" },
-	{ "name": "right_leg", "bone": "right_leg", "attachment": "right_leg" }
+	{ "name": "right_leg", "bone": "right_leg", "attachment": "right_leg" },
+	{ "name": "bounding_box", "bone": "root", "attachment": "bounding_box" }
 ],
 "skins": {
 	"default": {
+		"bounding_box": {
+			"bounding_box": {
+				"type": "boundingbox",
+				"vertexCount": 4,
+				"vertices": [ -219.39, -16.27, 546.12, 13.24, 525.35, 813.54, -292.83, 783.95 ]
+			}
+		},
 		"head": {
 			"head": { "x": 152.39, "y": 7.38, "rotation": -5.15, "width": 286, "height": 295 }
 		},

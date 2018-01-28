@@ -10,7 +10,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -31,9 +33,9 @@ public class GameStage extends Stage
 
     private SkeletonRenderer skeletonRenderer;
 
-    ShapeRenderer shapeRenderer;
-
     HashMap<Integer, Integer> lastScreenX;
+
+    private ShapeRenderer shapeRenderer = new ShapeRenderer();
 
     public GameStage(Viewport viewport)
     {
@@ -68,6 +70,16 @@ public class GameStage extends Stage
         Environment.physics.update(Gdx.graphics.getDeltaTime());
         Environment.level.update(Gdx.graphics.getDeltaTime());
 
+        this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
+        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+        if(Environment.level.getDrawableEntities().size() > 0)
+        {
+            this.shapeRenderer.polygon(((NewZombie) Environment.level.getDrawableEntities().get(0)).getPolygon().getTransformedVertices());
+            for(InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) Environment.level.getDrawableEntities().get(0)).containerEntity.interactiveEntities.values()){
+                this.shapeRenderer.polygon(interactiveEntityInterface.getPolygon().getTransformedVertices());
+            }
+        }
+        this.shapeRenderer.end();
     }
 
     @Override
@@ -79,13 +91,11 @@ public class GameStage extends Stage
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
+        Environment.touchedDownItems = new ArrayList<InteractiveEntityInterface>();
 
-        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-        pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-        Environment.level.onTouchDown(pos.x, pos.y, pointer);
+        Environment.level.onTouchDown(screenX, screenY, pointer);
 
-        pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
-        lastScreenX.put(pointer, (int) pos.x);
+        lastScreenX.put(pointer, screenX);
 
         return super.touchDown(screenX, screenY, pointer, button);
     }
@@ -96,25 +106,19 @@ public class GameStage extends Stage
 
         if (Gdx.app.getType() == Application.ApplicationType.Android || Gdx.app.getType() == Application.ApplicationType.iOS)
         {
-            Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
 
-            if (pos.x - lastScreenX.get(pointer) < 220 && pos.x - lastScreenX.get(pointer) > -220)
+            if (screenX - lastScreenX.get(pointer) < 220 && screenX - lastScreenX.get(pointer) > -220)
             {
-                pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-                pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-                Environment.level.onTouchDragged(pos.x, pos.y, pointer);
+                Environment.level.onTouchDragged(screenX, screenY, pointer);
             } else
             {
                 this.touchUp(screenX, screenY, pointer, 0);
             }
 
-            pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
-            lastScreenX.put(pointer, (int) pos.x);
+            lastScreenX.put(pointer, screenX);
         } else
         {
-            Vector3 pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-            Environment.level.onTouchDragged(pos.x, pos.y, pointer);
+            Environment.level.onTouchDragged(screenX, screenY, pointer);
         }
 
 
@@ -126,9 +130,7 @@ public class GameStage extends Stage
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
 
-        Vector3 pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
-        pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-        Environment.level.onTouchUp(pos.x, pos.y, pointer);
+        Environment.level.onTouchUp(screenX, screenY, pointer);
 
         return super.touchUp(screenX, screenY, pointer, button);
     }

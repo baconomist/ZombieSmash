@@ -18,13 +18,11 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
 {
     private Sprite sprite;
     private Body physicsBody;
-    private Vector2 position;
 
     public DrawablePhysicsEntity(Sprite sprite, Body physicsBody)
     {
         this.sprite = sprite;
         this.physicsBody = physicsBody;
-        this.position = new Vector2();
     }
 
     @Override
@@ -49,15 +47,13 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
     @Override
     public Vector2 getPosition()
     {
-        return this.position;
+        return this.physicsBody.getTransform().getPosition();
     }
 
     @Override
     public void setPosition(Vector2 position)
     {
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
-        sprite.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
-        this.position = position;
+        this.physicsBody.setTransform(position, this.physicsBody.getAngle());
     }
 
     @Override
@@ -69,7 +65,7 @@ public class DrawablePhysicsEntity implements DrawableEntityInterface
     @Override
     public void setAngle(float angle)
     {
-        sprite.setRotation(angle);
+        this.physicsBody.setTransform(this.physicsBody.getPosition(), (float)Math.toRadians(angle));
     }
 
     @Override

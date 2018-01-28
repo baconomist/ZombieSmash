@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
@@ -26,6 +27,8 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 
 public class Grenade implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface
 {
+    private ContainerEntity containerEntity;
+
     private DrawablePhysicsEntity drawablePhysicsEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
@@ -35,6 +38,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
 
     public Grenade()
     {
+
         RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.getWorld());
         RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/grenade/grenade_rube.json"));
 
@@ -48,10 +52,10 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
 
     }
 
-    public Grenade(Sprite sprite, Body physicsBody, Joint[] joints)
+    public Grenade(Sprite sprite, Body physicsBody, Joint[] joints, ContainerEntity containerEntity)
     {
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(null);
+        this.detachableEntity = new DetachableEntity(null, containerEntity);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;

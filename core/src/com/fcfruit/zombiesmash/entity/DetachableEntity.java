@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -13,6 +14,16 @@ public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfac
     private Joint joint;
     private String state;
 
+    private ContainerEntity containerEntity;
+
+    public DetachableEntity(Joint joint, ContainerEntity containerEntity){
+        this.joint = joint;
+        this.containerEntity = containerEntity;
+
+        // Assumes attached state
+        this.state = "attached";
+    }
+
     public DetachableEntity(Joint joint){
         this.joint = joint;
     }
@@ -22,6 +33,10 @@ public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfac
     {
         Environment.physics.getWorld().destroyJoint(joint);
         joint = null;
+        if(this.containerEntity != null)
+        {
+            this.containerEntity.detach(this);
+        }
         this.setState("detached");
     }
 

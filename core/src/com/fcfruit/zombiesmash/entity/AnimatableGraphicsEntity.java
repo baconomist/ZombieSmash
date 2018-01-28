@@ -12,6 +12,8 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.BoundingBoxAttachment;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 
@@ -30,11 +32,25 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
 
     private String animation;
 
-    public AnimatableGraphicsEntity(Skeleton skeleton, AnimationState state, TextureAtlas atlas){
+    private int timesAnimationCompleted;
+
+    public AnimatableGraphicsEntity(Skeleton skeleton, AnimationState state, TextureAtlas atlas)
+    {
         this.skeleton = skeleton;
         this.state = state;
         this.atlas = atlas;
         this.position = new Vector2();
+        this.timesAnimationCompleted = 0;
+
+        this.state.addListener(new AnimationState.AnimationStateAdapter()
+        {
+            @Override
+            public void complete(AnimationState.TrackEntry entry)
+            {
+                onAnimationComplete(entry);
+                super.complete(entry);
+            }
+        });
     }
 
     @Override
@@ -57,7 +73,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     @Override
     public Vector2 getPosition()
     {
-       return this.position;
+        return this.position;
     }
 
     @Override
@@ -80,27 +96,53 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
         this.skeleton.getRootBone().setRotation(angle);
     }
 
+    private void onAnimationComplete(AnimationState.TrackEntry entry)
+    {
+        this.timesAnimationCompleted++;
+    }
 
-    public void setAnimation(String animation){
+    public void setAnimation(String animation)
+    {
+        if (this.animation != animation)
+        {
+            this.onAnimationChange();
+        }
         this.animation = animation;
         state.setAnimation(0, animation, true);
     }
 
-    public String getAnimation(){
+    private void onAnimationChange()
+    {
+        this.timesAnimationCompleted = 0;
+    }
+
+    public int timesAnimationCompleted()
+    {
+        return this.timesAnimationCompleted;
+    }
+
+    public String getAnimation()
+    {
         return this.animation;
     }
 
-    public Skeleton getSkeleton(){
+    public Skeleton getSkeleton()
+    {
         return this.skeleton;
     }
 
-    public TextureAtlas getAtlas(){
+    public TextureAtlas getAtlas()
+    {
         return this.atlas;
     }
 
-    public AnimationState getState(){return this.state;}
+    public AnimationState getState()
+    {
+        return this.state;
+    }
 
-    public void restartAnimation(){
+    public void restartAnimation()
+    {
         // Restart animation
         state.setAnimation(0, this.animation, true);
     }
@@ -108,7 +150,9 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     @Override
     public Vector2 getSize()
     {
-        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getData().getWidth()*this.skeleton.getRootBone().getScaleX(), skeleton.getData().getHeight()*this.skeleton.getRootBone().getScaleY(), 0)));
+        float[] verticies = ((BoundingBoxAttachment)this.skeleton.findSlot("bounding_box").getAttachment()).getVertices();
+        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3((verticies[2] - verticies[0]) * this.skeleton.getRootBone().getScaleX(),
+                verticies[5] * this.skeleton.getRootBone().getScaleY(), 0)));
         size.y = Environment.physicsCamera.viewportHeight - size.y;
         return new Vector2(size.x, size.y);
     }

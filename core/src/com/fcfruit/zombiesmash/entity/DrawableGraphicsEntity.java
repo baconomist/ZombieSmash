@@ -30,6 +30,10 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
     public void draw(SpriteBatch spriteBatch)
     {
         this.sprite.draw(spriteBatch);
+
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.sprite.getX(), this.sprite.getY(), 0)));
+        pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+        this.position = new Vector2(pos.x, pos.y);
     }
 
     @Override

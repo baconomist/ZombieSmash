@@ -25,14 +25,14 @@ right_arm
   orig: 238, 82
   offset: 1, 1
   index: -1
-right_leg
+left_leg
   rotate: false
   xy: 303, 357
   size: 306, 129
   orig: 308, 131
   offset: 1, 1
   index: -1
-left_leg
+right_leg
   rotate: false
   xy: 303, 357
   size: 306, 129
