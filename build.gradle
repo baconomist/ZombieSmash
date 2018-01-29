@@ -142,7 +142,7 @@ project(":core") {
 
 
     dependencies {
-        compile "com.esotericsoftware.spine:spine-libgdx:3.5.51.1"
+        compile "com.esotericsoftware.spine:spine-libgdx:3.6.51.1"
         compile "com.badlogicgames.gdx:gdx:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
         compile "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
