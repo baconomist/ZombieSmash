@@ -63,7 +63,7 @@ public class OptimizableEntity implements OptimizableEntityInterface
             }
         }
         else if(this.detachableEntity != null){
-            if (this.detachableEntity.getState().equals("attached"))
+            if (!this.detachableEntity.getState().equals("detached"))
             {
                 optimizationTimer = System.currentTimeMillis();
             } else if (System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize)
@@ -88,7 +88,6 @@ public class OptimizableEntity implements OptimizableEntityInterface
     @Override
     public void enable_optimization()
     {
-        Gdx.app.log("enable", "enable");
         if (this.containerEntity != null)
         {
             for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
@@ -110,7 +109,6 @@ public class OptimizableEntity implements OptimizableEntityInterface
     @Override
     public void disable_optimization()
     {
-        Gdx.app.log("disable", "disable");
         if (this.containerEntity != null)
         {
             for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
