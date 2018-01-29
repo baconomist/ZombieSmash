@@ -481,6 +481,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onTouching()
     {
+        this.optimizableEntity.disable_optimization();
         if (this.getUpMouseJoint != null)
         {
             Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);

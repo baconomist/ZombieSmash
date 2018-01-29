@@ -21,12 +21,13 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 /**
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface, OptimizableEntityInterface
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface, OptimizableEntityInterface, PhysicsEntityInterface
 {
     private String name;
 
@@ -52,7 +53,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.optimizableEntity = new OptimizableEntity(this.interactivePhysicsEntity);
+        this.optimizableEntity = new OptimizableEntity(this.detachableEntity, this.interactivePhysicsEntity);
 
         this.getPhysicsBody().setAwake(false);
         this.getPhysicsBody().setActive(false);
@@ -94,9 +95,6 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
                 {
                     this.interactivePhysicsEntity.setUsingPowerfulJoint(true);
                 }
-            }
-            if(interactiveEntityInterface.isTouching()){
-                this.optimizableEntity.disable_optimization();
             }
         }
     }
@@ -187,15 +185,21 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
+    public ContainerEntity getContainer()
+    {
+        return this.containerEntity;
+    }
+
+    @Override
     public void enable_optimization()
     {
-
+        this.optimizableEntity.enable_optimization();
     }
 
     @Override
     public void disable_optimization()
     {
-
+        this.optimizableEntity.disable_optimization();
     }
 
     @Override

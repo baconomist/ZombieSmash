@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
@@ -62,5 +63,11 @@ public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfac
     {
         return this.joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || this.joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
                 || this.joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || this.joint.getReactionForce(1f / Physics.STEP_TIME).y > 20;
+    }
+
+    @Override
+    public ContainerEntity getContainer()
+    {
+        return this.containerEntity;
     }
 }
