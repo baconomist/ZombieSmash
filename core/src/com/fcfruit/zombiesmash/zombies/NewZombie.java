@@ -518,29 +518,14 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         for (String key : this.containerEntity.drawableEntities.keySet())
         {
-            //float y = ((float) Math.sin(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX())*(((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(key).getAttachment()).getHeight()/2*this.animatableGraphicsEntity.getSkeleton().getRootBone().getWorldScaleY()));
-            //float x = ((float) Math.cos(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX()));
-            if(key.equals("head")){
-                float x = this.animatableGraphicsEntity.getSkeleton().findBone("head").getWorldX();
-                // X and Y are inverted for parent/local cords
-                //That's why im using getX instead of getY for the pointattachment
-                float y  = ((PointAttachment)this.animatableGraphicsEntity.getSkeleton().getAttachment("head", "pos")).getX()*this.animatableGraphicsEntity.getSkeleton().getRootBone().getWorldScaleY() + this.animatableGraphicsEntity.getSkeleton().findBone("head").getWorldY();
 
-                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(x, y, 0)));
-                pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-                this.containerEntity.drawableEntities.get(key).setPosition(new Vector2(pos.x, pos.y));
-                this.containerEntity.drawableEntities.get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
+            Vector2 vec = ((PointAttachment)this.animatableGraphicsEntity.getSkeleton().getAttachment(key, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(key), new Vector2(0, 0));
 
-                Gdx.app.log("fafafa", ""+y + " " +((PointAttachment)this.animatableGraphicsEntity.getSkeleton().getAttachment("head", "pos")).getY() + " " + this.animatableGraphicsEntity.getSkeleton().findBone("head").getWorldY());
-            }
-            else
-            {
-                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldX(),
-                        this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldY(), 0)));
-                pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-                this.containerEntity.drawableEntities.get(key).setPosition(new Vector2(pos.x, pos.y));
-                this.containerEntity.drawableEntities.get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
-            }
+            Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
+            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+            this.containerEntity.drawableEntities.get(key).setPosition(new Vector2(pos.x, pos.y));
+            this.containerEntity.drawableEntities.get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
+
         }
     }
 
