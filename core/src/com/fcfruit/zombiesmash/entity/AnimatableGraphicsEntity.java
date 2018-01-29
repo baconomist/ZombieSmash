@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g3d.utils.AnimationController;
+import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.spine.AnimationState;
@@ -62,6 +63,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     @Override
     public void update(float delta)
     {
+        Gdx.app.log("update", "update");
         this.state.update(delta); // Update the animation getUpTimer.
 
         this.state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
@@ -106,9 +108,9 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
         if (this.animation != animation)
         {
             this.onAnimationChange();
+            this.state.setAnimation(0, animation, true);
+            this.animation = animation;
         }
-        this.animation = animation;
-        state.setAnimation(0, animation, true);
     }
 
     private void onAnimationChange()
@@ -144,6 +146,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     public void restartAnimation()
     {
         // Restart animation
+        Gdx.app.log("restart", "res");
         state.setAnimation(0, this.animation, true);
     }
 

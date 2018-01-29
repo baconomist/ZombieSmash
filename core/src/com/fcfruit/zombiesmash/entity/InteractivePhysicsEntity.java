@@ -43,7 +43,7 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
         pos.y = Environment.gameCamera.viewportHeight - pos.y;
         // Center the polygon on physics body
-        polygon.setPosition(pos.x - (polygon.getVertices()[2] / 2), pos.y);
+        polygon.setPosition(pos.x - (polygon.getVertices()[2] / 2), pos.y - (polygon.getVertices()[5] / 2));
         polygon.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
 
     }

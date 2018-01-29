@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
@@ -24,7 +25,6 @@ public class MovableEntity implements MovableEntityInterface
     {
         if (this.isMoving())
         {
-
             // Stops zombie from glitching slightly
             // Only move if ammount to move is > 0.01
             if(Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > 0.01d)
@@ -68,6 +68,10 @@ public class MovableEntity implements MovableEntityInterface
     public boolean isMoving()
     {
         return this.moveToPosition != null && (this.drawableEntity.getPosition().x != this.moveToPosition.x || this.drawableEntity.getPosition().y != this.moveToPosition.y);
+    }
+
+    public void clear(){
+        this.moveToPosition = null;
     }
 
     public void setSpeed(float speed)

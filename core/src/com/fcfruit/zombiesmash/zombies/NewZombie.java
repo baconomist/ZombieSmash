@@ -21,6 +21,10 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.BoundingBoxAttachment;
+import com.esotericsoftware.spine.attachments.PointAttachment;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.esotericsoftware.spine.attachments.VertexAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -141,7 +145,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 this.movableEntity.update(delta);
             }
 
-            if(this.isGettingUp){
+            if (this.isGettingUp)
+            {
                 this.onGetup();
             }
 
@@ -200,6 +205,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void constructPhysicsBodies()
     {
         boolean flip = this.direction == 1;
+        Gdx.app.log("flip", ""+flip);
         World world = Environment.physics.getWorld();
 
         RubeSceneLoader loader = new RubeSceneLoader(world);
@@ -386,7 +392,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
             mouseJointDef.bodyA = Environment.physics.getGround();
-            mouseJointDef.bodyB = ((NewPart)this.containerEntity.interactiveEntities.get("head")).getPhysicsBody();
+            mouseJointDef.bodyB = ((NewPart) this.containerEntity.interactiveEntities.get("head")).getPhysicsBody();
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(this.containerEntity.drawableEntities.get("head").getPosition());
             // The higher the ratio, the slower the movement of body to mousejoint
@@ -399,7 +405,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
             getUpMouseJoint.setTarget(new Vector2(this.containerEntity.drawableEntities.get("torso").getPosition().x, this.animatableGraphicsEntity.getSize().y));
-            Gdx.app.log("torso" ,""+this.containerEntity.drawableEntities.get("torso").getPosition().x);
 
             this.isGettingUp = true;
         }
@@ -409,7 +414,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             this.isGettingUp = false;
             this.isPhysicsEnabled = false;
-            Gdx.app.log("ashgdkjahdkljiashfodas", "jahkljhasdkljahdkl");
 
             this.setPosition(new Vector2(this.containerEntity.drawableEntities.get("torso").getPosition().x, 0));
             if (getUpMouseJoint != null)
@@ -417,16 +421,17 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
+
             // Restart animation
             this.animatableGraphicsEntity.restartAnimation();
         }
 
     }
 
-    private void onGetup(){
+    private void onGetup()
+    {
         this.disable_optimization();
     }
-
 
     private boolean isAlive()
     {
@@ -481,6 +486,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);
             this.getUpMouseJoint = null;
         }
+        this.movableEntity.clear();
         this.isPhysicsEnabled = true;
         this.isGettingUp = false;
         this.getUpTimer = System.currentTimeMillis();
@@ -504,6 +510,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
 
         this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
+
         this.getUpTimer = System.currentTimeMillis();
     }
 
@@ -511,10 +518,29 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         for (String key : this.containerEntity.drawableEntities.keySet())
         {
-            Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldX(),
-                    this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldY(), 0)));
-            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-            this.containerEntity.drawableEntities.get(key).setPosition(new Vector2(pos.x, pos.y));
+            //float y = ((float) Math.sin(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX())*(((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(key).getAttachment()).getHeight()/2*this.animatableGraphicsEntity.getSkeleton().getRootBone().getWorldScaleY()));
+            //float x = ((float) Math.cos(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX()));
+            if(key.equals("head")){
+                float x = this.animatableGraphicsEntity.getSkeleton().findBone("head").getWorldX();
+                // X and Y are inverted for parent/local cords
+                //That's why im using getX instead of getY for the pointattachment
+                float y  = ((PointAttachment)this.animatableGraphicsEntity.getSkeleton().getAttachment("head", "pos")).getX()*this.animatableGraphicsEntity.getSkeleton().getRootBone().getWorldScaleY() + this.animatableGraphicsEntity.getSkeleton().findBone("head").getWorldY();
+
+                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(x, y, 0)));
+                pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+                this.containerEntity.drawableEntities.get(key).setPosition(new Vector2(pos.x, pos.y));
+                this.containerEntity.drawableEntities.get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
+
+                Gdx.app.log("fafafa", ""+y + " " +((PointAttachment)this.animatableGraphicsEntity.getSkeleton().getAttachment("head", "pos")).getY() + " " + this.animatableGraphicsEntity.getSkeleton().findBone("head").getWorldY());
+            }
+            else
+            {
+                Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldX(),
+                        this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldY(), 0)));
+                pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+                this.containerEntity.drawableEntities.get(key).setPosition(new Vector2(pos.x, pos.y));
+                this.containerEntity.drawableEntities.get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
+            }
         }
     }
 
@@ -616,33 +642,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 super.complete(entry);
             }
         });
-        state.addListener(new AnimationState.AnimationStateAdapter()
-        {
-            @Override
-            public void start(AnimationState.TrackEntry entry)
-            {
-                onAnimationStart(entry);
-                super.start(entry);
-            }
-        });
 
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
         this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
     }
 
-    private void onAnimationStart(AnimationState.TrackEntry entry)
-    {
-        if (entry.getAnimation().getName().equals(this.moveAnimation))
-        {
-            if (this.direction == 0)
-            {
-                this.movableEntity.moveBy(new Vector2(0.1f, 0));
-            } else
-            {
-                this.movableEntity.moveBy(new Vector2(-0.1f, 0));
-            }
-        }
-    }
 
     private void onAnimationComplete(AnimationState.TrackEntry entry)
     {
@@ -653,6 +657,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             this.onAttack2Complete();
         }
+
+        if (entry.getAnimation().getName().equals(this.moveAnimation))
+        {
+            if (this.direction == 0)
+            {
+                this.movableEntity.moveBy(new Vector2(1f, 0));
+            } else
+            {
+                this.movableEntity.moveBy(new Vector2(-1f, 0));
+            }
+        }
+
     }
 
     private void onDeath()
@@ -668,18 +684,24 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public Vector2 getPosition()
     {
-        return this.animatableGraphicsEntity.getPosition();
+        if (this.isPhysicsEnabled)
+        {
+            return this.containerEntity.drawableEntities.get("torso").getPosition();
+        } else
+        {
+            return this.animatableGraphicsEntity.getPosition();
+        }
     }
 
     @Override
     public void setPosition(Vector2 position)
     {
-        if (this.isAnimating())
-        {
-            this.animatableGraphicsEntity.setPosition(position);
-        } else
+        if (this.isPhysicsEnabled)
         {
             this.containerEntity.drawableEntities.get("torso").setPosition(position);
+        } else
+        {
+            this.animatableGraphicsEntity.setPosition(position);
         }
     }
 

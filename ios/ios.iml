@@ -35,7 +35,7 @@
     <orderEntry type="library" exported="" name="gdx-box2d-platform-1.9.6-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-freetype-platform-1.9.6-natives-ios" level="project" />
     <orderEntry type="library" exported="" name="gdx-bullet-platform-1.9.6-natives-ios" level="project" />
-    <orderEntry type="library" exported="" name="spine-libgdx-3.5.51.1" level="project" />
+    <orderEntry type="library" exported="" name="spine-libgdx-3.6.51.1" level="project" />
     <orderEntry type="library" exported="" name="gdx-1.9.6" level="project" />
     <orderEntry type="library" exported="" name="gdx-box2d-1.9.6" level="project" />
     <orderEntry type="library" exported="" name="gdx-controllers-1.9.6" level="project" />
