@@ -8,13 +8,14 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 
 /**
  * Created by Lucas on 2018-01-06.
  */
 
-public class DrawablePhysicsEntity implements DrawableEntityInterface
+public class DrawablePhysicsEntity implements DrawableEntityInterface, PhysicsEntityInterface
 {
     private Sprite sprite;
     private Body physicsBody;

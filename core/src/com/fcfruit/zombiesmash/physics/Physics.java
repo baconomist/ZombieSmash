@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -8,6 +9,9 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 
 
@@ -70,6 +74,14 @@ public class Physics
         this.stepWorld(delta);
 
         this.lighting.update();
+
+        for(DetachableEntityInterface detachableEntityInterface : Environment.detachableEntityDetachQueue){
+            // Double check waiting for detach I guess...
+            if(detachableEntityInterface.getState().equals("waiting_for_detach")){
+                detachableEntityInterface.detach();
+            }
+        }
+        Environment.detachableEntityDetachQueue.clear();
 
     }
 

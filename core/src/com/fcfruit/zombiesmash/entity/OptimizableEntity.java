@@ -1,8 +1,12 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.physics.box2d.Body;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.physics.Physics;
 
 /**
  * Created by Lucas on 2018-01-25.
@@ -11,9 +15,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 public class OptimizableEntity implements OptimizableEntityInterface
 {
     private InteractivePhysicsEntity interactivePhysicsEntity;
+    private DetachableEntity detachableEntity;
     private ContainerEntity containerEntity;
-
-    private boolean isOptimizationEnabled;
 
     // Optimization
     private double optimizationTimer;
@@ -23,7 +26,13 @@ public class OptimizableEntity implements OptimizableEntityInterface
     {
         this.interactivePhysicsEntity = interactivePhysicsEntity;
 
-        this.isOptimizationEnabled = true;
+        this.timeBeforeOptimize = 2500;
+    }
+
+    public OptimizableEntity(DetachableEntity detachableEntity, InteractivePhysicsEntity interactivePhysicsEntity)
+    {
+        this.detachableEntity = detachableEntity;
+        this.interactivePhysicsEntity = interactivePhysicsEntity;
 
         this.timeBeforeOptimize = 2500;
     }
@@ -31,6 +40,8 @@ public class OptimizableEntity implements OptimizableEntityInterface
     public OptimizableEntity(ContainerEntity containerEntity)
     {
         this.containerEntity = containerEntity;
+
+        this.timeBeforeOptimize = 2500;
     }
 
     public void update(float delta)
@@ -50,7 +61,17 @@ public class OptimizableEntity implements OptimizableEntityInterface
                     this.enable_optimization();
                 }
             }
-        } else
+        }
+        else if(this.detachableEntity != null){
+            if (!this.detachableEntity.getState().equals("detached"))
+            {
+                optimizationTimer = System.currentTimeMillis();
+            } else if (System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize)
+            {
+                this.enable_optimization();
+            }
+        }
+        else
         {
             if (this.interactivePhysicsEntity.isTouching())
             {
@@ -71,10 +92,11 @@ public class OptimizableEntity implements OptimizableEntityInterface
         {
             for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
             {
-                if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
+                if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
-                    ((InteractivePhysicsEntity) interactiveEntityInterface).getPhysicsBody().setActive(false);
-                    ((InteractivePhysicsEntity) interactiveEntityInterface).getPhysicsBody().setAwake(false);
+                    ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody().setActive(false);
+                    ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody().setAwake(false);
+
                 }
             }
         } else
@@ -91,10 +113,11 @@ public class OptimizableEntity implements OptimizableEntityInterface
         {
             for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
             {
-                if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
+                if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
-                    ((InteractivePhysicsEntity) interactiveEntityInterface).getPhysicsBody().setActive(true);
-                    ((InteractivePhysicsEntity) interactiveEntityInterface).getPhysicsBody().setAwake(true);
+                    ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody().setActive(true);
+                    ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody().setAwake(true);
+
                 }
             }
         } else

@@ -18,6 +18,7 @@ import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 
@@ -25,7 +26,7 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Grenade implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface
+public class Grenade implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface, PhysicsEntityInterface
 {
     private ContainerEntity containerEntity;
 
@@ -48,7 +49,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         Joint joint = physicsBody.getJointList().get(0).joint;
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png"))), physicsBody);
-        this.detachableEntity = new DetachableEntity(joint);
+        this.detachableEntity = new DetachableEntity(new Joint[]{joint});
 
     }
 
@@ -176,6 +177,12 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     public boolean shouldDetach()
     {
         return this.detachableEntity.shouldDetach();
+    }
+
+    @Override
+    public ContainerEntity getContainer()
+    {
+        return this.containerEntity;
     }
 
     @Override
