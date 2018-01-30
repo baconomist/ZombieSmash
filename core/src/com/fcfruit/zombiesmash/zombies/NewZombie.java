@@ -745,6 +745,24 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.optimizableEntity.disable_optimization();
     }
 
+    @Override
+    public HashMap<String, DrawableEntityInterface> getDrawableEntities()
+    {
+        return this.containerEntity.getDrawableEntities();
+    }
+
+    @Override
+    public HashMap<String, InteractiveEntityInterface> getInteractiveEntities()
+    {
+        return this.containerEntity.getInteractiveEntities();
+    }
+
+    @Override
+    public HashMap<String, DetachableEntityInterface> getDetachableEntities()
+    {
+        return this.containerEntity.getDetachableEntities();
+    }
+
     // Unused
     @Override
     public void draw(SpriteBatch batch)

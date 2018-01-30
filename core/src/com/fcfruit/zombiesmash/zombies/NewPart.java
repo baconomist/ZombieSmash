@@ -45,7 +45,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.containerEntity = containerEntity;
 
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(bodyJoint, containerEntity);
+        this.detachableEntity = new DetachableEntity(new Joint[]{bodyJoint}, containerEntity);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
@@ -63,6 +63,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     @Override
     public void detach()
     {
+        Gdx.app.log("detacj", ""+this.name);
         this.detachableEntity.detach();
 
         /*maybe set joint state to waiting for detach whern detaching
@@ -82,7 +83,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.drawableEntity.update(delta);
         this.interactivePhysicsEntity.update(delta);
 
-        //this.optimizableEntity.update(delta);
+        this.optimizableEntity.update(delta);
         for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)

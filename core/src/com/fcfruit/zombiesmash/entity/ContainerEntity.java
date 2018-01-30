@@ -25,6 +25,23 @@ public class ContainerEntity implements ContainerEntityInterface
         this.detachableEntities = new HashMap<String, DetachableEntityInterface>();
     }
 
+    @Override
+    public HashMap<String, DrawableEntityInterface> getDrawableEntities()
+    {
+        return this.drawableEntities;
+    }
+
+    @Override
+    public HashMap<String, InteractiveEntityInterface> getInteractiveEntities()
+    {
+        return this.interactiveEntities;
+    }
+
+    @Override
+    public HashMap<String, DetachableEntityInterface> getDetachableEntities()
+    {
+        return this.detachableEntities;
+    }
 
     @Override
     public void detach(DetachableEntityInterface detachableEntityInterface)

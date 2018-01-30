@@ -6,7 +6,8 @@ import com.badlogic.gdx.math.Polygon;
  * Created by Lucas on 2018-01-06.
  */
 
-public interface InteractiveEntityInterface {
+public interface InteractiveEntityInterface
+{
     void update(float delta);
 
     void onTouchDown(float x, float y, int p);

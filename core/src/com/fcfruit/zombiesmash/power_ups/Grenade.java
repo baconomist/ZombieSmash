@@ -49,7 +49,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         Joint joint = physicsBody.getJointList().get(0).joint;
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png"))), physicsBody);
-        this.detachableEntity = new DetachableEntity(joint);
+        this.detachableEntity = new DetachableEntity(new Joint[]{joint});
 
     }
 

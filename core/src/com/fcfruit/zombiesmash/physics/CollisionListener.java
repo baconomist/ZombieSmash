@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -8,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.zombies.Part;
@@ -27,9 +29,20 @@ public class CollisionListener implements ContactListener {
 
 
             for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities()) {
-                if(drawableEntityInterface instanceof DetachableEntityInterface && ((DetachableEntityInterface) drawableEntityInterface).shouldDetach())
+                if(drawableEntityInterface instanceof ContainerEntityInterface)
                 {
-                    ((DetachableEntityInterface)drawableEntityInterface).setState("waiting_for_detach");
+                    for(DetachableEntityInterface detachableEntityInterface : ((ContainerEntityInterface) drawableEntityInterface).getDetachableEntities().values())
+                    {
+                        if(detachableEntityInterface.shouldDetach())
+                        {
+                            detachableEntityInterface.setState("waiting_for_detach");
+                            if(!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
+                            {
+                                Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
+                            }
+                        }
+
+                    }
                 }
 
             }

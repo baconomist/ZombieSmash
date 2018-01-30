@@ -10,12 +10,13 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 /**
  * Created by lucas on 2018-01-07.
  */
 
-public class InteractivePhysicsEntity implements InteractiveEntityInterface
+public class InteractivePhysicsEntity implements InteractiveEntityInterface, PhysicsEntityInterface
 {
 
     private boolean isTouching;

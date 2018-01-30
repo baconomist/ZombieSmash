@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.Objective;
@@ -57,6 +58,8 @@ public class    Environment {
         
     }
 
+    public static int i = 0;
+
     public static Level level;
 
     public static GameData gameData;
@@ -76,6 +79,8 @@ public class    Environment {
     // Used so interactive items can decide to activate if only they have been touched,
     // Not 3 things at once being touched
     public static ArrayList<InteractiveEntityInterface> touchedDownItems = new ArrayList<InteractiveEntityInterface>();
+
+    public static ArrayList<DetachableEntityInterface> detachableEntityDetachQueue = new ArrayList<DetachableEntityInterface>();
 
 }
 

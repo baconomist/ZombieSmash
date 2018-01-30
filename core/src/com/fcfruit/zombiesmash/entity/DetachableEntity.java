@@ -1,5 +1,7 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.g3d.particles.emitters.RegularEmitter;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -12,44 +14,50 @@ import com.fcfruit.zombiesmash.physics.Physics;
 
 public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface
 {
-    private Joint joint;
+    private Joint[] joints;
     private String state;
 
     private ContainerEntity containerEntity;
 
-    public DetachableEntity(Joint joint, ContainerEntity containerEntity){
-        this.joint = joint;
+    private int id = Environment.i + 1;
+
+    public DetachableEntity(Joint[] joints, ContainerEntity containerEntity){
+        this.joints = joints;
         this.containerEntity = containerEntity;
 
         // Assumes attached state
-        this.state = "attached";
+        this.setState("attached");
+
+        Environment.i++;
     }
 
-    public DetachableEntity(Joint joint){
-        this.joint = joint;
+    public DetachableEntity(Joint[] joints){
+        this.joints = joints;
     }
 
     @Override
     public void detach()
     {
-        Environment.physics.getWorld().destroyJoint(joint);
-        joint = null;
-        if(this.containerEntity != null)
+
+        for(Joint joint : this.joints)
         {
-            this.containerEntity.detach(this);
+            Gdx.app.log("detach", "detach"+id + " "+joint);
+            Environment.physics.getWorld().destroyJoint(joint);
         }
+        this.joints = null;
+        this.containerEntity.detach(this);
         this.setState("detached");
     }
 
     @Override
     public void setState(String state){
-        if(state.equals("attached") && joint != null){
+        if(state.equals("attached") && this.joints != null){
             this.state = "attached";
         }
-        else if(state.equals("waiting_for_detach") && joint != null){
+        else if(state.equals("waiting_for_detach") && this.joints != null){
             this.state = "waiting_for_detach";
         }
-        else if(state.equals("detached") && joint == null){
+        else if(state.equals("detached") && this.joints == null){
             this.state = "detached";
         }
     }
@@ -61,8 +69,17 @@ public class DetachableEntity implements com.fcfruit.zombiesmash.entity.interfac
     @Override
     public boolean shouldDetach()
     {
-        return this.joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || this.joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
-                || this.joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || this.joint.getReactionForce(1f / Physics.STEP_TIME).y > 20;
+        if(this.joints != null)
+        {
+            for(Joint joint : this.joints)
+            {
+                if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
+                        || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20){
+                    return true;
+                }
+            }
+        }
+        return false;
     }
 
     @Override
