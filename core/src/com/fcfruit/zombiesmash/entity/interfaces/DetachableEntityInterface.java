@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.entity.interfaces;
 
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 
 /**
@@ -14,4 +15,5 @@ public interface DetachableEntityInterface
     String getState();
     boolean shouldDetach();
     ContainerEntity getContainer();
+    Joint getJoint();
 }

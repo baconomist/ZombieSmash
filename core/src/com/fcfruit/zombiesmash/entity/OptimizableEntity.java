@@ -66,9 +66,17 @@ public class OptimizableEntity implements OptimizableEntityInterface
             if (!this.detachableEntity.getState().equals("detached"))
             {
                 optimizationTimer = System.currentTimeMillis();
-            } else if (System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize)
+            }
+            else
             {
-                this.enable_optimization();
+                if (this.interactivePhysicsEntity.isTouching())
+                {
+                    this.disable_optimization();
+                    optimizationTimer = System.currentTimeMillis();
+                } else if (System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize)
+                {
+                    this.enable_optimization();
+                }
             }
         }
         else

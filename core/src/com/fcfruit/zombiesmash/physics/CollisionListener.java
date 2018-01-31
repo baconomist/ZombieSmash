@@ -12,6 +12,7 @@ import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.zombies.NewPart;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -19,13 +20,16 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
  * Created by Lucas on 2017-09-19.
  */
 
-public class CollisionListener implements ContactListener {
+public class CollisionListener implements ContactListener
+{
 
     @Override
-    public void beginContact(Contact contact) {
+    public void beginContact(Contact contact)
+    {
         // Probably can't detach parts here because this is in the world timestep
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
-                || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody) {
+                || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
+        {
 
 
             for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities()) {
@@ -33,7 +37,7 @@ public class CollisionListener implements ContactListener {
                 {
                     for(DetachableEntityInterface detachableEntityInterface : ((ContainerEntityInterface) drawableEntityInterface).getDetachableEntities().values())
                     {
-                        if(detachableEntityInterface.shouldDetach())
+                        if(!detachableEntityInterface.getState().equals("detached") && detachableEntityInterface.shouldDetach())
                         {
                             detachableEntityInterface.setState("waiting_for_detach");
                             if(!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
@@ -44,27 +48,28 @@ public class CollisionListener implements ContactListener {
 
                     }
                 }
-
             }
 
         }
     }
 
     @Override
-    public void endContact(Contact contact) {
+    public void endContact(Contact contact)
+    {
 
     }
 
     @Override
-    public void preSolve(Contact contact, Manifold oldManifold) {
+    public void preSolve(Contact contact, Manifold oldManifold)
+    {
 
     }
 
     @Override
-    public void postSolve(Contact contact, ContactImpulse impulse) {
+    public void postSolve(Contact contact, ContactImpulse impulse)
+    {
 
     }
-
 
 
 }

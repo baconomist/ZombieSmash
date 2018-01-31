@@ -127,18 +127,9 @@ public class Level
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
 
 
-        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
+        for (DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
         {
-            drawableEntity.update(delta);
-
-            if (drawableEntity instanceof DetachableEntityInterface)
-            {
-                if (((DetachableEntityInterface) drawableEntity).getState().equals("waiting_for_detach"))
-                {
-                    ((DetachableEntityInterface) drawableEntity).detach();
-                }
-            }
-
+            drawableEntityInterface.update(delta);
         }
 
     }

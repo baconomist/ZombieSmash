@@ -493,6 +493,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.getUpTimer = System.currentTimeMillis();
     }
 
+   /*private boolean isGettingUp(){
+        return this.isPhysicsEnabled && System.currentTimeMillis() - this.getUpTimer > this.timeBeforeGetup;
+    }*/
+
     private void onAnimate()
     {
         this.detachAnimationLimbs();

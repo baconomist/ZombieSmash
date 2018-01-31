@@ -49,14 +49,14 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         Joint joint = physicsBody.getJointList().get(0).joint;
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png"))), physicsBody);
-        this.detachableEntity = new DetachableEntity(new Joint[]{joint});
+        this.detachableEntity = new DetachableEntity(joint);
 
     }
 
     public Grenade(Sprite sprite, Body physicsBody, Joint[] joints, ContainerEntity containerEntity)
     {
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(null, containerEntity);
+        this.detachableEntity = new DetachableEntity(null, containerEntity, this);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
@@ -190,6 +190,8 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     {
 
     }
+
+    public Joint getJoint(){return this.detachableEntity.getJoint();}
 
     // Unused
     @Override

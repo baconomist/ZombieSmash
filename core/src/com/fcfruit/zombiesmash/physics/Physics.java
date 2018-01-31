@@ -70,7 +70,6 @@ public class Physics
 
     public void update(float delta)
     {
-
         this.stepWorld(delta);
 
         this.lighting.update();

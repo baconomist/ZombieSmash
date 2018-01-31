@@ -45,7 +45,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.containerEntity = containerEntity;
 
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(new Joint[]{bodyJoint}, containerEntity);
+        this.detachableEntity = new DetachableEntity(bodyJoint, containerEntity, this);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
@@ -58,15 +58,19 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.getPhysicsBody().setAwake(false);
         this.getPhysicsBody().setActive(false);
 
+
+
     }
 
     @Override
     public void detach()
     {
-        Gdx.app.log("detacj", ""+this.name);
-        this.detachableEntity.detach();
+        if(!this.name.equals("torso"))
+        {
+            this.detachableEntity.detach();
+        }
 
-        /*maybe set joint state to waiting for detach whern detaching
+        /*maybe set joint state to waiting for detach when detaching
             joint user data probably gets instantly deleted when you call joint.destroy
             so no checking if joint has been destroyed with userdata*/
     }
@@ -182,7 +186,11 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     @Override
     public boolean shouldDetach()
     {
-        return detachableEntity.shouldDetach();
+        if(!this.name.equals("torso"))
+        {
+            return detachableEntity.shouldDetach();
+        }
+        return false;
     }
 
     @Override
@@ -202,6 +210,12 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     {
         this.optimizableEntity.disable_optimization();
     }
+
+    public String getName(){
+        return this.name;
+    }
+
+    public Joint getJoint(){return this.detachableEntity.getJoint();}
 
     @Override
     public void dispose()

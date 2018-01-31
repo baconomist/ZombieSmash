@@ -58,8 +58,6 @@ public class    Environment {
         
     }
 
-    public static int i = 0;
-
     public static Level level;
 
     public static GameData gameData;
