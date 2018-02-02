@@ -14,6 +14,6 @@ public interface DetachableEntityInterface
     void setState(String state);
     String getState();
     boolean shouldDetach();
-    ContainerEntity getContainer();
+    ContainerEntityInterface getContainer();
     Joint getJoint();
 }

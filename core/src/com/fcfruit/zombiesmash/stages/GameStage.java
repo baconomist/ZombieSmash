@@ -75,7 +75,7 @@ public class GameStage extends Stage
         if(Environment.level.getDrawableEntities().size() > 0)
         {
             this.shapeRenderer.polygon(((NewZombie) Environment.level.getDrawableEntities().get(0)).getPolygon().getTransformedVertices());
-            for(InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) Environment.level.getDrawableEntities().get(0)).containerEntity.interactiveEntities.values()){
+            for(InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) Environment.level.getDrawableEntities().get(0)).containerEntity.getInteractiveEntities().values()){
                 this.shapeRenderer.polygon(interactiveEntityInterface.getPolygon().getTransformedVertices());
             }
         }

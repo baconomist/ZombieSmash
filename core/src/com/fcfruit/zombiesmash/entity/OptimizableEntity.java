@@ -3,7 +3,10 @@ package com.fcfruit.zombiesmash.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -14,22 +17,22 @@ import com.fcfruit.zombiesmash.physics.Physics;
 
 public class OptimizableEntity implements OptimizableEntityInterface
 {
-    private InteractivePhysicsEntity interactivePhysicsEntity;
-    private DetachableEntity detachableEntity;
-    private ContainerEntity containerEntity;
+    private InteractivePhysicsEntityInterface interactivePhysicsEntity;
+    private DetachableEntityInterface detachableEntity;
+    private ContainerEntityInterface containerEntity;
 
     // Optimization
     private double optimizationTimer;
     private double timeBeforeOptimize;
 
-    public OptimizableEntity(InteractivePhysicsEntity interactivePhysicsEntity)
+    public OptimizableEntity(InteractivePhysicsEntityInterface interactivePhysicsEntity)
     {
         this.interactivePhysicsEntity = interactivePhysicsEntity;
 
         this.timeBeforeOptimize = 2500;
     }
 
-    public OptimizableEntity(DetachableEntity detachableEntity, InteractivePhysicsEntity interactivePhysicsEntity)
+    public OptimizableEntity(DetachableEntityInterface detachableEntity, InteractivePhysicsEntityInterface interactivePhysicsEntity)
     {
         this.detachableEntity = detachableEntity;
         this.interactivePhysicsEntity = interactivePhysicsEntity;
@@ -37,7 +40,7 @@ public class OptimizableEntity implements OptimizableEntityInterface
         this.timeBeforeOptimize = 2500;
     }
 
-    public OptimizableEntity(ContainerEntity containerEntity)
+    public OptimizableEntity(ContainerEntityInterface containerEntity)
     {
         this.containerEntity = containerEntity;
 
@@ -49,7 +52,7 @@ public class OptimizableEntity implements OptimizableEntityInterface
 
         if (this.containerEntity != null)
         {
-            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
+            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
                 if (interactiveEntityInterface.isTouching())
                 {
@@ -98,7 +101,7 @@ public class OptimizableEntity implements OptimizableEntityInterface
     {
         if (this.containerEntity != null)
         {
-            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
+            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
                 if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
@@ -119,7 +122,7 @@ public class OptimizableEntity implements OptimizableEntityInterface
     {
         if (this.containerEntity != null)
         {
-            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
+            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
                 if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {

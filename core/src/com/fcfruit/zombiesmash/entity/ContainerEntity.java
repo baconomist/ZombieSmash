@@ -13,9 +13,12 @@ import java.util.HashMap;
 
 public class ContainerEntity implements ContainerEntityInterface
 {
-    public HashMap<String, DrawableEntityInterface> drawableEntities;
-    public HashMap<String, InteractiveEntityInterface> interactiveEntities;
-    public HashMap<String, DetachableEntityInterface> detachableEntities;
+    private HashMap<String, DrawableEntityInterface> drawableEntities;
+    private HashMap<String, InteractiveEntityInterface> interactiveEntities;
+    private HashMap<String, DetachableEntityInterface> detachableEntities;
+    private HashMap<String, ContainerEntityInterface> containerEntities;
+
+    private ContainerEntityInterface parent;
 
 
     public ContainerEntity()
@@ -23,7 +26,19 @@ public class ContainerEntity implements ContainerEntityInterface
         this.drawableEntities = new HashMap<String, DrawableEntityInterface>();
         this.interactiveEntities = new HashMap<String, InteractiveEntityInterface>();
         this.detachableEntities = new HashMap<String, DetachableEntityInterface>();
+        this.containerEntities = new HashMap<String, ContainerEntityInterface>();
     }
+
+    public ContainerEntity(ContainerEntityInterface parent)
+    {
+        this.parent = parent;
+
+        this.drawableEntities = new HashMap<String, DrawableEntityInterface>();
+        this.interactiveEntities = new HashMap<String, InteractiveEntityInterface>();
+        this.detachableEntities = new HashMap<String, DetachableEntityInterface>();
+        this.containerEntities = new HashMap<String, ContainerEntityInterface>();
+    }
+
 
     @Override
     public HashMap<String, DrawableEntityInterface> getDrawableEntities()
@@ -44,13 +59,50 @@ public class ContainerEntity implements ContainerEntityInterface
     }
 
     @Override
-    public void detach(DetachableEntityInterface detachableEntityInterface)
+    public HashMap<String, ContainerEntityInterface> getContainerEntities()
     {
+        return this.containerEntities;
+    }
+
+    @Override
+    public void setDrawableEntities(HashMap<String, DrawableEntityInterface> drawableEntities)
+    {
+        this.drawableEntities = drawableEntities;
+    }
+
+    @Override
+    public void setInteractiveEntities(HashMap<String, InteractiveEntityInterface> interactiveEntities)
+    {
+        this.interactiveEntities = interactiveEntities;
+    }
+
+    @Override
+    public void setDetachableEntities(HashMap<String, DetachableEntityInterface> detachableEntities)
+    {
+        this.detachableEntities = detachableEntities;
+    }
+
+    @Override
+    public void setContainerEntities(HashMap<String, ContainerEntityInterface> containerEntities)
+    {
+        this.containerEntities = containerEntities;
+    }
+
+    @Override
+    public ContainerEntityInterface getParent()
+    {
+        return this.parent;
+    }
+
+    @Override
+    public void detach(DetachableEntityInterface detachableEntity)
+    {
+
         String key = "";
 
         for (String k : this.detachableEntities.keySet())
         {
-            if (this.detachableEntities.get(k) == detachableEntityInterface)
+            if (this.detachableEntities.get(k) == detachableEntity)
             {
                 key = k;
                 break;
@@ -59,14 +111,20 @@ public class ContainerEntity implements ContainerEntityInterface
 
         this.detachableEntities.remove(key);
 
-        if (detachableEntityInterface instanceof InteractiveEntityInterface)
-        {
-            this.interactiveEntities.remove(key);
-        }
-
-        if (detachableEntityInterface instanceof DrawableEntityInterface)
+        if (this.drawableEntities.containsValue(detachableEntity))
         {
             this.drawableEntities.remove(key);
         }
+        if (this.interactiveEntities.containsValue(detachableEntity))
+        {
+            this.detachableEntities.remove(key);
+        }
+        if (this.containerEntities.containsValue(detachableEntity))
+        {
+            this.containerEntities.remove(key);
+        }
+
     }
+
+
 }

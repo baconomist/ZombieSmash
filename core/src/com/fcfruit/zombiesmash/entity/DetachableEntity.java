@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -22,11 +23,11 @@ public class DetachableEntity implements DetachableEntityInterface
     private Joint joint;
     private String state;
 
-    private ContainerEntity containerEntity;
+    private ContainerEntityInterface containerEntity;
 
     private Object compositionObject;
 
-    public DetachableEntity(Joint joint, ContainerEntity containerEntity, Object compositionObject){
+    public DetachableEntity(Joint joint, ContainerEntityInterface containerEntity, Object compositionObject){
         this.joint = joint;
         this.containerEntity = containerEntity;
         this.compositionObject = compositionObject;
@@ -86,7 +87,7 @@ public class DetachableEntity implements DetachableEntityInterface
     }
 
     @Override
-    public ContainerEntity getContainer()
+    public ContainerEntityInterface getContainer()
     {
         return this.containerEntity;
     }

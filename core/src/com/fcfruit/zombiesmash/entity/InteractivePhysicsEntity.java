@@ -8,7 +8,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
@@ -16,8 +18,10 @@ import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
  * Created by lucas on 2018-01-07.
  */
 
-public class InteractivePhysicsEntity implements InteractiveEntityInterface, PhysicsEntityInterface
+public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterface
 {
+
+    private ContainerEntityInterface containerEntity;
 
     private boolean isTouching;
     private boolean powerfulJoint;
@@ -38,6 +42,22 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface, Phy
 
         this.powerfulJoint = true;
     }
+
+    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, ContainerEntityInterface containerEntity)
+    {
+        this.containerEntity = containerEntity;
+
+        this.isTouching = false;
+        this.pointer = -1;
+
+        this.physicsBody = physicsBody;
+        this.polygon = polygon;
+
+        this.powerfulJoint = true;
+    }
+
+
+
 
     public void update(float delta)
     {
@@ -155,19 +175,22 @@ public class InteractivePhysicsEntity implements InteractiveEntityInterface, Phy
         return this.polygon;
     }
 
+    @Override
     public Body getPhysicsBody()
     {
         return this.physicsBody;
     }
 
+    @Override
     public boolean isUsingPowerfulJoint()
     {
         return powerfulJoint;
     }
 
-    public void setUsingPowerfulJoint(boolean using)
+    @Override
+    public void setUsingPowerfulJoint(boolean usingPowerfulJoint)
     {
-        this.powerfulJoint = using;
+        this.powerfulJoint = usingPowerfulJoint;
     }
 
 }

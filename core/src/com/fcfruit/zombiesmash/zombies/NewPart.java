@@ -20,6 +20,7 @@ import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
@@ -27,18 +28,18 @@ import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface, OptimizableEntityInterface, PhysicsEntityInterface
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface
 {
     private String name;
 
-    private ContainerEntity containerEntity;
+    private ContainerEntityInterface containerEntity;
     private OptimizableEntity optimizableEntity;
 
     private DrawablePhysicsEntity drawableEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 
-    public NewPart(String name, Sprite sprite, Body physicsBody, Joint bodyJoint, ContainerEntity containerEntity)
+    public NewPart(String name, Sprite sprite, Body physicsBody, Joint bodyJoint, ContainerEntityInterface containerEntity)
     {
         this.name = name;
 
@@ -53,7 +54,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.optimizableEntity = new OptimizableEntity(this.detachableEntity, this.interactivePhysicsEntity);
+        this.optimizableEntity = new OptimizableEntity(this, this);
 
         this.getPhysicsBody().setAwake(false);
         this.getPhysicsBody().setActive(false);
@@ -88,7 +89,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.interactivePhysicsEntity.update(delta);
 
         this.optimizableEntity.update(delta);
-        for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.interactiveEntities.values())
+        for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
             {
@@ -194,7 +195,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
-    public ContainerEntity getContainer()
+    public ContainerEntityInterface getContainer()
     {
         return this.containerEntity;
     }
@@ -216,6 +217,18 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     public Joint getJoint(){return this.detachableEntity.getJoint();}
+
+    @Override
+    public void setUsingPowerfulJoint(boolean usingPowerfulJoint)
+    {
+        this.interactivePhysicsEntity.setUsingPowerfulJoint(usingPowerfulJoint);
+    }
+
+    @Override
+    public boolean isUsingPowerfulJoint()
+    {
+        return this.interactivePhysicsEntity.isUsingPowerfulJoint();
+    }
 
     @Override
     public void dispose()
