@@ -169,21 +169,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 }
 
                 ArrayList<Joint> joints = new ArrayList<Joint>();
-                ContainerEntityInterface parent = null;
-                for (Joint j : rubeScene.getJoints())
+                for (Joint joint : rubeScene.getJoints())
                 {
-                    if (j.getBodyA() == body)
-                    {
-                        joints.add(j);
-                    } else if (j.getBodyB() == body)
-                    {
-                        try
-                        {
-                            parent = this.containerEntity.getContainerEntities().get((String) rubeScene.getCustom(body, "name"));
-                        } catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
+                    // Only detachableEntity/Child gets the joits
+                    if(joint.getBodyB() == body){
+                        joints.add(joint);
                     }
                 }
 
@@ -210,7 +200,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 if (!specialPart)
                 {
                     body.setUserData("a");
-                    NewPart part = new NewPart(bodyName, sprite, body, joints.get(0), parent);
+                    NewPart part = new NewPart(bodyName, sprite, body, joints, this.containerEntity);
                     this.getDrawableEntities().put(bodyName, part);
                     this.getInteractiveEntities().put(bodyName, part);
                     this.getDetachableEntities().put(bodyName, part);
@@ -640,9 +630,9 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void update(float delta)
     {
+        this.updateEntities(delta);
         if (this.isAlive())
         {
-            this.updateEntities(delta);
             this.interactiveGraphicsEntity.update(delta);
 
             if (this.isTouching())
@@ -809,12 +799,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     }
 
     @Override
-    public HashMap<String, ContainerEntityInterface> getContainerEntities()
-    {
-        return this.containerEntity.getContainerEntities();
-    }
-
-    @Override
     public void setDrawableEntities(HashMap<String, DrawableEntityInterface> drawableEntities)
     {
         this.containerEntity.setDrawableEntities(drawableEntities);
@@ -831,19 +815,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         this.containerEntity.setDetachableEntities(detachableEntities);
     }
-
-    @Override
-    public void setContainerEntities(HashMap<String, ContainerEntityInterface> containerEntities)
-    {
-        this.containerEntity.setContainerEntities(containerEntities);
-    }
-
-    @Override
-    public ContainerEntityInterface getParent()
-    {
-        return this.containerEntity.getParent();
-    }
-
 
     @Override
     public void dispose()

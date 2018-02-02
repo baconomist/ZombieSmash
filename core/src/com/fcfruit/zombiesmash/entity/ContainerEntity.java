@@ -18,8 +18,6 @@ public class ContainerEntity implements ContainerEntityInterface
     private HashMap<String, DetachableEntityInterface> detachableEntities;
     private HashMap<String, ContainerEntityInterface> containerEntities;
 
-    private ContainerEntityInterface parent;
-
 
     public ContainerEntity()
     {
@@ -28,17 +26,6 @@ public class ContainerEntity implements ContainerEntityInterface
         this.detachableEntities = new HashMap<String, DetachableEntityInterface>();
         this.containerEntities = new HashMap<String, ContainerEntityInterface>();
     }
-
-    public ContainerEntity(ContainerEntityInterface parent)
-    {
-        this.parent = parent;
-
-        this.drawableEntities = new HashMap<String, DrawableEntityInterface>();
-        this.interactiveEntities = new HashMap<String, InteractiveEntityInterface>();
-        this.detachableEntities = new HashMap<String, DetachableEntityInterface>();
-        this.containerEntities = new HashMap<String, ContainerEntityInterface>();
-    }
-
 
     @Override
     public HashMap<String, DrawableEntityInterface> getDrawableEntities()
@@ -59,12 +46,6 @@ public class ContainerEntity implements ContainerEntityInterface
     }
 
     @Override
-    public HashMap<String, ContainerEntityInterface> getContainerEntities()
-    {
-        return this.containerEntities;
-    }
-
-    @Override
     public void setDrawableEntities(HashMap<String, DrawableEntityInterface> drawableEntities)
     {
         this.drawableEntities = drawableEntities;
@@ -80,18 +61,6 @@ public class ContainerEntity implements ContainerEntityInterface
     public void setDetachableEntities(HashMap<String, DetachableEntityInterface> detachableEntities)
     {
         this.detachableEntities = detachableEntities;
-    }
-
-    @Override
-    public void setContainerEntities(HashMap<String, ContainerEntityInterface> containerEntities)
-    {
-        this.containerEntities = containerEntities;
-    }
-
-    @Override
-    public ContainerEntityInterface getParent()
-    {
-        return this.parent;
     }
 
     @Override

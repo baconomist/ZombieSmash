@@ -22,6 +22,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 
+import java.util.ArrayList;
+
 /**
  * Created by Lucas on 2018-01-07.
  */
@@ -46,10 +48,11 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         Body physicsBody = scene.getBodies().get(0);
         physicsBody.setUserData(this);
 
-        Joint joint = physicsBody.getJointList().get(0).joint;
+        ArrayList<Joint> joints = new ArrayList<Joint>();
+        joints.add(physicsBody.getJointList().get(0).joint);
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png"))), physicsBody);
-        this.detachableEntity = new DetachableEntity(joint);
+        this.detachableEntity = new DetachableEntity(joints);
 
     }
 
@@ -191,7 +194,8 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
 
     }
 
-    public Joint getJoint(){return this.detachableEntity.getJoint();}
+    @Override
+    public ArrayList<Joint> getJoints(){return this.detachableEntity.getJoints();}
 
     // Unused
     @Override

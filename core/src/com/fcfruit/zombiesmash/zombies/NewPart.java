@@ -24,6 +24,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterfa
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
+import java.util.ArrayList;
+
 /**
  * Created by Lucas on 2018-01-07.
  */
@@ -39,14 +41,14 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 
-    public NewPart(String name, Sprite sprite, Body physicsBody, Joint bodyJoint, ContainerEntityInterface containerEntity)
+    public NewPart(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
     {
         this.name = name;
 
         this.containerEntity = containerEntity;
 
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(bodyJoint, containerEntity, this);
+        this.detachableEntity = new DetachableEntity(joints, containerEntity, this);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
@@ -66,10 +68,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     @Override
     public void detach()
     {
-        if(!this.name.equals("torso"))
-        {
-            this.detachableEntity.detach();
-        }
+        this.detachableEntity.detach();
 
         /*maybe set joint state to waiting for detach when detaching
             joint user data probably gets instantly deleted when you call joint.destroy
@@ -187,11 +186,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     @Override
     public boolean shouldDetach()
     {
-        if(!this.name.equals("torso"))
-        {
-            return detachableEntity.shouldDetach();
-        }
-        return false;
+        return detachableEntity.shouldDetach();
     }
 
     @Override
@@ -216,7 +211,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         return this.name;
     }
 
-    public Joint getJoint(){return this.detachableEntity.getJoint();}
+    public ArrayList<Joint> getJoints(){return this.detachableEntity.getJoints();}
 
     @Override
     public void setUsingPowerfulJoint(boolean usingPowerfulJoint)

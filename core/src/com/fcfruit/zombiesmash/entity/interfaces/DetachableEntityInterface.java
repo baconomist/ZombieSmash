@@ -4,6 +4,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 
+import java.util.ArrayList;
+
 /**
  * Created by Lucas on 2018-01-06.
  */
@@ -15,5 +17,5 @@ public interface DetachableEntityInterface
     String getState();
     boolean shouldDetach();
     ContainerEntityInterface getContainer();
-    Joint getJoint();
+    ArrayList<Joint> getJoints();
 }

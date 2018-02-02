@@ -13,6 +13,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.NewPart;
 
+import java.util.ArrayList;
+
 
 /**
  * Created by Lucas on 2018-01-06.
@@ -20,70 +22,82 @@ import com.fcfruit.zombiesmash.zombies.NewPart;
 
 public class DetachableEntity implements DetachableEntityInterface
 {
-    private Joint joint;
+    private ArrayList<Joint> joints;
     private String state;
 
     private ContainerEntityInterface containerEntity;
 
-    private Object compositionObject;
+    private DetachableEntityInterface instance;
 
-    public DetachableEntity(Joint joint, ContainerEntityInterface containerEntity, Object compositionObject){
-        this.joint = joint;
+    public DetachableEntity(ArrayList<Joint> joints, ContainerEntityInterface containerEntity, DetachableEntityInterface instance)
+    {
+        this.joints = joints;
         this.containerEntity = containerEntity;
-        this.compositionObject = compositionObject;
+        this.instance = instance;
 
         // Assumes attached state
         this.setState("attached");
-
     }
 
-    public Joint getJoint(){
-        return this.joint;
-    }
-
-    public DetachableEntity(Joint joint){
-        this.joint = joint;
+    public DetachableEntity(ArrayList<Joint> joints)
+    {
+        this.joints = joints;
     }
 
     @Override
     public void detach()
     {
-        Environment.physics.getWorld().destroyJoint(this.joint);
-        this.joint = null;
-        this.containerEntity.detach((DetachableEntityInterface) this.compositionObject);
-        Environment.level.addDrawableEntity((DrawableEntityInterface) this.compositionObject);
+        for(Joint joint : this.joints)
+        {
+            Environment.physics.getWorld().destroyJoint(joint);
+        }
+        this.joints = null;
+        this.containerEntity.detach(instance);
+        Environment.level.addDrawableEntity((DrawableEntityInterface) instance);
         this.setState("detached");
     }
 
     @Override
-    public void setState(String state){
-        if(state.equals("attached") && this.joint != null){
+    public void setState(String state)
+    {
+        if (state.equals("attached") && this.joints != null)
+        {
             this.state = "attached";
-        }
-        else if(state.equals("waiting_for_detach") && this.joint != null){
+        } else if (state.equals("waiting_for_detach") && this.joints != null)
+        {
             this.state = "waiting_for_detach";
-        }
-        else if(state.equals("detached") && this.joint == null){
+        } else if (state.equals("detached") && this.joints == null)
+        {
             this.state = "detached";
         }
     }
 
-    public String getState(){
+    public String getState()
+    {
         return this.state;
     }
 
     @Override
     public boolean shouldDetach()
     {
-        if(joint != null)
+        if (this.joints != null)
         {
-            if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
-                    || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20)
+            for(Joint joint : this.joints)
             {
-                return true;
+                if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
+                        || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20)
+                {
+                    return true;
+                }
             }
         }
         return false;
+    }
+
+    @Override
+    public ArrayList<Joint> getJoints()
+    {
+        return this.joints;
     }
 
     @Override
@@ -91,4 +105,5 @@ public class DetachableEntity implements DetachableEntityInterface
     {
         return this.containerEntity;
     }
+
 }
