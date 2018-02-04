@@ -63,7 +63,6 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
     @Override
     public void update(float delta)
     {
-        Gdx.app.log("update", "update");
         this.state.update(delta); // Update the animation getUpTimer.
 
         this.state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.

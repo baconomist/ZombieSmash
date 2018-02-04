@@ -11,7 +11,6 @@ import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
-import com.fcfruit.zombiesmash.zombies.NewPart;
 
 import java.util.ArrayList;
 
@@ -84,8 +83,9 @@ public class DetachableEntity implements DetachableEntityInterface
         {
             for(Joint joint : this.joints)
             {
-                if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).x > 20
-                        || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20 || joint.getReactionForce(1f / Physics.STEP_TIME).y > 20)
+                Gdx.app.log("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
+                if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 100f || joint.getReactionForce(1f / Physics.STEP_TIME).x < -100f
+                        || joint.getReactionForce(1f / Physics.STEP_TIME).y > 100f || joint.getReactionForce(1f / Physics.STEP_TIME).y < -100f)
                 {
                     return true;
                 }

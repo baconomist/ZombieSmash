@@ -10,9 +10,9 @@ public interface InteractiveEntityInterface
 {
     void update(float delta);
 
-    void onTouchDown(float x, float y, int p);
-    void onTouchDragged(float x, float y, int p);
-    void onTouchUp(float x, float y, int p);
+    void onTouchDown(float screenX, float screenY, int pointer);
+    void onTouchDragged(float screenX, float screenY, int pointer);
+    void onTouchUp(float screenX, float screenY, int pointer);
 
     boolean isTouching();
 

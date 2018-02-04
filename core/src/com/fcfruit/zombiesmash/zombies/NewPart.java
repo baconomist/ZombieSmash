@@ -21,6 +21,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.NameableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntity
 {
     private String name;
 
@@ -60,8 +61,6 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
 
         this.getPhysicsBody().setAwake(false);
         this.getPhysicsBody().setActive(false);
-
-
 
     }
 
