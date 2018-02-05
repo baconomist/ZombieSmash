@@ -101,7 +101,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.movableEntity = new MovableEntity(this);
         this.movableEntity.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
-        this.optimizableEntity = new OptimizableEntity(this);
+        this.optimizableEntity = new OptimizableEntity(null, null, this);
 
         this.isPhysicsEnabled = false;
         this.partsToStayAlive = new ArrayList();
@@ -201,11 +201,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity){
         physicsBody.setUserData("");
 
-        NewPart part = new NewPart(bodyName, sprite, physicsBody, joints, containerEntity);
-        this.getDrawableEntities().put(bodyName, part);
-        this.getInteractiveEntities().put(bodyName, part);
-        this.getDetachableEntities().put(bodyName, part);
-        /*
         // If child
         if(joints.size() > 0)
         {
@@ -219,7 +214,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             Torso torso = new Torso(bodyName, sprite, physicsBody, containerEntity);
             this.getDrawableEntities().put(bodyName, torso);
             this.getInteractiveEntities().put(bodyName, torso);
-        }*/
+        }
     }
 
     private void interactiveEntitySetup()

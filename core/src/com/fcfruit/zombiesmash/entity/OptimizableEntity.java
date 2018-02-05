@@ -25,23 +25,10 @@ public class OptimizableEntity implements OptimizableEntityInterface
     private double optimizationTimer;
     private double timeBeforeOptimize;
 
-    public OptimizableEntity(InteractivePhysicsEntityInterface interactivePhysicsEntity)
-    {
-        this.interactivePhysicsEntity = interactivePhysicsEntity;
-
-        this.timeBeforeOptimize = 2500;
-    }
-
-    public OptimizableEntity(DetachableEntityInterface detachableEntity, InteractivePhysicsEntityInterface interactivePhysicsEntity)
+    public OptimizableEntity(InteractivePhysicsEntityInterface interactivePhysicsEntity, DetachableEntityInterface detachableEntity, ContainerEntityInterface containerEntity)
     {
         this.detachableEntity = detachableEntity;
         this.interactivePhysicsEntity = interactivePhysicsEntity;
-
-        this.timeBeforeOptimize = 2500;
-    }
-
-    public OptimizableEntity(ContainerEntityInterface containerEntity)
-    {
         this.containerEntity = containerEntity;
 
         this.timeBeforeOptimize = 2500;

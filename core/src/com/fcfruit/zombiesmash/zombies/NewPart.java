@@ -57,7 +57,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.optimizableEntity = new OptimizableEntity(this, this);
+        this.optimizableEntity = new OptimizableEntity(this, this, null);
 
         this.getPhysicsBody().setAwake(false);
         this.getPhysicsBody().setActive(false);

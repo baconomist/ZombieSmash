@@ -37,7 +37,6 @@ public class BigZombie extends NewZombie
         this.moveAnimation = "walk";
 
         this.partsToStayAlive.add("head");
-        this.partsToStayAlive.add("torso");
         this.partsToStayAlive.add("left_arm");
         this.partsToStayAlive.add("right_arm");
         this.partsToStayAlive.add("left_leg");
