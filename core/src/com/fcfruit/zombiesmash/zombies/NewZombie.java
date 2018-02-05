@@ -21,15 +21,11 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
-import com.esotericsoftware.spine.attachments.BoundingBoxAttachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
-import com.esotericsoftware.spine.attachments.RegionAttachment;
-import com.esotericsoftware.spine.attachments.VertexAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.MovableEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
@@ -78,7 +74,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private boolean isPhysicsEnabled;
     private int direction;
     private int speed;
-    ArrayList partsToStayAlive;
+    ArrayList detachableEntitiesToStayAlive;
     HashMap<String, Class> specialParts;
 
     /**
@@ -104,7 +100,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.optimizableEntity = new OptimizableEntity(null, null, this);
 
         this.isPhysicsEnabled = false;
-        this.partsToStayAlive = new ArrayList();
+        this.detachableEntitiesToStayAlive = new ArrayList();
 
         this.timeBeforeGetup = 5000;
         this.isGettingUp = false;
@@ -301,7 +297,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
 
         boolean isAlive = true;
-        for (Object o : partsToStayAlive)
+        for (Object o : this.detachableEntitiesToStayAlive)
         {
             if (o instanceof String)
             {

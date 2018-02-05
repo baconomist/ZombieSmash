@@ -12,12 +12,8 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/OptimizableEntity.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/OptimizableEntity.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -57,8 +53,8 @@
       <file leaf-file-name="NewZombie.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="521">
-              <caret line="216" column="9" selection-start-line="216" selection-start-column="9" selection-end-line="216" selection-end-column="9" />
+            <state relative-caret-position="251">
+              <caret line="288" column="5" selection-start-line="288" selection-start-column="5" selection-end-line="288" selection-end-column="5" />
               <folding>
                 <element signature="docComment;class#NewZombie#0" expanded="false" />
                 <element signature="docComment;field#moveAnimation#0;class#NewZombie#0" expanded="false" />
@@ -79,10 +75,10 @@
                 <element signature="method#checkDirection#0;class#NewZombie#0" expanded="false" />
                 <element signature="method#setDirection#0;class#NewZombie#0" expanded="false" />
                 <element signature="method#handleGetup#0;class#NewZombie#0" expanded="false" />
-                <element signature="e#14511#14578#0" expanded="false" />
+                <element signature="e#14294#14361#0" expanded="false" />
                 <element signature="method#syncEntitiesToAnimation#0;class#NewZombie#0" expanded="false" />
                 <element signature="method#detachAnimationLimbs#0;class#NewZombie#0" expanded="false" />
-                <element signature="class#17718:17935" expanded="false" />
+                <element signature="class#17501:17718" expanded="false" />
                 <element signature="method#getDistanceToObjective#0;class#NewZombie#0" expanded="false" />
                 <element signature="docComment;method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
                 <element signature="method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
@@ -115,8 +111,8 @@
       <file leaf-file-name="BigZombie.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="289">
-              <caret line="38" column="42" selection-start-line="38" selection-start-column="42" selection-end-line="38" selection-end-column="42" />
+            <state relative-caret-position="255">
+              <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
               <folding />
             </state>
           </provider>
@@ -6298,16 +6294,16 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="289">
-          <caret line="38" column="42" selection-start-line="38" selection-start-column="42" selection-end-line="38" selection-end-column="42" />
+        <state relative-caret-position="255">
+          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="521">
-          <caret line="216" column="9" selection-start-line="216" selection-start-column="9" selection-end-line="216" selection-end-column="9" />
+        <state relative-caret-position="251">
+          <caret line="288" column="5" selection-start-line="288" selection-start-column="5" selection-end-line="288" selection-end-column="5" />
           <folding>
             <element signature="docComment;class#NewZombie#0" expanded="false" />
             <element signature="docComment;field#moveAnimation#0;class#NewZombie#0" expanded="false" />
@@ -6328,10 +6324,10 @@
             <element signature="method#checkDirection#0;class#NewZombie#0" expanded="false" />
             <element signature="method#setDirection#0;class#NewZombie#0" expanded="false" />
             <element signature="method#handleGetup#0;class#NewZombie#0" expanded="false" />
-            <element signature="e#14511#14578#0" expanded="false" />
+            <element signature="e#14294#14361#0" expanded="false" />
             <element signature="method#syncEntitiesToAnimation#0;class#NewZombie#0" expanded="false" />
             <element signature="method#detachAnimationLimbs#0;class#NewZombie#0" expanded="false" />
-            <element signature="class#17718:17935" expanded="false" />
+            <element signature="class#17501:17718" expanded="false" />
             <element signature="method#getDistanceToObjective#0;class#NewZombie#0" expanded="false" />
             <element signature="docComment;method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
             <element signature="method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
