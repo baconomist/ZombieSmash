@@ -12,10 +12,7 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/CollisionListener.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/CollisionListener.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -86,7 +83,7 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="BleedableEntity.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="BleedableEntity.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="389">
@@ -95,6 +92,16 @@
                 <element signature="imports" expanded="true" />
                 <element signature="e#2367#2374#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GameStage.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="583">
+              <caret line="81" column="35" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -4473,7 +4480,6 @@
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/Physics.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/InteractivePhysicsEntityInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/InteractivePhysicsEntity.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/ContainerEntity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntityParent.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/ContainerEntityInterface.java" />
@@ -4495,6 +4501,7 @@
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/CollisionListener.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java" />
       </list>
     </option>
   </component>
@@ -5854,14 +5861,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="770">
-          <caret line="77" column="173" selection-start-line="77" selection-start-column="173" selection-end-line="77" selection-end-column="173" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntityParent.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="238">
@@ -6246,6 +6245,14 @@
             <element signature="imports" expanded="true" />
             <element signature="e#2367#2374#0" expanded="true" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/stages/GameStage.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="583">
+          <caret line="81" column="35" selection-start-line="81" selection-start-column="35" selection-end-line="81" selection-end-column="35" />
+          <folding />
         </state>
       </provider>
     </entry>
