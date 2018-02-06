@@ -66,7 +66,7 @@ public class Blood
         this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
         this.physicsBody.setTransform(x, y, 0);
 
-        sprite = new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png")));
+        sprite = new Sprite(Environment.assets.get("effects/blood/blood.png", Texture.class));
         sprite.setScale(0.25f);
 
     }
