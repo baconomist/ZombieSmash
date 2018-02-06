@@ -37,7 +37,6 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
 
     private ContainerEntityInterface containerEntity;
     private OptimizableEntity optimizableEntity;
-
     private DrawablePhysicsEntity drawableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 

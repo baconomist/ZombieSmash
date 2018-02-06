@@ -12,8 +12,17 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="9e304a33-d86c-417e-bd69-3e52fd508df0" name="Default" comment="">
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/DetachableEntityParentInterface.java" afterPath="" />
+      <change type="DELETED" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableParentEntity.java" afterPath="" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BleedableEntityInterface.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BleedableEntityInterface.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java" afterPath="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java" />
     </list>
     <ignored path="ZombieSmash.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -50,92 +59,12 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="NewZombie.java" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java">
+      <file leaf-file-name="Blood.java" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="251">
-              <caret line="288" column="5" selection-start-line="288" selection-start-column="5" selection-end-line="288" selection-end-column="5" />
-              <folding>
-                <element signature="docComment;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;field#moveAnimation#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;field#id#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;field#animatableGraphicsEntity#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;field#isPhysicsEnabled#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;field#getUpTimer#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#NewZombie#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#setup#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#setup#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#interactiveEntitySetup#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#animationSetup#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#isInLevel#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#isAtObjective#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#isAttacking#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#hasRequiredPartsForGetup#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#updateEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#checkDirection#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#setDirection#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#handleGetup#0;class#NewZombie#0" expanded="false" />
-                <element signature="e#14294#14361#0" expanded="false" />
-                <element signature="method#syncEntitiesToAnimation#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#detachAnimationLimbs#0;class#NewZombie#0" expanded="false" />
-                <element signature="class#17501:17718" expanded="false" />
-                <element signature="method#getDistanceToObjective#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#onDeath#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#onDirectionChange#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#draw#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#getPosition#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#setPosition#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#onTouchDown#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#onTouchDown#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#onTouchDragged#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#onTouchUp#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#isTouching#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#enable_optimization#0;class#NewZombie#0" expanded="false" />
-                <element signature="docComment;method#detach#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#detach#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#getDrawableEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#getInteractiveEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#getDetachableEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#setDrawableEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#setInteractiveEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#setDetachableEntities#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#dispose#0;class#NewZombie#0" expanded="false" />
-                <element signature="method#draw#1;class#NewZombie#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="BigZombie.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
+            <state relative-caret-position="406">
+              <caret line="76" column="45" selection-start-line="76" selection-start-column="45" selection-end-line="76" selection-end-column="45" />
               <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CollisionListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/CollisionListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="37" column="131" selection-start-line="37" selection-start-column="131" selection-end-line="37" selection-end-column="131" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ContainerEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/ContainerEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="361">
-              <caret line="73" column="40" selection-start-line="73" selection-start-column="40" selection-end-line="73" selection-end-column="40" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
             </state>
           </provider>
         </entry>
@@ -143,73 +72,26 @@
       <file leaf-file-name="NewPart.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="544">
-              <caret line="59" column="71" selection-start-line="59" selection-start-column="71" selection-end-line="59" selection-end-column="71" />
+            <state relative-caret-position="493">
+              <caret line="97" column="73" selection-start-line="97" selection-start-column="73" selection-end-line="97" selection-end-column="73" />
               <folding>
                 <element signature="docComment;class#NewPart#0" expanded="false" />
                 <element signature="method#onTouchDragged#0;class#NewPart#0" expanded="false" />
                 <element signature="method#onTouchUp#0;class#NewPart#0" expanded="false" />
-                <element signature="e#5768#5769#0" expanded="true" />
-                <element signature="e#5822#5823#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="OptimizableEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/OptimizableEntity.java">
+      <file leaf-file-name="BleedableEntity.java" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="189">
-              <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
+            <state relative-caret-position="423">
+              <caret line="88" column="9" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
               <folding>
                 <element signature="imports" expanded="true" />
+                <element signature="e#2367#2374#0" expanded="true" />
               </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="DetachableEntity.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1050">
-              <caret line="86" column="75" selection-start-line="86" selection-start-column="75" selection-end-line="86" selection-end-column="75" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Torso.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="510">
-              <caret line="57" column="82" selection-start-line="57" selection-start-column="82" selection-end-line="57" selection-end-column="82" />
-              <folding>
-                <element signature="docComment;class#Torso#0" expanded="false" />
-                <element signature="method#onTouchDragged#0;class#Torso#0" expanded="false" />
-                <element signature="method#onTouchUp#0;class#Torso#0" expanded="false" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InteractivePhysicsEntityInterface.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/InteractivePhysicsEntityInterface.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="57" selection-start-line="8" selection-start-column="57" selection-end-line="8" selection-end-column="57" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="InteractiveEntityInterface.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/InteractiveEntityInterface.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="238">
-              <caret line="14" column="60" selection-start-line="14" selection-start-column="60" selection-end-line="14" selection-end-column="60" />
-              <folding />
             </state>
           </provider>
         </entry>
@@ -4559,7 +4441,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/physics/ContactFilter.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/moveAction.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/moveHandler.java" />
         <option value="$PROJECT_DIR$/android/assets/maps/night_map/levels/2.json" />
@@ -4573,7 +4454,6 @@
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/CointainerInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/ContainerInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/ContainerEntityEntity.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BodyEntityInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BodyEntity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/InteractiveGraphicsEntity.java" />
@@ -4597,19 +4477,21 @@
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/ContainerEntityInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/DetachableEntityInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/power_ups/Grenade.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BleedableEntityInterface.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/DetachableEntityParentInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableParentEntity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/NameableEntity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/InteractiveEntityInterface.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/AnimatableGraphicsEntity.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java" />
-        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/OptimizableEntity.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/BigZombie.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java" />
         <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BleedableEntityInterface.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java" />
+        <option value="$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java" />
       </list>
     </option>
   </component>
@@ -5810,18 +5692,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BodyEntityInterface.java" />
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BodyEntity.java" />
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/InteractiveGraphicsEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="47" column="89" selection-start-line="47" selection-start-column="89" selection-end-line="47" selection-end-column="89" />
-          <folding>
-            <element signature="docComment;class#InteractiveGraphicsEntity#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/GetUpAbleEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="272">
@@ -5948,25 +5818,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Part.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="617">
-          <caret line="329" column="63" selection-start-line="329" selection-start-column="63" selection-end-line="329" selection-end-column="63" />
-          <folding>
-            <element signature="docComment;class#Part#0" expanded="false" />
-            <element signature="method#draw#0;class#Part#0" expanded="false" />
-            <element signature="e#7265#7332#0" expanded="false" />
-            <element signature="e#7624#7661#0" expanded="false" />
-            <element signature="e#8230#8270#0" expanded="false" />
-            <element signature="e#10153#10202#0" expanded="false" />
-            <element signature="method#getState#0;class#Part#0" expanded="false" />
-            <element signature="method#setPosition#0;class#Part#0" expanded="false" />
-            <element signature="method#setState#0;class#Part#0" expanded="false" />
-            <element signature="method#destroy#0;class#Part#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/MovableEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="782">
@@ -5989,32 +5840,6 @@
         <state relative-caret-position="274">
           <caret line="664" column="9" selection-start-line="664" selection-start-column="9" selection-end-line="664" selection-end-column="9" />
           <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/level/Level.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="408">
-          <caret line="123" column="8" selection-start-line="123" selection-start-column="8" selection-end-line="123" selection-end-column="8" />
-          <folding>
-            <element signature="docComment;class#Level#0" expanded="false" />
-            <element signature="initializer##0;class#Level#0" expanded="false" />
-            <element signature="method#Level#0;class#Level#0" expanded="false" />
-            <element signature="method#updateCamera#0;class#Level#0" expanded="false" />
-            <element signature="method#addDrawableEntity#0;class#Level#0" expanded="false" />
-            <element signature="method#getDrawableEntities#0;class#Level#0" expanded="false" />
-            <element signature="method#clear#0;class#Level#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Environment.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="259">
-          <caret line="58" column="5" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="5" />
-          <folding>
-            <element signature="e#3316#3343#0" expanded="false" />
-          </folding>
         </state>
       </provider>
     </entry>
@@ -6128,24 +5953,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="55" selection-start-line="15" selection-start-column="55" selection-end-line="15" selection-end-column="55" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BleedableEntityInterface.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="136">
-          <caret line="8" column="27" selection-start-line="8" selection-start-column="27" selection-end-line="8" selection-end-column="27" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/DetachableEntityParentInterface.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="204">
@@ -6158,13 +5965,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="663">
           <caret line="39" column="28" selection-start-line="39" selection-start-column="28" selection-end-line="39" selection-end-column="28" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#454#455#0" expanded="true" />
-            <element signature="e#528#529#0" expanded="true" />
-            <element signature="e#1036#1037#0" expanded="true" />
-            <element signature="e#1072#1073#0" expanded="true" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -6228,46 +6029,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="510">
-          <caret line="57" column="82" selection-start-line="57" selection-start-column="82" selection-end-line="57" selection-end-column="82" />
-          <folding>
-            <element signature="docComment;class#Torso#0" expanded="false" />
-            <element signature="method#onTouchDragged#0;class#Torso#0" expanded="false" />
-            <element signature="method#onTouchUp#0;class#Torso#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="59" column="71" selection-start-line="59" selection-start-column="71" selection-end-line="59" selection-end-column="71" />
-          <folding>
-            <element signature="docComment;class#NewPart#0" expanded="false" />
-            <element signature="method#onTouchDragged#0;class#NewPart#0" expanded="false" />
-            <element signature="method#onTouchUp#0;class#NewPart#0" expanded="false" />
-            <element signature="e#5768#5769#0" expanded="true" />
-            <element signature="e#5822#5823#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/OptimizableEntity.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="189">
           <caret line="27" column="62" selection-start-line="27" selection-start-column="62" selection-end-line="27" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1050">
-          <caret line="86" column="75" selection-start-line="86" selection-start-column="75" selection-end-line="86" selection-end-column="75" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -6300,10 +6065,28 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Torso.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="18" column="60" selection-start-line="18" selection-start-column="60" selection-end-line="18" selection-end-column="60" />
+          <folding>
+            <element signature="docComment;class#Torso#0" expanded="false" />
+            <element signature="method#update#0;class#Torso#0" expanded="false" />
+            <element signature="method#onTouchDown#0;class#Torso#0" expanded="false" />
+            <element signature="method#onTouchDragged#0;class#Torso#0" expanded="false" />
+            <element signature="method#onTouchUp#0;class#Torso#0" expanded="false" />
+            <element signature="method#setUsingPowerfulJoint#0;class#Torso#0" expanded="false" />
+            <element signature="method#isUsingPowerfulJoint#0;class#Torso#0" expanded="false" />
+            <element signature="method#dispose#0;class#Torso#0" expanded="false" />
+            <element signature="method#draw#1;class#Torso#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewZombie.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="251">
-          <caret line="288" column="5" selection-start-line="288" selection-start-column="5" selection-end-line="288" selection-end-column="5" />
+        <state relative-caret-position="310">
+          <caret line="31" column="75" selection-start-line="31" selection-start-column="75" selection-end-line="31" selection-end-column="75" />
           <folding>
             <element signature="docComment;class#NewZombie#0" expanded="false" />
             <element signature="docComment;field#moveAnimation#0;class#NewZombie#0" expanded="false" />
@@ -6324,10 +6107,10 @@
             <element signature="method#checkDirection#0;class#NewZombie#0" expanded="false" />
             <element signature="method#setDirection#0;class#NewZombie#0" expanded="false" />
             <element signature="method#handleGetup#0;class#NewZombie#0" expanded="false" />
-            <element signature="e#14294#14361#0" expanded="false" />
+            <element signature="e#14338#14405#0" expanded="false" />
             <element signature="method#syncEntitiesToAnimation#0;class#NewZombie#0" expanded="false" />
             <element signature="method#detachAnimationLimbs#0;class#NewZombie#0" expanded="false" />
-            <element signature="class#17501:17718" expanded="false" />
+            <element signature="class#17545:17762" expanded="false" />
             <element signature="method#getDistanceToObjective#0;class#NewZombie#0" expanded="false" />
             <element signature="docComment;method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
             <element signature="method#onAnimationComplete#0;class#NewZombie#0" expanded="false" />
@@ -6353,6 +6136,113 @@
             <element signature="method#dispose#0;class#NewZombie#0" expanded="false" />
             <element signature="method#draw#1;class#NewZombie#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/android/assets/zombies/blood.atlas">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/Environment.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="381">
+          <caret line="58" column="5" selection-start-line="58" selection-start-column="5" selection-end-line="58" selection-end-column="5" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/DetachableEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="440">
+          <caret line="85" column="18" selection-start-line="85" selection-start-column="18" selection-end-line="85" selection-end-column="18" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/level/Level.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="342">
+          <caret line="123" column="54" selection-start-line="123" selection-start-column="54" selection-end-line="123" selection-end-column="54" />
+          <folding>
+            <element signature="docComment;class#Level#0" expanded="false" />
+            <element signature="initializer##0;class#Level#0" expanded="false" />
+            <element signature="method#Level#0;class#Level#0" expanded="false" />
+            <element signature="method#updateCamera#0;class#Level#0" expanded="false" />
+            <element signature="method#addDrawableEntity#0;class#Level#0" expanded="false" />
+            <element signature="method#getDrawableEntities#0;class#Level#0" expanded="false" />
+            <element signature="method#clear#0;class#Level#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/interfaces/BleedableEntityInterface.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="33" selection-start-line="10" selection-start-column="33" selection-end-line="10" selection-end-column="33" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/screens/GameScreen.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="731">
+          <caret line="119" column="10" selection-start-line="119" selection-start-column="10" selection-end-line="119" selection-end-column="10" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/Part.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="226">
+          <caret line="96" column="39" selection-start-line="96" selection-start-column="39" selection-end-line="96" selection-end-column="39" />
+          <folding>
+            <element signature="docComment;class#Part#0" expanded="false" />
+            <element signature="e#7265#7332#0" expanded="false" />
+            <element signature="e#7624#7661#0" expanded="false" />
+            <element signature="e#8230#8270#0" expanded="false" />
+            <element signature="e#10153#10202#0" expanded="false" />
+            <element signature="method#getState#0;class#Part#0" expanded="false" />
+            <element signature="method#setPosition#0;class#Part#0" expanded="false" />
+            <element signature="method#setState#0;class#Part#0" expanded="false" />
+            <element signature="method#destroy#0;class#Part#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/entity/BleedableEntity.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="423">
+          <caret line="88" column="9" selection-start-line="88" selection-start-column="9" selection-end-line="88" selection-end-column="9" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#2367#2374#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/zombies/NewPart.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="493">
+          <caret line="97" column="73" selection-start-line="97" selection-start-column="73" selection-end-line="97" selection-end-column="73" />
+          <folding>
+            <element signature="docComment;class#NewPart#0" expanded="false" />
+            <element signature="method#onTouchDragged#0;class#NewPart#0" expanded="false" />
+            <element signature="method#onTouchUp#0;class#NewPart#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/core/src/com/fcfruit/zombiesmash/effects/Blood.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="406">
+          <caret line="76" column="45" selection-start-line="76" selection-start-column="45" selection-end-line="76" selection-end-column="45" />
+          <folding />
         </state>
       </provider>
     </entry>

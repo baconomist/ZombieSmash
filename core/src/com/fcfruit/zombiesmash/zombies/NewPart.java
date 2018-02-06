@@ -11,9 +11,11 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.BleedableEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
@@ -31,16 +33,16 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntity
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, BleedableEntityInterface, NameableEntity
 {
     private String name;
 
     private ContainerEntityInterface containerEntity;
     private OptimizableEntity optimizableEntity;
-
     private DrawablePhysicsEntity drawableEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
+    private BleedableEntityInterface bleedableEntity;
 
     public NewPart(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
     {
@@ -58,6 +60,8 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.optimizableEntity = new OptimizableEntity(this, this, null);
+
+        this.bleedableEntity = new BleedableEntity(this);
 
         this.getPhysicsBody().setAwake(false);
         this.getPhysicsBody().setActive(false);
@@ -78,6 +82,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     public void draw(SpriteBatch batch)
     {
         this.drawableEntity.draw(batch);
+        this.bleedableEntity.draw(batch);
     }
 
     @Override
@@ -85,6 +90,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     {
         this.drawableEntity.update(delta);
         this.interactivePhysicsEntity.update(delta);
+        this.bleedableEntity.update(delta);
 
         this.optimizableEntity.update(delta);
         for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())

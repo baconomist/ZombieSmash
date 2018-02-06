@@ -83,7 +83,7 @@ public class DetachableEntity implements DetachableEntityInterface
         {
             for(Joint joint : this.joints)
             {
-                Gdx.app.log("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
+                //Gdx.app.log("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
                 if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 100f || joint.getReactionForce(1f / Physics.STEP_TIME).x < -100f
                         || joint.getReactionForce(1f / Physics.STEP_TIME).y > 100f || joint.getReactionForce(1f / Physics.STEP_TIME).y < -100f)
                 {

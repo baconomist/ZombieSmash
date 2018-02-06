@@ -167,8 +167,9 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 ArrayList<Joint> joints = new ArrayList<Joint>();
                 for (Joint joint : rubeScene.getJoints())
                 {
-                    // Only detachableEntity/Child gets the joits
-                    if(joint.getBodyB() == body){
+                    // Only detachableEntity/Child gets the joints
+                    if (joint.getBodyB() == body)
+                    {
                         joints.add(joint);
                     }
                 }
@@ -192,13 +193,14 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     }
 
     /**
-     * Zombie subclasses should override this
-     * **/
-    void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity){
+     * Zombie subclasses should override this method
+     **/
+    void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
+    {
         physicsBody.setUserData("");
 
         // If child
-        if(joints.size() > 0)
+        if (joints.size() > 0)
         {
             NewPart part = new NewPart(bodyName, sprite, physicsBody, joints, containerEntity);
             this.getDrawableEntities().put(bodyName, part);
@@ -206,7 +208,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.getDetachableEntities().put(bodyName, part);
         }
         //If parent
-        else if(bodyName.equals("torso")){
+        else if (bodyName.equals("torso"))
+        {
             Torso torso = new Torso(bodyName, sprite, physicsBody, containerEntity);
             this.getDrawableEntities().put(bodyName, torso);
             this.getInteractiveEntities().put(bodyName, torso);
