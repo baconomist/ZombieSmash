@@ -8,6 +8,8 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.entity.BleedableEntity;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -30,17 +32,26 @@ public class CollisionListener implements ContactListener
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
         {
+            if (contact.getFixtureA().getUserData() instanceof Blood)
+            {
+                ((Blood)contact.getFixtureA().getUserData()).readyForDestroy = true;
+            }
+            else if (contact.getFixtureB().getUserData() instanceof Blood)
+            {
+                ((Blood)contact.getFixtureB().getUserData()).readyForDestroy = true;
+            }
 
 
-            for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities()) {
-                if(drawableEntityInterface instanceof ContainerEntityInterface)
+            for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+            {
+                if (drawableEntityInterface instanceof ContainerEntityInterface)
                 {
-                    for(DetachableEntityInterface detachableEntityInterface : ((ContainerEntityInterface) drawableEntityInterface).getDetachableEntities().values())
+                    for (DetachableEntityInterface detachableEntityInterface : ((ContainerEntityInterface) drawableEntityInterface).getDetachableEntities().values())
                     {
-                        if(!detachableEntityInterface.getState().equals("detached") && detachableEntityInterface.shouldDetach())
+                        if (!detachableEntityInterface.getState().equals("detached") && detachableEntityInterface.shouldDetach())
                         {
                             detachableEntityInterface.setState("waiting_for_detach");
-                            if(!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
+                            if (!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
                             {
                                 Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
                             }

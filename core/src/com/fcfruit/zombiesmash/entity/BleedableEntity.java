@@ -84,6 +84,7 @@ public class BleedableEntity implements BleedableEntityInterface
         {
             if (blood.readyForDestroy)
             {
+                blood.destroy();
                 this.blood.remove(blood);
             }
         }

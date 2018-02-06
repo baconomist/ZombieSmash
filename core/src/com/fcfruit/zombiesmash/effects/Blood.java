@@ -42,7 +42,7 @@ public class Blood
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        physicsBody = Environment.physics.getWorld().createBody(bodyDef);
+        this.physicsBody = Environment.physics.getWorld().createBody(bodyDef);
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.1f);
@@ -53,7 +53,7 @@ public class Blood
         fixtureDef.friction = 0;
         fixtureDef.density = 0.3f;
 
-        fixture = physicsBody.createFixture(fixtureDef);
+        fixture = this.physicsBody.createFixture(fixtureDef);
         fixture.setUserData(this);
 
 
@@ -63,8 +63,8 @@ public class Blood
         {
             randomForceX = randomForceX * -1;
         }
-        physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
-        physicsBody.setTransform(x, y, 0);
+        this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
+        this.physicsBody.setTransform(x, y, 0);
 
         sprite = new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png")));
         sprite.setScale(0.25f);
@@ -74,24 +74,22 @@ public class Blood
     public void draw(SpriteBatch batch)
     {
 
-        if (physicsBody.getPosition().y > 0.1f && this.sprite != null)
-        {
-            float x = (float) (offsetX * Math.cos(Math.toRadians(rotationOffset)) - offsetY * Math.sin(Math.toRadians(rotationOffset)));
-            float y = (float) (offsetX * Math.sin(Math.toRadians(rotationOffset)) + offsetY * Math.cos(Math.toRadians(rotationOffset)));
+        float x = (float) (offsetX * Math.cos(Math.toRadians(rotationOffset)) - offsetY * Math.sin(Math.toRadians(rotationOffset)));
+        float y = (float) (offsetX * Math.sin(Math.toRadians(rotationOffset)) + offsetY * Math.cos(Math.toRadians(rotationOffset)));
 
 
-            Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(
-                    new Vector3(physicsBody.getPosition().x - x, physicsBody.getPosition().y - y, 0)));
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(
+                new Vector3(this.physicsBody.getPosition().x - x, this.physicsBody.getPosition().y - y, 0)));
 
-            sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight() / 2);
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight() / 2);
 
-            sprite.draw(batch);
-        } else
-        {
-            this.physicsBody.setAwake(false);
-            this.sprite = null;
-            this.readyForDestroy = true;
-        }
+        sprite.draw(batch);
+
+    }
+    
+    public void destroy(){
+        Environment.physics.getWorld().destroyBody(this.physicsBody);
+        this.sprite = null;
     }
 
 }
