@@ -421,23 +421,15 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, this.animatableGraphicsEntity.getSize().y));
 
             this.isGettingUp = true;
+
+            this.onGetupStart();
+
         }
 
         // -0.3f to give it wiggle room to detect get up
         if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f)
         {
-            this.isGettingUp = false;
-            this.isPhysicsEnabled = false;
-
-            this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, 0));
-            if (getUpMouseJoint != null)
-            {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
-                getUpMouseJoint = null;
-            }
-
-            // Restart animation
-            this.animatableGraphicsEntity.restartAnimation();
+            this.onGetupEnd();
         }
 
     }
@@ -551,11 +543,31 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
     }
 
-    private void onGetup()
+    private void onGetupStart()
     {
-        this.disable_optimization();
+
+    }
+
+    private void onGetupEnd()
+    {
         this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
         this.shouldObjectiveOnce = true;
+
+        this.isGettingUp = false;
+        this.isPhysicsEnabled = false;
+
+        this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, 0));
+        if (getUpMouseJoint != null)
+        {
+            Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            getUpMouseJoint = null;
+        }
+
+        // Restart animation
+        this.animatableGraphicsEntity.restartAnimation();
+
+        this.checkDirection();
+
     }
 
     private void onDirectionChange()
@@ -640,7 +652,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
-            Gdx.app.log("aaaaa", ""+this.movableEntity.isMoving());
+            Gdx.app.log("aaaaa", "" + this.movableEntity.isMoving());
             this.interactiveGraphicsEntity.update(delta);
 
             if (this.isTouching())
@@ -656,7 +668,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
             if (this.isGettingUp)
             {
-                this.onGetup();
+                this.disable_optimization();
             }
 
             this.optimizableEntity.update(delta);
