@@ -72,6 +72,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
      * Zombie Specific Fields
      **/
     private boolean isPhysicsEnabled;
+    private boolean shouldObjectiveOnce;
     private int direction;
     private int speed;
     ArrayList detachableEntitiesToStayAlive;
@@ -100,6 +101,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.optimizableEntity = new OptimizableEntity(null, null, this);
 
         this.isPhysicsEnabled = false;
+        this.shouldObjectiveOnce = true;
         this.detachableEntitiesToStayAlive = new ArrayList();
 
         this.timeBeforeGetup = 5000;
@@ -286,11 +288,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     }
 
-    private boolean isJustAtObjective()
-    {
-        return !this.isAttacking() && this.isAtObjective();
-    }
-
     private boolean isAttacking()
     {
         return this.animatableGraphicsEntity.getAnimation().contains("attack");
@@ -426,7 +423,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.isGettingUp = true;
         }
 
-        // -0.2f to give it wiggle room to detect get up
+        // -0.3f to give it wiggle room to detect get up
         if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f)
         {
             this.isGettingUp = false;
@@ -493,13 +490,12 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
     }
 
-
     /**
      * Events
      **/
     private void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        if (entry.getAnimation().getName().equals("attack"))
+        if (entry.getAnimation().getName().equals("attack1"))
         {
             this.onAttack1Complete();
         } else if (entry.getAnimation().getName().equals("attack2"))
@@ -507,7 +503,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.onAttack2Complete();
         }
 
-        if (entry.getAnimation().getName().equals(this.moveAnimation))
+        if (entry.getAnimation().getName().equals(this.moveAnimation) && !this.isAtObjective())
         {
             if (this.direction == 0)
             {
@@ -526,17 +522,26 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onObjectiveOnce()
     {
+        Gdx.app.log("onObjectiveOnce", "objOnce");
+        /**
+         * You need the +1 in the random call so that the bounds is always positive
+         * Sometimes distanceToObjective is 0 which is not a positive bounds
+         * **/
         if (this.direction == 0)
         {
-            this.movableEntity.moveBy(new Vector2(new Random().nextInt((int) this.getDistanceToObjective()), 0));
+            this.movableEntity.moveBy(new Vector2(new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
         } else
         {
-            this.movableEntity.moveBy(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective()), 0));
+            this.movableEntity.moveBy(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
         }
+
+        this.shouldObjectiveOnce = false;
+
     }
 
     private void onObjective()
     {
+        Gdx.app.log("onObjective", "obj");
         if (this.animatableGraphicsEntity.timesAnimationCompleted() > 2)
         {
             this.animatableGraphicsEntity.setAnimation("attack2");
@@ -549,6 +554,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private void onGetup()
     {
         this.disable_optimization();
+        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
+        this.shouldObjectiveOnce = true;
     }
 
     private void onDirectionChange()
@@ -561,10 +568,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         this.detachAnimationLimbs();
 
-        if (this.isJustAtObjective())
+        if (this.shouldObjectiveOnce)
         {
             this.onObjectiveOnce();
-        } else if (this.isAtObjective())
+        } else if (this.isAtObjective() && !this.movableEntity.isMoving())
         {
             this.onObjective();
         }
@@ -633,6 +640,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
+            Gdx.app.log("aaaaa", ""+this.movableEntity.isMoving());
             this.interactiveGraphicsEntity.update(delta);
 
             if (this.isTouching())
