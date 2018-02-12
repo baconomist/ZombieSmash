@@ -1,51 +1,33 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.physics.box2d.World;
-import com.fcfruit.zombiesmash.zombies.Zombie;
+import com.fcfruit.zombiesmash.Environment;
 
-public class SuicideZombie extends Zombie{
+public class SuicideZombie extends NewZombie
+{
 
-    public SuicideZombie(Integer id){
+    public SuicideZombie(Integer id)
+    {
         super(id);
 
         this.moveAnimation = "run";
 
-        partsToStayAlive.add("head");
-        partsToStayAlive.add("torso");
-        partsToStayAlive.add("left_arm");
-        partsToStayAlive.add("right_arm");
-        partsToStayAlive.add("left_leg");
-        partsToStayAlive.add("right_leg");
-
-        type = "suicide";
-
-        animationSetup();
+        this.detachableEntitiesToStayAlive.add("head");
+        this.detachableEntitiesToStayAlive.add("left_arm");
+        this.detachableEntitiesToStayAlive.add("right_arm");
+        this.detachableEntitiesToStayAlive.add("left_leg");
+        this.detachableEntitiesToStayAlive.add("right_leg");
 
     }
 
     @Override
-    public void constructPhysicsBody(World world, boolean flip){
-
-        super.constructPhysicsBody(world, flip);
-
-        parts.get("grenade").isDetachable = false;
-
+    protected void onAttack1Complete()
+    {
+        Environment.level.objective.takeDamage(3f);
     }
 
     @Override
-    void onGetUp(){
-        this.currentAnimation = "run";
+    protected void onObjective()
+    {
+        this.setAnimation("attack1");
     }
-
-    @Override
-    void attack() {
-        super.attack();
-
-        this.currentAnimation = "attack1";
-
-    }
-
-    @Override
-    void onDeath(){}
-
 }

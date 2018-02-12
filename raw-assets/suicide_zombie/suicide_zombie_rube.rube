@@ -43,6 +43,13 @@
     
     {
       "class" : "body",
+      "displayName" : "isPart",
+      "name" : "isPart",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "body",
       "comboboxEntries" : 
       [
         
@@ -77,13 +84,6 @@
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
-    },
-    
-    {
-      "class" : "body",
-      "displayName" : "isPart",
-      "name" : "isPart",
-      "type" : "bool"
     }
   ],
   "metaworld" : 
@@ -195,30 +195,6 @@
       },
       
       {
-        "angle" : 0,
-        "angularVelocity" : 0,
-        "awake" : true,
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "bloodJoint"
-          }
-        ],
-        "id" : 2,
-        "linearVelocity" : 0,
-        "massData-mass" : 1,
-        "name" : "body0",
-        "position" : 
-        {
-          "x" : 0.3752720355987549,
-          "y" : 0.8254007101058960
-        },
-        "type" : "dynamic"
-      },
-      
-      {
         "angle" : 1.570796370506287,
         "angularVelocity" : 0,
         "awake" : true,
@@ -292,7 +268,7 @@
           "y" : 0.007864730432629585
         },
         "massData-mass" : 0.05192513391375542,
-        "name" : "body1",
+        "name" : "grenade",
         "position" : 
         {
           "x" : 0.8567439913749695,
@@ -942,36 +918,18 @@
       },
       
       {
-        "anchorA" : 0,
-        "anchorB" : 
-        {
-          "x" : -0.2082580029964447,
-          "y" : -0.05116249993443489
-        },
-        "bodyA" : 2,
-        "bodyB" : 6,
-        "collideConnected" : false,
-        "dampingRatio" : 0,
-        "frequency" : 0,
-        "id" : 6,
-        "name" : "joint7",
-        "referenceAngle" : 0,
-        "type" : "weld"
-      },
-      
-      {
         "anchorA" : 
-        {
-          "x" : 0.03649149835109711,
-          "y" : -0.0004998460062779486
-        },
-        "anchorB" : 
         {
           "x" : 0.1911630034446716,
           "y" : 0.01881710067391396
         },
-        "bodyA" : 3,
-        "bodyB" : 8,
+        "anchorB" : 
+        {
+          "x" : 0.03649149835109711,
+          "y" : -0.0004998460062779486
+        },
+        "bodyA" : 8,
+        "bodyB" : 3,
         "collideConnected" : false,
         "dampingRatio" : 0,
         "frequency" : 0,
@@ -984,16 +942,16 @@
       {
         "anchorA" : 
         {
-          "x" : -0.03667059913277626,
-          "y" : 0.04217800125479698
-        },
-        "anchorB" : 
-        {
           "x" : 0.230552002787590,
           "y" : -0.02603979967534542
         },
-        "bodyA" : 3,
-        "bodyB" : 4,
+        "anchorB" : 
+        {
+          "x" : -0.03667059913277626,
+          "y" : 0.04217800125479698
+        },
+        "bodyA" : 4,
+        "bodyB" : 3,
         "collideConnected" : false,
         "dampingRatio" : 0,
         "frequency" : 0,

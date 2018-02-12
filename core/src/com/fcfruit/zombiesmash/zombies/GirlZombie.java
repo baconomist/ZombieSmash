@@ -27,44 +27,17 @@ import java.util.Random;
  * Created by Lucas on 2017-11-05.
  */
 
-public class GirlZombie extends Zombie {
+public class GirlZombie extends NewZombie {
     
     public GirlZombie(Integer id){
         super(id);
 
         this.moveAnimation = "run";
 
-        partsToStayAlive.add("head");
-        partsToStayAlive.add("torso");
-        partsToStayAlive.add(new String[]{"left_arm", "right_arm"});
-        partsToStayAlive.add("left_leg");
-        partsToStayAlive.add("right_leg");
-
-        this.type = "girl";
-
-        animationSetup();
+        this.detachableEntitiesToStayAlive.add("head");
+        this.detachableEntitiesToStayAlive.add(new String[]{"left_arm", "right_arm"});
+        this.detachableEntitiesToStayAlive.add("left_leg");
+        this.detachableEntitiesToStayAlive.add("right_leg");
 
     }
-
-
-
-    @Override
-    void crawl(){
-
-    }
-
-    @Override
-    void attack() {
-        super.attack();
-
-        if (timesCompleteAttack1 < 2) {
-            this.currentAnimation = "attack1";
-        } else {
-            this.currentAnimation = "attack2";
-        }
-
-    }
-
-
-    
 }

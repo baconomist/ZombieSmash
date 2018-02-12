@@ -28,10 +28,12 @@ import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.MovableEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -46,7 +48,9 @@ import java.util.Random;
  * Created by Lucas on 2017-07-30.
  */
 
-public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface, ContainerEntityInterface, OptimizableEntityInterface
+public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface, 
+        ContainerEntityInterface, OptimizableEntityInterface,
+        AnimatableEntityInterface, MovableEntityInterface
 {
 
     /**
@@ -96,7 +100,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.speed = 1;
 
         this.movableEntity = new MovableEntity(this);
-        this.movableEntity.setSpeed(this.speed);
+        this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
 
@@ -144,7 +148,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         for (Body body : rubeScene.getBodies())
         {
-
+            Gdx.app.log("aaaaa", ""+rubeScene.getCustomPropertiesForItem(body, false));
             if ((Boolean) rubeScene.getCustom(body, "isPart"))
             {
 
@@ -290,7 +294,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private boolean isAttacking()
     {
-        return this.animatableGraphicsEntity.getAnimation().contains("attack");
+        return this.animatableGraphicsEntity.getCurrentAnimation().contains("attack");
     }
 
     private boolean isAlive()
@@ -499,10 +503,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             if (this.direction == 0)
             {
-                this.movableEntity.moveBy(new Vector2(1f, 0));
+                this.moveBy(new Vector2(1f, 0));
             } else
             {
-                this.movableEntity.moveBy(new Vector2(-1f, 0));
+                this.moveBy(new Vector2(-1f, 0));
             }
         }
 
@@ -521,19 +525,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
          * **/
         if (this.direction == 0)
         {
-            this.movableEntity.moveBy(new Vector2(new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
+            this.moveBy(new Vector2(new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
         } else
         {
-            this.movableEntity.moveBy(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
+            this.moveBy(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
         }
 
         this.shouldObjectiveOnce = false;
 
     }
 
-    private void onObjective()
+    protected void onObjective()
     {
-        Gdx.app.log("onObjective", "obj");
         if (this.animatableGraphicsEntity.timesAnimationCompleted() > 2)
         {
             this.animatableGraphicsEntity.setAnimation("attack2");
@@ -583,7 +586,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         if (this.shouldObjectiveOnce)
         {
             this.onObjectiveOnce();
-        } else if (this.isAtObjective() && !this.movableEntity.isMoving())
+        } else if (this.isAtObjective() && !this.isMoving())
         {
             this.onObjective();
         }
@@ -606,18 +609,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);
             this.getUpMouseJoint = null;
         }
-        this.movableEntity.clear();
+        this.movableEntity.clearMoveQueue();
         this.isPhysicsEnabled = true;
         this.isGettingUp = false;
         this.getUpTimer = System.currentTimeMillis();
     }
 
-    private void onAttack1Complete()
+    protected void onAttack1Complete()
     {
         Environment.level.objective.takeDamage(0.5f);
     }
 
-    private void onAttack2Complete()
+    protected void onAttack2Complete()
     {
         Environment.level.objective.takeDamage(1f);
     }
@@ -652,7 +655,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
-            Gdx.app.log("aaaaa", "" + this.movableEntity.isMoving());
+            Gdx.app.log("aaaaa", "" + this.isMoving());
             this.interactiveGraphicsEntity.update(delta);
 
             if (this.isTouching())
@@ -834,6 +837,48 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void setDetachableEntities(HashMap<String, DetachableEntityInterface> detachableEntities)
     {
         this.containerEntity.setDetachableEntities(detachableEntities);
+    }
+
+    @Override
+    public void moveBy(Vector2 moveBy)
+    {
+        this.movableEntity.moveBy(moveBy);
+    }
+
+    @Override
+    public void moveTo(Vector2 moveTo)
+    {
+        this.movableEntity.moveTo(moveTo);
+    }
+
+    @Override
+    public boolean isMoving()
+    {
+        return this.movableEntity.isMoving();
+    }
+
+    @Override
+    public void setSpeed(float speed)
+    {
+        this.movableEntity.setSpeed(speed);
+    }
+
+    @Override
+    public void setAnimation(String animation)
+    {
+        this.animatableGraphicsEntity.setAnimation(animation);
+    }
+
+    @Override
+    public String getCurrentAnimation()
+    {
+        return this.animatableGraphicsEntity.getCurrentAnimation();
+    }
+
+    @Override
+    public int timesAnimationCompleted()
+    {
+        return this.animatableGraphicsEntity.timesAnimationCompleted();
     }
 
     @Override

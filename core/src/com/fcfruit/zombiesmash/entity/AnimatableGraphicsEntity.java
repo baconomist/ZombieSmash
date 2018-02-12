@@ -16,13 +16,14 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.BoundingBoxAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 
 /**
  * Created by Lucas on 2018-01-13.
  */
 
-public class AnimatableGraphicsEntity implements DrawableEntityInterface
+public class AnimatableGraphicsEntity implements DrawableEntityInterface, AnimatableEntityInterface
 {
 
     private Skeleton skeleton;
@@ -122,7 +123,7 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface
         return this.timesAnimationCompleted;
     }
 
-    public String getAnimation()
+    public String getCurrentAnimation()
     {
         return this.animation;
     }

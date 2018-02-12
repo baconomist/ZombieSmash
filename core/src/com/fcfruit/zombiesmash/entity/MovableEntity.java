@@ -70,7 +70,7 @@ public class MovableEntity implements MovableEntityInterface
         return this.moveToPosition != null && (Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > 0.01f || Math.abs(this.drawableEntity.getPosition().y - this.moveToPosition.y) > 0.01f);
     }
 
-    public void clear(){
+    public void clearMoveQueue(){
         this.moveToPosition = null;
     }
 

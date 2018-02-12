@@ -1,7 +1,7 @@
 {
 
   "right":{
-    "big_zombie": {
+    "suicide_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
@@ -9,13 +9,13 @@
     }
   },
   "middle":{
-    "big_zombie": {
+    "suicide_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
       "position":"middle_left"
     },
-    "big_zombie": {
+    "suicide_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
@@ -23,7 +23,7 @@
     }
   },
   "right":{
-    "big_zombie": {
+    "suicide_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
