@@ -2,7 +2,7 @@
 
   "right":{
     "suicide_zombie": {
-      "quantity": 1,
+      "quantity": 2,
       "init_delay": 0,
       "spawn_delay": 1,
       "position":"right"
@@ -24,7 +24,7 @@
   },
   "right":{
     "suicide_zombie": {
-      "quantity": 1,
+      "quantity": 2,
       "init_delay": 0,
       "spawn_delay": 1,
       "position": "right"

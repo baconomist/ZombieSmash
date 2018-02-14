@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.level;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -13,6 +14,7 @@ import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 
@@ -57,15 +59,15 @@ public class Level
 
     int currentJsonItem;
 
-    boolean zombiesDead = false;
-
     boolean isCameraMoving = false;
+    boolean zombiesDead = false;
 
     public Level(int level_id)
     {
         this.level_id = level_id;
         this.currentJsonItem = 0;
         this.drawableEntities = new ArrayList<DrawableEntityInterface>();
+
     }
 
 
@@ -77,7 +79,6 @@ public class Level
         {
             drawableEntity.draw(batch);
             drawableEntity.draw(batch, skeletonRenderer);
-
         }
 
     }
@@ -87,8 +88,10 @@ public class Level
 
         Collections.reverse(this.drawableEntities);
 
-        for(DrawableEntityInterface drawableEntity : this.drawableEntities){
-            if(drawableEntity instanceof InteractiveEntityInterface){
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
+        {
+            if (drawableEntity instanceof InteractiveEntityInterface)
+            {
                 ((InteractiveEntityInterface) drawableEntity).onTouchDown(screenX, screenY, pointer);
             }
         }
@@ -126,21 +129,80 @@ public class Level
         // it doesn't draw the sprites, only the light
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
 
-
-        for (DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
-            drawableEntityInterface.update(delta);
+            drawableEntity.update(delta);
+
         }
 
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
+        {
+            if (drawableEntity instanceof NewZombie)
+            {
+                if (((NewZombie) drawableEntity).isAlive())
+                {
+                    this.zombiesDead = false;
+                    break;
+                } else
+                {
+                    this.zombiesDead = true;
+                }
+            }
+        }
+
+
+        this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
+
+        if (!this.isCameraMoving) {
+
+            for (Spawner s : spawners) {
+                s.update();
+            }
+
+
+            if (zombiesDead) {
+                if (this.data.size - 1 == this.currentJsonItem)
+                {
+                    this.levelEnd = true;
+                } else
+                {
+                    this.clear();
+
+                    this.currentJsonItem += 1;
+                    this.spawners = new ArrayList<Spawner>();
+
+                    for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
+                    {
+                        this.spawners.add(new Spawner(jsonValue));
+                    }
+
+                    this.isCameraMoving = true;
+                    this.zombiesDead = false;
+                }
+            }
+        }
+        else if(Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x < -0.1f ){
+
+            if(Environment.physicsCamera.position.x < positions.get(data.get(this.currentJsonItem).name).x) {
+                Environment.gameCamera.position.x += 5f;
+                Environment.physicsCamera.position.x += 5f / 192f;
+            }
+            else{
+                Environment.gameCamera.position.x -= 5f;
+                Environment.physicsCamera.position.x -= 5f / 192f;
+            }
+            Environment.gameCamera.update();
+            Environment.physicsCamera.update();
+        }
+        else{
+            this.isCameraMoving = false;
+            Environment.physics.constructPhysicsBoundries();
+        }
+
+
+
     }
 
-    public void updateCamera()
-    {
-        Environment.physicsCamera.update();
-        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * 192f;
-        Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundries();
-    }
 
     public void addDrawableEntity(DrawableEntityInterface drawableEntity)
     {
