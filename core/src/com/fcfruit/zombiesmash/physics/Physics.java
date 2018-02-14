@@ -12,8 +12,9 @@ import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-
+import com.sun.org.apache.xerces.internal.impl.dv.dtd.ENTITYDatatypeValidator;
 
 
 import java.util.ArrayList;
@@ -74,13 +75,21 @@ public class Physics
 
         this.lighting.update();
 
-        for(DetachableEntityInterface detachableEntityInterface : Environment.detachableEntityDetachQueue){
+        for (DetachableEntityInterface detachableEntityInterface : Environment.detachableEntityDetachQueue)
+        {
             // Double check waiting for detach I guess...
-            if(detachableEntityInterface.getState().equals("waiting_for_detach")){
+            if (detachableEntityInterface.getState().equals("waiting_for_detach"))
+            {
                 detachableEntityInterface.detach();
             }
         }
         Environment.detachableEntityDetachQueue.clear();
+
+        for (ExplodableEntityInterface explodableEntityInterface : Environment.explodableEntityQueue)
+        {
+            explodableEntityInterface.explode();
+        }
+        Environment.explodableEntityQueue.clear();
 
     }
 

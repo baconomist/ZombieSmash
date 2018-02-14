@@ -8,7 +8,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.utils.Json;
+import com.fcfruit.zombiesmash.entity.ExplosionEntityParticle;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.Objective;
@@ -80,6 +82,8 @@ public class    Environment {
     public static ArrayList<InteractiveEntityInterface> touchedDownItems = new ArrayList<InteractiveEntityInterface>();
 
     public static ArrayList<DetachableEntityInterface> detachableEntityDetachQueue = new ArrayList<DetachableEntityInterface>();
+
+    public static ArrayList<ExplodableEntityInterface> explodableEntityQueue = new ArrayList<ExplodableEntityInterface>();
 
 }
 
