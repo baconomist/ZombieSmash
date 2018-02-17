@@ -10,7 +10,6 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Event;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
@@ -38,8 +37,8 @@ public class ExplosionEntityParticle
         bd.position.x = particlePos.x;
         bd.position.y = particlePos.y;// start at blast center
         rayDir.scl(blastPower);
-        bd.linearVelocity.x = rayDir.x*100;
-        bd.linearVelocity.y = rayDir.y*100;
+        bd.linearVelocity.x = rayDir.x*10;
+        bd.linearVelocity.y = rayDir.y*10;
         physicsBody = world.createBody(bd);
         //create a reference to this class in the body(this allows us to loop through the world bodies and check if the body is an Explosion particle)
         physicsBody.setUserData(this);
@@ -49,7 +48,7 @@ public class ExplosionEntityParticle
 
         FixtureDef fd = new FixtureDef();
         fd.shape = circleShape;
-        fd.density = 120 / (float) NUMRAYS; // very high - shared across all particles
+        fd.density = 12000 / (float) NUMRAYS; // very high - shared across all particles
         fd.friction = 0; // friction not necessary
         fd.restitution = 0.99f; // high restitution to reflect off obstacles
         fd.filter.groupIndex = -1; // particles should not collide with each other

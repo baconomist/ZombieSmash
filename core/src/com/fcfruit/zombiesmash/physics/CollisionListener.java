@@ -8,7 +8,6 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Event;
 import com.fcfruit.zombiesmash.effects.Blood;
 import com.fcfruit.zombiesmash.entity.BleedableEntity;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;

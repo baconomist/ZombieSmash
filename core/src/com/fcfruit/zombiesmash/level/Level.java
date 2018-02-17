@@ -9,7 +9,6 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Event;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -129,12 +128,6 @@ public class Level
         // When it takes too long in a spritebatch call,
         // it doesn't draw the sprites, only the light
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
-
-        for (Event event : Environment.eventQueue)
-        {
-            event.fire();
-        }
-        Environment.eventQueue.clear();
 
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {

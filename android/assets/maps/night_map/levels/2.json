@@ -1,14 +1,21 @@
 {
 
   "right":{
-    "suicide_zombie": {
-      "quantity": 20,
+    "big_zombie": {
+      "quantity": 10,
       "init_delay": 0,
-      "spawn_delay": 0.5,
+      "spawn_delay": 2,
+      "position":"right"
+    },
+    "suicide_zombie": {
+      "quantity": 10,
+      "init_delay": 0,
+      "spawn_delay": 2,
       "position":"right"
     }
   }
   ,
+
   "middle":{
     "suicide_zombie": {
       "quantity": 1,
@@ -30,8 +37,16 @@
       "spawn_delay": 1,
       "position": "right"
     }
-  }
+  },
 
+  "left":{
+    "suicide_zombie": {
+      "quantity": 20,
+      "init_delay": 0,
+      "spawn_delay": 0.5,
+      "position":"left"
+    }
+  }
 
 
 }
