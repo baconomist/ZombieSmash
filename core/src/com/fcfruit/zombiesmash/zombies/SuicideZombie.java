@@ -1,6 +1,13 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.power_ups.Grenade;
+
+import java.util.ArrayList;
 
 public class SuicideZombie extends NewZombie
 {
@@ -23,11 +30,28 @@ public class SuicideZombie extends NewZombie
     protected void onAttack1Complete()
     {
         Environment.level.objective.takeDamage(3f);
+        this.disable_optimization();
+        ((Grenade)this.containerEntity.getDrawableEntities().get("grenade")).explode();
     }
 
     @Override
     protected void onObjective()
     {
         this.setAnimation("attack1");
+    }
+
+    @Override
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
+    {
+        super.createPart(physicsBody, bodyName, sprite, joints, containerEntity);
+
+        if (bodyName.equals("grenade"))
+        {
+            Grenade grenade = new Grenade(sprite, physicsBody, joints, containerEntity);
+            this.getDrawableEntities().put("grenade", grenade);
+            this.getInteractiveEntities().put("grenade", grenade);
+            this.getDetachableEntities().put("grenade", grenade);
+        }
+
     }
 }

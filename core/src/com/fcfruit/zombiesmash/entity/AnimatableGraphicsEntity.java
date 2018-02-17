@@ -146,7 +146,6 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface, Animat
     public void restartAnimation()
     {
         // Restart animation
-        Gdx.app.log("restart", "res");
         state.setAnimation(0, this.animation, true);
     }
 

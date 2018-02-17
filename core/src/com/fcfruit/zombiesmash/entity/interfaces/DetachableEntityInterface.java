@@ -10,11 +10,9 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-06.
  */
 
-public interface DetachableEntityInterface
+public interface DetachableEntityInterface extends StateEntityInterface
 {
     void detach();
-    void setState(String state);
-    String getState();
     boolean shouldDetach();
     ContainerEntityInterface getContainer();
     ArrayList<Joint> getJoints();

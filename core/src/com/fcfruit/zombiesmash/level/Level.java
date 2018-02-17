@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Event;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -129,6 +130,12 @@ public class Level
         // it doesn't draw the sprites, only the light
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
 
+        for (Event event : Environment.eventQueue)
+        {
+            event.fire();
+        }
+        Environment.eventQueue.clear();
+
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             drawableEntity.update(delta);
@@ -153,14 +160,17 @@ public class Level
 
         this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
 
-        if (!this.isCameraMoving) {
+        if (!this.isCameraMoving)
+        {
 
-            for (Spawner s : spawners) {
+            for (Spawner s : spawners)
+            {
                 s.update();
             }
 
 
-            if (zombiesDead) {
+            if (zombiesDead)
+            {
                 if (this.data.size - 1 == this.currentJsonItem)
                 {
                     this.levelEnd = true;
@@ -180,25 +190,25 @@ public class Level
                     this.zombiesDead = false;
                 }
             }
-        }
-        else if(Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x < -0.1f ){
+        } else if (Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x < -0.1f)
+        {
 
-            if(Environment.physicsCamera.position.x < positions.get(data.get(this.currentJsonItem).name).x) {
+            if (Environment.physicsCamera.position.x < positions.get(data.get(this.currentJsonItem).name).x)
+            {
                 Environment.gameCamera.position.x += 5f;
                 Environment.physicsCamera.position.x += 5f / 192f;
-            }
-            else{
+            } else
+            {
                 Environment.gameCamera.position.x -= 5f;
                 Environment.physicsCamera.position.x -= 5f / 192f;
             }
             Environment.gameCamera.update();
             Environment.physicsCamera.update();
-        }
-        else{
+        } else
+        {
             this.isCameraMoving = false;
             Environment.physics.constructPhysicsBoundries();
         }
-
 
 
     }

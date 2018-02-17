@@ -13,11 +13,15 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
+import com.fcfruit.zombiesmash.entity.ExplodableEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -28,16 +32,14 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Grenade implements DrawableEntityInterface, DetachableEntityInterface, InteractiveEntityInterface, PhysicsEntityInterface
+public class Grenade implements DrawableEntityInterface, DetachableEntityInterface, InteractivePhysicsEntityInterface, ExplodableEntityInterface
 {
     private ContainerEntity containerEntity;
 
     private DrawablePhysicsEntity drawablePhysicsEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
-
-    private Joint[] joints;
-
+    private ExplodableEntity explodableEntity;
 
     public Grenade()
     {
@@ -54,12 +56,14 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png"))), physicsBody);
         this.detachableEntity = new DetachableEntity(joints);
 
+        this.explodableEntity = new ExplodableEntity(this, 1f);
+
     }
 
-    public Grenade(Sprite sprite, Body physicsBody, Joint[] joints, ContainerEntity containerEntity)
+    public Grenade(Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
     {
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-        this.detachableEntity = new DetachableEntity(null, containerEntity, this);
+        this.detachableEntity = new DetachableEntity(joints, containerEntity, this);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
@@ -67,23 +71,26 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.joints = joints;
+        this.explodableEntity = new ExplodableEntity(this, 1f);
+
+    }
+
+    @Override
+    public void explode()
+    {
+        this.explodableEntity.explode();
+    }
+
+    @Override
+    public boolean shouldExplode()
+    {
+        return this.explodableEntity.shouldExplode();
     }
 
     @Override
     public void detach()
     {
-        if (this.joints.length == 0)
-        {
-            this.detachableEntity.detach();
-        } else
-        {
-            for (Joint joint : this.joints)
-            {
-                Environment.physics.getWorld().destroyJoint(joint);
-            }
-        }
-
+        this.detachableEntity.detach();
     }
 
     @Override
@@ -97,6 +104,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     {
         this.drawablePhysicsEntity.update(delta);
         this.interactivePhysicsEntity.update(delta);
+        this.explodableEntity.update(delta);
     }
 
     @Override
@@ -186,6 +194,18 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     public ContainerEntity getContainer()
     {
         return this.containerEntity;
+    }
+
+    @Override
+    public void setUsingPowerfulJoint(boolean usingPowerfulJoint)
+    {
+        this.interactivePhysicsEntity.setUsingPowerfulJoint(usingPowerfulJoint);
+    }
+
+    @Override
+    public boolean isUsingPowerfulJoint()
+    {
+        return this.interactivePhysicsEntity.isUsingPowerfulJoint();
     }
 
     @Override

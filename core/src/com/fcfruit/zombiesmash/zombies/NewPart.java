@@ -3,7 +3,6 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -12,7 +11,6 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedableEntity;
-import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
@@ -23,9 +21,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.NameableEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 import java.util.ArrayList;
 
@@ -33,7 +30,7 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, BleedableEntityInterface, NameableEntity
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, BleedableEntityInterface, NameableEntityInterface
 {
     private String name;
 
@@ -62,9 +59,6 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
         this.optimizableEntity = new OptimizableEntity(this, this, null);
 
         this.bleedableEntity = new BleedableEntity(this);
-
-        this.getPhysicsBody().setAwake(false);
-        this.getPhysicsBody().setActive(false);
 
     }
 
@@ -210,6 +204,12 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     public void disable_optimization()
     {
         this.optimizableEntity.disable_optimization();
+    }
+
+    @Override
+    public boolean isOptimizationEnabled()
+    {
+        return this.optimizableEntity.isOptimizationEnabled();
     }
 
     public String getName(){

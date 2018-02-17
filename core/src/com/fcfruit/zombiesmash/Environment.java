@@ -85,5 +85,7 @@ public class    Environment {
 
     public static ArrayList<ExplodableEntityInterface> explodableEntityQueue = new ArrayList<ExplodableEntityInterface>();
 
+    public static ArrayList<Event> eventQueue = new ArrayList<Event>();
+
 }
 

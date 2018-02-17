@@ -35,8 +35,6 @@ public class Rock extends PowerUp{
         polygon = new Polygon(new float[]{0, 0, sprite.getWidth(), 0, sprite.getWidth(), sprite.getHeight(), 0, sprite.getHeight()});
         polygon.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 
-        Gdx.app.log("rock created", ""+sprite);
-
     }
 
 

@@ -35,6 +35,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -48,7 +49,7 @@ import java.util.Random;
  * Created by Lucas on 2017-07-30.
  */
 
-public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface, 
+public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface,
         ContainerEntityInterface, OptimizableEntityInterface,
         AnimatableEntityInterface, MovableEntityInterface
 {
@@ -75,7 +76,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     /**
      * Zombie Specific Fields
      **/
-    private boolean isPhysicsEnabled;
     private boolean shouldObjectiveOnce;
     private int direction;
     private int speed;
@@ -104,12 +104,13 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
 
-        this.isPhysicsEnabled = false;
         this.shouldObjectiveOnce = true;
         this.detachableEntitiesToStayAlive = new ArrayList();
 
         this.timeBeforeGetup = 5000;
         this.isGettingUp = false;
+
+        this.enable_optimization();
 
     }
 
@@ -127,7 +128,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void constructPhysicsBodies()
     {
         boolean flip = this.direction == 1;
-        Gdx.app.log("flip", "" + flip);
         World world = Environment.physics.getWorld();
 
         RubeSceneLoader loader = new RubeSceneLoader(world);
@@ -148,7 +148,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         for (Body body : rubeScene.getBodies())
         {
-            Gdx.app.log("aaaaa", ""+rubeScene.getCustomPropertiesForItem(body, false));
             if ((Boolean) rubeScene.getCustom(body, "isPart"))
             {
 
@@ -186,7 +185,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     fixture.setUserData(this);
                 }
 
-                this.createPart(body, bodyName, sprite, joints, this.containerEntity);
+                this.createPart(body, bodyName, sprite, joints, this);
 
             }
 
@@ -201,7 +200,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     /**
      * Zombie subclasses should override this method
      **/
-    void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
     {
         physicsBody.setUserData("");
 
@@ -241,7 +240,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 
         AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
+        //state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
         state.addListener(new AnimationState.AnimationStateAdapter()
         {
@@ -297,7 +296,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         return this.animatableGraphicsEntity.getCurrentAnimation().contains("attack");
     }
 
-    private boolean isAlive()
+    public boolean isAlive()
     {
 
         boolean isAlive = true;
@@ -339,7 +338,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private boolean isAnimating()
     {
-        return !this.isTouching() && !this.isPhysicsEnabled;
+        return !this.isTouching() && this.isOptimizationEnabled();
     }
 
     private boolean hasRequiredPartsForGetup()
@@ -403,8 +402,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         if (!this.isAnimating() && !this.isGettingUp && this.hasRequiredPartsForGetup() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
         {
-
-            this.disable_optimization();
 
             MouseJointDef mouseJointDef = new MouseJointDef();
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
@@ -518,7 +515,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onObjectiveOnce()
     {
-        Gdx.app.log("onObjectiveOnce", "objOnce");
         /**
          * You need the +1 in the random call so that the bounds is always positive
          * Sometimes distanceToObjective is 0 which is not a positive bounds
@@ -537,10 +533,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     protected void onObjective()
     {
-        if (this.animatableGraphicsEntity.timesAnimationCompleted() > 2)
+        if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 2 && this.animatableGraphicsEntity.getCurrentAnimation().contains("attack"))
         {
             this.animatableGraphicsEntity.setAnimation("attack2");
-        } else
+        } else if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 1)
         {
             this.animatableGraphicsEntity.setAnimation("attack1");
         }
@@ -548,7 +544,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onGetupStart()
     {
-
+        this.disable_optimization();
     }
 
     private void onGetupEnd()
@@ -557,7 +553,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.shouldObjectiveOnce = true;
 
         this.isGettingUp = false;
-        this.isPhysicsEnabled = false;
+        this.enable_optimization();
 
         this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, 0));
         if (getUpMouseJoint != null)
@@ -570,6 +566,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.animatableGraphicsEntity.restartAnimation();
 
         this.checkDirection();
+
+        Gdx.app.log("getup end******", "getup END");
 
     }
 
@@ -601,16 +599,20 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.getUpTimer = System.currentTimeMillis();
     }
 
+    private void onPhysicsEnabled()
+    {
+
+    }
+
     private void onTouching()
     {
-        this.optimizableEntity.disable_optimization();
         if (this.getUpMouseJoint != null)
         {
             Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);
             this.getUpMouseJoint = null;
         }
         this.movableEntity.clearMoveQueue();
-        this.isPhysicsEnabled = true;
+        this.disable_optimization();
         this.isGettingUp = false;
         this.getUpTimer = System.currentTimeMillis();
     }
@@ -633,7 +635,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
 
-        if (this.isTouching() || !this.isAnimating())
+        if (this.isAnimating())
+        {
+            this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
+        } else
         {
             for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
             {
@@ -642,9 +647,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
                 }
             }
-        } else
-        {
-            this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
         }
 
     }
@@ -655,7 +657,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.updateEntities(delta);
         if (this.isAlive())
         {
-            Gdx.app.log("aaaaa", "" + this.isMoving());
             this.interactiveGraphicsEntity.update(delta);
 
             if (this.isTouching())
@@ -667,17 +668,19 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             {
                 this.onAnimate();
                 this.movableEntity.update(delta);
-            }
-
-            if (this.isGettingUp)
+            } else
             {
-                this.disable_optimization();
+                this.onPhysicsEnabled();
             }
 
             this.optimizableEntity.update(delta);
 
             this.handleGetup();
+        }
 
+        if (this.isGettingUp)
+        {
+            Gdx.app.log("aaa", "" + ((PhysicsEntityInterface) this.getDrawableEntities().get("torso")).getPhysicsBody().getPosition());
         }
 
     }
@@ -685,7 +688,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public Vector2 getPosition()
     {
-        if (this.isPhysicsEnabled)
+        if (!this.isAnimating())
         {
             return this.getDrawableEntities().get("torso").getPosition();
         } else
@@ -697,7 +700,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void setPosition(Vector2 position)
     {
-        if (this.isPhysicsEnabled)
+        if (!this.isAnimating())
         {
             this.getDrawableEntities().get("torso").setPosition(position);
         } else
@@ -791,8 +794,14 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void disable_optimization()
     {
         this.optimizableEntity.disable_optimization();
+        Gdx.app.log("aaa", "disable");
     }
 
+    @Override
+    public boolean isOptimizationEnabled()
+    {
+        return this.optimizableEntity.isOptimizationEnabled();
+    }
 
     /**
      * Container

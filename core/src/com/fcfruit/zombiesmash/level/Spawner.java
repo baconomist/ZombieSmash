@@ -93,6 +93,7 @@ public class Spawner
 
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x - 2, positions.get(data.getString("position")).y));
 
+            Gdx.app.log("zombie", "added");
             Environment.level.addDrawableEntity(tempZombie);
             this.spawnedZombies += 1;
 

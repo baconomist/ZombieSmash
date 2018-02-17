@@ -59,16 +59,11 @@ public class DetachableEntity implements DetachableEntityInterface
     @Override
     public void setState(String state)
     {
-        if (state.equals("attached") && this.joints != null)
-        {
-            this.state = "attached";
-        } else if (state.equals("waiting_for_detach") && this.joints != null)
-        {
-            this.state = "waiting_for_detach";
-        } else if (state.equals("detached") && this.joints == null)
-        {
-            this.state = "detached";
-        }
+        if (state.equals("attached") || state.equals("waiting_for_detach") || state.equals("detached"))
+            this.state = state;
+        else
+            throw new AssertionError();
+        
     }
 
     public String getState()
@@ -84,8 +79,7 @@ public class DetachableEntity implements DetachableEntityInterface
             for(Joint joint : this.joints)
             {
                 //Gdx.app.log("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
-                if (joint.getReactionForce(1f / Physics.STEP_TIME).x > 100f || joint.getReactionForce(1f / Physics.STEP_TIME).x < -100f
-                        || joint.getReactionForce(1f / Physics.STEP_TIME).y > 100f || joint.getReactionForce(1f / Physics.STEP_TIME).y < -100f)
+                if (Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).x) > 100f || Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).y) > 100f)
                 {
                     return true;
                 }

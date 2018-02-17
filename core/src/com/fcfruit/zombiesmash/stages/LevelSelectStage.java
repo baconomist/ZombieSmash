@@ -102,7 +102,11 @@ public class LevelSelectStage extends Stage {
         Environment.level = new NightLevel(level);
 
         Environment.gameScreen = new GameScreen();
-        Environment.level.updateCamera();
+
+        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
+        Environment.gameCamera.update();
+        Environment.physics.constructPhysicsBoundries();
+
         Environment.game.setScreen(Environment.gameScreen);
     }
 

@@ -8,13 +8,19 @@ import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Event;
 import com.fcfruit.zombiesmash.effects.Blood;
 import com.fcfruit.zombiesmash.entity.BleedableEntity;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.ExplosionEntityParticle;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.zombies.NewPart;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
 import com.fcfruit.zombiesmash.zombies.Part;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -32,36 +38,57 @@ public class CollisionListener implements ContactListener
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
         {
+            /*
             if (contact.getFixtureA().getUserData() instanceof Blood)
             {
-                ((Blood)contact.getFixtureA().getUserData()).readyForDestroy = true;
-            }
-            else if (contact.getFixtureB().getUserData() instanceof Blood)
+                ((Blood) contact.getFixtureA().getUserData()).readyForDestroy = true;
+            } else if (contact.getFixtureB().getUserData() instanceof Blood)
             {
-                ((Blood)contact.getFixtureB().getUserData()).readyForDestroy = true;
-            }
+                ((Blood) contact.getFixtureB().getUserData()).readyForDestroy = true;
+            }*/
 
 
-            for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+            for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
             {
-                if (drawableEntityInterface instanceof ContainerEntityInterface)
+                if (drawableEntity instanceof ContainerEntityInterface)
                 {
-                    for (DetachableEntityInterface detachableEntityInterface : ((ContainerEntityInterface) drawableEntityInterface).getDetachableEntities().values())
+
+                    for (DrawableEntityInterface drawableEntity1 : ((ContainerEntityInterface) drawableEntity).getDrawableEntities().values())
                     {
-                        if (!detachableEntityInterface.getState().equals("detached") && detachableEntityInterface.shouldDetach())
+                        if (drawableEntity1 instanceof ExplodableEntityInterface)
                         {
-                            detachableEntityInterface.setState("waiting_for_detach");
-                            if (!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
+                            if (contact.getFixtureA().getBody().equals(((ExplodableEntityInterface) drawableEntity1).getPhysicsBody())
+                                    || contact.getFixtureB().getBody().equals(((ExplodableEntityInterface) drawableEntity1).getPhysicsBody()))
                             {
-                                Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
+                                if (!Environment.explodableEntityQueue.contains(drawableEntity1) && ((ExplodableEntityInterface) drawableEntity1).shouldExplode())
+                                {
+                                    Environment.explodableEntityQueue.add(((ExplodableEntityInterface) drawableEntity1));
+                                }
+                            }
+                        }
+                    }
+
+                    for (DetachableEntityInterface detachableEntity : ((ContainerEntityInterface) drawableEntity).getDetachableEntities().values())
+                    {
+                        if(contact.getFixtureA().getBody().equals(((PhysicsEntityInterface)detachableEntity).getPhysicsBody()) || contact.getFixtureB().getBody().equals(((PhysicsEntityInterface)detachableEntity).getPhysicsBody()))
+                        {
+                            if (!detachableEntity.getState().equals("detached") && detachableEntity.shouldDetach())
+                            {
+                                detachableEntity.setState("waiting_for_detach");
+                                if (!Environment.detachableEntityDetachQueue.contains(detachableEntity))
+                                {
+                                    Environment.detachableEntityDetachQueue.add(detachableEntity);
+                                }
                             }
                         }
 
                     }
                 }
+
             }
 
         }
+
     }
 
     @Override

@@ -1,5 +1,5 @@
 <component name="libraryTable">
-  <library name="com.badlogicgames.gdx:gdx-controllers-android:1.9.6@jar">
+  <library name="gdx-controllers-android-1.9.6">
     <CLASSES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.badlogicgames.gdx/gdx-controllers-android/1.9.6/adb89baaccb577c5ed558c3c1f94253e0f1fd2cf/gdx-controllers-android-1.9.6.jar!/" />
     </CLASSES>

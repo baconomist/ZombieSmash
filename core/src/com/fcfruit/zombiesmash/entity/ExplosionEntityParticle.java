@@ -1,12 +1,19 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
+import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Event;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 
 /**
  * Created by Lucas on 2018-02-13.
@@ -16,9 +23,12 @@ public class ExplosionEntityParticle
 {
     public int blastPower = 100;
     public static final int NUMRAYS = 10;
-    public Body body;
 
-    public ExplosionEntityParticle(World world, Vector2 particlePos, Vector2 rayDir){
+    public Body physicsBody;
+    public Fixture fixture;
+
+    public ExplosionEntityParticle(World world, Vector2 particlePos, Vector2 rayDir)
+    {
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.DynamicBody;
         bd.fixedRotation = true; // rotation not necessary
@@ -28,24 +38,41 @@ public class ExplosionEntityParticle
         bd.position.x = particlePos.x;
         bd.position.y = particlePos.y;// start at blast center
         rayDir.scl(blastPower);
-        bd.linearVelocity.x = rayDir.x;
-        bd.linearVelocity.y = rayDir.y;
-        body = world.createBody( bd );
+        bd.linearVelocity.x = rayDir.x*100;
+        bd.linearVelocity.y = rayDir.y*100;
+        physicsBody = world.createBody(bd);
         //create a reference to this class in the body(this allows us to loop through the world bodies and check if the body is an Explosion particle)
-        body.setUserData(this);
+        physicsBody.setUserData(this);
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.05f); // very small
 
         FixtureDef fd = new FixtureDef();
         fd.shape = circleShape;
-        fd.density = 120 / (float)NUMRAYS; // very high - shared across all particles
+        fd.density = 120 / (float) NUMRAYS; // very high - shared across all particles
         fd.friction = 0; // friction not necessary
         fd.restitution = 0.99f; // high restitution to reflect off obstacles
         fd.filter.groupIndex = -1; // particles should not collide with each other
 
-        Fixture fixture = body.createFixture( fd );
-        fixture.setUserData(this);
+        this.fixture = physicsBody.createFixture(fd);
+        this.fixture.setUserData(this);
 
     }
+
+    public void update(float delta)
+    {
+        for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
+        {
+            if (drawableEntity instanceof InteractiveEntityInterface && drawableEntity instanceof OptimizableEntityInterface)
+            {
+
+                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.physicsBody.getPosition(), 0)));
+                if (((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, Environment.gameCamera.viewportHeight - pos.y))
+                {
+                    ((OptimizableEntityInterface)drawableEntity).disable_optimization();
+                }
+            }
+        }
+    }
+
 }

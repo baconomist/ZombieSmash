@@ -41,10 +41,10 @@ public class ExplodableEntity implements ExplodableEntityInterface
     public void update(float delta)
     {
         for(ExplosionEntityParticle particle: this.particles){
-            if(Math.abs(particle.body.getLinearVelocity().x) < 5f
-                    && Math.abs(particle.body.getLinearVelocity().y) < 5f){
-                Gdx.app.log("aaa", "bbb");
-                Environment.physics.getWorld().destroyBody(particle.body);
+            particle.update(delta);
+            if(Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
+                    && Math.abs(particle.physicsBody.getLinearVelocity().y) < 5f){
+                Environment.physics.getWorld().destroyBody(particle.physicsBody);
                 this.particles.removeValue(particle, true);
             }
         }
@@ -67,7 +67,8 @@ public class ExplodableEntity implements ExplodableEntityInterface
     @Override
     public boolean shouldExplode()
     {
-        return !this.exploded && Math.abs(this.physicsBody.getLinearVelocity().x) > 3f || Math.abs(this.physicsBody.getLinearVelocity().y) > 3f;
+        Gdx.app.log("this", ""+this.getPhysicsBody().getLinearVelocity());
+        return !this.exploded && (Math.abs(this.physicsBody.getLinearVelocity().x) > 6f || Math.abs(this.physicsBody.getLinearVelocity().y) > 6f);
     }
 
     @Override

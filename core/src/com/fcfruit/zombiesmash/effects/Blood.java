@@ -85,9 +85,15 @@ public class Blood
 
         sprite.draw(batch);
 
+        if (this.physicsBody.getPosition().y < 0.1f)
+        {
+            this.readyForDestroy = true;
+        }
+
     }
-    
-    public void destroy(){
+
+    public void destroy()
+    {
         Environment.physics.getWorld().destroyBody(this.physicsBody);
         this.sprite = null;
     }
