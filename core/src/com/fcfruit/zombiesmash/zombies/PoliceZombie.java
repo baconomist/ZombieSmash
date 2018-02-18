@@ -27,7 +27,7 @@ import java.util.Random;
  * Created by Lucas on 2017-11-06.
  */
 
-public class PoliceZombie extends Zombie {
+public class PoliceZombie extends NewZombie {
 
 
     public PoliceZombie(Integer id) {
@@ -35,71 +35,10 @@ public class PoliceZombie extends Zombie {
 
         this.moveAnimation = "walk";
 
-        partsToStayAlive.add("head");
-        partsToStayAlive.add("torso");
-        partsToStayAlive.add(new String[]{"left_arm", "right_arm"});
-
-        this.type = "police";
-
-        animationSetup();
-
+        this.detachableEntitiesToStayAlive.add("head");
+        this.detachableEntitiesToStayAlive.add(new String[]{"left_arm", "right_arm"});
     }
 
 
-
-    @Override
-    void move(){
-        super.move();
-
-        if(this.isAttacking) {
-            this.attackTimer = System.currentTimeMillis();
-        }
-        else if(!this.isCrawler){
-            this.currentAnimation = "walk";
-        }
-        else{
-            this.currentAnimation = "crawl";
-        }
-
-        if(this.enteredLevel && System.currentTimeMillis() - this.attackTimer > this.timeBeforeAttack){
-            this.attack();
-            this.attackTimer = System.currentTimeMillis();
-        }
-
-
-
-    }
-
-    @Override
-    void attack(){
-        super.attack();
-
-        //If police zombie has an arm, he can still attack while walking
-        if(parts.get("left_arm") != null || parts.get("right_arm") != null) {
-            //If zombie is a crawler, play crawler animation
-            // else, do regular attack anims
-            if (!this.isCrawler) {
-                if (timesCompleteAttack1 < 2) {
-                    this.currentAnimation = "attack1";
-                } else {
-                    this.currentAnimation = "attack2";
-                }
-            } else {
-                this.currentAnimation = "crawl_attack";
-            }
-
-        }
-
-    }
-
-    @Override
-    void crawl(){
-        super.crawl();
-
-        this.physicsEnabled = false;
-        this.currentAnimation = "crawl";
-
-        setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
-    }
     
 }
