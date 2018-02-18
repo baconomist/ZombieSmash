@@ -22,6 +22,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -144,7 +145,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.setInteractiveEntities(new HashMap<String, InteractiveEntityInterface>());
         this.setDetachableEntities(new HashMap<String, DetachableEntityInterface>());
 
-        float scale = 0;
+        float height = 0;
 
         for (Body body : rubeScene.getBodies())
         {
@@ -161,10 +162,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                         sprite.flip(flip, false);
                         sprite.setColor(i.color);
                         sprite.setOriginCenter();
-                        scale = sprite.getWidth();
                         sprite.setSize(i.width * Physics.PIXELS_PER_METER, i.height * Physics.PIXELS_PER_METER);
-                        scale = sprite.getWidth() / scale;
                         sprite.setOriginCenter();
+
+                        height += i.height * Physics.PIXELS_PER_METER;
                     }
 
                 }
@@ -190,6 +191,16 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             }
 
         }
+
+        float scale;
+        float height2 = 0;
+        for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
+        {
+            if (slot.getAttachment() instanceof RegionAttachment)
+                height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
+        }
+
+        scale = height / height2;
 
         this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(scale);
 
