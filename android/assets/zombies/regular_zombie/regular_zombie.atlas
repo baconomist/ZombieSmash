@@ -1,5 +1,5 @@
 
-reg_zombie.png
+regular_zombie.png
 size: 1024,512
 format: RGBA8888
 filter: Linear,Linear

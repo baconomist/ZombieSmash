@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "7yWbtoPELvK8+8bV/1fvNOdLt2c", "spine": "3.6.50", "width": 0, "height": 0, "images": "./police_zombie/images/" },
+"skeleton": { "hash": "7yWbtoPELvK8+8bV/1fvNOdLt2c", "spine": "3.6.52", "width": 0, "height": 0, "images": "./police_zombie/images/" },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 101.44, "y": 270.57 },

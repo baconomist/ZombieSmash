@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "aC+miQPIcfk+FHSr3fM7GKdbPEg", "spine": "3.6.50", "width": 0, "height": 0, "images": "./reg_zombie/images/" },
+"skeleton": { "hash": "ISUq5hogw4VuvJybBwvdO9yR3Dc", "spine": "3.6.52", "width": 0, "height": 0, "images": "./regular_zombie/images/" },
 "bones": [
 	{ "name": "root", "x": 1.01, "y": -0.58 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 75.28, "y": 283.07 },
