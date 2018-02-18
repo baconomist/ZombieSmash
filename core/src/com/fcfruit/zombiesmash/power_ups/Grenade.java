@@ -100,6 +100,12 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+        this.explodableEntity.draw(batch, skeletonRenderer);
+    }
+
+    @Override
     public void update(float delta)
     {
         this.drawablePhysicsEntity.update(delta);
@@ -216,12 +222,5 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
 
     @Override
     public ArrayList<Joint> getJoints(){return this.detachableEntity.getJoints();}
-
-    // Unused
-    @Override
-    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
-    {
-
-    }
 
 }

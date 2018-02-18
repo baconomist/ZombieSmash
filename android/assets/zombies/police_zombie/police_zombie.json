@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "BlcH/bkhDk/QtEPqU8AFSJJATlg", "spine": "3.6.50", "width": 0, "height": 0 },
+"skeleton": { "hash": "7yWbtoPELvK8+8bV/1fvNOdLt2c", "spine": "3.6.50", "width": 0, "height": 0, "images": "./police_zombie/images/" },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 101.44, "y": 270.57 },
@@ -50,21 +50,27 @@
 			}
 		},
 		"head": {
-			"head": { "x": 137.41, "y": -1.99, "rotation": -5.17, "width": 276, "height": 238 }
+			"head": { "x": 137.41, "y": -1.99, "rotation": -5.17, "width": 276, "height": 238 },
+			"physics_pos": { "type": "point", "x": 120.69, "y": -5.02 }
 		},
 		"left_arm": {
-			"left_arm": { "x": 170.34, "y": 19.39, "rotation": 6.86, "width": 405, "height": 94 }
+			"left_arm": { "x": 170.34, "y": 19.39, "rotation": 6.86, "width": 405, "height": 94 },
+			"physics_pos": { "type": "point", "x": 108.66, "y": 3.17 }
 		},
 		"left_leg": {
-			"left_leg": { "x": 123.68, "y": 7.17, "rotation": -177.34, "width": 254, "height": 130 }
+			"left_leg": { "x": 123.68, "y": 7.17, "rotation": -177.34, "width": 254, "height": 130 },
+			"physics_pos": { "type": "point", "x": 127.33, "y": -3.2 }
 		},
 		"right_arm": {
+			"physics_pos": { "type": "point", "x": 127.82, "y": -0.55 },
 			"right_arm": { "x": 161.15, "y": 19.38, "rotation": 3.02, "width": 405, "height": 94 }
 		},
 		"right_leg": {
+			"physics_pos": { "type": "point", "x": 116.78, "y": 3.5 },
 			"right_leg": { "x": 136.4, "y": 11.85, "rotation": 178, "width": 276, "height": 141 }
 		},
 		"torso": {
+			"physics_pos": { "type": "point", "x": 75.98, "y": -0.09 },
 			"torso": { "x": 92.68, "y": 1.07, "rotation": -2.5, "width": 249, "height": 179 }
 		}
 	}

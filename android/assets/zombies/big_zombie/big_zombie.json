@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "BWJDdnzcUTZmms0eCBo40YaoVms", "spine": "3.6.50", "width": 811.68, "height": 833.69, "images": "./big_zombie/images/" },
+"skeleton": { "hash": "wJIN/Nl0xu5j3cnsux2623sQKU0", "spine": "3.6.52", "width": 0, "height": 0, "images": "./big_zombie/images/" },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -2.92, "y": 2.81 },
 	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": 172.74, "y": 262.9 },
@@ -21,7 +21,7 @@
 		"scaleY": 1.038
 	},
 	{ "name": "right_leg", "parent": "right_hip", "length": 267.59, "rotation": 93.07, "x": 87.16, "y": 1.54 },
-	{ "name": "rock", "parent": "root", "length": 349.38, "rotation": -116.55, "x": 56.92, "y": 606.75 }
+	{ "name": "rock", "parent": "root", "length": 349.38, "rotation": -116.55, "x": 56.88, "y": 607.83 }
 ],
 "slots": [
 	{ "name": "left_arm", "bone": "left_arm", "attachment": "left_arm" },

@@ -645,6 +645,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 if (this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
                 {
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
+                    this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch, skeletonRenderer);
                 }
             }
         }

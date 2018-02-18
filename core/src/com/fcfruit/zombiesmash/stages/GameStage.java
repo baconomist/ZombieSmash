@@ -10,6 +10,8 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.power_ups.PowerUp;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
@@ -72,11 +74,17 @@ public class GameStage extends Stage
 
         /*this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        if(Environment.level.getDrawableEntities().size() > 0)
+        for(DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
-            this.shapeRenderer.polygon(((NewZombie) Environment.level.getDrawableEntities().get(0)).getPolygon().getTransformedVertices());
-            for(InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) Environment.level.getDrawableEntities().get(0)).containerEntity.getInteractiveEntities().values()){
-                this.shapeRenderer.polygon(interactiveEntityInterface.getPolygon().getTransformedVertices());
+            if(drawableEntity instanceof InteractiveEntityInterface)
+            {
+                this.shapeRenderer.polygon(((InteractiveEntityInterface) drawableEntity).getPolygon().getTransformedVertices());
+            }
+            if(drawableEntity instanceof ContainerEntityInterface){
+                for (InteractiveEntityInterface interactiveEntityInterface : ((ContainerEntityInterface)drawableEntity).getInteractiveEntities().values())
+                {
+                    this.shapeRenderer.polygon(interactiveEntityInterface.getPolygon().getTransformedVertices());
+                }
             }
         }
         this.shapeRenderer.end();*/

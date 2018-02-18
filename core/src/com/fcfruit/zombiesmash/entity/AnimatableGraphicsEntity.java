@@ -23,7 +23,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
  * Created by Lucas on 2018-01-13.
  */
 
-public class AnimatableGraphicsEntity implements DrawableEntityInterface, AnimatableEntityInterface
+public class AnimatableGraphicsEntity implements AnimatableEntityInterface
 {
 
     private Skeleton skeleton;
