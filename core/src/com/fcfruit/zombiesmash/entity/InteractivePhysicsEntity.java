@@ -57,8 +57,6 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
     }
 
 
-
-
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
@@ -132,7 +130,6 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
 
             pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
             createMouseJoint(pos.x, pos.y);
-
         }
     }
 

@@ -526,8 +526,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onObjectiveOnce()
     {
-        
-        float move = new Random().nextFloat()*(int) this.getDistanceToObjective();
+
+        float move = new Random().nextFloat() * (int) this.getDistanceToObjective();
         if (this.direction == 0)
         {
             this.moveBy(new Vector2(move, 0));
@@ -574,8 +574,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.animatableGraphicsEntity.restartAnimation();
 
         this.checkDirection();
-
-        Gdx.app.log("getup end******", "getup END");
 
     }
 
@@ -738,11 +736,20 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void onTouchDown(float screenX, float screenY, int p)
     {
+        //boolean touching = false;
         for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchDown(screenX, screenY, p);
+            /*if (interactiveEntity.isTouching())
+            {
+                touching = true;
+            }*/
         }
-        this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
+        /*this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
+        if (this.isTouching() && !touching)
+        {
+            this.getInteractiveEntities().get("torso").setTouching(true);
+        }*/
     }
 
     @Override
@@ -752,7 +759,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             interactiveEntity.onTouchDragged(screenX, screenY, p);
         }
-        this.interactiveGraphicsEntity.onTouchDragged(screenX, screenY, p);
+        //this.interactiveGraphicsEntity.onTouchDragged(screenX, screenY, p);
     }
 
     @Override
@@ -762,7 +769,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             interactiveEntity.onTouchUp(screenX, screenY, p);
         }
-        this.interactiveGraphicsEntity.onTouchUp(screenX, screenY, p);
+        //this.interactiveGraphicsEntity.onTouchUp(screenX, screenY, p);
     }
 
     @Override

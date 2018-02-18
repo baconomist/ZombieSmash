@@ -4,7 +4,7 @@
     "reg_zombie": {
       "quantity": 10,
       "init_delay": 0,
-      "spawn_delay": 2,
+      "spawn_delay": 0,
       "position":"right"
     }
   },
@@ -25,7 +25,7 @@
   },
   "right":{
     "big_zombie": {
-      "quantity": 2,
+      "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
       "position": "right"
@@ -34,7 +34,7 @@
 
   "left":{
     "suicide_zombie": {
-      "quantity": 20,
+      "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 0.5,
       "position":"left"
