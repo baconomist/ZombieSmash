@@ -526,20 +526,17 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onObjectiveOnce()
     {
-        /**
-         * You need the +1 in the random call so that the bounds is always positive
-         * Sometimes distanceToObjective is 0 which is not a positive bounds
-         * **/
+        
+        float move = new Random().nextFloat()*(int) this.getDistanceToObjective();
         if (this.direction == 0)
         {
-            this.moveBy(new Vector2(new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
+            this.moveBy(new Vector2(move, 0));
         } else
         {
-            this.moveBy(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
+            this.moveBy(new Vector2(-move, 0));
         }
 
         this.shouldObjectiveOnce = false;
-
     }
 
     protected void onObjective()
@@ -592,7 +589,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         this.detachAnimationLimbs();
 
-        if (this.shouldObjectiveOnce)
+        if (this.isAtObjective() && this.shouldObjectiveOnce)
         {
             this.onObjectiveOnce();
         } else if (this.isAtObjective() && !this.isMoving())
@@ -688,11 +685,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.optimizableEntity.update(delta);
 
             this.handleGetup();
-        }
-
-        if (this.isGettingUp)
-        {
-            Gdx.app.log("aaa", "" + ((PhysicsEntityInterface) this.getDrawableEntities().get("torso")).getPhysicsBody().getPosition());
         }
 
     }
@@ -806,7 +798,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void disable_optimization()
     {
         this.optimizableEntity.disable_optimization();
-        Gdx.app.log("aaa", "disable");
     }
 
     @Override
