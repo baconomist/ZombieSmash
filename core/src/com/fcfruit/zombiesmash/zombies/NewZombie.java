@@ -143,6 +143,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
         }
 
+        if (this.getDrawableEntities() != null)
+        {
+            for (DrawableEntityInterface drawableEntity : this.getDrawableEntities().values())
+            {
+                drawableEntity.dispose();
+                if (drawableEntity instanceof PhysicsEntityInterface)
+                {
+                    Environment.physics.getWorld().destroyBody(((PhysicsEntityInterface)drawableEntity).getPhysicsBody());
+                }
+            }
+        }
+
         this.setDrawableEntities(new HashMap<String, DrawableEntityInterface>());
         this.setInteractiveEntities(new HashMap<String, InteractiveEntityInterface>());
         this.setDetachableEntities(new HashMap<String, DetachableEntityInterface>());
@@ -383,7 +395,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             this.direction = 0;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2)
         {
-            this.direction = 1;
+            if (Environment.level.getCurrentCameraPosition().equals("right"))
+            {
+                this.direction = 0;
+            } else this.direction = 1;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2 + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
@@ -750,7 +765,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
         if (this.isTouching() && !touching)
         {
-            ((InteractivePhysicsEntityInterface)this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
+            ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
     }
 

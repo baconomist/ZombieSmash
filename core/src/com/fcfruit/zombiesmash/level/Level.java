@@ -235,6 +235,11 @@ public class Level
         return this.drawableEntities;
     }
 
+    public String getCurrentCameraPosition()
+    {
+        return this.currentCameraPosition;
+    }
+
     public void clear()
     {
         for (DrawableEntityInterface drawableEntity : drawableEntities)
