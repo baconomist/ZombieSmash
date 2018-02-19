@@ -27,6 +27,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.MovableEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
@@ -34,6 +35,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
@@ -736,20 +738,20 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void onTouchDown(float screenX, float screenY, int p)
     {
-        //boolean touching = false;
+        boolean touching = false;
         for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchDown(screenX, screenY, p);
-            /*if (interactiveEntity.isTouching())
+            if (interactiveEntity.isTouching())
             {
                 touching = true;
-            }*/
+            }
         }
-        /*this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
+        this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
         if (this.isTouching() && !touching)
         {
-            this.getInteractiveEntities().get("torso").setTouching(true);
-        }*/
+            ((InteractivePhysicsEntityInterface)this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
+        }
     }
 
     @Override
@@ -759,7 +761,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             interactiveEntity.onTouchDragged(screenX, screenY, p);
         }
-        //this.interactiveGraphicsEntity.onTouchDragged(screenX, screenY, p);
+        this.interactiveGraphicsEntity.onTouchDragged(screenX, screenY, p);
     }
 
     @Override
@@ -769,7 +771,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             interactiveEntity.onTouchUp(screenX, screenY, p);
         }
-        //this.interactiveGraphicsEntity.onTouchUp(screenX, screenY, p);
+        this.interactiveGraphicsEntity.onTouchUp(screenX, screenY, p);
     }
 
     @Override

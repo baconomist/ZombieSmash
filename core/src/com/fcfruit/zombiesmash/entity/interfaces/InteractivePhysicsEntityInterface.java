@@ -7,5 +7,6 @@ package com.fcfruit.zombiesmash.entity.interfaces;
 public interface InteractivePhysicsEntityInterface extends InteractiveEntityInterface, PhysicsEntityInterface
 {
     void setUsingPowerfulJoint(boolean usingPowerfulJoint);
+    void overrideTouching(boolean touching, float screenX, float screenY, int p);
     boolean isUsingPowerfulJoint();
 }

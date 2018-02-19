@@ -215,6 +215,12 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
+    public void overrideTouching(boolean touching, float screenX, float screenY, int p)
+    {
+        this.interactivePhysicsEntity.overrideTouching(touching, screenX, screenY, p);
+    }
+
+    @Override
     public void dispose()
     {
 

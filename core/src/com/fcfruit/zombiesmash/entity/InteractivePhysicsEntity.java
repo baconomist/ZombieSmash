@@ -149,7 +149,7 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
     }
 
     @Override
-    public void onTouchUp(float x, float y, int p)
+    public void onTouchUp(float screenX, float screenY, int p)
     {
         if (mouseJoint != null && pointer == p)
         {
@@ -158,6 +158,27 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
             isTouching = false;
             pointer = -1;
         }
+    }
+
+    @Override
+    public void overrideTouching(boolean touching, float screenX, float screenY, int p)
+    {
+        if (touching)
+        {
+            this.pointer = p;
+            this.isTouching = true;
+            Environment.touchedDownItems.add(this);
+
+            Vector3 pos = Environment.physicsCamera.unproject(new Vector3(screenX, screenY, 0));
+            createMouseJoint(pos.x, pos.y);
+        } else
+        {
+            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            mouseJoint = null;
+            isTouching = false;
+            pointer = -1;
+        }
+        this.isTouching = touching;
     }
 
     @Override
