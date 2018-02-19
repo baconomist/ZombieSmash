@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -9,10 +8,7 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 /**
  * Created by lucas on 2018-01-07.
@@ -81,7 +77,7 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
-        mouseJointDef.bodyA = Environment.physics.getGround();
+        mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
         mouseJointDef.bodyB = this.physicsBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(this.physicsBody.getPosition());

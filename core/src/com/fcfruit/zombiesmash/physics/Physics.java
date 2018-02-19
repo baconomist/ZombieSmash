@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.physics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -9,16 +8,12 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
-import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.sun.org.apache.xerces.internal.impl.dv.dtd.ENTITYDatatypeValidator;
 
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import static java.util.Collections.min;
 
@@ -47,7 +42,7 @@ public class Physics
 
     private float accumulator = 0;
 
-    private Body ground;
+    private ArrayList<Body> groundBodies;
     private Body roof;
     //private Body wall_1;
     //private Body wall_2;
@@ -106,14 +101,18 @@ public class Physics
 
     public void constructPhysicsBoundries()
     {
-        if (this.ground != null)
+        if (this.groundBodies != null)
         {
-            this.world.destroyBody(this.ground);
+            for (Body ground : this.groundBodies)
+            {
+                this.world.destroyBody(ground);
+            }
         }
         if (this.roof != null)
         {
             this.world.destroyBody(this.roof);
         }
+
 
         BodyDef plane = new BodyDef();
         plane.type = BodyDef.BodyType.StaticBody;
@@ -122,13 +121,19 @@ public class Physics
         planeFixture.friction = 1;
 
         PolygonShape planeShape = new PolygonShape();
-        planeShape.setAsBox(Environment.physicsCamera.viewportWidth*10, 0);
+        planeShape.setAsBox(Environment.physicsCamera.viewportWidth * 10, 0);
         planeFixture.shape = planeShape;
 
-        this.ground = this.world.createBody(plane);
-        this.ground.createFixture(planeFixture);
-        this.ground.getFixtureList().get(0).setUserData("ground");
-        this.ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
+        this.groundBodies = new ArrayList<Body>();
+        for (float i = 0f, c = 0; c < 3; i += 0.4f, c++)
+        {
+            Body ground = this.world.createBody(plane);
+            ground.createFixture(planeFixture);
+            ground.getFixtureList().get(0).setUserData("ground");
+            ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, i, 0);
+            this.groundBodies.add(ground);
+        }
+
 
         this.roof = this.world.createBody(plane);
         this.roof.createFixture(planeFixture);
@@ -179,9 +184,21 @@ public class Physics
         return world;
     }
 
-    public Body getGround()
+    public ArrayList<Body> getGroundBodies()
     {
-        return ground;
+        return groundBodies;
+    }
+
+    public int whichGround(Body ground)
+    {
+        assert this.groundBodies.contains(ground);
+        int i = 0;
+        for (Body g : this.groundBodies)
+        {
+            if(g.equals(ground)) return i;
+            i++;
+        }
+        return 0;
     }
 
     public Body getRoof()

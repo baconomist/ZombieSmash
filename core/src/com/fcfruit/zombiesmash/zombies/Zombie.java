@@ -1,7 +1,6 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -21,8 +20,6 @@ import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Star;
-import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -368,7 +365,7 @@ public class Zombie
 
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
-            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
             mouseJointDef.bodyB = parts.get("head").physicsBody;
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());

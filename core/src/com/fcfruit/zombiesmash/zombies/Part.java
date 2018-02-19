@@ -12,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 
@@ -223,7 +222,7 @@ public class Part{
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
-        mouseJointDef.bodyA = Environment.physics.getGround();
+        mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
         mouseJointDef.bodyB = physicsBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(physicsBody.getPosition());

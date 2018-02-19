@@ -27,7 +27,6 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.MovableEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
@@ -445,7 +444,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             MouseJointDef mouseJointDef = new MouseJointDef();
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
-            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
             mouseJointDef.bodyB = ((NewPart) this.getInteractiveEntities().get("head")).getPhysicsBody();
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(this.getDrawableEntities().get("head").getPosition());

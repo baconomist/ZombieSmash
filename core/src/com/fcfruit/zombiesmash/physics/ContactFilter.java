@@ -3,7 +3,9 @@ package com.fcfruit.zombiesmash.physics;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 
@@ -28,14 +30,12 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
                 if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
                 {
                     return true;
-                }
-                else
+                } else
                 {
                     return false;
                 }
 
-            }
-            else
+            } else
             {
                 return false;
             }
@@ -43,6 +43,12 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         } else if (fixtureA.getUserData() instanceof Blood || fixtureB.getUserData() instanceof Blood)
         {
             return false;
+        }
+
+
+        if (fixtureA.getUserData() instanceof MultiGroundEntityInterface && fixtureB.getUserData().equals("ground"))
+        {
+            return ((MultiGroundEntityInterface) fixtureA.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody());
         }
 
         //Gdx.app.log("baba", ""+fixtureA.getBody().getUserData() + " " + fixtureB.getBody().getUserData());

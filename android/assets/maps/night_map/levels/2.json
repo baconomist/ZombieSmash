@@ -1,11 +1,11 @@
 {
 
-  "right":{
+  "left":{
     "reg_zombie": {
       "quantity": 10,
       "init_delay": 0,
       "spawn_delay": 2,
-      "position":"right"
+      "position":"left"
     }
   },
 
