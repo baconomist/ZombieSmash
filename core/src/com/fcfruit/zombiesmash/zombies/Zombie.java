@@ -311,7 +311,7 @@ public class Zombie
                 isatobjective = true;
             }
             if (elvl)
-            {
+            {/*
                 if (p.physicsBody.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
                         && p.physicsBody.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f)
                 {
@@ -319,7 +319,7 @@ public class Zombie
                 } else
                 {
                     elvl = false;
-                }
+                }*/
             }
         }
 

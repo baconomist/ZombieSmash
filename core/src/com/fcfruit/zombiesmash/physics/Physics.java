@@ -49,8 +49,8 @@ public class Physics
 
     private Body ground;
     private Body roof;
-    private Body wall_1;
-    private Body wall_2;
+    //private Body wall_1;
+    //private Body wall_2;
 
     public RubeScene scene;
 
@@ -114,6 +114,30 @@ public class Physics
         {
             this.world.destroyBody(this.roof);
         }
+
+        BodyDef plane = new BodyDef();
+        plane.type = BodyDef.BodyType.StaticBody;
+
+        FixtureDef planeFixture = new FixtureDef();
+        planeFixture.friction = 1;
+
+        PolygonShape planeShape = new PolygonShape();
+        planeShape.setAsBox(Environment.physicsCamera.viewportWidth*10, 0);
+        planeFixture.shape = planeShape;
+
+        this.ground = this.world.createBody(plane);
+        this.ground.createFixture(planeFixture);
+        this.ground.getFixtureList().get(0).setUserData("ground");
+        this.ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
+
+        this.roof = this.world.createBody(plane);
+        this.roof.createFixture(planeFixture);
+        this.roof.getFixtureList().get(0).setUserData("roof");
+        this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
+
+        planeShape.dispose();
+
+                /*
         if (this.wall_1 != null)
         {
             this.world.destroyBody(this.wall_1);
@@ -145,29 +169,7 @@ public class Physics
         this.wall_2.setTransform(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2, 0, 0);
 
         wallShape.dispose();
-
-
-        BodyDef plane = new BodyDef();
-        plane.type = BodyDef.BodyType.StaticBody;
-
-        FixtureDef planeFixture = new FixtureDef();
-        planeFixture.friction = 1;
-
-        PolygonShape planeShape = new PolygonShape();
-        planeShape.setAsBox(Environment.physicsCamera.viewportWidth, 0);
-        planeFixture.shape = planeShape;
-
-        this.ground = this.world.createBody(plane);
-        this.ground.createFixture(planeFixture);
-        this.ground.getFixtureList().get(0).setUserData("ground");
-        this.ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
-
-        this.roof = this.world.createBody(plane);
-        this.roof.createFixture(planeFixture);
-        this.roof.getFixtureList().get(0).setUserData("roof");
-        this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
-
-        planeShape.dispose();
+        */
 
     }
 
@@ -187,15 +189,15 @@ public class Physics
         return roof;
     }
 
-    public Body getWall_1()
+    /*public Body getWall_1()
     {
         return wall_1;
     }
 
-    public Body getWall_2()
+    /public Body getWall_2()
     {
         return wall_2;
-    }
+    }*/
 
 
 }

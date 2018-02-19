@@ -47,8 +47,8 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
         //Gdx.app.log("baba", ""+fixtureA.getBody().getUserData() + " " + fixtureB.getBody().getUserData());
         // Gdx.app.log("baba", ""+fixtureA.getUserData() + " " + fixtureB.getUserData());
-
-        return !(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")) || (fixtureA.getUserData() instanceof NewZombie && ((NewZombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof NewZombie && ((NewZombie) fixtureB.getUserData()).isInLevel());
+        return true;
+        //return !(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")) || (fixtureA.getUserData() instanceof NewZombie && ((NewZombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof NewZombie && ((NewZombie) fixtureB.getUserData()).isInLevel());
 
     }
 }

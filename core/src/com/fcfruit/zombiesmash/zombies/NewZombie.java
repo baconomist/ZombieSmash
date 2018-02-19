@@ -143,6 +143,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
         }
 
+        // Remove old entities from world
         if (this.getDrawableEntities() != null)
         {
             for (DrawableEntityInterface drawableEntity : this.getDrawableEntities().values())
@@ -286,13 +287,21 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
      **/
     public boolean isInLevel()
     {
-        boolean isInLevel = false;
+        /*boolean isInLevel = false;
         for (DrawableEntityInterface i : this.getDrawableEntities().values())
         {
             isInLevel = i.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.1f
                     && i.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.1f;
         }
 
+        return isInLevel;*/
+
+        boolean isInLevel = false;
+        for (DrawableEntityInterface i : this.getDrawableEntities().values())
+        {
+            isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2
+                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2;
+        }
         return isInLevel;
 
     }
@@ -312,7 +321,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             }
         }
 
-        return isAtObjective;
+        return isAtObjective && this.isInLevel();
 
     }
 
@@ -389,7 +398,9 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void checkDirection()
     {
+
         int previous_direction = this.direction;
+
         if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
@@ -502,9 +513,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
     }
 
+    // May need to be changed to some more general system in the future(using points in data files or something)
     private float getDistanceToObjective()
     {
-        if (this.direction == 0)
+        if (Environment.level.getCurrentCameraPosition().equals("left"))
         {
             return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
         }
@@ -695,6 +707,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             } else
             {
                 this.onPhysicsEnabled();
+                this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, 0));
             }
 
             this.optimizableEntity.update(delta);
@@ -763,7 +776,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             }
         }
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
-        if (this.isTouching() && !touching)
+        if (this.isTouching() && !touching && this.isAlive())
         {
             ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
