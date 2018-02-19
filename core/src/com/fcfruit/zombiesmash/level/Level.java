@@ -135,22 +135,6 @@ public class Level
 
         }
 
-        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
-        {
-            if (drawableEntity instanceof NewZombie)
-            {
-                if (((NewZombie) drawableEntity).isAlive())
-                {
-                    this.zombiesDead = false;
-                    break;
-                } else
-                {
-                    this.zombiesDead = true;
-                }
-            }
-        }
-
-
         this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
 
         if (!this.isCameraMoving)
@@ -162,7 +146,7 @@ public class Level
             }
 
 
-            if (zombiesDead)
+            if (this.isZombiesDead())
             {
                 if (this.data.size - 1 == this.currentJsonItem)
                 {
@@ -180,7 +164,6 @@ public class Level
                     }
 
                     this.isCameraMoving = true;
-                    this.zombiesDead = false;
                 }
             }
         } else if (Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x < -0.1f)
@@ -204,6 +187,41 @@ public class Level
         }
 
 
+    }
+
+    private boolean isZombiesDead()
+    {
+
+        boolean zombiesDead = false;
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
+        {
+            if (drawableEntity instanceof NewZombie)
+            {
+                if (((NewZombie) drawableEntity).isAlive())
+                {
+                    zombiesDead = false;
+                    break;
+                } else
+                {
+                    zombiesDead = true;
+                }
+            }
+        }
+
+        return this.allZombiesSpawned() && zombiesDead;
+
+    }
+
+    private boolean allZombiesSpawned()
+    {
+        int zombiesSpawned = 0;
+        int zombiesToSpawn = 0;
+        for (Spawner spawner : this.spawners)
+        {
+            zombiesSpawned += spawner.spawnedZombies();
+            zombiesToSpawn += spawner.zombiesToSpawn();
+        }
+        return zombiesSpawned == zombiesToSpawn;
     }
 
 

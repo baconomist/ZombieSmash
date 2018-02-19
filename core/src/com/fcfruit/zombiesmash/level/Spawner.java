@@ -123,5 +123,7 @@ public class Spawner
         }
     }
 
+    public int spawnedZombies(){return this.spawnedZombies;}
+    public int zombiesToSpawn(){return this.quantity;}
 
 }
