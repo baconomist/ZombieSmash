@@ -28,6 +28,7 @@ import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.MovableEntity;
+import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
@@ -36,6 +37,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -53,7 +55,7 @@ import java.util.Random;
 
 public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface,
         ContainerEntityInterface, OptimizableEntityInterface,
-        AnimatableEntityInterface, MovableEntityInterface
+        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface
 {
 
     /**
@@ -73,6 +75,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private InteractiveGraphicsEntity interactiveGraphicsEntity;
     private OptimizableEntity optimizableEntity;
     private MovableEntity movableEntity;
+    private MultiGroundEntity multiGroundEntity;
     public ContainerEntity containerEntity;
 
     /**
@@ -102,6 +105,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.speed = 1;
 
         this.movableEntity = new MovableEntity(this);
+        this.multiGroundEntity = new MultiGroundEntity(this, this);
         this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
@@ -563,6 +567,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             this.moveBy(new Vector2(-move, 0));
         }
+        this.changeToGround(2);
 
         this.shouldObjectiveOnce = false;
     }
@@ -703,6 +708,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             {
                 this.onAnimate();
                 this.movableEntity.update(delta);
+                this.multiGroundEntity.update(delta);
             } else
             {
                 this.onPhysicsEnabled();
@@ -927,6 +933,21 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public int timesAnimationCompleted()
     {
         return this.animatableGraphicsEntity.timesAnimationCompleted();
+    }
+
+    @Override
+    public void changeToGround(int ground) {
+        this.multiGroundEntity.changeToGround(ground);
+    }
+
+    @Override
+    public int getCurrentGround() {
+        return this.multiGroundEntity.getCurrentGround();
+    }
+
+    @Override
+    public boolean isMovingToNewGround() {
+        return this.multiGroundEntity.isMovingToNewGround();
     }
 
     @Override

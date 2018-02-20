@@ -1,7 +1,7 @@
 {
 
   "left":{
-    "reg_zombie": {
+    "suicide_zombie": {
       "quantity": 10,
       "init_delay": 0,
       "spawn_delay": 2,
