@@ -105,7 +105,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.speed = 1;
 
         this.movableEntity = new MovableEntity(this);
-        this.multiGroundEntity = new MultiGroundEntity(this, this);
+        this.multiGroundEntity = new MultiGroundEntity(this, this, 0);
         this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
@@ -154,7 +154,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 drawableEntity.dispose();
                 if (drawableEntity instanceof PhysicsEntityInterface)
                 {
-                    Environment.physics.getWorld().destroyBody(((PhysicsEntityInterface)drawableEntity).getPhysicsBody());
+                    Environment.physics.getWorld().destroyBody(((PhysicsEntityInterface) drawableEntity).getPhysicsBody());
                 }
             }
         }
@@ -302,8 +302,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         boolean isInLevel = false;
         for (DrawableEntityInterface i : this.getDrawableEntities().values())
         {
-            isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2
-                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2;
+            isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
+                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2;
         }
         return isInLevel;
 
@@ -567,13 +567,15 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         {
             this.moveBy(new Vector2(-move, 0));
         }
-        this.changeToGround(2);
+        this.changeToGround(new Random().nextInt(1) + 1);
 
         this.shouldObjectiveOnce = false;
+        Gdx.app.log("objOnce", "obj1111111111111111");
     }
 
     protected void onObjective()
     {
+        Gdx.app.log("onObj", "obj2222222222222222");
         if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 2 && this.animatableGraphicsEntity.getCurrentAnimation().contains("attack"))
         {
             this.animatableGraphicsEntity.setAnimation("attack2");
@@ -640,7 +642,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onPhysicsEnabled()
     {
-
+        this.resetToInitialGround();
     }
 
     private void onTouching()
@@ -839,6 +841,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void disable_optimization()
     {
+        this.onPhysicsEnabled();
         this.optimizableEntity.disable_optimization();
     }
 
@@ -936,17 +939,32 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     }
 
     @Override
-    public void changeToGround(int ground) {
+    public void changeToGround(int ground)
+    {
         this.multiGroundEntity.changeToGround(ground);
     }
 
     @Override
-    public int getCurrentGround() {
+    public int getCurrentGround()
+    {
         return this.multiGroundEntity.getCurrentGround();
     }
 
     @Override
-    public boolean isMovingToNewGround() {
+    public void resetToInitialGround()
+    {
+        this.multiGroundEntity.resetToInitialGround();
+    }
+
+    @Override
+    public int getInitialGround()
+    {
+        return this.multiGroundEntity.getInitialGround();
+    }
+
+    @Override
+    public boolean isMovingToNewGround()
+    {
         return this.multiGroundEntity.isMovingToNewGround();
     }
 

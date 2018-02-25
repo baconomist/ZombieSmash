@@ -29,7 +29,7 @@ public class OptimizableEntity implements OptimizableEntityInterface
         this.interactivePhysicsEntity = interactivePhysicsEntity;
         this.containerEntity = containerEntity;
 
-        this.timeBeforeOptimize = 2500;
+        this.timeBeforeOptimize = 250;
 
     }
 

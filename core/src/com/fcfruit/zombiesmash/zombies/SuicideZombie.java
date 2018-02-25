@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -30,6 +31,7 @@ public class SuicideZombie extends NewZombie
     protected void onAttack1Complete()
     {
         Environment.level.objective.takeDamage(3f);
+        this.resetToInitialGround();
         this.disable_optimization();
         ((Grenade)this.containerEntity.getDrawableEntities().get("grenade")).explode();
     }

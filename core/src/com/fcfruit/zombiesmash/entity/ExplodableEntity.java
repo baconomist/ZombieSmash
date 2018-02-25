@@ -123,7 +123,6 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
     @Override
     public boolean shouldExplode()
     {
-        Gdx.app.log("this", "" + this.getPhysicsBody().getLinearVelocity());
         return !this.exploded && (Math.abs(this.physicsBody.getLinearVelocity().x) > 6f || Math.abs(this.physicsBody.getLinearVelocity().y) > 6f);
     }
 

@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -11,14 +12,16 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
  */
 
 public class MultiGroundEntity implements MultiGroundEntityInterface {
+    private final int initialGround;
     private int currentGround;
     private boolean isMovingToNewGround;
 
     private MovableEntityInterface movableEntity;
     private DrawableEntityInterface drawableEntity;
 
-    public MultiGroundEntity(DrawableEntityInterface drawableEntity, MovableEntityInterface movableEntity) {
-        this.currentGround = 0;
+    public MultiGroundEntity(DrawableEntityInterface drawableEntity, MovableEntityInterface movableEntity, int initialGround) {
+        this.initialGround = initialGround;
+        this.currentGround = initialGround;
         this.isMovingToNewGround = false;
 
         this.drawableEntity = drawableEntity;
@@ -40,6 +43,19 @@ public class MultiGroundEntity implements MultiGroundEntityInterface {
             this.currentGround = ground;
         }
     }
+
+    @Override
+    public void resetToInitialGround()
+    {
+        this.currentGround = this.initialGround;
+    }
+
+    @Override
+    public int getInitialGround()
+    {
+        return this.initialGround;
+    }
+
 
     @Override
     public int getCurrentGround() {
