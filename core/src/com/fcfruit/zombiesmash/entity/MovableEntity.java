@@ -84,6 +84,11 @@ public class MovableEntity implements MovableEntityInterface
     @Override
     public boolean isMoving()
     {
+        if(this.moveToPosition == null && this.moveQueue.size() > 0)
+        {
+            this.moveToPosition = this.moveQueue.get(0);
+            this.moveQueue.remove(0);
+        }
         return this.moveToPosition != null && (Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > 0.01f || Math.abs(this.drawableEntity.getPosition().y - this.moveToPosition.y) > 0.01f);
     }
 

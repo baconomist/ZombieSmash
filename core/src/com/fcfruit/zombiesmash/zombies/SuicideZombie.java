@@ -39,7 +39,11 @@ public class SuicideZombie extends NewZombie
     @Override
     protected void onObjective()
     {
-        this.setAnimation("attack1");
+        if(!this.isMoving())
+        {
+            Gdx.app.log("changing", "anm " + this.isMoving());
+            this.setAnimation("attack1");
+        }
     }
 
     @Override

@@ -541,7 +541,6 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         if (entry.getAnimation().getName().equals(this.moveAnimation) && !this.isAtObjective())
         {
-            Gdx.app.log("isAtObj", ""+this.isAtObjective());
             if (this.direction == 0)
             {
                 this.moveBy(new Vector2(1f, 0));
@@ -571,12 +570,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.changeToGround(new Random().nextInt(1) + 1);
 
         this.shouldObjectiveOnce = false;
-        Gdx.app.log("objOnce", "obj1111111111111111");
     }
 
     protected void onObjective()
     {
-        Gdx.app.log("onObj", "obj2222222222222222");
         if (this.timesAnimationCompleted() >= 2 && this.getCurrentAnimation().contains("attack"))
         {
             this.setAnimation("attack2");
