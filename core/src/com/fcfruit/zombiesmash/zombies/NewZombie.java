@@ -541,6 +541,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         if (entry.getAnimation().getName().equals(this.moveAnimation) && !this.isAtObjective())
         {
+            Gdx.app.log("isAtObj", ""+this.isAtObjective());
             if (this.direction == 0)
             {
                 this.moveBy(new Vector2(1f, 0));
@@ -576,12 +577,12 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     protected void onObjective()
     {
         Gdx.app.log("onObj", "obj2222222222222222");
-        if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 2 && this.animatableGraphicsEntity.getCurrentAnimation().contains("attack"))
+        if (this.timesAnimationCompleted() >= 2 && this.getCurrentAnimation().contains("attack"))
         {
-            this.animatableGraphicsEntity.setAnimation("attack2");
-        } else if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 1)
+            this.setAnimation("attack2");
+        } else if (this.timesAnimationCompleted() >= 1)
         {
-            this.animatableGraphicsEntity.setAnimation("attack1");
+            this.setAnimation("attack1");
         }
     }
 
@@ -592,7 +593,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onGetupEnd()
     {
-        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
+        this.setAnimation(this.moveAnimation);
         this.shouldObjectiveOnce = true;
 
         this.isGettingUp = false;
@@ -643,6 +644,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private void onPhysicsEnabled()
     {
         this.resetToInitialGround();
+        this.clearMoveQueue();
     }
 
     private void onTouching()
@@ -652,7 +654,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);
             this.getUpMouseJoint = null;
         }
-        this.movableEntity.clearMoveQueue();
+        this.clearMoveQueue();
         this.disable_optimization();
         this.isGettingUp = false;
         this.getUpTimer = System.currentTimeMillis();
@@ -918,6 +920,12 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public void setSpeed(float speed)
     {
         this.movableEntity.setSpeed(speed);
+    }
+
+    @Override
+    public void clearMoveQueue()
+    {
+        this.movableEntity.clearMoveQueue();
     }
 
     @Override

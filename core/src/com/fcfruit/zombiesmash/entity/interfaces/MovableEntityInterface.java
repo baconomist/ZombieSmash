@@ -12,5 +12,6 @@ public interface MovableEntityInterface
     void moveBy(Vector2 moveBy);
     void moveTo(Vector2 moveTo);
     boolean isMoving();
+    void clearMoveQueue();
     void setSpeed(float speed);
 }
