@@ -11,17 +11,17 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
  * Created by Lucas on 2018-02-19.
  */
 
-public class MultiGroundEntity implements MultiGroundEntityInterface {
-    private final int initialGround;
+public class MultiGroundEntity implements MultiGroundEntityInterface
+{
+    private int initialGround;
     private int currentGround;
     private boolean isMovingToNewGround;
 
     private MovableEntityInterface movableEntity;
     private DrawableEntityInterface drawableEntity;
 
-    public MultiGroundEntity(DrawableEntityInterface drawableEntity, MovableEntityInterface movableEntity, int initialGround) {
-        this.initialGround = initialGround;
-        this.currentGround = initialGround;
+    public MultiGroundEntity(DrawableEntityInterface drawableEntity, MovableEntityInterface movableEntity)
+    {
         this.isMovingToNewGround = false;
 
         this.drawableEntity = drawableEntity;
@@ -29,14 +29,17 @@ public class MultiGroundEntity implements MultiGroundEntityInterface {
     }
 
     @Override
-    public void update(float delta) {
+    public void update(float delta)
+    {
         this.isMovingToNewGround = this.isMovingToNewGround &&
                 Math.abs(this.drawableEntity.getPosition().y - Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y) < 0.01f;
     }
 
     @Override
-    public void changeToGround(int ground) {
-        if (ground != this.currentGround) {
+    public void changeToGround(int ground)
+    {
+        if (ground != this.currentGround)
+        {
             float y = Environment.physics.getGroundBodies().get(ground).getPosition().y - Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y;
             this.movableEntity.moveBy(new Vector2(0, y));
             this.isMovingToNewGround = true;
@@ -56,14 +59,22 @@ public class MultiGroundEntity implements MultiGroundEntityInterface {
         return this.initialGround;
     }
 
+    @Override
+    public void setInitialGround(int initialGround)
+    {
+        this.initialGround = initialGround;
+        this.changeToGround(this.initialGround);
+    }
 
     @Override
-    public int getCurrentGround() {
+    public int getCurrentGround()
+    {
         return this.currentGround;
     }
 
     @Override
-    public boolean isMovingToNewGround() {
+    public boolean isMovingToNewGround()
+    {
         return this.isMovingToNewGround;
     }
 }

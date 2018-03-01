@@ -2,10 +2,11 @@
 
   "left":{
     "suicide_zombie": {
-      "quantity": 1,
+      "quantity": 10,
       "init_delay": 0,
       "spawn_delay": 2,
-      "position":"left"
+      "position":"left",
+      "depth": 1
     }
   },
 

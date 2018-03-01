@@ -10,10 +10,9 @@ import com.fcfruit.zombiesmash.zombies.NewZombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-11-27.
@@ -82,6 +81,16 @@ public class Spawner
             NewZombie tempZombie;
             tempZombie = (NewZombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
             tempZombie.setup();
+            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
+
+            try
+            {
+                tempZombie.setInitialGround(data.getInt("depth"));
+            }
+            catch(Exception e)
+            {
+                tempZombie.setInitialGround(new Random().nextInt(2));
+            }
 
             if (data.getString("position").contains("left"))
             {
@@ -91,11 +100,10 @@ public class Spawner
                 tempZombie.setDirection(1);
             }
 
-            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x - 2, positions.get(data.getString("position")).y));
-
-            Gdx.app.log("zombie", "added");
             Environment.level.addDrawableEntity(tempZombie);
             this.spawnedZombies += 1;
+
+            Gdx.app.log("Spawner", "Added Zombie");
 
         } catch (Exception e)
         {

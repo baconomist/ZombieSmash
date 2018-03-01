@@ -9,6 +9,7 @@ public interface MultiGroundEntityInterface
     void update(float delta);
     void changeToGround(int ground);
     void resetToInitialGround();
+    void setInitialGround(int initialGround);
     int getInitialGround();
     int getCurrentGround();
     boolean isMovingToNewGround();

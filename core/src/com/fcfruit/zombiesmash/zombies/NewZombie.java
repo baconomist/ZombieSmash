@@ -105,7 +105,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.speed = 1;
 
         this.movableEntity = new MovableEntity(this);
-        this.multiGroundEntity = new MultiGroundEntity(this, this, 0);
+        this.multiGroundEntity = new MultiGroundEntity(this, this);
         this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
@@ -461,7 +461,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
-            getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, this.animatableGraphicsEntity.getSize().y));
+            getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x,
+                    this.animatableGraphicsEntity.getSize().y + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
 
             this.isGettingUp = true;
 
@@ -470,7 +471,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
 
         // -0.3f to give it wiggle room to detect get up
-        if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f)
+        if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
         {
             this.onGetupEnd();
         }
@@ -596,7 +597,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.isGettingUp = false;
         this.enable_optimization();
 
-        this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, 0));
+        this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
         if (getUpMouseJoint != null)
         {
             Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
@@ -965,6 +966,12 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public int getInitialGround()
     {
         return this.multiGroundEntity.getInitialGround();
+    }
+
+    @Override
+    public void setInitialGround(int initialGround)
+    {
+        this.multiGroundEntity.setInitialGround(initialGround);
     }
 
     @Override
