@@ -37,6 +37,9 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
     private boolean exploded;
     private boolean isAnimating;
 
+    private float explosionRadiusX = 3;
+    private float explosionRadiusY = 3;
+
     public Array<ExplosionEntityParticle> particles = new Array<ExplosionEntityParticle>();
 
     private AnimatableGraphicsEntity animatableGraphicsEntity;
@@ -85,7 +88,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
     @Override
     public void update(float delta)
     {
-        if(isAnimating)
+        if (isAnimating)
         {
             this.animatableGraphicsEntity.update(delta);
         }
@@ -95,6 +98,12 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
             particle.update(delta);
             if (Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
                     && Math.abs(particle.physicsBody.getLinearVelocity().y) < 5f)
+            {
+                Environment.physics.getWorld().destroyBody(particle.physicsBody);
+                this.particles.removeValue(particle, true);
+            }
+            if (Math.abs(particle.physicsBody.getPosition().x - this.physicsBody.getPosition().x) > this.explosionRadiusX
+                    || Math.abs(particle.physicsBody.getPosition().y - this.physicsBody.getPosition().y) > this.explosionRadiusY)
             {
                 Environment.physics.getWorld().destroyBody(particle.physicsBody);
                 this.particles.removeValue(particle, true);
@@ -154,7 +163,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
-        if(this.isAnimating)
+        if (this.isAnimating)
         {
             this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
         }
