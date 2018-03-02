@@ -80,7 +80,6 @@ public class Level
             drawableEntity.draw(batch);
             drawableEntity.draw(batch, skeletonRenderer);
         }
-
     }
 
     public void onTouchDown(float screenX, float screenY, int pointer)

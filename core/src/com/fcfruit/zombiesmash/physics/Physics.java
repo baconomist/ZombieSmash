@@ -64,11 +64,17 @@ public class Physics
     }
 
 
+    public void draw()
+    {
+        this.lighting.draw();
+    }
+
     public void update(float delta)
     {
-        this.stepWorld(delta);
 
         this.lighting.update();
+
+        this.stepWorld(delta);
 
         for (DetachableEntityInterface detachableEntityInterface : Environment.detachableEntityDetachQueue)
         {
@@ -195,7 +201,7 @@ public class Physics
         int i = 0;
         for (Body g : this.groundBodies)
         {
-            if(g.equals(ground)) return i;
+            if (g.equals(ground)) return i;
             i++;
         }
         return 0;

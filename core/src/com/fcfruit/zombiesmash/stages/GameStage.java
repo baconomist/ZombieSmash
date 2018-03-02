@@ -62,15 +62,16 @@ public class GameStage extends Stage
     {
         super.draw();
 
+
+        Environment.level.update(Gdx.graphics.getDeltaTime());
         // Viewport.getCamera() != Environment.gameCamera
         this.spriteBatch.setProjectionMatrix(Environment.gameCamera.combined);
-
         this.spriteBatch.begin();
         Environment.level.draw(spriteBatch, skeletonRenderer);
         this.spriteBatch.end();
 
         Environment.physics.update(Gdx.graphics.getDeltaTime());
-        Environment.level.update(Gdx.graphics.getDeltaTime());
+        Environment.physics.draw();
 
         /*this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
