@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.entity;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -13,6 +12,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 /**
  * Created by Lucas on 2018-02-13.
@@ -69,6 +69,9 @@ public class ExplosionEntityParticle
                 if (((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, Environment.gameCamera.viewportHeight - pos.y))
                 {
                     ((OptimizableEntityInterface)drawableEntity).disable_optimization();
+                    
+                    if(drawableEntity instanceof NewZombie)
+                        ((NewZombie)drawableEntity).stopGetUp();
                 }
             }
         }

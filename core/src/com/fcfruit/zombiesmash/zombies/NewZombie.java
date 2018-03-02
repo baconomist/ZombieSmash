@@ -481,6 +481,20 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     /*private boolean isGettingUp(){
          return this.isPhysicsEnabled && System.currentTimeMillis() - this.getUpTimer > this.timeBeforeGetup;
      }*/
+
+    public void stopGetUp()
+    {
+        if(this.isGettingUp)
+        {
+            if (getUpMouseJoint != null)
+            {
+                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            }
+            getUpTimer = System.currentTimeMillis();
+            this.isGettingUp = false;
+        }
+    }
+
     private void syncEntitiesToAnimation()
     {
         for (String key : this.getDrawableEntities().keySet())
