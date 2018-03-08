@@ -5,7 +5,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector3;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -15,7 +14,8 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
  * Created by Lucas on 2017-12-02.
  */
 
-public class Rock extends PowerUp{
+public class Rock extends com.fcfruit.zombiesmash.entity.PowerUp
+{
 
     public Rock(float x, float y){
 

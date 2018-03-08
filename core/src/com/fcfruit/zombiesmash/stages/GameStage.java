@@ -5,21 +5,13 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
-import com.fcfruit.zombiesmash.power_ups.PowerUp;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
-import com.fcfruit.zombiesmash.zombies.Part;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**
