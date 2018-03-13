@@ -100,6 +100,7 @@ public class LevelSelectStage extends Stage {
         Environment.physics = new Physics();
 
         Environment.level = new NightLevel(level);
+        Environment.level.create();
 
         Environment.gameScreen = new GameScreen();
 

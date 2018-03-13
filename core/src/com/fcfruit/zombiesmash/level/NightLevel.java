@@ -29,21 +29,6 @@ public class NightLevel extends Level
         this.objective = new House();
         this.objective.setPosition(7f, 0f);
 
-        this.json = new JsonReader();
-        this.data = json.parse(Gdx.files.internal("maps/night_map/levels/" + this.level_id + ".json"));
-
-        Environment.physicsCamera.position.x = Level.positions.get(data.get(0).name).x;
-        Environment.physicsCamera.update();
-        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
-        Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundries();
-
-        this.spawners = new ArrayList<Spawner>();
-        for (JsonValue v : this.data.get(0))
-        {
-            this.spawners.add(new Spawner(v));
-        }
-
     }
 
 }

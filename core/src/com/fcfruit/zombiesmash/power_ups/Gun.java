@@ -127,4 +127,10 @@ public class Gun implements PowerUpEntityInterface
     {
         this.drawableGraphicsEntity.dispose();
     }
+
+    @Override
+    public DrawableGraphicsEntity get_ui_image()
+    {
+        return null;
+    }
 }

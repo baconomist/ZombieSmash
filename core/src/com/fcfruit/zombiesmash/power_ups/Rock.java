@@ -14,12 +14,12 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
  * Created by Lucas on 2017-12-02.
  */
 
-public class Rock extends com.fcfruit.zombiesmash.entity.PowerUp
+public class Rock
 {
 
     public Rock(float x, float y){
 
-        sprite = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock.png")));
+        /*sprite = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock.png")));
 
         RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.getWorld());
         RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/rock/rock_rube.json"));
@@ -34,7 +34,7 @@ public class Rock extends com.fcfruit.zombiesmash.entity.PowerUp
 
         polygon = new Polygon(new float[]{0, 0, sprite.getWidth(), 0, sprite.getWidth(), sprite.getHeight(), 0, sprite.getHeight()});
         polygon.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
-
+*/
     }
 
 

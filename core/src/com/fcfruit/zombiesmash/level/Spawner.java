@@ -4,12 +4,17 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerUpEntityInterface;
+import com.fcfruit.zombiesmash.power_ups.PowerupCrate;
+import com.fcfruit.zombiesmash.power_ups.Rifle;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
+
+import org.lwjgl.Sys;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -42,11 +47,18 @@ public class Spawner
         zombieType.put("suicide_zombie", SuicideZombie.class);
     }
 
+    static HashMap<String, Class> powerupType = new HashMap<String, Class>();
+
+    static
+    {
+        powerupType.put("rifle", Rifle.class);
+    }
+
     String type;
 
     JsonValue data;
 
-    private int spawnedZombies;
+    private int spawnedEntities;
 
     private double timer;
 
@@ -61,11 +73,20 @@ public class Spawner
 
         this.data = data;
 
-        this.spawnedZombies = 0;
+        this.spawnedEntities = 0;
         this.timer = System.currentTimeMillis();
 
         this.type = data.name;
-        this.quantity = data.getInt("quantity");
+
+        try
+        {
+            this.quantity = data.getInt("quantity");
+        }
+        catch (Exception e){
+            this.quantity = 1;
+            System.err.println("Quantity not found. Defaulting to 1");
+        }
+
         this.init_delay = data.getFloat("init_delay");
         this.spawn_delay = data.getFloat("spawn_delay");
 
@@ -86,8 +107,7 @@ public class Spawner
             try
             {
                 tempZombie.setInitialGround(data.getInt("depth"));
-            }
-            catch(Exception e)
+            } catch (Exception e)
             {
                 tempZombie.setInitialGround(new Random().nextInt(2));
             }
@@ -101,7 +121,6 @@ public class Spawner
             }
 
             Environment.level.addDrawableEntity(tempZombie);
-            this.spawnedZombies += 1;
 
             Gdx.app.log("Spawner", "Added Zombie");
 
@@ -112,26 +131,65 @@ public class Spawner
 
     }
 
+    private void spawnCrate()
+    {
+        try
+        {
+            PowerupCrate tempCrate;
+            PowerUpEntityInterface tempPowerup;
+            tempPowerup = (PowerUpEntityInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
+            tempCrate = new PowerupCrate(tempPowerup);
+
+            tempCrate.setPosition(new Vector2(2, 4));
+
+            Environment.level.addDrawableEntity(tempCrate);
+
+        } catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+        Gdx.app.log("Spawner", "Added Crate");
+    }
+
+    private void spawnEntity()
+    {
+        if (this.type.contains("zombie"))
+            this.spawnZombie();
+        else
+            this.spawnCrate();
+
+        this.spawnedEntities += 1;
+
+    }
+
     public void update()
     {
-        if (this.quantity > this.spawnedZombies)
+        if (this.quantity > this.spawnedEntities)
         {
             if (this.initDelayEnabled && System.currentTimeMillis() - this.timer >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
-                spawnZombie();
+                this.spawnEntity();
                 this.timer = System.currentTimeMillis();
             }
 
             if (!initDelayEnabled && System.currentTimeMillis() - timer >= spawn_delay * 1000)
             {
                 this.timer = System.currentTimeMillis();
-                spawnZombie();
+                this.spawnEntity();
             }
         }
     }
 
-    public int spawnedZombies(){return this.spawnedZombies;}
-    public int zombiesToSpawn(){return this.quantity;}
+    public int spawnedEntities()
+    {
+        return this.spawnedEntities;
+    }
+
+    public int entitiesToSpawn()
+    {
+        return this.quantity;
+    }
 
 }

@@ -3,15 +3,11 @@ package com.fcfruit.zombiesmash.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -67,7 +63,21 @@ public class Level
         this.level_id = level_id;
         this.currentJsonItem = 0;
         this.drawableEntities = new ArrayList<DrawableEntityInterface>();
+        this.spawners = new ArrayList<Spawner>();
+    }
 
+    public void create()
+    {
+        this.json = new JsonReader();
+        this.data = json.parse(Gdx.files.internal("maps/" + this.getClass().getSimpleName().replace("Level", "").toLowerCase() + "_map/levels/" + this.level_id + ".json"));
+
+
+        Environment.physicsCamera.position.x = Level.positions.get(data.get(0).name).x;
+        Environment.physicsCamera.update();
+        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
+        Environment.gameCamera.update();
+        Environment.physics.constructPhysicsBoundries();
+        this.createSpawners();
     }
 
 
@@ -157,10 +167,7 @@ public class Level
                     this.currentJsonItem += 1;
                     this.spawners = new ArrayList<Spawner>();
 
-                    for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
-                    {
-                        this.spawners.add(new Spawner(jsonValue));
-                    }
+                    this.createSpawners();
 
                     this.isCameraMoving = true;
                 }
@@ -186,6 +193,14 @@ public class Level
         }
 
 
+    }
+
+    private void createSpawners()
+    {
+        for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
+        {
+            this.spawners.add(new Spawner(jsonValue));
+        }
     }
 
     private boolean isZombiesDead()
@@ -217,8 +232,8 @@ public class Level
         int zombiesToSpawn = 0;
         for (Spawner spawner : this.spawners)
         {
-            zombiesSpawned += spawner.spawnedZombies();
-            zombiesToSpawn += spawner.zombiesToSpawn();
+            zombiesSpawned += spawner.spawnedEntities();
+            zombiesToSpawn += spawner.entitiesToSpawn();
         }
         return zombiesSpawned == zombiesToSpawn;
     }
