@@ -84,7 +84,7 @@ public class Spawner
         }
         catch (Exception e){
             this.quantity = 1;
-            System.err.println("Quantity not found. Defaulting to 1");
+            System.err.println("Spawner: Quantity not found. Defaulting to 1");
         }
 
         this.init_delay = data.getFloat("init_delay");
@@ -140,7 +140,8 @@ public class Spawner
             tempPowerup = (PowerUpEntityInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new PowerupCrate(tempPowerup);
 
-            tempCrate.setPosition(new Vector2(2, 4));
+            tempCrate.setPosition(new Vector2(4, 3));
+            tempCrate.changeToGround(this.data.getInt("depth"));
 
             Environment.level.addDrawableEntity(tempCrate);
 
@@ -160,7 +161,6 @@ public class Spawner
             this.spawnCrate();
 
         this.spawnedEntities += 1;
-
     }
 
     public void update()

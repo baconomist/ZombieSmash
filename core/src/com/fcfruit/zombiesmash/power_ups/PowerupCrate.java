@@ -19,6 +19,7 @@ import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerUpEntityInterface;
 
@@ -27,12 +28,16 @@ import com.fcfruit.zombiesmash.entity.interfaces.PowerUpEntityInterface;
  * Created by Lucas on 2018-03-10.
  */
 
-public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityInterface, PhysicsEntityInterface
+public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityInterface, PhysicsEntityInterface, MultiGroundEntityInterface
 {
 
     private DrawablePhysicsEntity crateDrawable;
     private DrawableGraphicsEntity powerupDrawable;
     private InteractiveGraphicsEntity interactiveGraphicsEntity;
+
+    private int currentGround;
+
+    private boolean isFloatingUp;
 
     public PowerupCrate(PowerUpEntityInterface powerUpEntity)
     {
@@ -55,14 +60,17 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate.png"))),
                 body);
 
-        this.powerupDrawable = powerUpEntity.get_ui_image();
 
-        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.crateDrawable.getSize(), 0)));
+        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
+        size.y = Environment.gameCamera.viewportHeight - size.y;
+
+        this.powerupDrawable = powerUpEntity.getUIDrawable();
+        this.powerupDrawable.getSprite().setSize(size.x, size.y);
+        this.powerupDrawable.getSprite().setOriginCenter();
+
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
-
+        polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.crateDrawable, polygon);
-
-
     }
 
     @Override
@@ -75,6 +83,10 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void onTouchDown(float screenX, float screenY, int pointer)
     {
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, pointer);
+        if (this.isTouching())
+        {
+
+        }
     }
 
     @Override
@@ -94,7 +106,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void draw(SpriteBatch batch)
     {
         this.crateDrawable.draw(batch);
-        //this.powerupDrawable.draw(batch);
+        this.powerupDrawable.draw(batch);
     }
 
     @Override
@@ -106,12 +118,33 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public void update(float delta)
     {
+
+        if (this.isFloatingUp && this.getPosition().y < 2)
+        {
+            this.getPhysicsBody().setGravityScale(0);
+            this.getPhysicsBody().setLinearVelocity(0, 0.3f);
+            this.setAngle(this.getAngle() + 1);
+        } else if (!this.isFloatingUp)
+        {
+            this.isFloatingUp = this.getPosition().y < Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y + 0.2f;
+
+            this.getPhysicsBody().setGravityScale(0.01f);
+            this.setAngle(this.getAngle() + 1);
+        } else
+        {
+            this.getPhysicsBody().setLinearVelocity(0, 0);
+            this.setAngle(this.getAngle() + 1);
+        }
+
         this.crateDrawable.update(delta);
 
-        //this.powerupDrawable.setPosition(new Vector2(this.crateDrawable.getPosition().x + 0.1f, this.crateDrawable.getPosition().y + 0.1f));
-        //this.powerupDrawable.update(delta);
+        this.powerupDrawable.setPosition(new Vector2(this.getPosition().x - this.getSize().x / 2, this.getPosition().y - this.getSize().y / 2));
+        this.powerupDrawable.setAngle(this.getAngle());
+        this.powerupDrawable.update(delta);
+
 
         this.interactiveGraphicsEntity.update(delta);
+
     }
 
     @Override
@@ -151,15 +184,52 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     }
 
     @Override
+    public void changeToGround(int ground)
+    {
+        this.currentGround = ground;
+    }
+
+    @Override
+    public int getInitialGround()
+    {
+        return this.currentGround;
+    }
+
+    @Override
+    public int getCurrentGround()
+    {
+        return this.currentGround;
+    }
+
+    @Override
+    public boolean isMovingToNewGround()
+    {
+        return false;
+    }
+
+    @Override
     public void dispose()
     {
         this.crateDrawable.dispose();
         this.powerupDrawable.dispose();
     }
 
+
     // Unsued
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+
+    }
+
+    @Override
+    public void resetToInitialGround()
+    {
+
+    }
+
+    @Override
+    public void setInitialGround(int initialGround)
     {
 
     }

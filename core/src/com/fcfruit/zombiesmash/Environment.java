@@ -16,6 +16,7 @@ import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.Objective;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
+import com.fcfruit.zombiesmash.stages.GameUIStage;
 
 import java.util.ArrayList;
 

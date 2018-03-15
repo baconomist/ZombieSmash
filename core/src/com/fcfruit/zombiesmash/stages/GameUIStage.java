@@ -12,13 +12,15 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerUpEntityInterface;
 import com.fcfruit.zombiesmash.ui.Slider;
 
 /**
  * Created by Lucas on 2017-12-17.
  */
 
-public class GameUIStage extends Stage {
+public class GameUIStage extends Stage
+{
 
     ImageButton pow_btn_1;
     ImageButton pow_btn_2;
@@ -34,8 +36,10 @@ public class GameUIStage extends Stage {
     Sprite starCountImage;
     BitmapFont starCount;
 
+    PowerUpEntityInterface[] powerUps;
 
-    public GameUIStage(Viewport v){
+    public GameUIStage(Viewport v)
+    {
         super(v);
 
         pow_btn_1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
@@ -45,10 +49,10 @@ public class GameUIStage extends Stage {
         pow_btn_2.setPosition(pow_btn_1.getWidth(), getHeight() - pow_btn_2.getHeight());
 
         pow_btn_3 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
-        pow_btn_3.setPosition(pow_btn_1.getWidth()*2, getHeight() - pow_btn_3.getHeight());
+        pow_btn_3.setPosition(pow_btn_1.getWidth() * 2, getHeight() - pow_btn_3.getHeight());
 
         pow_btn_4 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
-        pow_btn_4.setPosition(pow_btn_1.getWidth()*3, getHeight() - pow_btn_4.getHeight());
+        pow_btn_4.setPosition(pow_btn_1.getWidth() * 3, getHeight() - pow_btn_4.getHeight());
 
         addActor(pow_btn_1);
         addActor(pow_btn_2);
@@ -68,22 +72,49 @@ public class GameUIStage extends Stage {
 
         starCountImage = new Sprite(new Texture("stars/bronze_star.png"));
         starCountImage.setSize(70, 70);
-        starCountImage.setPosition(getWidth() - starCountImage.getWidth()*3, getHeight()-pause_button.getHeight()-starCountImage.getHeight());
+        starCountImage.setPosition(getWidth() - starCountImage.getWidth() * 3, getHeight() - pause_button.getHeight() - starCountImage.getHeight());
 
         starCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
         starCount.getData().setScale(2);
 
+        this.powerUps = new PowerUpEntityInterface[3];
+
 
     }
 
+    public void add_powerup(PowerUpEntityInterface powerUpEntity)
+    {
+        for (int i = 0; i < this.powerUps.length; i++)
+        {
+            if (this.powerUps[i] == null)
+            {
+                this.powerUps[i] = powerUpEntity;
+                break;
+            }
+        }
+    }
+
+    public void remove_powerup(PowerUpEntityInterface powerUpEntity)
+    {
+        for (int i = 0; i < this.powerUps.length; i++)
+        {
+            if (this.powerUps[i] == powerUpEntity)
+            {
+                this.powerUps[i] = null;
+                break;
+            }
+        }
+    }
+
     @Override
-    public void draw() {
+    public void draw()
+    {
         super.draw();
         spriteBatch.setProjectionMatrix(getCamera().combined);
         spriteBatch.begin();
         healthBar.draw(spriteBatch);
         starCountImage.draw(spriteBatch);
-        starCount.draw(spriteBatch, ""+Environment.level.starsTouched, starCountImage.getX() + starCountImage.getWidth(), starCountImage.getY() + starCountImage.getHeight()/2);
+        starCount.draw(spriteBatch, "" + Environment.level.starsTouched, starCountImage.getX() + starCountImage.getWidth(), starCountImage.getY() + starCountImage.getHeight() / 2);
         spriteBatch.end();
         healthBar.setPercent(Environment.level.objective.getHealth());
     }

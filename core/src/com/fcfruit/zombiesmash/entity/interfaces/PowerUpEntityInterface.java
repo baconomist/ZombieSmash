@@ -12,6 +12,6 @@ public interface PowerUpEntityInterface extends InteractiveEntityInterface, Draw
 
     void activate();
 
-    DrawableGraphicsEntity get_ui_image();
+    DrawableGraphicsEntity getUIDrawable();
 
 }

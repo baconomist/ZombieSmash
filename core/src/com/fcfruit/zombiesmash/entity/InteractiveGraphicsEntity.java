@@ -35,8 +35,10 @@ public class InteractiveGraphicsEntity implements InteractiveEntityInterface
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getPosition(), 0)));
         pos.y = Environment.gameCamera.viewportHeight - pos.y;
-        // Center the polygon on physics body
-        polygon.setPosition(pos.x - (polygon.getVertices()[2]/ 2), pos.y);
+        /**
+         * InteractiveGraphicsEntity uses polygon origin for custom offset rather than size.x/2 and size.y/2 like physics does
+         * **/
+        polygon.setPosition(pos.x - polygon.getOriginX(), pos.y - polygon.getOriginY());
         polygon.setRotation(this.drawableEntity.getAngle());
 
     }

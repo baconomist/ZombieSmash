@@ -129,8 +129,8 @@ public class Gun implements PowerUpEntityInterface
     }
 
     @Override
-    public DrawableGraphicsEntity get_ui_image()
+    public DrawableGraphicsEntity getUIDrawable()
     {
-        return null;
+        return new DrawableGraphicsEntity(this.drawableGraphicsEntity.getSprite());
     }
 }

@@ -255,7 +255,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
-        polygon.setOrigin(size.x / 2, size.y / 2);
+        polygon.setOrigin(size.x / 2, 0);
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
     }
 
