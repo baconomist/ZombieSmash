@@ -92,10 +92,8 @@ public class Environment
 
     public static boolean isMethodInStack(String method_name)
     {
-        Gdx.app.log("functionName", "aaaaa");
         for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace())
         {
-            Gdx.app.log("functionName", ""+stackTraceElement.getMethodName());
             if (stackTraceElement.getMethodName().equals(method_name))
             {
                 return true;
