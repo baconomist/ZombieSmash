@@ -67,7 +67,7 @@ public class GameStage extends Stage
         Environment.physics.update(Gdx.graphics.getDeltaTime());
         Environment.physics.draw();
 
-        /*this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
+        this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
         for(DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
@@ -82,7 +82,7 @@ public class GameStage extends Stage
                 }
             }
         }
-        this.shapeRenderer.end();*/
+        this.shapeRenderer.end();
 
     }
 

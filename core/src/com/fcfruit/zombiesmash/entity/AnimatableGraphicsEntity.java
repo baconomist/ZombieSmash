@@ -89,7 +89,10 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
     @Override
     public float getAngle()
     {
-        return this.skeleton.getRootBone().getWorldRotationX();
+        if(this.skeleton.getFlipX())
+            return this.skeleton.getRootBone().getWorldRotationX() + 180;
+        else
+            return this.skeleton.getRootBone().getWorldRotationX();
     }
 
     @Override
