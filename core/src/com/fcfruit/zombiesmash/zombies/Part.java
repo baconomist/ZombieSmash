@@ -251,9 +251,9 @@ public class Part{
 
         // Destroy the current mouseJoint
         if(mouseJoint != null){
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
         }
-        mouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+        mouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
         mouseJoint.setTarget(new Vector2(x, y));
 
         physicsBody.setAwake(true);
@@ -297,7 +297,7 @@ public class Part{
     public void touchUp(float x, float y, int p){
 
         if(mouseJoint != null && pointer == p){
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
             mouseJoint = null;
             isTouching = false;
             isPowerfulPart = false;
@@ -326,7 +326,7 @@ public class Part{
 
 
 
-        Environment.physics.getWorld().destroyJoint(bodyJoint);
+        Environment.physics.destroyJoint(bodyJoint);
         bodyJoint = null;
         body.parts.remove(name);
         body = null;
@@ -366,7 +366,7 @@ public class Part{
     }
 
     public void destroy(){
-        Environment.physics.getWorld().destroyBody(physicsBody);
+        Environment.physics.destroyBody(physicsBody);
         setState("destroyed");
     }
 

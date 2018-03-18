@@ -76,7 +76,7 @@ public class Level
         Environment.physicsCamera.update();
         Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
         Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundries();
+        Environment.physics.constructPhysicsBoundaries();
         this.createSpawners();
     }
 
@@ -133,6 +133,19 @@ public class Level
 
     public void update(float delta)
     {
+        for (DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
+        {
+            this.drawableEntities.remove(drawableEntity);
+        }
+        Environment.drawableRemoveQueue.clear();
+
+        for (DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
+        {
+            this.drawableEntities.add(drawableEntity);
+        }
+        Environment.drawableAddQueue.clear();
+
+
         // Can't be put in draw bcuz it takes too long
         // When it takes too long in a spritebatch call,
         // it doesn't draw the sprites, only the light
@@ -141,7 +154,6 @@ public class Level
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             drawableEntity.update(delta);
-
         }
 
         this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
@@ -189,7 +201,7 @@ public class Level
         } else
         {
             this.isCameraMoving = false;
-            Environment.physics.constructPhysicsBoundries();
+            Environment.physics.constructPhysicsBoundaries();
         }
 
 

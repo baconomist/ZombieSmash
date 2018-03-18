@@ -1,11 +1,15 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -13,7 +17,10 @@ import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 
 
+import org.omg.SendingContext.RunTime;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 
 import static java.util.Collections.min;
 
@@ -38,7 +45,7 @@ public class Physics
 
     private Lighting lighting;
 
-    public World world;
+    private World world;
 
     private float accumulator = 0;
 
@@ -57,7 +64,7 @@ public class Physics
 
         this.world.setContactFilter(new ContactFilter());
 
-        this.constructPhysicsBoundries();
+        this.constructPhysicsBoundaries();
 
         this.lighting = new Lighting(world);
 
@@ -71,10 +78,6 @@ public class Physics
 
     public void update(float delta)
     {
-
-        this.lighting.update();
-
-        this.stepWorld(delta);
 
         for (DetachableEntityInterface detachableEntityInterface : Environment.detachableEntityDetachQueue)
         {
@@ -92,6 +95,16 @@ public class Physics
         }
         Environment.explodableEntityQueue.clear();
 
+        for (Joint joint : Environment.jointDestroyQueue)
+        {
+            this.destroyJoint(joint);
+        }
+        Environment.jointDestroyQueue.clear();
+
+        this.lighting.update();
+
+        this.stepWorld(delta);
+
     }
 
     private void stepWorld(float delta)
@@ -105,8 +118,9 @@ public class Physics
         }
     }
 
-    public void constructPhysicsBoundries()
+    public void constructPhysicsBoundaries()
     {
+
         if (this.groundBodies != null)
         {
             for (Body ground : this.groundBodies)
@@ -184,12 +198,6 @@ public class Physics
 
     }
 
-
-    public World getWorld()
-    {
-        return world;
-    }
-
     public ArrayList<Body> getGroundBodies()
     {
         return groundBodies;
@@ -222,5 +230,67 @@ public class Physics
         return wall_2;
     }*/
 
+    /**
+     * getWorld() -> returns this.world
+     * the world instance returned by this function should not be used to manipulate the world
+     * instead use Physics.createBody(), Physics.createJoint(), Physics.destroyBody(), Physics.destroyJoint()
+     * **/
+    public World getWorld()
+    {
+        return this.world;
+    }
+
+    public void destroyBody(Body body)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+
+        //Gdx.app.log("destroyBody", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.log("body", ""+body);
+
+        if (this.get_world_bodies().contains(body, true))
+            this.world.destroyBody(body);
+
+    }
+
+    public void destroyJoint(Joint joint)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+
+        Gdx.app.log("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.log("joint", ""+joint);
+
+        if (this.get_world_joints().contains(joint, true))
+            this.world.destroyJoint(joint);
+    }
+
+    public Body createBody(BodyDef bodyDef)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        return this.world.createBody(bodyDef);
+    }
+
+    public Joint createJoint(JointDef jointDef)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        return this.world.createJoint(jointDef);
+    }
+
+    public Array<Body> get_world_bodies()
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        Array<Body> world_bodies = new Array<Body>();
+        this.world.getBodies(world_bodies);
+
+        return world_bodies;
+    }
+
+    public Array<Joint> get_world_joints()
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        Array<Joint> world_joints = new Array<Joint>();
+        this.world.getJoints(world_joints);
+
+        return world_joints;
+    }
 
 }

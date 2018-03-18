@@ -107,9 +107,9 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
         // Destroy the current mouseJoint
         if (mouseJoint != null)
         {
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
         }
-        mouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+        mouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
         mouseJoint.setTarget(new Vector2(x, y));
     }
 
@@ -149,7 +149,7 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
     {
         if (mouseJoint != null && pointer == p)
         {
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
             mouseJoint = null;
             isTouching = false;
             pointer = -1;
@@ -169,7 +169,7 @@ public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterfa
             createMouseJoint(pos.x, pos.y);
         } else
         {
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
             mouseJoint = null;
             isTouching = false;
             pointer = -1;

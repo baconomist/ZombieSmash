@@ -154,7 +154,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 drawableEntity.dispose();
                 if (drawableEntity instanceof PhysicsEntityInterface)
                 {
-                    Environment.physics.getWorld().destroyBody(((PhysicsEntityInterface) drawableEntity).getPhysicsBody());
+                    Environment.physics.destroyBody(((PhysicsEntityInterface) drawableEntity).getPhysicsBody());
                 }
             }
         }
@@ -458,9 +458,9 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             // Destroy the current mouseJoint
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
             }
-            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+            getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
             getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x,
                     this.animatableGraphicsEntity.getSize().y + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
 
@@ -484,15 +484,14 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     public void stopGetUp()
     {
-        if(this.isGettingUp)
+
+        if (this.getUpMouseJoint != null && !Environment.jointDestroyQueue.contains(this.getUpMouseJoint))
         {
-            if (getUpMouseJoint != null)
-            {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
-            }
-            getUpTimer = System.currentTimeMillis();
-            this.isGettingUp = false;
+            Environment.jointDestroyQueue.add(this.getUpMouseJoint);
         }
+        this.getUpTimer = System.currentTimeMillis();
+        this.isGettingUp = false;
+
     }
 
     private void syncEntitiesToAnimation()
@@ -614,7 +613,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
         if (getUpMouseJoint != null)
         {
-            Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            Environment.physics.destroyJoint(getUpMouseJoint);
             getUpMouseJoint = null;
         }
 
@@ -663,7 +662,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         if (this.getUpMouseJoint != null)
         {
-            Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);
+            Environment.physics.destroyJoint(this.getUpMouseJoint);
             this.getUpMouseJoint = null;
         }
         this.clearMoveQueue();

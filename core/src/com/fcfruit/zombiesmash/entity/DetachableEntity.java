@@ -46,9 +46,10 @@ public class DetachableEntity implements DetachableEntityInterface
     @Override
     public void detach()
     {
+        Gdx.app.log("destroying joints...", "detachableEntity detach");
         for(Joint joint : this.joints)
         {
-            Environment.physics.getWorld().destroyJoint(joint);
+            Environment.physics.destroyJoint(joint);
         }
         this.joints = null;
         this.containerEntity.detach(instance);

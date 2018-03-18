@@ -40,7 +40,7 @@ public class Star extends Sprite {
         shape.setAsBox(0.1f, 0.1f);
         fixtureDef.shape = shape;
 
-        physicsBody = Environment.physics.getWorld().createBody(bodyDef);
+        physicsBody = Environment.physics.createBody(bodyDef);
         physicsBody.createFixture(fixtureDef);
         physicsBody.getFixtureList().get(0).setUserData("star");
         physicsBody.setLinearDamping(10);

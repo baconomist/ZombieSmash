@@ -31,6 +31,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.PowerUpEntityInterface;
 public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityInterface, PhysicsEntityInterface, MultiGroundEntityInterface
 {
 
+    private PowerUpEntityInterface powerUpEntity;
+
     private DrawablePhysicsEntity crateDrawable;
     private DrawableGraphicsEntity powerupDrawable;
     private InteractiveGraphicsEntity interactiveGraphicsEntity;
@@ -41,9 +43,12 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
     public PowerupCrate(PowerUpEntityInterface powerUpEntity)
     {
+
+        this.powerUpEntity = powerUpEntity;
+
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        Body body = Environment.physics.getWorld().createBody(bodyDef);
+        Body body = Environment.physics.createBody(bodyDef);
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.1f);
@@ -73,6 +78,12 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.crateDrawable, polygon);
     }
 
+    private void open()
+    {
+        Environment.drawableRemoveQueue.add(this);
+        Environment.gameScreen.get_ui_stage().add_powerup(this.powerUpEntity);
+    }
+
     @Override
     public Body getPhysicsBody()
     {
@@ -85,7 +96,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, pointer);
         if (this.isTouching())
         {
-
+            this.open();
         }
     }
 
@@ -141,7 +152,6 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         this.powerupDrawable.setPosition(new Vector2(this.getPosition().x - this.getSize().x / 2, this.getPosition().y - this.getSize().y / 2));
         this.powerupDrawable.setAngle(this.getAngle());
         this.powerupDrawable.update(delta);
-
 
         this.interactiveGraphicsEntity.update(delta);
 

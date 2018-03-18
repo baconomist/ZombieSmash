@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
@@ -33,6 +34,7 @@ public class CollisionListener implements ContactListener
     @Override
     public void beginContact(Contact contact)
     {
+
         // Probably can't detach parts here because this is in the world timestep
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)

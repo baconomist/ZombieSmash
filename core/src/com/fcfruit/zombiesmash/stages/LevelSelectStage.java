@@ -106,7 +106,7 @@ public class LevelSelectStage extends Stage {
 
         Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
         Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundries();
+        Environment.physics.constructPhysicsBoundaries();
 
         Environment.game.setScreen(Environment.gameScreen);
     }

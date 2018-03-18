@@ -99,13 +99,13 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
             if (Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
                     && Math.abs(particle.physicsBody.getLinearVelocity().y) < 5f)
             {
-                Environment.physics.getWorld().destroyBody(particle.physicsBody);
+                Environment.physics.destroyBody(particle.physicsBody);
                 this.particles.removeValue(particle, true);
             }
             if (Math.abs(particle.physicsBody.getPosition().x - this.physicsBody.getPosition().x) > this.explosionRadiusX
                     || Math.abs(particle.physicsBody.getPosition().y - this.physicsBody.getPosition().y) > this.explosionRadiusY)
             {
-                Environment.physics.getWorld().destroyBody(particle.physicsBody);
+                Environment.physics.destroyBody(particle.physicsBody);
                 this.particles.removeValue(particle, true);
             }
         }
@@ -120,7 +120,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
         {
             float angle = (float) Math.toDegrees((i / (float) numRays) * 360);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            particles.add(new ExplosionEntityParticle(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir)); // create the particle
+            this.particles.add(new ExplosionEntityParticle(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir)); // create the particle
         }
 
         this.exploded = true;

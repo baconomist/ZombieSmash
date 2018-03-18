@@ -175,7 +175,7 @@ public class Zombie
         {
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
             isGettingUp = false;
@@ -349,7 +349,7 @@ public class Zombie
 
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
 
@@ -378,9 +378,9 @@ public class Zombie
             // Destroy the current mouseJoint
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
             }
-            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+            getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
             getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
 
             isGettingUp = true;
