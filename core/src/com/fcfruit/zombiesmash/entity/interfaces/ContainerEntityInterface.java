@@ -1,7 +1,5 @@
 package com.fcfruit.zombiesmash.entity.interfaces;
 
-import com.fcfruit.zombiesmash.entity.ContainerEntity;
-
 import java.util.HashMap;
 
 /**

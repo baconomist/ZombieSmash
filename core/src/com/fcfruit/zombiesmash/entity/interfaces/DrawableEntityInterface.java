@@ -9,12 +9,10 @@ import com.esotericsoftware.spine.SkeletonRenderer;
  * Created by Lucas on 2018-01-06.
  */
 
-public interface DrawableEntityInterface {
+public interface DrawableEntityInterface extends UpdatableEntityInterface {
 
     void draw(SpriteBatch batch);
     void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer);
-
-    void update(float delta);
 
     Vector2 getPosition();
     void setPosition(Vector2 position);

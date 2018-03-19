@@ -256,7 +256,7 @@ public class Physics
     {
         if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
 
-        Gdx.app.log("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.log("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
         //Gdx.app.log("joint", ""+joint);
 
         if (this.get_world_joints().contains(joint, true))

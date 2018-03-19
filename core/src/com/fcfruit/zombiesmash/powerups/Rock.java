@@ -1,4 +1,4 @@
-package com.fcfruit.zombiesmash.power_ups;
+package com.fcfruit.zombiesmash.powerups;
 
 
 import com.badlogic.gdx.Gdx;
@@ -19,7 +19,7 @@ public class Rock
 
     public Rock(float x, float y){
 
-        /*sprite = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock.png")));
+        /*sprite = new DrawableGraphicsEntity(new Texture(Gdx.files.internal("powerups/rock/rock.png")));
 
         RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.getWorld());
         RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/rock/rock_rube.json"));

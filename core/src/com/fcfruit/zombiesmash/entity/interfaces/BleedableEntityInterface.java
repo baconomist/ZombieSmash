@@ -6,8 +6,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
  * Created by Lucas on 2018-02-02.
  */
 
-public interface BleedableEntityInterface
+public interface BleedableEntityInterface extends UpdatableEntityInterface
 {
     void draw(SpriteBatch batch);
-    void update(float delta);
+
 }

@@ -4,17 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpEntityInterface;
-import com.fcfruit.zombiesmash.power_ups.PowerupCrate;
-import com.fcfruit.zombiesmash.power_ups.Rifle;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+import com.fcfruit.zombiesmash.powerups.PowerupCrate;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.Rifle;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
-
-import org.lwjgl.Sys;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -51,7 +50,7 @@ public class Spawner
 
     static
     {
-        powerupType.put("rifle", Rifle.class);
+        powerupType.put("rifle", RiflePowerup.class);
     }
 
     String type;
@@ -136,11 +135,11 @@ public class Spawner
         try
         {
             PowerupCrate tempCrate;
-            PowerUpEntityInterface tempPowerup;
-            tempPowerup = (PowerUpEntityInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
+            PowerUpInterface tempPowerup;
+            tempPowerup = (PowerUpInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new PowerupCrate(tempPowerup);
 
-            tempCrate.setPosition(new Vector2(4, 3));
+            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + new Random().nextInt(40)/10 + 2, 3));
             tempCrate.changeToGround(this.data.getInt("depth"));
 
             Environment.level.addDrawableEntity(tempCrate);

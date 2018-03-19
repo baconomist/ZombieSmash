@@ -9,7 +9,9 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
@@ -25,13 +27,13 @@ import java.util.HashMap;
 public class Level
 {
 
-    public static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
+    public static HashMap<String, Vector2> cameraPositions = new HashMap<String, Vector2>();
 
     static
     {
-        positions.put("left", new Vector2(Environment.physicsCamera.viewportWidth / 2, 0));
-        positions.put("right", new Vector2(Environment.physicsCamera.viewportWidth * 1.4f, 0));
-        positions.put("middle", new Vector2(10, 0));
+        cameraPositions.put("left", new Vector2(Environment.physicsCamera.viewportWidth / 2, 0));
+        cameraPositions.put("right", new Vector2(Environment.physicsCamera.viewportWidth * 1.4f, 0));
+        cameraPositions.put("middle", new Vector2(10, 0));
     }
 
     public int level_id;
@@ -44,6 +46,10 @@ public class Level
     public Objective objective;
 
     private ArrayList<DrawableEntityInterface> drawableEntities;
+
+    private ArrayList<UpdatableEntityInterface> updatableEntities;
+
+    private ArrayList<InputCaptureEntityInterface> inputCaptureEntities;
 
     public int starsTouched = 0;
 
@@ -62,7 +68,11 @@ public class Level
     {
         this.level_id = level_id;
         this.currentJsonItem = 0;
+
         this.drawableEntities = new ArrayList<DrawableEntityInterface>();
+        this.updatableEntities = new ArrayList<UpdatableEntityInterface>();
+        this.inputCaptureEntities = new ArrayList<InputCaptureEntityInterface>();
+
         this.spawners = new ArrayList<Spawner>();
     }
 
@@ -72,7 +82,7 @@ public class Level
         this.data = json.parse(Gdx.files.internal("maps/" + this.getClass().getSimpleName().replace("Level", "").toLowerCase() + "_map/levels/" + this.level_id + ".json"));
 
 
-        Environment.physicsCamera.position.x = Level.positions.get(data.get(0).name).x;
+        Environment.physicsCamera.position.x = Level.cameraPositions.get(data.get(0).name).x;
         Environment.physicsCamera.update();
         Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
         Environment.gameCamera.update();
@@ -107,6 +117,11 @@ public class Level
 
         Collections.reverse(this.drawableEntities);
 
+        for (InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
+        {
+            inputCaptureEntity.onTouchDown(screenX, screenY, pointer);
+        }
+
     }
 
     public void onTouchDragged(float screenX, float screenY, int pointer)
@@ -118,6 +133,12 @@ public class Level
                 ((InteractiveEntityInterface) drawableEntity).onTouchDragged(screenX, screenY, pointer);
             }
         }
+
+        for (InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
+        {
+            inputCaptureEntity.onTouchDragged(screenX, screenY, pointer);
+        }
+
     }
 
     public void onTouchUp(float screenX, float screenY, int pointer)
@@ -129,6 +150,12 @@ public class Level
                 ((InteractiveEntityInterface) drawableEntity).onTouchUp(screenX, screenY, pointer);
             }
         }
+
+        for (InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
+        {
+            inputCaptureEntity.onTouchUp(screenX, screenY, pointer);
+        }
+
     }
 
     public void update(float delta)
@@ -154,6 +181,11 @@ public class Level
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             drawableEntity.update(delta);
+        }
+
+        for (UpdatableEntityInterface updatableEntity : this.updatableEntities)
+        {
+            updatableEntity.update(delta);
         }
 
         this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
@@ -184,10 +216,10 @@ public class Level
                     this.isCameraMoving = true;
                 }
             }
-        } else if (Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - positions.get(data.get(this.currentJsonItem).name).x < -0.1f)
+        } else if (Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem).name).x < -0.1f)
         {
 
-            if (Environment.physicsCamera.position.x < positions.get(data.get(this.currentJsonItem).name).x)
+            if (Environment.physicsCamera.position.x < cameraPositions.get(data.get(this.currentJsonItem).name).x)
             {
                 Environment.gameCamera.position.x += 5f;
                 Environment.physicsCamera.position.x += 5f / 192f;
@@ -256,6 +288,16 @@ public class Level
         this.drawableEntities.add(drawableEntity);
     }
 
+    public void addUpdatableEntity(UpdatableEntityInterface updatableEntity)
+    {
+        this.updatableEntities.add(updatableEntity);
+    }
+
+    public void addInputCaptureEntity(InputCaptureEntityInterface inputCaptureEntity)
+    {
+        this.inputCaptureEntities.add(inputCaptureEntity);
+    }
+
     public ArrayList<DrawableEntityInterface> getDrawableEntities()
     {
         return this.drawableEntities;
@@ -274,7 +316,6 @@ public class Level
         }
         drawableEntities = new ArrayList<DrawableEntityInterface>();
     }
-
 
 }
 

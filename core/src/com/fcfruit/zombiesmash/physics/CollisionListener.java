@@ -1,28 +1,16 @@
 package com.fcfruit.zombiesmash.physics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
-import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.effects.Blood;
-import com.fcfruit.zombiesmash.entity.BleedableEntity;
-import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.ExplosionEntityParticle;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
-import com.fcfruit.zombiesmash.zombies.NewPart;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
-import com.fcfruit.zombiesmash.zombies.Part;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
  * Created by Lucas on 2017-09-19.

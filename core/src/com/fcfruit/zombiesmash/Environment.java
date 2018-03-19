@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,7 +7,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.screens.GameScreen;
@@ -78,7 +77,7 @@ public class Environment
     // Clear this at the beginning of touch_down
     // Used so interactive items can decide to activate if only they have been touched,
     // Not 3 things at once being touched
-    public static ArrayList<InteractiveEntityInterface> touchedDownItems = new ArrayList<InteractiveEntityInterface>();
+    public static ArrayList<InputCaptureEntityInterface> touchedDownItems = new ArrayList<com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface>();
 
     public static ArrayList<DetachableEntityInterface> detachableEntityDetachQueue = new ArrayList<DetachableEntityInterface>();
 

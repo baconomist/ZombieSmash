@@ -4,9 +4,9 @@ package com.fcfruit.zombiesmash.entity.interfaces;
  * Created by Lucas on 2018-02-19.
  */
 
-public interface MultiGroundEntityInterface
+public interface MultiGroundEntityInterface extends UpdatableEntityInterface
 {
-    void update(float delta);
+
     void changeToGround(int ground);
     void resetToInitialGround();
     void setInitialGround(int initialGround);

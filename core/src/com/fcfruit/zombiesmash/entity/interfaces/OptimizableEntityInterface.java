@@ -6,7 +6,7 @@ package com.fcfruit.zombiesmash.entity.interfaces;
 
 public interface OptimizableEntityInterface
 {
-    void update(float delta);
+
     void enable_optimization();
     void disable_optimization();
     boolean isOptimizationEnabled();

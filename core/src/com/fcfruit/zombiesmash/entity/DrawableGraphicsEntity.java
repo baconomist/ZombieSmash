@@ -18,10 +18,10 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 public class DrawableGraphicsEntity implements DrawableEntityInterface
 {
 
-    private Sprite sprite;
+    private com.badlogic.gdx.graphics.g2d.Sprite sprite;
     private Vector2 position;
 
-    public DrawableGraphicsEntity(Sprite sprite)
+    public DrawableGraphicsEntity(com.badlogic.gdx.graphics.g2d.Sprite sprite)
     {
         this.sprite = sprite;
         this.position = new Vector2();
@@ -72,7 +72,7 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
         return new Vector2(size.x, size.y);
     }
 
-    public Sprite getSprite(){
+    public com.badlogic.gdx.graphics.g2d.Sprite getSprite(){
         return this.sprite;
     }
 

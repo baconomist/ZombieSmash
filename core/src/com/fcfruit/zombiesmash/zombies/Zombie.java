@@ -143,12 +143,12 @@ public class Zombie
         // Prevents zombie from being totally lost out of the map
         if (!enteredLevel && this.getPosition().x < -1)
         {
-            //this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
+            //this.setPosition(Level.cameraPositions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
             this.speed = 400;
             this.checkDirection();
         } else if (!enteredLevel && this.getPosition().y > 21)
         {
-            //this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
+            //this.setPosition(Level.cameraPositions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
             this.speed = 400;
             this.checkDirection();
         }
@@ -700,7 +700,7 @@ public class Zombie
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.type + "_zombie/" + this.type + "_zombie.json"));
 
-        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
         //stateData.setMix("run", "jump", 0.2f);
         //stateData.setMix("jump", "run", 0.2f);
