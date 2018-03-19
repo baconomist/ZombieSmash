@@ -85,7 +85,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private int direction;
     private int speed;
     ArrayList detachableEntitiesToStayAlive;
-    HashMap<String, Class> specialParts;
+    ArrayList<String> currentParts;
+    private float animScale = 0;
 
     /**
      * Getup fields (need to make getupable entity)
@@ -112,6 +113,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
         this.shouldObjectiveOnce = true;
         this.detachableEntitiesToStayAlive = new ArrayList();
+        this.currentParts = new ArrayList<String>();
 
         this.timeBeforeGetup = 5000;
         this.isGettingUp = false;
@@ -204,23 +206,33 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     fixture.setUserData(this);
                 }
 
-                this.createPart(body, bodyName, sprite, joints, this);
+                // If we still have the part
+                // If not, we destroy the body loaded into the world by rube
+                if(this.currentParts.contains(bodyName))
+                    this.createPart(body, bodyName, sprite, joints, this);
+                else
+                    Environment.physics.destroyBody(body);
 
             }
 
         }
 
-        float scale;
-        float height2 = 0;
-        for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
+        // Only set animScale once because later on when you loop through the slots of the anim
+        // The scale is inaccurate because you remove certain slots when parts detach
+        if(this.animScale == 0)
         {
-            if (slot.getAttachment() instanceof RegionAttachment)
-                height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
+
+            float height2 = 0;
+            for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
+            {
+                if (slot.getAttachment() instanceof RegionAttachment)
+                    height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
+            }
+
+            this.animScale = height / height2;
         }
 
-        scale = height / height2;
-
-        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(scale);
+        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
 
         this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
 
@@ -871,6 +883,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void detach(DetachableEntityInterface detachableEntityInterface)
     {
+        for(String name : this.getDetachableEntities().keySet())
+        {
+            if(this.getDetachableEntities().get(name).equals(detachableEntityInterface))
+                this.currentParts.remove(name);
+        }
         this.containerEntity.detach(detachableEntityInterface);
     }
 
