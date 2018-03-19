@@ -22,9 +22,6 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
 
     protected DrawableGraphicsEntity[] guns;
 
-    private boolean isActive;
-    private boolean isTerminated;
-
     private double duration;
     private double durationTimer;
 
@@ -86,7 +83,6 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
         Environment.level.addInputCaptureEntity(this);
 
         this.durationTimer = System.currentTimeMillis();
-        this.isActive = true;
     }
 
     @Override
