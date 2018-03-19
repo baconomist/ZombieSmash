@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
 import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
+import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
@@ -58,6 +59,9 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         } else if ((fixtureB.getUserData() instanceof MultiGroundEntityInterface && fixtureA.getUserData().equals("ground")
                 && ((MultiGroundEntityInterface) fixtureB.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
                 && !((MultiGroundEntityInterface) fixtureB.getUserData()).isMovingToNewGround()))
+        {
+            return true;
+        } else if (fixtureA.getUserData() instanceof ParticleEntity && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody || fixtureB.getUserData() instanceof ParticleEntity && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
         {
             return true;
         }

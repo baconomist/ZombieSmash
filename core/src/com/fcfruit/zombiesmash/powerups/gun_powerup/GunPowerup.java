@@ -2,9 +2,11 @@ package com.fcfruit.zombiesmash.powerups.gun_powerup;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
@@ -26,14 +28,21 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
     private double duration;
     private double durationTimer;
 
+    protected double timeBeforeShoot;
+    protected double shootTimer;
+
     private int pointer;
     private int currentControllingGun;
+
+    private ParticleEntity particleEntity;
 
     public GunPowerup(Sprite ui_image)
     {
         this.ui_image = ui_image;
         this.duration = 1000000000;
+        this.timeBeforeShoot = 1000;
         this.currentControllingGun = -1;
+        this.pointer = -1;
     }
 
     @Override
@@ -48,7 +57,26 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
                 this.guns[i].dispose();
             }
             this.dispose();
+        } else
+        {
+            if (System.currentTimeMillis() - this.shootTimer >= this.timeBeforeShoot && this.pointer != -1)
+            {
+
+                if (this.particleEntity != null)
+                {
+                    Environment.physics.destroyBody(this.particleEntity.physicsBody);
+                    this.particleEntity = null;
+                }
+                this.shoot();
+            }
+
+            if (this.particleEntity != null)
+            {
+                this.particleEntity.update(delta);
+            }
+
         }
+
     }
 
     @Override
@@ -72,18 +100,18 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
     {
         if (Environment.touchedDownItems.size() < 1)
         {
-            if ((Environment.level.getCurrentCameraPosition().equals("left") && screenX > Gdx.graphics.getWidth() / 2)
-                    || (Environment.level.getCurrentCameraPosition().equals("middle"))
+            if ((Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 4 && screenX < Gdx.graphics.getWidth() / 2 || Environment.level.getCurrentCameraPosition().equals("left") && screenX > Gdx.graphics.getWidth() / 2)
+                    || (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 2 && screenX < Gdx.graphics.getWidth() * 3 / 4)
                     || (Environment.level.getCurrentCameraPosition().equals("right") && screenX < Gdx.graphics.getWidth() / 2))
             {
                 this.pointer = pointer;
                 Environment.touchedDownItems.add(this);
-
+                this.shootTimer = System.currentTimeMillis();
             }
 
             if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 4 && screenX < Gdx.graphics.getWidth() / 2 || Environment.level.getCurrentCameraPosition().equals("left") && screenX > Gdx.graphics.getWidth() / 2)
                 this.currentControllingGun = 0;
-            else if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 2 && screenX < Gdx.graphics.getWidth() * 3/4)
+            else if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 2 && screenX < Gdx.graphics.getWidth() * 3 / 4)
                 this.currentControllingGun = 1;
             else if (Environment.level.getCurrentCameraPosition().equals("right") && screenX < Gdx.graphics.getWidth() / 2)
                 this.currentControllingGun = 0;
@@ -130,6 +158,23 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
             this.currentControllingGun = -1;
             this.pointer = -1;
         }
+    }
+
+    private void shoot()
+    {
+        float angle;
+
+        if (this.currentControllingGun == 0)
+            angle = (float) Math.toRadians(-this.guns[this.currentControllingGun].getAngle() - 90);
+        else
+            angle = (float) Math.toRadians(-this.guns[this.currentControllingGun].getAngle() + 90);
+
+        Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
+        this.particleEntity = (new ParticleEntity(Environment.physics.getWorld(), new Vector2(this.guns[currentControllingGun].getPosition().x + this.guns[currentControllingGun].getSize().x / 2,
+                this.guns[currentControllingGun].getPosition().y + this.guns[currentControllingGun].getSize().y / 2), rayDir, 1)); // create the this.particleEntity
+
+        this.shootTimer = System.currentTimeMillis();
+
     }
 
     private void dispose()

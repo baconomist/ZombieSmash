@@ -6,7 +6,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
-import com.fcfruit.zombiesmash.powerups.gun_powerup.Rifle;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;

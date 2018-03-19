@@ -3,11 +3,8 @@ package com.fcfruit.zombiesmash.entity;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.math.MathUtils;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.RayCastCallback;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
@@ -18,10 +15,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
-
-import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2018-02-11.
@@ -29,6 +23,8 @@ import java.util.ArrayList;
 
 public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEntityInterface
 {
+    private static final int NUMRAYS = 10;
+
     String state;
 
     Body physicsBody;
@@ -40,7 +36,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
     private float explosionRadiusX = 3;
     private float explosionRadiusY = 3;
 
-    public Array<ExplosionEntityParticle> particles = new Array<ExplosionEntityParticle>();
+    public Array<ParticleEntity> particles = new Array<ParticleEntity>();
 
     private AnimatableGraphicsEntity animatableGraphicsEntity;
 
@@ -93,7 +89,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
             this.animatableGraphicsEntity.update(delta);
         }
 
-        for (ExplosionEntityParticle particle : this.particles)
+        for (ParticleEntity particle : this.particles)
         {
             particle.update(delta);
             if (Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
@@ -115,12 +111,12 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
     @Override
     public void explode()
     {
-        int numRays = ExplosionEntityParticle.NUMRAYS;
+        int numRays = ExplodableEntity.NUMRAYS;
         for (int i = 0; i < numRays; i++)
         {
-            float angle = (float) Math.toDegrees((i / (float) numRays) * 360);
+            float angle = (float) Math.toRadians((i / (float) numRays) * 360);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            this.particles.add(new ExplosionEntityParticle(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir)); // create the particle
+            this.particles.add(new ParticleEntity(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir, NUMRAYS)); // create the particle
         }
 
         this.exploded = true;
