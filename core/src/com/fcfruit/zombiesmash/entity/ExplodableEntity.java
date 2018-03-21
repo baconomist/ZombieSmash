@@ -116,7 +116,9 @@ public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEn
         {
             float angle = (float) Math.toRadians((i / (float) numRays) * 360);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            this.particles.add(new ParticleEntity(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir, NUMRAYS)); // create the particle
+            ParticleEntity particle = new ParticleEntity(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir, NUMRAYS);
+            particle.blastPower = 10;
+            this.particles.add(particle); // create the particle
         }
 
         this.exploded = true;

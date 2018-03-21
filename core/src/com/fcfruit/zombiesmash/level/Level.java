@@ -160,6 +160,12 @@ public class Level
 
     public void update(float delta)
     {
+        for (UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
+        {
+            this.updatableEntities.add(updatableEntityInterface);
+        }
+        Environment.updatableAddQueue.clear();
+
         for (DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
         {
             this.drawableEntities.remove(drawableEntity);

@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
+import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
@@ -50,6 +51,7 @@ public class Spawner
     static
     {
         powerupType.put("rifle", RiflePowerup.class);
+        powerupType.put("rock", RockPowerup.class);
     }
 
     String type;
@@ -138,7 +140,7 @@ public class Spawner
             tempPowerup = (PowerUpInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new PowerupCrate(tempPowerup);
 
-            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + new Random().nextInt(40)/10 + 2, 3));
+            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 3));
             tempCrate.changeToGround(this.data.getInt("depth"));
 
             Environment.level.addDrawableEntity(tempCrate);

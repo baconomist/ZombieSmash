@@ -5,9 +5,10 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
-import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
+import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
+import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 
@@ -24,7 +25,6 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
         if (fixtureA.getUserData() instanceof NewZombie && fixtureB.getUserData() instanceof NewZombie)
         {
-
 
             if (((NewZombie) fixtureA.getUserData()).id == ((NewZombie) fixtureB.getUserData()).id)
             {
@@ -61,7 +61,12 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
                 && !((MultiGroundEntityInterface) fixtureB.getUserData()).isMovingToNewGround()))
         {
             return true;
-        } else if (fixtureA.getUserData() instanceof ParticleEntity && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody || fixtureB.getUserData() instanceof ParticleEntity && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
+        } else if (fixtureA.getUserData() instanceof ParticleEntity && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody
+                || fixtureB.getUserData() instanceof ParticleEntity && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
+        {
+            return true;
+        } else if (fixtureA.getUserData() instanceof Rock && fixtureB.getUserData() instanceof NewZombie
+                || fixtureB.getUserData() instanceof Rock && fixtureA.getUserData() instanceof NewZombie)
         {
             return true;
         }

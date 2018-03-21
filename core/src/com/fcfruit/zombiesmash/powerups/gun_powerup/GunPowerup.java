@@ -133,8 +133,6 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
                 if (angle != 0 && angle > 90 || angle < -90)
                     this.guns[0].setAngle(-angle + 180);
 
-                //Gdx.app.log("aaaa", "a " + angle);
-
             } else if (this.currentControllingGun == 1)
             {
 
