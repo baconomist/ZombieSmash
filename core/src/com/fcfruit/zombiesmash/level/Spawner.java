@@ -6,6 +6,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
@@ -52,6 +53,7 @@ public class Spawner
     {
         powerupType.put("rifle", RiflePowerup.class);
         powerupType.put("rock", RockPowerup.class);
+        powerupType.put("pistol", PistolPowerup.class);
     }
 
     String type;
