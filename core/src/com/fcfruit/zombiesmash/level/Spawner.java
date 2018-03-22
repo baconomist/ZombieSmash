@@ -31,7 +31,7 @@ public class Spawner
     {
         positions.put("left", new Vector2(-1, 0));
         positions.put("right", new Vector2(21, 0));
-        positions.put("middle_left", new Vector2(3, 0));
+        positions.put("middle_left", new Vector2(4, 0));
         positions.put("middle_right", new Vector2(16, 0));
     }
 

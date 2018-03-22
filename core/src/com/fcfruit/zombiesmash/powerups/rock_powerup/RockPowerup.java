@@ -80,7 +80,7 @@ public class RockPowerup implements PowerUpInterface
     {
         for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
-            if (drawableEntity instanceof NewZombie)
+            if (drawableEntity instanceof NewZombie && drawableEntity.getPosition().x - (Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2) >= -0.3f)
             {
                 return drawableEntity.getPosition();
             }
