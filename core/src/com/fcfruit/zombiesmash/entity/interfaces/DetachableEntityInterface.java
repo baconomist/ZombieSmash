@@ -16,4 +16,5 @@ public interface DetachableEntityInterface extends StateEntityInterface
     boolean shouldDetach();
     ContainerEntityInterface getContainer();
     ArrayList<Joint> getJoints();
+    void setForceForDetach(float force);
 }

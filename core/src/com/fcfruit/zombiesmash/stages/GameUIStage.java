@@ -115,6 +115,7 @@ public class GameUIStage extends Stage
             if (this.powerUps[i] == null)
             {
                 this.powerUps[i] = powerUpEntity;
+                this.powerUps[i].getUIDrawable().setSize(this.powerUpButtons[i].getWidth(), this.powerUpButtons[i].getHeight());
                 break;
             }
         }
@@ -145,7 +146,7 @@ public class GameUIStage extends Stage
             {
                 if (this.powerUps[i] != null)
                 {
-                    this.powerUps[i].getUIDrawable().setPosition(this.powerUpButtons[i].getX() + this.powerUps[i].getUIDrawable().getWidth()/2, this.powerUpButtons[i].getY() + this.powerUps[i].getUIDrawable().getHeight()/2);
+                    this.powerUps[i].getUIDrawable().setPosition(this.powerUpButtons[i].getX() - this.powerUpButtons[i].getWidth()/2 + this.powerUps[i].getUIDrawable().getWidth()/2, this.powerUpButtons[i].getY() - this.powerUpButtons[i].getHeight()/2 + this.powerUps[i].getUIDrawable().getHeight()/2);
                     this.powerUps[i].getUIDrawable().setRotation(0);
                     this.powerUps[i].getUIDrawable().draw(spriteBatch);
                 }

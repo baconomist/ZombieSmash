@@ -1,4 +1,4 @@
-package com.fcfruit.zombiesmash.powerups;
+package com.fcfruit.zombiesmash.powerups.grenade;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -8,6 +8,9 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
@@ -39,22 +42,32 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     private InteractivePhysicsEntity interactivePhysicsEntity;
     private ExplodableEntity explodableEntity;
 
-    public Grenade()
+    public Grenade(Body body, ArrayList<Joint> joints)
     {
 
-        RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.getWorld());
+        /*RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.getWorld());
         RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/grenade/grenade_rube.json"));
 
         Body physicsBody = scene.getBodies().get(0);
         physicsBody.setUserData(this);
 
         ArrayList<Joint> joints = new ArrayList<Joint>();
-        joints.add(physicsBody.getJointList().get(0).joint);
+        joints.add(physicsBody.getJointList().get(0).joint);*/
 
-        this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png"))), physicsBody);
+        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png")));
+        //Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(sprite.getWidth(), sprite.getHeight(), 0)));
+        //size.y = Environment.physicsCamera.viewportHeight - size.y;
+
+        this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
         this.detachableEntity = new DetachableEntity(joints);
 
         this.explodableEntity = new ExplodableEntity(this, 1f);
+
+        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
+        size.y = Environment.gameCamera.viewportHeight - size.y;
+        Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
+        polygon.setOrigin(size.x / 2, size.y / 2);
+        this.interactivePhysicsEntity = new InteractivePhysicsEntity(body, polygon);
 
     }
 
@@ -192,6 +205,12 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     public boolean shouldDetach()
     {
         return this.detachableEntity.shouldDetach();
+    }
+
+    @Override
+    public void setForceForDetach(float force)
+    {
+        this.detachableEntity.setForceForDetach(force);
     }
 
     @Override

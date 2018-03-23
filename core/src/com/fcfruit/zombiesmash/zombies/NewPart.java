@@ -188,6 +188,12 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
+    public void setForceForDetach(float force)
+    {
+        this.detachableEntity.setForceForDetach(force);
+    }
+
+    @Override
     public ContainerEntityInterface getContainer()
     {
         return this.containerEntity;

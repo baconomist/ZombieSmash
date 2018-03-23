@@ -14,7 +14,13 @@
       "depth": 1
     },
     "crate": {
-      "type": "pistol",
+      "type": "grenade",
+      "init_delay": 0,
+      "spawn_delay": 0,
+      "depth": 1
+    },
+    "crate": {
+      "type": "grenade",
       "init_delay": 0,
       "spawn_delay": 0,
       "depth": 1

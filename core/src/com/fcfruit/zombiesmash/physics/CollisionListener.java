@@ -39,6 +39,18 @@ public class CollisionListener implements ContactListener
 
             for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
             {
+                if (drawableEntity instanceof ExplodableEntityInterface)
+                {
+                    if (contact.getFixtureA().getBody().equals(((ExplodableEntityInterface) drawableEntity).getPhysicsBody())
+                            || contact.getFixtureB().getBody().equals(((ExplodableEntityInterface) drawableEntity).getPhysicsBody()))
+                    {
+                        if (!Environment.explodableEntityQueue.contains(drawableEntity) && ((ExplodableEntityInterface) drawableEntity).shouldExplode())
+                        {
+                            Environment.explodableEntityQueue.add(((ExplodableEntityInterface) drawableEntity));
+                        }
+                    }
+                }
+
                 if (drawableEntity instanceof ContainerEntityInterface)
                 {
 
