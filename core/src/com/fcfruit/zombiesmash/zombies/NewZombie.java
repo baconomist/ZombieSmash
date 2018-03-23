@@ -811,7 +811,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
 
-        if (this.isTouching() && !touching && this.isAlive())
+        if (this.isTouching() && !touching && this.isAlive() && this.isInLevel())
         {
             ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
