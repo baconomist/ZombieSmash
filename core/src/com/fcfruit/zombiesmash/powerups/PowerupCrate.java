@@ -124,7 +124,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void draw(SpriteBatch batch)
     {
         this.crateDrawable.draw(batch);
-        this.powerupUIDrawable.draw(batch);
+        if(this.isOpening)
+            this.powerupUIDrawable.draw(batch);
     }
 
     @Override
