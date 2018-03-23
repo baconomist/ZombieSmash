@@ -105,7 +105,7 @@ public class Environment
         return false;
     }
 
-    public static boolean areQuadrilaterallsColiding(Polygon polygon1, Polygon polygon2)
+    public static boolean areQuadrilaterallsColliding(Polygon polygon1, Polygon polygon2)
     {
         return (
                 (polygon2.getX() < (polygon1.getX() + polygon1.getVertices()[2]) && polygon2.getX() > polygon1.getX())

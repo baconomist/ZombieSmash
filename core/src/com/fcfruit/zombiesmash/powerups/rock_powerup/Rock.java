@@ -13,7 +13,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
@@ -81,10 +81,13 @@ public class Rock implements DrawableEntityInterface, PhysicsEntityInterface
             if (drawableEntityInterface instanceof NewZombie)
                 for (InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) drawableEntityInterface).getInteractiveEntities().values())
                 {
-                    if(Environment.areQuadrilaterallsColiding(interactiveEntityInterface.getPolygon(), this.polygon) && this.isFalling)
+                    if (Environment.areQuadrilaterallsColliding(interactiveEntityInterface.getPolygon(), this.polygon) && this.isFalling)
                     {
-
                         ((OptimizableEntityInterface) drawableEntityInterface).disable_optimization();
+                        if (interactiveEntityInterface instanceof DetachableEntityInterface)
+                        {
+                           ((DetachableEntityInterface)interactiveEntityInterface).setForceForDetach(0.1f);
+                        }
                     }
 
                 }
