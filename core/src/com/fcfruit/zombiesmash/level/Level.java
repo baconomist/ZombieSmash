@@ -160,24 +160,6 @@ public class Level
 
     public void update(float delta)
     {
-        for (UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
-        {
-            this.updatableEntities.add(updatableEntityInterface);
-        }
-        Environment.updatableAddQueue.clear();
-
-        for (DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
-        {
-            this.drawableEntities.remove(drawableEntity);
-        }
-        Environment.drawableRemoveQueue.clear();
-
-        for (DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
-        {
-            this.drawableEntities.add(drawableEntity);
-        }
-        Environment.drawableAddQueue.clear();
-
 
         // Can't be put in draw bcuz it takes too long
         // When it takes too long in a spritebatch call,
@@ -242,6 +224,24 @@ public class Level
             Environment.physics.constructPhysicsBoundaries();
         }
 
+
+        for (UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
+        {
+            this.updatableEntities.add(updatableEntityInterface);
+        }
+        Environment.updatableAddQueue.clear();
+
+        for (DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
+        {
+            this.drawableEntities.remove(drawableEntity);
+        }
+        Environment.drawableRemoveQueue.clear();
+
+        for (DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
+        {
+            this.drawableEntities.add(drawableEntity);
+        }
+        Environment.drawableAddQueue.clear();
 
     }
 

@@ -622,12 +622,13 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.isGettingUp = false;
         this.enable_optimization();
 
-        this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
         if (getUpMouseJoint != null)
         {
             Environment.physics.destroyJoint(getUpMouseJoint);
             getUpMouseJoint = null;
         }
+
+        this.animatableGraphicsEntity.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
 
         // Restart animation
         this.animatableGraphicsEntity.restartAnimation();
@@ -740,6 +741,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             {
                 this.onPhysicsEnabled();
                 this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
+                this.animatableGraphicsEntity.update(delta);
             }
 
             this.optimizableEntity.update(delta);

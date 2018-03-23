@@ -41,6 +41,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
     private boolean isFloatingUp;
 
+    private boolean isOpening;
+
     public PowerupCrate(PowerUpInterface powerUp)
     {
 
@@ -62,7 +64,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);
 
-        this.crateDrawable = new DrawablePhysicsEntity(new com.badlogic.gdx.graphics.g2d.Sprite(new Texture(Gdx.files.internal("powerups/crate.png"))),
+        this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate.png"))),
                 body);
 
 
@@ -80,8 +82,13 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
     private void open()
     {
-        Environment.drawableRemoveQueue.add(this);
-        Environment.gameScreen.get_ui_stage().add_powerup(this.powerUp);
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - this.getSize().x / 2, this.getPosition().y - this.getSize().y / 2, 0)));
+        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+
+        this.powerupUIDrawable.setPosition(pos.x, pos.y);
+
+        this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate_open.png"))), this.crateDrawable.getPhysicsBody());
+        this.isOpening = true;
     }
 
     @Override
@@ -130,7 +137,11 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void update(float delta)
     {
 
-        if (this.isFloatingUp && this.getPosition().y < 2)
+        if (this.isOpening)
+        {
+            this.getPhysicsBody().setLinearVelocity(0, 0);
+            this.setAngle(0);
+        } else if (this.isFloatingUp && this.getPosition().y < 2)
         {
             this.getPhysicsBody().setGravityScale(0);
             this.getPhysicsBody().setLinearVelocity(0, 0.3f);
@@ -149,11 +160,21 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         this.crateDrawable.update(delta);
 
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - this.getSize().x / 2, this.getPosition().y - this.getSize().y / 2, 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        if (this.isOpening)
+        {
+            Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.powerupUIDrawable.getX(), this.powerupUIDrawable.getY(), 0)));
+            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
 
-        this.powerupUIDrawable.setPosition(pos.x, pos.y);
-        this.powerupUIDrawable.setRotation(this.getAngle());
+            if (pos.y < this.crateDrawable.getPosition().y + 1)
+            {
+                this.powerupUIDrawable.setPosition(this.powerupUIDrawable.getX(), this.powerupUIDrawable.getY() + 100 * Gdx.graphics.getDeltaTime());
+                this.powerupUIDrawable.setRotation(this.powerupUIDrawable.getRotation() + 1);
+            } else
+            {
+                Environment.drawableRemoveQueue.add(this);
+                Environment.gameScreen.get_ui_stage().add_powerup(this.powerUp);
+            }
+        }
 
         this.interactiveGraphicsEntity.update(delta);
 
