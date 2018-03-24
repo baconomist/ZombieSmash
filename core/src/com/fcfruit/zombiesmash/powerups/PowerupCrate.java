@@ -101,7 +101,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void onTouchDown(float screenX, float screenY, int pointer)
     {
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, pointer);
-        if (this.isTouching())
+        if (this.isTouching() && !this.isOpening)
         {
             this.open();
         }
