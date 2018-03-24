@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
@@ -30,7 +31,6 @@ public class GrenadePowerup implements PowerUpInterface
     public GrenadePowerup()
     {
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade_ui.png")));
-
     }
 
 
@@ -59,16 +59,23 @@ public class GrenadePowerup implements PowerUpInterface
         Body body = Environment.physics.createBody(bodyDef);
         Fixture fixture = body.createFixture(fixtureDef);
 
-        this.rope = new Rope(5, new Vector2(10, 5));
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getX(), this.getUIDrawable().getY(), 9)));
+        pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+
+        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getWidth(), this.getUIDrawable().getHeight(), 9)));
+        size.y = Environment.physicsCamera.viewportHeight - size.y;
+
+        // Make rope swing
+        this.rope = new Rope(5, new Vector2(pos.x, pos.y + 1));
+
         ArrayList<Joint> joints = new ArrayList<Joint>();
         joints.add(this.rope.attachToBottom(body));
 
         this.grenade = new Grenade(body, joints);
-
-        this.grenade.setPosition(new Vector2(10, 0.3f));
+        this.grenade.setPosition(new Vector2(pos.x, pos.y));
 
         // Make grenade easy to detach from rope
-        this.grenade.setForceForDetach(10f);
+        this.grenade.setForceForDetach(20f);
 
         fixture.setUserData(this.grenade);
 
@@ -77,7 +84,7 @@ public class GrenadePowerup implements PowerUpInterface
 
         // Stick rope to top
         bodyDef.type = BodyDef.BodyType.StaticBody;
-        bodyDef.position.set(new Vector2((Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2) + 3, 5));
+        bodyDef.position.set(new Vector2(pos.x + size.x/2, pos.y));
         this.rope.attachToTop(Environment.physics.createBody(bodyDef));
     }
 

@@ -90,11 +90,12 @@ public class GameUIStage extends Stage
         for (int i = 0; i < this.powerUpButtons.length; i++)
         {
             final int finalI = i;
-            this.powerUpButtons[i].addListener(new ClickListener(){
+            this.powerUpButtons[i].addListener(new ClickListener()
+            {
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
                 {
-                    if(powerUps[finalI] != null)
+                    if (powerUps[finalI] != null)
                     {
                         powerUps[finalI].activate();
                         Environment.level.addUpdatableEntity((powerUps[finalI]));
@@ -146,7 +147,7 @@ public class GameUIStage extends Stage
             {
                 if (this.powerUps[i] != null)
                 {
-                    this.powerUps[i].getUIDrawable().setPosition(this.powerUpButtons[i].getX() - this.powerUpButtons[i].getWidth()/2 + this.powerUps[i].getUIDrawable().getWidth()/2, this.powerUpButtons[i].getY() - this.powerUpButtons[i].getHeight()/2 + this.powerUps[i].getUIDrawable().getHeight()/2);
+                    this.powerUps[i].getUIDrawable().setPosition(this.powerUpButtons[i].getX() - this.powerUpButtons[i].getWidth() / 2 + this.powerUps[i].getUIDrawable().getWidth() / 2, this.powerUpButtons[i].getY() - this.powerUpButtons[i].getHeight() / 2 + this.powerUps[i].getUIDrawable().getHeight() / 2);
                     this.powerUps[i].getUIDrawable().setRotation(0);
                     this.powerUps[i].getUIDrawable().draw(spriteBatch);
                 }
