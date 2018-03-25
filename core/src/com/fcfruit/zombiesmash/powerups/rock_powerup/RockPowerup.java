@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
@@ -20,6 +21,8 @@ import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.Random;
 
 /**
@@ -56,10 +59,11 @@ public class RockPowerup implements PowerUpInterface
     public void update(float delta)
     {
         // If rocks haven't been spawned yet spawn rocks with a time delay.
-        if(this.rocksSpawned != this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks){
+        if (this.rocksSpawned != this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
+        {
 
             Rock rock = new Rock();
-            rock.setPosition(new Vector2(this.getRandomZombiePosition().x + (float)new Random().nextInt(2000) / 1000f , (float)new Random().nextInt(10) / 10f + 4.5f));
+            rock.setPosition(new Vector2(this.getClosestRockSpawnZombiePosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
             Environment.level.addDrawableEntity(rock);
 
             this.rockSpawnTimer = System.currentTimeMillis();
@@ -76,18 +80,28 @@ public class RockPowerup implements PowerUpInterface
         this.rockSpawnTimer = System.currentTimeMillis();
     }
 
-    private Vector2 getRandomZombiePosition()
+
+    private Float getClosestRockSpawnZombiePosition()
     {
+        HashMap<Float, NewZombie> zombieDistances = new HashMap<Float, NewZombie>();
+
         for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
-            if (drawableEntity instanceof NewZombie && drawableEntity.getPosition().x - (Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2) >= -0.3f)
+            if (drawableEntity instanceof NewZombie && ((NewZombie) drawableEntity).isInLevel())
             {
-                return drawableEntity.getPosition();
+                zombieDistances.put(Math.abs(Environment.level.objective.getPosition().x - drawableEntity.getPosition().x), ((NewZombie) drawableEntity));
             }
         }
-        return new Vector2(Environment.physicsCamera.position.x + new Random().nextInt(4), new Random().nextInt(10) / 10 + 3);
-    }
 
+
+
+        if(zombieDistances.size() > 0)
+            return zombieDistances.get(Collections.min(zombieDistances.keySet())).getPosition().x;
+        else
+            return Environment.physicsCamera.position.x + new Random().nextInt(4);
+
+
+    }
 
 
     @Override

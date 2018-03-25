@@ -392,8 +392,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private boolean hasRequiredPartsForGetup()
     {
-        return this.getInteractiveEntities().get("head") != null && this.getInteractiveEntities().get("left_leg") != null
-                && this.getInteractiveEntities().get("right_leg") != null;
+        return this.getDrawableEntities().get("head") != null && this.getDrawableEntities().get("left_leg") != null
+                && this.getDrawableEntities().get("right_leg") != null;
     }
 
     /**
