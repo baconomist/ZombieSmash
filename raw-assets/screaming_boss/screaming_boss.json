@@ -1,0 +1,43 @@
+{"skeleton":{"images":"images/"},
+"bones":[{"name":"root"}],
+"slots":[
+	{"name":"head_2","bone":"root","attachment":"head_2"},
+	{"name":"head_3","bone":"root","attachment":"head_3"},
+	{"name":"left_arm","bone":"root","attachment":"left_arm"},
+	{"name":"left_leg","bone":"root","attachment":"left_leg"},
+	{"name":"body","bone":"root","attachment":"body"},
+	{"name":"right_leg","bone":"root","attachment":"right_leg"},
+	{"name":"right_arm","bone":"root","attachment":"right_arm"},
+	{"name":"head_1","bone":"root","attachment":"head_1"},
+	{"name":"spike","bone":"root","attachment":"spike"},
+	{"name":"spikes","bone":"root","attachment":"spikes"},
+	{"name":"spikes2","bone":"root","attachment":"spikes2"},
+	{"name":"spike2","bone":"root","attachment":"spike2"},
+	{"name":"spike3","bone":"root","attachment":"spike3"},
+	{"name":"spike4","bone":"root","attachment":"spike4"},
+	{"name":"spike5","bone":"root","attachment":"spike5"},
+	{"name":"spike6","bone":"root","attachment":"spike6"}
+],
+"skins":{
+	"default":{
+		"spike6":{"spike6":{"x":746,"y":293.5,"width":66,"height":95}},
+		"spike5":{"spike5":{"x":817,"y":498.5,"width":186,"height":269}},
+		"spike4":{"spike4":{"x":934,"y":679,"width":116,"height":166}},
+		"spike3":{"spike3":{"x":904,"y":1085.5,"width":152,"height":219}},
+		"spike2":{"spike2":{"x":824,"y":751,"width":114,"height":164}},
+		"spike":{"spike":{"x":937.5,"y":881,"width":129,"height":186}},
+		"spikes2":{"spikes2":{"x":440,"y":755,"width":430,"height":148}},
+		"spikes":{"spikes":{"x":444.5,"y":936.5,"width":451,"height":155}},
+		"spike":{"spike":{"x":768.5,"y":917.5,"width":133,"height":191}},
+		"head_1":{"head_1":{"x":1252.5,"y":1164,"width":371,"height":488}},
+		"right_arm":{"right_arm":{"x":1146.5,"y":681.5,"width":107,"height":527}},
+		"right_leg":{"right_leg":{"x":1221,"y":269,"width":166,"height":524}},
+		"body":{"body":{"x":1201,"y":737,"width":424,"height":536}},
+		"left_leg":{"left_leg":{"x":1353.5,"y":280,"width":167,"height":526}},
+		"left_arm":{"left_arm":{"x":1386,"y":679.5,"width":110,"height":527}},
+		"head_3":{"head_3":{"x":2029.5,"y":1184,"width":281,"height":506}},
+		"head_2":{"head_2":{"x":1650.5,"y":1169.5,"width":311,"height":451}}
+	}
+},
+"animations":{"animation":{}}
+}
