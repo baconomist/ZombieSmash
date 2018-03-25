@@ -19,7 +19,7 @@ import com.fcfruit.zombiesmash.stages.GameUIStage;
 public class GameScreen implements Screen{
 
     private Stage game_stage;
-    private Stage ui_stage;
+    private GameUIStage ui_stage;
 
     private StretchViewport physics_view;
     private StretchViewport game_view;
@@ -92,7 +92,7 @@ public class GameScreen implements Screen{
             Environment.physicsCamera.position.x -= 0.1f;
             Environment.gameCamera.update();
             Environment.physicsCamera.update();
-            Environment.physics.constructPhysicsBoundries();
+            Environment.physics.constructPhysicsBoundaries();
 
             Environment.physicsCamera.update();
             Environment.gameCamera.update();
@@ -103,27 +103,30 @@ public class GameScreen implements Screen{
             Environment.physicsCamera.position.x += 0.1f;
             Environment.gameCamera.update();
             Environment.physicsCamera.update();
-            Environment.physics.constructPhysicsBoundries();
+            Environment.physics.constructPhysicsBoundaries();
 
             Environment.physicsCamera.update();
             Environment.gameCamera.update();
         }
 
 
-        //Environment.physics.constructPhysicsBoundries();
+        //Environment.physics.constructPhysicsBoundaries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
 
 
 
+        //
         //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }
 
-    public void set_ui_stage(Stage s){
+    public void set_ui_stage(GameUIStage s){
         ui_stage = s;
     }
+
+    public GameUIStage get_ui_stage(){return this.ui_stage;}
 
     @Override
     public void resize(int width, int height) {

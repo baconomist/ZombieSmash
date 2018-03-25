@@ -12,7 +12,6 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.Blood;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 
@@ -223,7 +222,7 @@ public class Part{
         MouseJointDef mouseJointDef = new MouseJointDef();
         // Needs 2 bodies, first one not used, so we use an arbitrary body.
         // http://www.binarytides.com/mouse-joint-box2d-javascript/
-        mouseJointDef.bodyA = Environment.physics.getGround();
+        mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
         mouseJointDef.bodyB = physicsBody;
         mouseJointDef.collideConnected = true;
         mouseJointDef.target.set(physicsBody.getPosition());
@@ -252,9 +251,9 @@ public class Part{
 
         // Destroy the current mouseJoint
         if(mouseJoint != null){
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
         }
-        mouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+        mouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
         mouseJoint.setTarget(new Vector2(x, y));
 
         physicsBody.setAwake(true);
@@ -298,7 +297,7 @@ public class Part{
     public void touchUp(float x, float y, int p){
 
         if(mouseJoint != null && pointer == p){
-            Environment.physics.getWorld().destroyJoint(mouseJoint);
+            Environment.physics.destroyJoint(mouseJoint);
             mouseJoint = null;
             isTouching = false;
             isPowerfulPart = false;
@@ -327,7 +326,7 @@ public class Part{
 
 
 
-        Environment.physics.getWorld().destroyJoint(bodyJoint);
+        Environment.physics.destroyJoint(bodyJoint);
         bodyJoint = null;
         body.parts.remove(name);
         body = null;
@@ -367,7 +366,7 @@ public class Part{
     }
 
     public void destroy(){
-        Environment.physics.getWorld().destroyBody(physicsBody);
+        Environment.physics.destroyBody(physicsBody);
         setState("destroyed");
     }
 

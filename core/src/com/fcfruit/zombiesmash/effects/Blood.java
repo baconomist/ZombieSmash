@@ -42,7 +42,7 @@ public class Blood
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        this.physicsBody = Environment.physics.getWorld().createBody(bodyDef);
+        this.physicsBody = Environment.physics.createBody(bodyDef);
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.1f);
@@ -94,7 +94,7 @@ public class Blood
 
     public void destroy()
     {
-        Environment.physics.getWorld().destroyBody(this.physicsBody);
+        Environment.physics.destroyBody(this.physicsBody);
         this.sprite = null;
     }
 

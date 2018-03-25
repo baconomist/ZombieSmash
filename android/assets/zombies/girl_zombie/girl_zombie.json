@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "kMB0CaAELZZyi3ONlPAdaKCaVtU", "spine": "3.6.50", "width": 0, "height": 0 },
+"skeleton": { "hash": "9rMe+7ikBs9hg4IlbnSGvTlk+GM", "spine": "3.6.52", "width": 0, "height": 0, "images": "./girl_zombie/images/" },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "torso", "parent": "root", "length": 199.24, "rotation": 92.35, "x": 111, "y": 347 },
@@ -50,21 +50,27 @@
 			}
 		},
 		"head": {
-			"head": { "x": 142.32, "y": 3.32, "rotation": -1.31, "width": 301, "height": 269 }
+			"head": { "x": 142.32, "y": 3.32, "rotation": -1.31, "width": 301, "height": 269 },
+			"physics_pos": { "type": "point", "x": 112.99, "y": 5.13 }
 		},
 		"left_arm": {
-			"left_arm": { "x": 55.02, "y": -1.27, "rotation": 0.13, "width": 296, "height": 76 }
+			"left_arm": { "x": 55.02, "y": -1.27, "rotation": 0.13, "width": 296, "height": 76 },
+			"physics_pos": { "type": "point", "x": 88.29, "y": -3.69 }
 		},
 		"left_leg": {
-			"left_leg": { "x": 133.93, "y": 29.17, "rotation": 177.54, "width": 317, "height": 182 }
+			"left_leg": { "x": 133.93, "y": 29.17, "rotation": 177.54, "width": 317, "height": 182 },
+			"physics_pos": { "type": "point", "x": 137.34, "y": -0.23 }
 		},
 		"right_arm": {
+			"physics_pos": { "type": "point", "x": 157.73, "y": 2.23 },
 			"right_arm": { "x": 126.78, "y": -7.78, "rotation": -2.58, "width": 282, "height": 73 }
 		},
 		"right_leg": {
+			"physics_pos": { "type": "point", "x": 134.54, "y": -0.45 },
 			"right_leg": { "x": 135.78, "y": 2.57, "rotation": 179.48, "width": 338, "height": 148 }
 		},
 		"torso": {
+			"physics_pos": { "type": "point", "x": 79.51, "y": -0.1 },
 			"torso": { "x": 102.79, "y": 7.03, "rotation": 1.2, "width": 368, "height": 180 }
 		}
 	}

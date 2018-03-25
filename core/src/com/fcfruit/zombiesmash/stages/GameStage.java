@@ -5,19 +5,15 @@ import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
-import com.fcfruit.zombiesmash.power_ups.PowerUp;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
-import com.fcfruit.zombiesmash.zombies.Part;
-import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 
 /**
@@ -60,26 +56,34 @@ public class GameStage extends Stage
     {
         super.draw();
 
+
+        Environment.level.update(Gdx.graphics.getDeltaTime());
         // Viewport.getCamera() != Environment.gameCamera
         this.spriteBatch.setProjectionMatrix(Environment.gameCamera.combined);
-
         this.spriteBatch.begin();
         Environment.level.draw(spriteBatch, skeletonRenderer);
         this.spriteBatch.end();
 
         Environment.physics.update(Gdx.graphics.getDeltaTime());
-        Environment.level.update(Gdx.graphics.getDeltaTime());
+        Environment.physics.draw();
 
         /*this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
         this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        if(Environment.level.getDrawableEntities().size() > 0)
+        for(DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
-            this.shapeRenderer.polygon(((NewZombie) Environment.level.getDrawableEntities().get(0)).getPolygon().getTransformedVertices());
-            for(InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) Environment.level.getDrawableEntities().get(0)).containerEntity.getInteractiveEntities().values()){
-                this.shapeRenderer.polygon(interactiveEntityInterface.getPolygon().getTransformedVertices());
+            if(drawableEntity instanceof InteractiveEntityInterface)
+            {
+                this.shapeRenderer.polygon(((InteractiveEntityInterface) drawableEntity).getPolygon().getTransformedVertices());
+            }
+            if(drawableEntity instanceof ContainerEntityInterface){
+                for (InteractiveEntityInterface InteractiveEntityInterface : ((ContainerEntityInterface)drawableEntity).getInteractiveEntities().values())
+                {
+                    this.shapeRenderer.polygon(InteractiveEntityInterface.getPolygon().getTransformedVertices());
+                }
             }
         }
         this.shapeRenderer.end();*/
+
     }
 
     @Override
@@ -91,7 +95,7 @@ public class GameStage extends Stage
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        Environment.touchedDownItems = new ArrayList<InteractiveEntityInterface>();
+        Environment.touchedDownItems = new ArrayList<com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface>();
 
         Environment.level.onTouchDown(screenX, screenY, pointer);
 

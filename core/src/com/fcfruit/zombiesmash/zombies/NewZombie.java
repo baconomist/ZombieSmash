@@ -22,18 +22,22 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
+import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.MovableEntity;
+import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -51,7 +55,7 @@ import java.util.Random;
 
 public class NewZombie implements DrawableEntityInterface, InteractiveEntityInterface,
         ContainerEntityInterface, OptimizableEntityInterface,
-        AnimatableEntityInterface, MovableEntityInterface
+        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface
 {
 
     /**
@@ -71,6 +75,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private InteractiveGraphicsEntity interactiveGraphicsEntity;
     private OptimizableEntity optimizableEntity;
     private MovableEntity movableEntity;
+    private MultiGroundEntity multiGroundEntity;
     public ContainerEntity containerEntity;
 
     /**
@@ -80,7 +85,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     private int direction;
     private int speed;
     ArrayList detachableEntitiesToStayAlive;
-    HashMap<String, Class> specialParts;
+    ArrayList<String> currentParts;
+    private float animScale = 0;
 
     /**
      * Getup fields (need to make getupable entity)
@@ -100,12 +106,14 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         this.speed = 1;
 
         this.movableEntity = new MovableEntity(this);
+        this.multiGroundEntity = new MultiGroundEntity(this, this);
         this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
 
         this.shouldObjectiveOnce = true;
         this.detachableEntitiesToStayAlive = new ArrayList();
+        this.currentParts = new ArrayList<String>();
 
         this.timeBeforeGetup = 5000;
         this.isGettingUp = false;
@@ -140,11 +148,24 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
         }
 
+        // Remove old entities from world
+        if (this.getDrawableEntities() != null)
+        {
+            for (DrawableEntityInterface drawableEntity : this.getDrawableEntities().values())
+            {
+                drawableEntity.dispose();
+                if (drawableEntity instanceof PhysicsEntityInterface)
+                {
+                    Environment.physics.destroyBody(((PhysicsEntityInterface) drawableEntity).getPhysicsBody());
+                }
+            }
+        }
+
         this.setDrawableEntities(new HashMap<String, DrawableEntityInterface>());
         this.setInteractiveEntities(new HashMap<String, InteractiveEntityInterface>());
         this.setDetachableEntities(new HashMap<String, DetachableEntityInterface>());
 
-        float scale = 0;
+        float height = 0;
 
         for (Body body : rubeScene.getBodies())
         {
@@ -161,10 +182,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                         sprite.flip(flip, false);
                         sprite.setColor(i.color);
                         sprite.setOriginCenter();
-                        scale = sprite.getWidth();
                         sprite.setSize(i.width * Physics.PIXELS_PER_METER, i.height * Physics.PIXELS_PER_METER);
-                        scale = sprite.getWidth() / scale;
                         sprite.setOriginCenter();
+
+                        height += i.height * Physics.PIXELS_PER_METER;
                     }
 
                 }
@@ -185,13 +206,33 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                     fixture.setUserData(this);
                 }
 
-                this.createPart(body, bodyName, sprite, joints, this);
+                // If we still have the part
+                // If not, we destroy the body loaded into the world by rube
+                if(this.currentParts.contains(bodyName))
+                    this.createPart(body, bodyName, sprite, joints, this);
+                else
+                    Environment.physics.destroyBody(body);
 
             }
 
         }
 
-        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(scale);
+        // Only set animScale once because later on when you loop through the slots of the anim
+        // The scale is inaccurate because you remove certain slots when parts detach
+        if(this.animScale == 0)
+        {
+
+            float height2 = 0;
+            for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
+            {
+                if (slot.getAttachment() instanceof RegionAttachment)
+                    height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
+            }
+
+            this.animScale = height / height2;
+        }
+
+        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
 
         this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
 
@@ -225,8 +266,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
-        Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
-        polygon.setOrigin(size.x / 2, size.y / 2);
+        Polygon polygon = new Polygon(new float[]{0, 0, size.x*2, 0, size.x*2, size.y*1.5f, 0, size.y*1.5f});
+        polygon.setOrigin(size.x, 0);
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
     }
 
@@ -236,7 +277,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.json"));
-        Skeleton skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+        Skeleton skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 
         AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
@@ -261,13 +302,21 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
      **/
     public boolean isInLevel()
     {
-        boolean isInLevel = false;
+        /*boolean isInLevel = false;
         for (DrawableEntityInterface i : this.getDrawableEntities().values())
         {
             isInLevel = i.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.1f
                     && i.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.1f;
         }
 
+        return isInLevel;*/
+
+        boolean isInLevel = false;
+        for (DrawableEntityInterface i : this.getDrawableEntities().values())
+        {
+            isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
+                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2;
+        }
         return isInLevel;
 
     }
@@ -287,7 +336,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             }
         }
 
-        return isAtObjective;
+        return isAtObjective && this.isInLevel();
 
     }
 
@@ -364,13 +413,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void checkDirection()
     {
+
         int previous_direction = this.direction;
+
         if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2)
         {
-            this.direction = 1;
+            if (Environment.level.getCurrentCameraPosition().equals("right"))
+            {
+                this.direction = 0;
+            } else this.direction = 1;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2 + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
@@ -406,7 +460,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             MouseJointDef mouseJointDef = new MouseJointDef();
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
-            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
             mouseJointDef.bodyB = ((NewPart) this.getInteractiveEntities().get("head")).getPhysicsBody();
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(this.getDrawableEntities().get("head").getPosition());
@@ -416,10 +470,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             // Destroy the current mouseJoint
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
             }
-            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
-            getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, this.animatableGraphicsEntity.getSize().y));
+            getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
+            getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x,
+                    this.animatableGraphicsEntity.getSize().y + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
 
             this.isGettingUp = true;
 
@@ -428,7 +483,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
 
         // -0.3f to give it wiggle room to detect get up
-        if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f)
+        if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
         {
             this.onGetupEnd();
         }
@@ -438,6 +493,19 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     /*private boolean isGettingUp(){
          return this.isPhysicsEnabled && System.currentTimeMillis() - this.getUpTimer > this.timeBeforeGetup;
      }*/
+
+    public void stopGetUp()
+    {
+
+        if (this.getUpMouseJoint != null && !Environment.jointDestroyQueue.contains(this.getUpMouseJoint))
+        {
+            Environment.jointDestroyQueue.add(this.getUpMouseJoint);
+        }
+        this.getUpTimer = System.currentTimeMillis();
+        this.isGettingUp = false;
+
+    }
+
     private void syncEntitiesToAnimation()
     {
         for (String key : this.getDrawableEntities().keySet())
@@ -474,9 +542,10 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
         }
     }
 
+    // May need to be changed to some more general system in the future(using points in data files or something)
     private float getDistanceToObjective()
     {
-        if (this.direction == 0)
+        if (Environment.level.getCurrentCameraPosition().equals("left"))
         {
             return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
         }
@@ -515,30 +584,28 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onObjectiveOnce()
     {
-        /**
-         * You need the +1 in the random call so that the bounds is always positive
-         * Sometimes distanceToObjective is 0 which is not a positive bounds
-         * **/
+
+        float move = new Random().nextFloat() * (int) this.getDistanceToObjective();
         if (this.direction == 0)
         {
-            this.moveBy(new Vector2(new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
+            this.moveBy(new Vector2(move, 0));
         } else
         {
-            this.moveBy(new Vector2(-new Random().nextInt((int) this.getDistanceToObjective() + 1), 0));
+            this.moveBy(new Vector2(-move, 0));
         }
+        this.changeToGround(new Random().nextInt(1) + 1);
 
         this.shouldObjectiveOnce = false;
-
     }
 
     protected void onObjective()
     {
-        if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 2 && this.animatableGraphicsEntity.getCurrentAnimation().contains("attack"))
+        if (this.timesAnimationCompleted() >= 2 && this.getCurrentAnimation().contains("attack"))
         {
-            this.animatableGraphicsEntity.setAnimation("attack2");
-        } else if (this.animatableGraphicsEntity.timesAnimationCompleted() >= 1)
+            this.setAnimation("attack2");
+        } else if (this.timesAnimationCompleted() >= 1)
         {
-            this.animatableGraphicsEntity.setAnimation("attack1");
+            this.setAnimation("attack1");
         }
     }
 
@@ -549,25 +616,24 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onGetupEnd()
     {
-        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
+        this.setAnimation(this.moveAnimation);
         this.shouldObjectiveOnce = true;
 
         this.isGettingUp = false;
         this.enable_optimization();
 
-        this.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, 0));
         if (getUpMouseJoint != null)
         {
-            Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+            Environment.physics.destroyJoint(getUpMouseJoint);
             getUpMouseJoint = null;
         }
+
+        this.animatableGraphicsEntity.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
 
         // Restart animation
         this.animatableGraphicsEntity.restartAnimation();
 
         this.checkDirection();
-
-        Gdx.app.log("getup end******", "getup END");
 
     }
 
@@ -581,7 +647,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     {
         this.detachAnimationLimbs();
 
-        if (this.shouldObjectiveOnce)
+        if (this.isAtObjective() && this.shouldObjectiveOnce)
         {
             this.onObjectiveOnce();
         } else if (this.isAtObjective() && !this.isMoving())
@@ -601,17 +667,18 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
 
     private void onPhysicsEnabled()
     {
-
+        this.resetToInitialGround();
+        this.clearMoveQueue();
     }
 
     private void onTouching()
     {
         if (this.getUpMouseJoint != null)
         {
-            Environment.physics.getWorld().destroyJoint(this.getUpMouseJoint);
+            Environment.physics.destroyJoint(this.getUpMouseJoint);
             this.getUpMouseJoint = null;
         }
-        this.movableEntity.clearMoveQueue();
+        this.clearMoveQueue();
         this.disable_optimization();
         this.isGettingUp = false;
         this.getUpTimer = System.currentTimeMillis();
@@ -645,6 +712,7 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
                 if (this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
                 {
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
+                    this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch, skeletonRenderer);
                 }
             }
         }
@@ -668,19 +736,17 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
             {
                 this.onAnimate();
                 this.movableEntity.update(delta);
+                this.multiGroundEntity.update(delta);
             } else
             {
                 this.onPhysicsEnabled();
+                this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
+                this.animatableGraphicsEntity.update(delta);
             }
 
             this.optimizableEntity.update(delta);
 
             this.handleGetup();
-        }
-
-        if (this.isGettingUp)
-        {
-            Gdx.app.log("aaa", "" + ((PhysicsEntityInterface) this.getDrawableEntities().get("torso")).getPhysicsBody().getPosition());
         }
 
     }
@@ -734,11 +800,21 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void onTouchDown(float screenX, float screenY, int p)
     {
+        boolean touching = false;
         for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchDown(screenX, screenY, p);
+            if (interactiveEntity.isTouching())
+            {
+                touching = true;
+            }
         }
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
+
+        if (this.isTouching() && !touching && this.isAlive() && this.isInLevel())
+        {
+            ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
+        }
     }
 
     @Override
@@ -793,8 +869,8 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void disable_optimization()
     {
+        this.onPhysicsEnabled();
         this.optimizableEntity.disable_optimization();
-        Gdx.app.log("aaa", "disable");
     }
 
     @Override
@@ -809,6 +885,11 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     @Override
     public void detach(DetachableEntityInterface detachableEntityInterface)
     {
+        for(String name : this.getDetachableEntities().keySet())
+        {
+            if(this.getDetachableEntities().get(name).equals(detachableEntityInterface))
+                this.currentParts.remove(name);
+        }
         this.containerEntity.detach(detachableEntityInterface);
     }
 
@@ -873,6 +954,12 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     }
 
     @Override
+    public void clearMoveQueue()
+    {
+        this.movableEntity.clearMoveQueue();
+    }
+
+    @Override
     public void setAnimation(String animation)
     {
         this.animatableGraphicsEntity.setAnimation(animation);
@@ -888,6 +975,42 @@ public class NewZombie implements DrawableEntityInterface, InteractiveEntityInte
     public int timesAnimationCompleted()
     {
         return this.animatableGraphicsEntity.timesAnimationCompleted();
+    }
+
+    @Override
+    public void changeToGround(int ground)
+    {
+        this.multiGroundEntity.changeToGround(ground);
+    }
+
+    @Override
+    public int getCurrentGround()
+    {
+        return this.multiGroundEntity.getCurrentGround();
+    }
+
+    @Override
+    public void resetToInitialGround()
+    {
+        this.multiGroundEntity.resetToInitialGround();
+    }
+
+    @Override
+    public int getInitialGround()
+    {
+        return this.multiGroundEntity.getInitialGround();
+    }
+
+    @Override
+    public void setInitialGround(int initialGround)
+    {
+        this.multiGroundEntity.setInitialGround(initialGround);
+    }
+
+    @Override
+    public boolean isMovingToNewGround()
+    {
+        return this.multiGroundEntity.isMovingToNewGround();
     }
 
     @Override

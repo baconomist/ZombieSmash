@@ -28,11 +28,15 @@ public class DetachableEntity implements DetachableEntityInterface
 
     private DetachableEntityInterface instance;
 
+    private float forceForDetach;
+
     public DetachableEntity(ArrayList<Joint> joints, ContainerEntityInterface containerEntity, DetachableEntityInterface instance)
     {
         this.joints = joints;
         this.containerEntity = containerEntity;
         this.instance = instance;
+
+        this.forceForDetach = 100f;
 
         // Assumes attached state
         this.setState("attached");
@@ -46,13 +50,17 @@ public class DetachableEntity implements DetachableEntityInterface
     @Override
     public void detach()
     {
+        Gdx.app.log("destroying joints...", "detachableEntity detach");
         for(Joint joint : this.joints)
         {
-            Environment.physics.getWorld().destroyJoint(joint);
+            Environment.physics.destroyJoint(joint);
         }
         this.joints = null;
-        this.containerEntity.detach(instance);
-        Environment.level.addDrawableEntity((DrawableEntityInterface) instance);
+        if(this.containerEntity != null)
+        {
+            this.containerEntity.detach(instance);
+            Environment.level.addDrawableEntity((DrawableEntityInterface) instance);
+        }
         this.setState("detached");
     }
 
@@ -79,7 +87,7 @@ public class DetachableEntity implements DetachableEntityInterface
             for(Joint joint : this.joints)
             {
                 //Gdx.app.log("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
-                if (Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).x) > 100f || Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).y) > 100f)
+                if (Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).x) > this.forceForDetach || Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).y) > this.forceForDetach)
                 {
                     return true;
                 }
@@ -100,4 +108,9 @@ public class DetachableEntity implements DetachableEntityInterface
         return this.containerEntity;
     }
 
+    @Override
+    public void setForceForDetach(float force)
+    {
+        this.forceForDetach = force;
+    }
 }

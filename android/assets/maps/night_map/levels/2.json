@@ -1,52 +1,35 @@
 {
-
-  "right":{
+  "middle": {
     "big_zombie": {
-      "quantity": 10,
-      "init_delay": 0,
-      "spawn_delay": 0.5,
-      "position":"right"
-    },
-    "suicide_zombie": {
-      "quantity": 10,
-      "init_delay": 0,
-      "spawn_delay": 2,
-      "position":"right"
-    }
-  }
-  ,
-
-  "middle":{
-    "suicide_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
-      "position":"middle_left"
+      "position": "middle_left",
+      "depth": 1
     },
-    "suicide_zombie": {
-      "quantity": 1,
+    "crate": {
+      "type": "rock",
       "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_right"
-    }
-  },
-  "right":{
-    "suicide_zombie": {
-      "quantity": 2,
+      "spawn_delay": 0,
+      "depth": 1
+    },
+    "crate": {
+      "type": "grenade",
       "init_delay": 0,
-      "spawn_delay": 1,
-      "position": "right"
-    }
-  },
-
-  "left":{
-    "suicide_zombie": {
-      "quantity": 20,
+      "spawn_delay": 0,
+      "depth": 1
+    },
+    "crate": {
+      "type": "grenade",
       "init_delay": 0,
-      "spawn_delay": 0.5,
-      "position":"left"
+      "spawn_delay": 0,
+      "depth": 1
+    },
+    "crate": {
+      "type": "rifle",
+      "init_delay": 0,
+      "spawn_delay": 0,
+      "depth": 1
     }
   }
-
-
 }

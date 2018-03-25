@@ -5,20 +5,22 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.JointDef;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
+import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
-import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.sun.org.apache.xerces.internal.impl.dv.dtd.ENTITYDatatypeValidator;
 
+
+import org.omg.SendingContext.RunTime;
 
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Arrays;
 
 import static java.util.Collections.min;
 
@@ -43,14 +45,14 @@ public class Physics
 
     private Lighting lighting;
 
-    public World world;
+    private World world;
 
     private float accumulator = 0;
 
-    private Body ground;
+    private ArrayList<Body> groundBodies;
     private Body roof;
-    private Body wall_1;
-    private Body wall_2;
+    //private Body wall_1;
+    //private Body wall_2;
 
     public RubeScene scene;
 
@@ -62,18 +64,20 @@ public class Physics
 
         this.world.setContactFilter(new ContactFilter());
 
-        this.constructPhysicsBoundries();
+        this.constructPhysicsBoundaries();
 
         this.lighting = new Lighting(world);
 
     }
 
 
+    public void draw()
+    {
+        this.lighting.draw();
+    }
+
     public void update(float delta)
     {
-        this.stepWorld(delta);
-
-        this.lighting.update();
 
         for (DetachableEntityInterface detachableEntityInterface : Environment.detachableEntityDetachQueue)
         {
@@ -91,6 +95,16 @@ public class Physics
         }
         Environment.explodableEntityQueue.clear();
 
+        for (Joint joint : Environment.jointDestroyQueue)
+        {
+            this.destroyJoint(joint);
+        }
+        Environment.jointDestroyQueue.clear();
+
+        this.lighting.update();
+
+        this.stepWorld(delta);
+
     }
 
     private void stepWorld(float delta)
@@ -104,16 +118,51 @@ public class Physics
         }
     }
 
-    public void constructPhysicsBoundries()
+    public void constructPhysicsBoundaries()
     {
-        if (this.ground != null)
+
+        if (this.groundBodies != null)
         {
-            this.world.destroyBody(this.ground);
+            for (Body ground : this.groundBodies)
+            {
+                this.world.destroyBody(ground);
+            }
         }
         if (this.roof != null)
         {
             this.world.destroyBody(this.roof);
         }
+
+
+        BodyDef plane = new BodyDef();
+        plane.type = BodyDef.BodyType.StaticBody;
+
+        FixtureDef planeFixture = new FixtureDef();
+        planeFixture.friction = 1;
+
+        PolygonShape planeShape = new PolygonShape();
+        planeShape.setAsBox(Environment.physicsCamera.viewportWidth * 10, 0);
+        planeFixture.shape = planeShape;
+
+        this.groundBodies = new ArrayList<Body>();
+        for (float i = 0f, c = 0; c < 3; i += 0.4f, c++)
+        {
+            Body ground = this.world.createBody(plane);
+            ground.createFixture(planeFixture);
+            ground.getFixtureList().get(0).setUserData("ground");
+            ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, i, 0);
+            this.groundBodies.add(ground);
+        }
+
+
+        this.roof = this.world.createBody(plane);
+        this.roof.createFixture(planeFixture);
+        this.roof.getFixtureList().get(0).setUserData("roof");
+        this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
+
+        planeShape.dispose();
+
+                /*
         if (this.wall_1 != null)
         {
             this.world.destroyBody(this.wall_1);
@@ -145,41 +194,25 @@ public class Physics
         this.wall_2.setTransform(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2, 0, 0);
 
         wallShape.dispose();
-
-
-        BodyDef plane = new BodyDef();
-        plane.type = BodyDef.BodyType.StaticBody;
-
-        FixtureDef planeFixture = new FixtureDef();
-        planeFixture.friction = 1;
-
-        PolygonShape planeShape = new PolygonShape();
-        planeShape.setAsBox(Environment.physicsCamera.viewportWidth, 0);
-        planeFixture.shape = planeShape;
-
-        this.ground = this.world.createBody(plane);
-        this.ground.createFixture(planeFixture);
-        this.ground.getFixtureList().get(0).setUserData("ground");
-        this.ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, 0, 0);
-
-        this.roof = this.world.createBody(plane);
-        this.roof.createFixture(planeFixture);
-        this.roof.getFixtureList().get(0).setUserData("roof");
-        this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
-
-        planeShape.dispose();
+        */
 
     }
 
-
-    public World getWorld()
+    public ArrayList<Body> getGroundBodies()
     {
-        return world;
+        return groundBodies;
     }
 
-    public Body getGround()
+    public int whichGround(Body ground)
     {
-        return ground;
+        assert this.groundBodies.contains(ground);
+        int i = 0;
+        for (Body g : this.groundBodies)
+        {
+            if (g.equals(ground)) return i;
+            i++;
+        }
+        return 0;
     }
 
     public Body getRoof()
@@ -187,15 +220,77 @@ public class Physics
         return roof;
     }
 
-    public Body getWall_1()
+    /*public Body getWall_1()
     {
         return wall_1;
     }
 
-    public Body getWall_2()
+    /public Body getWall_2()
     {
         return wall_2;
+    }*/
+
+    /**
+     * getWorld() -> returns this.world
+     * the world instance returned by this function should not be used to manipulate the world
+     * instead use Physics.createBody(), Physics.createJoint(), Physics.destroyBody(), Physics.destroyJoint()
+     * **/
+    public World getWorld()
+    {
+        return this.world;
     }
 
+    public void destroyBody(Body body)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+
+        //Gdx.app.log("destroyBody", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.log("body", ""+body);
+
+        if (this.get_world_bodies().contains(body, true))
+            this.world.destroyBody(body);
+
+    }
+
+    public void destroyJoint(Joint joint)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+
+        //Gdx.app.log("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.log("joint", ""+joint);
+
+        if (this.get_world_joints().contains(joint, true))
+            this.world.destroyJoint(joint);
+    }
+
+    public Body createBody(BodyDef bodyDef)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        return this.world.createBody(bodyDef);
+    }
+
+    public Joint createJoint(JointDef jointDef)
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        return this.world.createJoint(jointDef);
+    }
+
+    public Array<Body> get_world_bodies()
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        Array<Body> world_bodies = new Array<Body>();
+        this.world.getBodies(world_bodies);
+
+        return world_bodies;
+    }
+
+    public Array<Joint> get_world_joints()
+    {
+        if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
+        Array<Joint> world_joints = new Array<Joint>();
+        this.world.getJoints(world_joints);
+
+        return world_joints;
+    }
 
 }

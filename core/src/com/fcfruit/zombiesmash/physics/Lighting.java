@@ -40,13 +40,20 @@ public class Lighting {
     public void update(){
         if(rayHandler != null && Environment.settings.isEnableLight()) {
             rayHandler.setCombinedMatrix(Environment.physicsCamera);
-            rayHandler.updateAndRender();
+            rayHandler.update();
         }
         else if (Environment.settings.isEnableLight()){
             rayHandler = new RayHandler(world);
             rayHandler.setAmbientLight(0f, 0f, 0f, 0.7f);
             lights = new ArrayList<Light>();
             lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2, 3, 3));
+        }
+    }
+
+    public void draw(){
+        if(rayHandler != null && Environment.settings.isEnableLight()) {
+            rayHandler.setCombinedMatrix(Environment.physicsCamera);
+            rayHandler.render();
         }
     }
 

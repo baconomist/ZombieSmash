@@ -37,7 +37,7 @@ public class RubeScene
 	
 	/** Simulation steps wanted per second */
 	public int   stepsPerSecond;
-	/** Iteration steps done in the simulation to calculates positions */
+	/** Iteration steps done in the simulation to calculates cameraPositions */
 	public int   positionIterations;
 	/** Iteration steps done in the simulation to calculates velocities */
 	public int   velocityIterations;

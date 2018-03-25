@@ -12,8 +12,8 @@ import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
@@ -178,6 +178,12 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     public boolean isUsingPowerfulJoint()
     {
         return this.interactivePhysicsEntity.isUsingPowerfulJoint();
+    }
+
+    @Override
+    public void overrideTouching(boolean touching, float screenX, float screenY, int p)
+    {
+        this.interactivePhysicsEntity.overrideTouching(touching, screenX, screenY, p);
     }
 
     @Override

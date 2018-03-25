@@ -27,52 +27,23 @@ import java.util.Random;
  * Created by Lucas on 2017-07-21.
  */
 
-public class RegularZombie extends Zombie {
+public class RegularZombie extends NewZombie {
 
     public RegularZombie(Integer id) {
         super(id);
 
         this.moveAnimation = "run";
 
-        partsToStayAlive.add("head");
-        partsToStayAlive.add("torso");
-        partsToStayAlive.add(new String[]{"left_arm", "right_arm"});
-
-        type = "reg";
-
-        animationSetup();
-
-    }
+        this.detachableEntitiesToStayAlive.add("head");
+        this.detachableEntitiesToStayAlive.add(new String[]{"left_arm", "right_arm"});
 
 
-    @Override
-    void onGetUp(){
-        this.currentAnimation = "run";
-    }
-
-    @Override
-    void crawl(){
-        super.crawl();
-        this.physicsEnabled = false;
-        this.currentAnimation = "crawl";
-
-        setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
-    }
-
-    @Override
-    void attack() {
-        super.attack();
-
-        if(!this.isCrawler) {
-            if (timesCompleteAttack1 < 2) {
-                this.currentAnimation = "attack1";
-            } else {
-                this.currentAnimation = "attack2";
-            }
-        }
-        else{
-            this.currentAnimation = "crawl_attack";
-        }
+        this.currentParts.add("head");
+        this.currentParts.add("left_arm");
+        this.currentParts.add("torso");
+        this.currentParts.add("right_arm");
+        this.currentParts.add("left_leg");
+        this.currentParts.add("right_leg");
 
     }
 

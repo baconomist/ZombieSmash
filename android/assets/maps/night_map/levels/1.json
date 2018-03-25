@@ -1,12 +1,47 @@
+
 {
 
   "left":{
+    "suicide_zombie": {
+      "quantity": 10,
+      "init_delay": 0,
+      "spawn_delay": 2,
+      "position":"left",
+      "depth": 1
+    }
+  },
+
+  "middle":{
+    "girl_zombie": {
+      "quantity": 1,
+      "init_delay": 0,
+      "spawn_delay": 1,
+      "position":"middle_left"
+    },
+    "police_zombie": {
+      "quantity": 1,
+      "init_delay": 0,
+      "spawn_delay": 1,
+      "position":"middle_right"
+    }
+  },
+  "right":{
     "big_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
+      "position": "right"
+    }
+  },
+
+  "left":{
+    "suicide_zombie": {
+      "quantity": 1,
+      "init_delay": 0,
+      "spawn_delay": 0.5,
       "position":"left"
     }
   }
+
 
 }

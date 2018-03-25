@@ -1,7 +1,6 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -21,8 +20,6 @@ import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Star;
-import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -146,12 +143,12 @@ public class Zombie
         // Prevents zombie from being totally lost out of the map
         if (!enteredLevel && this.getPosition().x < -1)
         {
-            //this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
+            //this.setPosition(Level.cameraPositions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
             this.speed = 400;
             this.checkDirection();
         } else if (!enteredLevel && this.getPosition().y > 21)
         {
-            //this.setPosition(Level.positions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
+            //this.setPosition(Level.cameraPositions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
             this.speed = 400;
             this.checkDirection();
         }
@@ -178,7 +175,7 @@ public class Zombie
         {
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
             isGettingUp = false;
@@ -311,7 +308,7 @@ public class Zombie
                 isatobjective = true;
             }
             if (elvl)
-            {
+            {/*
                 if (p.physicsBody.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
                         && p.physicsBody.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f)
                 {
@@ -319,7 +316,7 @@ public class Zombie
                 } else
                 {
                     elvl = false;
-                }
+                }*/
             }
         }
 
@@ -352,7 +349,7 @@ public class Zombie
 
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
                 getUpMouseJoint = null;
             }
 
@@ -368,7 +365,7 @@ public class Zombie
 
             // Needs 2 bodies, first one not used, so we use an arbitrary body.
             // http://www.binarytides.com/mouse-joint-box2d-javascript/
-            mouseJointDef.bodyA = Environment.physics.getGround();
+            mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
             mouseJointDef.bodyB = parts.get("head").physicsBody;
             mouseJointDef.collideConnected = true;
             mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());
@@ -381,9 +378,9 @@ public class Zombie
             // Destroy the current mouseJoint
             if (getUpMouseJoint != null)
             {
-                Environment.physics.getWorld().destroyJoint(getUpMouseJoint);
+                Environment.physics.destroyJoint(getUpMouseJoint);
             }
-            getUpMouseJoint = (MouseJoint) Environment.physics.getWorld().createJoint(mouseJointDef);
+            getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
             getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
 
             isGettingUp = true;
@@ -703,7 +700,7 @@ public class Zombie
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.type + "_zombie/" + this.type + "_zombie.json"));
 
-        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone positions, slot attachments, etc).
+        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
         //stateData.setMix("run", "jump", 0.2f);
         //stateData.setMix("jump", "run", 0.2f);

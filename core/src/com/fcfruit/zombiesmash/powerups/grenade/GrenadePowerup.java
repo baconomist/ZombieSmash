@@ -1,0 +1,89 @@
+package com.fcfruit.zombiesmash.powerups.grenade;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
+import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+
+import java.util.ArrayList;
+
+/**
+ * Created by Lucas on 2018-03-22.
+ */
+
+public class GrenadePowerup implements PowerUpInterface
+{
+
+    private Sprite ui_image;
+
+    private Rope rope;
+    private Grenade grenade;
+
+    public GrenadePowerup()
+    {
+        this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade_ui.png")));
+
+    }
+
+
+
+    @Override
+    public void update(float delta)
+    {
+        if(grenade.shouldDetach()){
+            grenade.detach();
+        }
+    }
+
+    @Override
+    public void activate()
+    {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+
+        CircleShape shape = new CircleShape();
+        shape.setRadius(0.2f);
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+        fixtureDef.density = 0.1f;
+
+        Body body = Environment.physics.createBody(bodyDef);
+        Fixture fixture = body.createFixture(fixtureDef);
+
+        this.rope = new Rope(5, new Vector2(10, 5));
+        ArrayList<Joint> joints = new ArrayList<Joint>();
+        joints.add(this.rope.attachToBottom(body));
+
+        this.grenade = new Grenade(body, joints);
+
+        this.grenade.setPosition(new Vector2(10, 0.3f));
+
+        // Make grenade easy to detach from rope
+        this.grenade.setForceForDetach(10f);
+
+        fixture.setUserData(this.grenade);
+
+        Environment.drawableAddQueue.add(this.grenade);
+        Environment.updatableAddQueue.add(this);
+
+        // Stick rope to top
+        bodyDef.type = BodyDef.BodyType.StaticBody;
+        bodyDef.position.set(new Vector2((Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2) + 3, 5));
+        this.rope.attachToTop(Environment.physics.createBody(bodyDef));
+    }
+
+    @Override
+    public Sprite getUIDrawable()
+    {
+        return this.ui_image;
+    }
+}

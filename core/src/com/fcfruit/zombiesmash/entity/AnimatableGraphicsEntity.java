@@ -23,7 +23,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
  * Created by Lucas on 2018-01-13.
  */
 
-public class AnimatableGraphicsEntity implements DrawableEntityInterface, AnimatableEntityInterface
+public class AnimatableGraphicsEntity implements AnimatableEntityInterface
 {
 
     private Skeleton skeleton;
@@ -89,7 +89,10 @@ public class AnimatableGraphicsEntity implements DrawableEntityInterface, Animat
     @Override
     public float getAngle()
     {
-        return this.skeleton.getRootBone().getWorldRotationX();
+        if(this.skeleton.getFlipX())
+            return this.skeleton.getRootBone().getWorldRotationX() + 180;
+        else
+            return this.skeleton.getRootBone().getWorldRotationX();
     }
 
     @Override

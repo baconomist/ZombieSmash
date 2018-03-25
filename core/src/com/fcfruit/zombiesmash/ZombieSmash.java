@@ -48,7 +48,6 @@ public class ZombieSmash extends Game
         }
 
         this.setScreen(new MainMenu());
-
     }
 
     @Override

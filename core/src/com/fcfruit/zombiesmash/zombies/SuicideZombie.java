@@ -1,11 +1,12 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.power_ups.Grenade;
+import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 
 import java.util.ArrayList;
 
@@ -24,12 +25,22 @@ public class SuicideZombie extends NewZombie
         this.detachableEntitiesToStayAlive.add("left_leg");
         this.detachableEntitiesToStayAlive.add("right_leg");
 
+
+        this.currentParts.add("head");
+        this.currentParts.add("left_arm");
+        this.currentParts.add("torso");
+        this.currentParts.add("right_arm");
+        this.currentParts.add("left_leg");
+        this.currentParts.add("right_leg");
+        this.currentParts.add("grenade");
+
     }
 
     @Override
     protected void onAttack1Complete()
     {
         Environment.level.objective.takeDamage(3f);
+        this.resetToInitialGround();
         this.disable_optimization();
         ((Grenade)this.containerEntity.getDrawableEntities().get("grenade")).explode();
     }
@@ -37,7 +48,11 @@ public class SuicideZombie extends NewZombie
     @Override
     protected void onObjective()
     {
-        this.setAnimation("attack1");
+        if(!this.isMoving())
+        {
+            Gdx.app.log("changing", "anm " + this.isMoving());
+            this.setAnimation("attack1");
+        }
     }
 
     @Override

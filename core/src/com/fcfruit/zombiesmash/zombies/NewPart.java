@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
@@ -18,8 +17,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
@@ -189,6 +188,12 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
+    public void setForceForDetach(float force)
+    {
+        this.detachableEntity.setForceForDetach(force);
+    }
+
+    @Override
     public ContainerEntityInterface getContainer()
     {
         return this.containerEntity;
@@ -228,6 +233,12 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     public boolean isUsingPowerfulJoint()
     {
         return this.interactivePhysicsEntity.isUsingPowerfulJoint();
+    }
+
+    @Override
+    public void overrideTouching(boolean touching, float screenX, float screenY, int p)
+    {
+        this.interactivePhysicsEntity.overrideTouching(touching, screenX, screenY, p);
     }
 
     @Override

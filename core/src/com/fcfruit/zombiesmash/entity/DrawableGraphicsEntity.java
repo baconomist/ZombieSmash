@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -17,10 +18,10 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 public class DrawableGraphicsEntity implements DrawableEntityInterface
 {
 
-    private Sprite sprite;
+    private com.badlogic.gdx.graphics.g2d.Sprite sprite;
     private Vector2 position;
 
-    public DrawableGraphicsEntity(Sprite sprite)
+    public DrawableGraphicsEntity(com.badlogic.gdx.graphics.g2d.Sprite sprite)
     {
         this.sprite = sprite;
         this.position = new Vector2();
@@ -46,8 +47,9 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
     public void setPosition(Vector2 position)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
-        this.sprite.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
-        this.position = position;
+        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        this.sprite.setPosition(pos.x, pos.y);
+        this.position = new Vector2(pos.x, pos.y);
     }
 
     @Override
@@ -66,10 +68,11 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
     public Vector2 getSize()
     {
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.sprite.getWidth(), this.sprite.getHeight(), 0)));
-        return new Vector2(size.x, size.y - Environment.physicsCamera.viewportHeight);
+        size.y = Environment.physicsCamera.viewportHeight - size.y;
+        return new Vector2(size.x, size.y);
     }
 
-    public Sprite getSprite(){
+    public com.badlogic.gdx.graphics.g2d.Sprite getSprite(){
         return this.sprite;
     }
 

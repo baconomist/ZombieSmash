@@ -19,6 +19,14 @@ public class BigZombie extends NewZombie
         this.detachableEntitiesToStayAlive.add("left_leg");
         this.detachableEntitiesToStayAlive.add("right_leg");
 
+        this.currentParts.add("head");
+        this.currentParts.add("left_arm");
+        this.currentParts.add("torso");
+        this.currentParts.add("right_arm");
+        this.currentParts.add("left_leg");
+        this.currentParts.add("right_leg");
+        this.currentParts.add("rock");
+
     }
 
 }
