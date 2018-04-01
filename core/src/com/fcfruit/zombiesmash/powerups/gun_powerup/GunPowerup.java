@@ -7,15 +7,14 @@ import com.badlogic.gdx.math.Vector3;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 
 /**
  * Created by Lucas on 2018-03-19.
  */
 
-public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
+public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
 {
 
     private Sprite ui_image;
@@ -33,6 +32,8 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
 
     private ParticleEntity particleEntity;
 
+    private boolean isActive;
+
     public GunPowerup(Sprite ui_image)
     {
         this.ui_image = ui_image;
@@ -40,19 +41,16 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
         this.timeBeforeShoot = 1000;
         this.currentControllingGun = -1;
         this.pointer = -1;
+
+        this.isActive = false;
     }
 
     @Override
     public void update(float delta)
     {
 
-        if (System.currentTimeMillis() - this.durationTimer >= this.duration)
+        if (this.hasCompleted())
         {
-            for (int i = 0; i < this.guns.length; i++)
-            {
-                Environment.drawableRemoveQueue.add(this.guns[i]);
-                this.guns[i].dispose();
-            }
             this.dispose();
         } else
         {
@@ -83,12 +81,8 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
         Environment.level.addInputCaptureEntity(this);
 
         this.durationTimer = System.currentTimeMillis();
-    }
 
-    @Override
-    public Sprite getUIDrawable()
-    {
-        return this.ui_image;
+        this.isActive = true;
     }
 
     @Override
@@ -171,8 +165,31 @@ public class GunPowerup implements PowerUpInterface, InputCaptureEntityInterface
 
     }
 
+    @Override
+    public boolean hasCompleted()
+    {
+        return System.currentTimeMillis() - this.durationTimer >= this.duration;
+    }
+
+    @Override
+    public boolean isActive()
+    {
+        return this.isActive;
+    }
+
+    @Override
+    public Sprite getUIDrawable()
+    {
+        return this.ui_image;
+    }
+
     private void dispose()
     {
+        for (int i = 0; i < this.guns.length; i++)
+        {
+            Environment.drawableRemoveQueue.add(this.guns[i]);
+            this.guns[i].dispose();
+        }
     }
 
 

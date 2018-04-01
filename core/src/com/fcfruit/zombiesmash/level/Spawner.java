@@ -4,7 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
@@ -140,8 +140,8 @@ public class Spawner
         try
         {
             PowerupCrate tempCrate;
-            PowerUpInterface tempPowerup;
-            tempPowerup = (PowerUpInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
+            PowerupInterface tempPowerup;
+            tempPowerup = (PowerupInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new PowerupCrate(tempPowerup);
 
             tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 3));

@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
@@ -16,7 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.ui.Slider;
 
 /**
@@ -42,7 +41,7 @@ public class GameUIStage extends Stage
     Sprite starCountImage;
     BitmapFont starCount;
 
-    PowerUpInterface[] powerUps;
+    PowerupInterface[] powerups;
 
     public GameUIStage(Viewport v)
     {
@@ -85,7 +84,7 @@ public class GameUIStage extends Stage
         starCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
         starCount.getData().setScale(2);
 
-        this.powerUps = new PowerUpInterface[4];
+        this.powerups = new PowerupInterface[4];
 
         for (int i = 0; i < this.powerUpButtons.length; i++)
         {
@@ -95,11 +94,11 @@ public class GameUIStage extends Stage
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
                 {
-                    if (powerUps[finalI] != null)
+                    if (powerups[finalI] != null)
                     {
-                        powerUps[finalI].activate();
-                        Environment.level.addUpdatableEntity((powerUps[finalI]));
-                        remove_powerup(powerUps[finalI]);
+                        powerups[finalI].activate();
+                        Environment.level.addUpdatableEntity((powerups[finalI]));
+                        remove_powerup(powerups[finalI]);
                     }
                     return super.touchDown(event, x, y, pointer, button);
                 }
@@ -109,26 +108,26 @@ public class GameUIStage extends Stage
 
     }
 
-    public void add_powerup(PowerUpInterface powerUpEntity)
+    public void add_powerup(PowerupInterface powerUpEntity)
     {
-        for (int i = 0; i < this.powerUps.length; i++)
+        for (int i = 0; i < this.powerups.length; i++)
         {
-            if (this.powerUps[i] == null)
+            if (this.powerups[i] == null)
             {
-                this.powerUps[i] = powerUpEntity;
-                this.powerUps[i].getUIDrawable().setSize(this.powerUpButtons[i].getWidth(), this.powerUpButtons[i].getHeight());
+                this.powerups[i] = powerUpEntity;
+                this.powerups[i].getUIDrawable().setSize(this.powerUpButtons[i].getWidth(), this.powerUpButtons[i].getHeight());
                 break;
             }
         }
     }
 
-    public void remove_powerup(PowerUpInterface powerUpEntity)
+    public void remove_powerup(PowerupInterface powerUpEntity)
     {
-        for (int i = 0; i < this.powerUps.length; i++)
+        for (int i = 0; i < this.powerups.length; i++)
         {
-            if (this.powerUps[i] == powerUpEntity)
+            if (this.powerups[i] == powerUpEntity)
             {
-                this.powerUps[i] = null;
+                this.powerups[i] = null;
                 break;
             }
         }
@@ -143,13 +142,13 @@ public class GameUIStage extends Stage
 
         spriteBatch.begin();
         {
-            for (int i = 0; i < this.powerUps.length; i++)
+            for (int i = 0; i < this.powerups.length; i++)
             {
-                if (this.powerUps[i] != null)
+                if (this.powerups[i] != null)
                 {
-                    this.powerUps[i].getUIDrawable().setPosition(this.powerUpButtons[i].getX() - this.powerUpButtons[i].getWidth() / 2 + this.powerUps[i].getUIDrawable().getWidth() / 2, this.powerUpButtons[i].getY() - this.powerUpButtons[i].getHeight() / 2 + this.powerUps[i].getUIDrawable().getHeight() / 2);
-                    this.powerUps[i].getUIDrawable().setRotation(0);
-                    this.powerUps[i].getUIDrawable().draw(spriteBatch);
+                    this.powerups[i].getUIDrawable().setPosition(this.powerUpButtons[i].getX() - this.powerUpButtons[i].getWidth() / 2 + this.powerups[i].getUIDrawable().getWidth() / 2, this.powerUpButtons[i].getY() - this.powerUpButtons[i].getHeight() / 2 + this.powerups[i].getUIDrawable().getHeight() / 2);
+                    this.powerups[i].getUIDrawable().setRotation(0);
+                    this.powerups[i].getUIDrawable().draw(spriteBatch);
                 }
             }
             healthBar.draw(spriteBatch);

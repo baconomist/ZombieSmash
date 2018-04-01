@@ -3,24 +3,12 @@ package com.fcfruit.zombiesmash.powerups.rock_powerup;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
-import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
-import com.fcfruit.zombiesmash.physics.Physics;
-import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -29,7 +17,7 @@ import java.util.Random;
  * Created by Lucas on 2018-03-19.
  */
 
-public class RockPowerup implements PowerUpInterface
+public class RockPowerup implements PowerupInterface
 {
     private Sprite ui_image;
 
@@ -43,6 +31,8 @@ public class RockPowerup implements PowerUpInterface
 
     private int rocksSpawned;
 
+    private boolean isActive;
+
     public RockPowerup()
     {
         this.duration = 10000000;
@@ -52,6 +42,8 @@ public class RockPowerup implements PowerUpInterface
         this.rocks = new Rock[new Random().nextInt(6) + 6];
 
         this.rocksSpawned = 0;
+
+        this.isActive = false;
 
     }
 
@@ -70,6 +62,7 @@ public class RockPowerup implements PowerUpInterface
 
             this.rocksSpawned++;
         }
+
     }
 
     @Override
@@ -78,6 +71,8 @@ public class RockPowerup implements PowerUpInterface
         Environment.level.addUpdatableEntity(this);
         this.durationTimer = System.currentTimeMillis();
         this.rockSpawnTimer = System.currentTimeMillis();
+
+        this.isActive = true;
     }
 
 
@@ -94,8 +89,7 @@ public class RockPowerup implements PowerUpInterface
         }
 
 
-
-        if(zombieDistances.size() > 0)
+        if (zombieDistances.size() > 0)
             return zombieDistances.get(Collections.min(zombieDistances.keySet())).getPosition().x;
         else
             return Environment.physicsCamera.position.x + new Random().nextInt(4);
@@ -103,6 +97,17 @@ public class RockPowerup implements PowerUpInterface
 
     }
 
+    @Override
+    public boolean hasCompleted()
+    {
+        return System.currentTimeMillis() - this.durationTimer >= this.duration;
+    }
+
+    @Override
+    public boolean isActive()
+    {
+        return this.isActive;
+    }
 
     @Override
     public Sprite getUIDrawable()

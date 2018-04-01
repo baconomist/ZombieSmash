@@ -12,7 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 
 import java.util.ArrayList;
 
@@ -20,7 +20,7 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-03-22.
  */
 
-public class GrenadePowerup implements PowerUpInterface
+public class GrenadePowerup implements PowerupInterface
 {
 
     private Sprite ui_image;
@@ -28,12 +28,14 @@ public class GrenadePowerup implements PowerUpInterface
     private Rope rope;
     private Grenade grenade;
 
+    private boolean isActive;
+
     public GrenadePowerup()
     {
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade_ui.png")));
+
+        this.isActive = false;
     }
-
-
 
     @Override
     public void update(float delta)
@@ -59,10 +61,9 @@ public class GrenadePowerup implements PowerUpInterface
         Body body = Environment.physics.createBody(bodyDef);
         Fixture fixture = body.createFixture(fixtureDef);
 
-        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getX(), this.getUIDrawable().getY(), 9)));
-        pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+        Vector3 pos = Environment.powerupManager.getGrenadeSpawnPosition(this);
 
-        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getWidth(), this.getUIDrawable().getHeight(), 9)));
+        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getWidth(), this.getUIDrawable().getHeight(), 0)));
         size.y = Environment.physicsCamera.viewportHeight - size.y;
 
         // Make rope swing
@@ -86,6 +87,20 @@ public class GrenadePowerup implements PowerUpInterface
         bodyDef.type = BodyDef.BodyType.StaticBody;
         bodyDef.position.set(new Vector2(pos.x + size.x/2, pos.y));
         this.rope.attachToTop(Environment.physics.createBody(bodyDef));
+
+        this.isActive = true;
+    }
+
+    @Override
+    public boolean hasCompleted()
+    {
+        return false;
+    }
+
+    @Override
+    public boolean isActive()
+    {
+        return this.isActive;
     }
 
     @Override

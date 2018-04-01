@@ -11,7 +11,9 @@ import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
+import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.powerups.PowerupManager;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 
 import java.util.ArrayList;
@@ -71,6 +73,8 @@ public class Environment
 
     public static OrthographicCamera gameCamera;
 
+    public static PowerupManager powerupManager;
+
     public static OrthographicCamera physicsCamera;
 
     public static Physics physics;
@@ -109,12 +113,47 @@ public class Environment
     {
         return (
                 (polygon2.getX() < (polygon1.getX() + polygon1.getVertices()[2]) && polygon2.getX() > polygon1.getX())
-                && (polygon2.getY() < (polygon1.getY() + polygon1.getVertices()[5]) && polygon2.getY() > polygon1.getY()))
+                        && (polygon2.getY() < (polygon1.getY() + polygon1.getVertices()[5]) && polygon2.getY() > polygon1.getY()))
                 ||
                 ((polygon1.getX() < (polygon2.getX() + polygon1.getVertices()[2]) && polygon1.getX() > polygon2.getX())
-                && (polygon1.getY() < (polygon2.getY() + polygon1.getVertices()[5]) && polygon1.getY() > polygon2.getY())
-        );
+                        && (polygon1.getY() < (polygon2.getY() + polygon1.getVertices()[5]) && polygon1.getY() > polygon2.getY())
+                );
     }
+
+    // Can't do this as a static method because camera position setting and update doesnt work.
+    // Try creating a game manager class which has an instance and having a method like this in there
+    /*public static void onLevelSelect(int lvl)
+    {
+        gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
+        gameCamera.position.set(gameCamera.viewportWidth/2, gameCamera.viewportHeight/2, 0);
+        gameCamera.update();
+
+        physicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
+        // Camera position/origin is in the middle
+        // Not bottom left
+        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
+        // Also cam.project(worldpos) is x and y from bottom left corner
+        // But cam.unproject(screenpos) is x and y from top left corner
+        physicsCamera.position.set(physicsCamera.viewportWidth/2, physicsCamera.viewportHeight/2, 0);
+        physicsCamera.update();
+
+        physics = new Physics();
+
+        level = new NightLevel(lvl);
+        level.create();
+
+        powerupManager = new PowerupManager();
+        level.addUpdatableEntity(powerupManager);
+        level.addEventListener(powerupManager);
+        
+        gameScreen = new GameScreen();
+
+        gameCamera.position.x = physicsCamera.position.x * Physics.PIXELS_PER_METER;
+        gameCamera.update();
+        physics.constructPhysicsBoundaries();
+
+        game.setScreen(gameScreen);
+    }*/
 
 }
 

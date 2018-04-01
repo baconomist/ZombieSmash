@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
@@ -12,6 +13,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
 
@@ -51,6 +53,8 @@ public class Level
 
     private ArrayList<InputCaptureEntityInterface> inputCaptureEntities;
 
+    private Array<LevelEventListener> levelEventListeners;
+
     public int starsTouched = 0;
 
     boolean levelEnd = false;
@@ -72,6 +76,8 @@ public class Level
         this.drawableEntities = new ArrayList<DrawableEntityInterface>();
         this.updatableEntities = new ArrayList<UpdatableEntityInterface>();
         this.inputCaptureEntities = new ArrayList<InputCaptureEntityInterface>();
+
+        this.levelEventListeners = new Array<LevelEventListener>();
 
         this.spawners = new ArrayList<Spawner>();
     }
@@ -186,7 +192,6 @@ public class Level
                 s.update();
             }
 
-
             if (this.isZombiesDead())
             {
                 if (this.data.size - 1 == this.currentJsonItem)
@@ -200,6 +205,11 @@ public class Level
                     this.spawners = new ArrayList<Spawner>();
 
                     this.createSpawners();
+
+                    for (LevelEventListener levelEventListener : this.levelEventListeners)
+                    {
+                        levelEventListener.onCameraMoved();
+                    }
 
                     this.isCameraMoving = true;
                 }
@@ -302,6 +312,11 @@ public class Level
     public void addInputCaptureEntity(InputCaptureEntityInterface inputCaptureEntity)
     {
         this.inputCaptureEntities.add(inputCaptureEntity);
+    }
+
+    public void addEventListener(LevelEventListener levelEventListener)
+    {
+        this.levelEventListeners.add(levelEventListener);
     }
 
     public ArrayList<DrawableEntityInterface> getDrawableEntities()

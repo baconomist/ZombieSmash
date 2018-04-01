@@ -14,14 +14,13 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 
 
 /**
@@ -31,7 +30,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.PowerUpInterface;
 public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityInterface, PhysicsEntityInterface, MultiGroundEntityInterface
 {
 
-    private PowerUpInterface powerUp;
+    private PowerupInterface powerup;
 
     private DrawablePhysicsEntity crateDrawable;
     private Sprite powerupUIDrawable;
@@ -43,10 +42,10 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
     private boolean isOpening;
 
-    public PowerupCrate(PowerUpInterface powerUp)
+    public PowerupCrate(PowerupInterface powerup)
     {
 
-        this.powerUp = powerUp;
+        this.powerup = powerup;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -71,7 +70,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
 
-        this.powerupUIDrawable = powerUp.getUIDrawable();
+        this.powerupUIDrawable = powerup.getUIDrawable();
         this.powerupUIDrawable.setSize(size.x, size.y);
         this.powerupUIDrawable.setOriginCenter();
 
@@ -173,7 +172,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             } else
             {
                 Environment.drawableRemoveQueue.add(this);
-                Environment.gameScreen.get_ui_stage().add_powerup(this.powerUp);
+                Environment.powerupManager.addPowerup(this.powerup);
             }
         }
 

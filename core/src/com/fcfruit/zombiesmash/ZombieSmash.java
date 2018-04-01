@@ -10,6 +10,7 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.powerups.PowerupManager;
 import com.fcfruit.zombiesmash.screens.GameScreen;
 import com.fcfruit.zombiesmash.screens.MainMenu;
 
