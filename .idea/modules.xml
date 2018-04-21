@@ -3,6 +3,10 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/ZombieSmash.iml" filepath="$PROJECT_DIR$/ZombieSmash.iml" />
+      <module fileurl="file://$PROJECT_DIR$/android/ZombieSmash-android.iml" filepath="$PROJECT_DIR$/android/ZombieSmash-android.iml" />
+      <module fileurl="file://$PROJECT_DIR$/core/ZombieSmash-core.iml" filepath="$PROJECT_DIR$/core/ZombieSmash-core.iml" />
+      <module fileurl="file://$PROJECT_DIR$/desktop/ZombieSmash-desktop.iml" filepath="$PROJECT_DIR$/desktop/ZombieSmash-desktop.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ios-moe/ZombieSmash-ios-moe.iml" filepath="$PROJECT_DIR$/ios-moe/ZombieSmash-ios-moe.iml" />
       <module fileurl="file://$PROJECT_DIR$/android/android.iml" filepath="$PROJECT_DIR$/android/android.iml" />
       <module fileurl="file://$PROJECT_DIR$/core/core.iml" filepath="$PROJECT_DIR$/core/core.iml" />
       <module fileurl="file://$PROJECT_DIR$/desktop/desktop.iml" filepath="$PROJECT_DIR$/desktop/desktop.iml" />
