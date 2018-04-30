@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
  * Created by Lucas on 2018-03-07.
  */
 
-public interface PowerupInterface extends UpdatableEntityInterface
+public interface PowerUpInterface extends UpdatableEntityInterface
 {
 
     void activate();
