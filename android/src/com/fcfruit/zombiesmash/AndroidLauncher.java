@@ -4,17 +4,15 @@ import android.app.ActivityManager;
 import android.content.Context;
 import android.os.*;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.fcfruit.zombiesmash.ZombieSmash;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
-		initialize(Environment.game, config);
+		initialize(com.fcfruit.zombiesmash.release.Environment.game, config);
 	}
 
 	@Override
