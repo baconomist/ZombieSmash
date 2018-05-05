@@ -93,35 +93,8 @@ public class LevelSelectStage extends Stage
 
     void onLevelSelect(int levelid)
     {
-        Environment.gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
-        Environment.gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
-        Environment.gameCamera.update();
-
-        Environment.physicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
-        // Camera position/origin is in the middle
-        // Not bottom left
-        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
-        // Also cam.project(worldpos) is x and y from bottom left corner
-        // But cam.unproject(screenpos) is x and y from top left corner
-        Environment.physicsCamera.position.set(Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight/2, 0);
-        Environment.physicsCamera.update();
-
-        Environment.physics = new Physics();
-
-        Environment.level = new NightLevel(levelid);
-        Environment.level.create();
-
-        Environment.powerupManager = new PowerupManager();
-        Environment.level.addUpdatableEntity(Environment.powerupManager);
-        Environment.level.addEventListener(Environment.powerupManager);
-
-        Environment.gameScreen = new GameScreen();
-
-        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
-        Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundaries();
-
-        Environment.game.setScreen(Environment.gameScreen);
+        Environment.setupGame(levelid);
+        Environment.game.setScreen(Environment.screens.gamescreen);
     }
 
 }

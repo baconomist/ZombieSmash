@@ -10,18 +10,8 @@ public class ZombieSmash extends com.fcfruit.zombiesmash.release.ZombieSmash
     @Override
     public void create()
     {
-        /*
-		called after all game default game functions
-		are initialized
-		 */
-
+        super.create();
         Environment.create();
-
-        if (Gdx.app.getType() == Application.ApplicationType.Android)
-        {
-            Gdx.input.setCatchBackKey(true);
-        }
-
         this.setScreen(Environment.screens.mainmenu);
     }
 

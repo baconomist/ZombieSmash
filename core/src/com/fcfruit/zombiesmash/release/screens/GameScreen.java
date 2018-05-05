@@ -33,6 +33,10 @@ public class GameScreen implements Screen{
 
     public GameScreen(){
 
+    }
+
+    public void create()
+    {
         physics_view = new StretchViewport(Environment.physicsCamera.viewportWidth, Environment.physicsCamera.viewportHeight, Environment.physicsCamera);
         physics_view.apply();
 
@@ -52,7 +56,6 @@ public class GameScreen implements Screen{
 
 
         debugRenderer = new Box2DDebugRenderer();
-
     }
 
     @Override

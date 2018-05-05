@@ -1,6 +1,7 @@
-package com.fcfruit.zombiesmash.dev.tests.ui_test;
+package com.fcfruit.zombiesmash.release;
 
 import com.badlogic.gdx.Screen;
+import com.fcfruit.zombiesmash.release.screens.GameScreen;
 import com.fcfruit.zombiesmash.release.screens.MainMenu;
 
 /**
@@ -9,10 +10,12 @@ import com.fcfruit.zombiesmash.release.screens.MainMenu;
 
 public class Screens
 {
-    public Screen mainmenu;
+    public MainMenu mainmenu;
+    public GameScreen gamescreen;
 
     public Screens()
     {
         this.mainmenu = new MainMenu();
+        this.gamescreen = new GameScreen();
     }
 }

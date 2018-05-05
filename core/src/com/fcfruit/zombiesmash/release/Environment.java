@@ -11,6 +11,7 @@ import com.fcfruit.zombiesmash.release.entity.interfaces.ExplodableEntityInterfa
 import com.fcfruit.zombiesmash.release.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.release.level.Level;
+import com.fcfruit.zombiesmash.release.level.NightLevel;
 import com.fcfruit.zombiesmash.release.physics.Physics;
 import com.fcfruit.zombiesmash.release.powerups.PowerupManager;
 import com.fcfruit.zombiesmash.release.screens.GameScreen;
@@ -28,8 +29,9 @@ public class Environment
     // Need to create static methods which catch exceptions which may arise
     // Or else if new instance creation goes wrong it crashes
 
-
     public static ZombieSmash game = new ZombieSmash();
+
+    public static Screens screens;
 
     public static AssetManager assets = new AssetManager();
 
@@ -68,8 +70,6 @@ public class Environment
 
     public static Settings settings;
 
-    public static GameScreen gameScreen;
-
     public static OrthographicCamera gameCamera;
 
     public static PowerupManager powerupManager;
@@ -96,6 +96,75 @@ public class Environment
 
     public static ArrayList<UpdatableEntityInterface> updatableAddQueue = new ArrayList<UpdatableEntityInterface>();
 
+    public static void setupGame(int levelid){
+
+        load_assets();
+
+        setupPhysicsCamera();
+        setupGameCamera();
+
+        physics = new Physics();
+        screens.gamescreen.create();
+        powerupManager = new PowerupManager();
+
+        setupLevel(levelid);
+    }
+
+    private static void setupGameCamera()
+    {
+        gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
+        gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
+        gameCamera.update();
+    }
+
+    private static void setupPhysicsCamera()
+    {
+        physicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
+        // Camera position/origin is in the middle
+        // Not bottom left
+        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
+        // Also cam.project(worldpos) is x and y from bottom left corner
+        // But cam.unproject(screenpos) is x and y from top left corner
+        physicsCamera.position.set(Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight/2, 0);
+        physicsCamera.update();
+    }
+
+    private static void setupLevel(int levelid)
+    {
+        level = new NightLevel(levelid);
+        level.create();
+    }
+
+
+    public static void onResize()
+    {
+        // If gamestate == game running.....
+        try
+        {
+            gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
+            gameCamera.update();
+            physics.constructPhysicsBoundaries();
+        }
+        catch (Exception e){}
+    }
+
+
+
+    public static void create()
+    {
+        gameData = new GameData();
+        settings = new Settings();
+
+        screens = new Screens();
+    }
+
+    public static void load_assets()
+    {
+        // Load all assets
+        assets.finishLoading();
+    }
+
+
     public static boolean isMethodInStack(String method_name)
     {
         for (StackTraceElement stackTraceElement : Thread.currentThread().getStackTrace())
@@ -111,48 +180,13 @@ public class Environment
     public static boolean areQuadrilaterallsColliding(Polygon polygon1, Polygon polygon2)
     {
         return (
-                (polygon2.getX() < (polygon1.getX() + polygon1.getVertices()[2]) && polygon2.getX() > polygon1.getX())
-                        && (polygon2.getY() < (polygon1.getY() + polygon1.getVertices()[5]) && polygon2.getY() > polygon1.getY()))
-                ||
-                ((polygon1.getX() < (polygon2.getX() + polygon1.getVertices()[2]) && polygon1.getX() > polygon2.getX())
-                        && (polygon1.getY() < (polygon2.getY() + polygon1.getVertices()[5]) && polygon1.getY() > polygon2.getY())
-                );
+            (polygon2.getX() < (polygon1.getX() + polygon1.getVertices()[2]) && polygon2.getX() > polygon1.getX())
+                    && (polygon2.getY() < (polygon1.getY() + polygon1.getVertices()[5]) && polygon2.getY() > polygon1.getY()))
+            ||
+            ((polygon1.getX() < (polygon2.getX() + polygon1.getVertices()[2]) && polygon1.getX() > polygon2.getX())
+                    && (polygon1.getY() < (polygon2.getY() + polygon1.getVertices()[5]) && polygon1.getY() > polygon2.getY())
+            );
     }
-
-    // Can't do this as a static method because camera position setting and update doesnt work.
-    // Try creating a game manager class which has an instance and having a method like this in there
-    /*public static void onLevelSelect(int lvl)
-    {
-        gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
-        gameCamera.position.set(gameCamera.viewportWidth/2, gameCamera.viewportHeight/2, 0);
-        gameCamera.update();
-
-        physicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
-        // Camera position/origin is in the middle
-        // Not bottom left
-        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
-        // Also cam.project(worldpos) is x and y from bottom left corner
-        // But cam.unproject(screenpos) is x and y from top left corner
-        physicsCamera.position.set(physicsCamera.viewportWidth/2, physicsCamera.viewportHeight/2, 0);
-        physicsCamera.update();
-
-        physics = new Physics();
-
-        level = new NightLevel(lvl);
-        level.create();
-
-        powerupManager = new PowerupManager();
-        level.addUpdatableEntity(powerupManager);
-        level.addEventListener(powerupManager);
-        
-        gameScreen = new GameScreen();
-
-        gameCamera.position.x = physicsCamera.position.x * Physics.PIXELS_PER_METER;
-        gameCamera.update();
-        physics.constructPhysicsBoundaries();
-
-        game.setScreen(gameScreen);
-    }*/
 
 }
 

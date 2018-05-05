@@ -28,22 +28,15 @@ public class ZombieSmash extends Game
     @Override
     public void create()
     {
-        /*
-		called after all game default game functions
-		are initialized
-		 */
-        Environment.gameData = new GameData();
-        Environment.settings = new Settings();
 
-        // Load all assets
-        Environment.assets.finishLoading();
+        Environment.create();
 
         if (Gdx.app.getType() == Application.ApplicationType.Android)
         {
             Gdx.input.setCatchBackKey(true);
         }
 
-        this.setScreen(new MainMenu());
+        this.setScreen(Environment.screens.mainmenu);
     }
 
     @Override
@@ -68,6 +61,7 @@ public class ZombieSmash extends Game
     public void resize(int width, int height)
     {
         super.resize(width, height);
+        com.fcfruit.zombiesmash.dev.tests.level_test.Environment.onResize();
     }
 
     @Override
@@ -88,11 +82,12 @@ public class ZombieSmash extends Game
         // Update assetManager
         Environment.assets.update();
 
-        //don't put anything in here, use screens
+        // Don't put anything in here, use screens
         // Clear the screen.
         Gdx.gl.glClearColor(0, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT | GL20.GL_DEPTH_BUFFER_BIT);
         logger.log();
+
         super.render();
     }
 }

@@ -24,7 +24,7 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
     public void addPowerup(PowerupInterface powerup)
     {
         this.powerups.add(powerup);
-        Environment.gameScreen.get_ui_stage().add_powerup(powerup);
+        Environment.screens.gamescreen.get_ui_stage().add_powerup(powerup);
     }
 
     @Override
@@ -52,14 +52,14 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
     {
         Vector3 pos;
 
-        pos = Environment.physicsCamera.unproject(Environment.gameScreen.get_ui_stage().getViewport().project(new Vector3(grenadePowerup.getUIDrawable().getX(), grenadePowerup.getUIDrawable().getY(), 0)));
+        pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(grenadePowerup.getUIDrawable().getX(), grenadePowerup.getUIDrawable().getY(), 0)));
         pos.y = Environment.physicsCamera.viewportHeight - pos.y;
 
         for (PowerupInterface powerupInterface : this.powerups)
         {
             if (powerupInterface instanceof GrenadePowerup && powerupInterface.isActive())
             {
-                pos = Environment.physicsCamera.unproject(Environment.gameScreen.get_ui_stage().getViewport().project(new Vector3(powerupInterface.getUIDrawable().getX(), powerupInterface.getUIDrawable().getY(), 0)));
+                pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(powerupInterface.getUIDrawable().getX(), powerupInterface.getUIDrawable().getY(), 0)));
                 pos.y = Environment.physicsCamera.viewportHeight - pos.y;
                 break;
             }
