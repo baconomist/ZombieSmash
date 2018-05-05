@@ -12,6 +12,9 @@ import com.fcfruit.zombiesmash.release.screens.GameScreen;
 
 public class Environment extends com.fcfruit.zombiesmash.release.Environment
 {
-    public static ZombieSmash game = new ZombieSmash();
+    static
+    {
+        game = new ZombieSmash();
+    }
 }
 

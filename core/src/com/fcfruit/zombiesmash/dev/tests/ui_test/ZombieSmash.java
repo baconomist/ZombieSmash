@@ -11,7 +11,6 @@ public class ZombieSmash extends com.fcfruit.zombiesmash.release.ZombieSmash
     public void create()
     {
         super.create();
-        Environment.create();
         this.setScreen(Environment.screens.mainmenu);
     }
 

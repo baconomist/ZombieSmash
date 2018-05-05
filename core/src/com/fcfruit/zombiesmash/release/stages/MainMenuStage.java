@@ -66,7 +66,7 @@ public class MainMenuStage extends Stage {
         play_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-
+                Gdx.app.log("aaaaa", ""+Environment.game);
                 Environment.game.setScreen(new LevelSelect());
                 return super.touchDown(event, x, y, pointer, button);
             }
