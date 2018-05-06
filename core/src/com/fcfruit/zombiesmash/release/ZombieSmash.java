@@ -69,7 +69,7 @@ public class ZombieSmash extends Game
     public void resize(int width, int height)
     {
         super.resize(width, height);
-        com.fcfruit.zombiesmash.dev.tests.level_test.Environment.onResize();
+        Environment.onResize();
     }
 
     @Override
