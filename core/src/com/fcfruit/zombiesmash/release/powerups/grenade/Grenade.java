@@ -51,7 +51,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
         size.y = Environment.gameCamera.viewportHeight - size.y;
 
         Polygon polygon = new Polygon(new float[]{0, 0, size.x*4, 0, size.x*4, size.y*4, 0, size.y*4});
-        polygon.setOrigin(size.x / 2, size.y / 2);
+        polygon.setOrigin(size.x * 2, size.y * 2);
 
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(body, polygon);
 
