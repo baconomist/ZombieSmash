@@ -3,7 +3,7 @@ package com.fcfruit.zombiesmash.client;
 import com.badlogic.gdx.ApplicationListener;
 import com.badlogic.gdx.backends.gwt.GwtApplication;
 import com.badlogic.gdx.backends.gwt.GwtApplicationConfiguration;
-import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.Environment;
 
 public class HtmlLauncher extends GwtApplication {
 

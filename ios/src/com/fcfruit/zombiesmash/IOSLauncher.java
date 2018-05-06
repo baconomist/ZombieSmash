@@ -10,7 +10,7 @@ public class IOSLauncher extends IOSApplication.Delegate {
     @Override
     protected IOSApplication createApplication() {
         IOSApplicationConfiguration config = new IOSApplicationConfiguration();
-        return new IOSApplication(com.fcfruit.zombiesmash.release.Environment.game, config);
+        return new IOSApplication(Environment.game, config);
     }
 
     public static void main(String[] argv) {

@@ -13,7 +13,7 @@
       </configuration>
     </facet>
   </component>
-  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6">
+  <component name="NewModuleRootManager" LANGUAGE_LEVEL="JDK_1_6" inherit-compiler-output="false">
     <output url="file://$MODULE_DIR$/build/classes/main" />
     <output-test url="file://$MODULE_DIR$/build/classes/test" />
     <exclude-output />
@@ -50,11 +50,19 @@
     <orderEntry type="library" exported="" name="gdx-bullet-1.9.6" level="project" />
     <orderEntry type="library" exported="" name="vis-ui-1.3.0" level="project" />
     <orderEntry type="library" exported="" name="gdx-backend-lwjgl-1.9.6" level="project" />
+    <orderEntry type="library" exported="" name="junit-4.12" level="project" />
+    <orderEntry type="library" exported="" name="testng-6.9.6" level="project" />
     <orderEntry type="library" exported="" name="gwt-user-2.8.0" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-2.9.2" level="project" />
     <orderEntry type="library" exported="" name="lwjgl_util-2.9.2" level="project" />
     <orderEntry type="library" exported="" name="jlayer-1.0.1-gdx" level="project" />
     <orderEntry type="library" exported="" name="jorbis-0.0.17" level="project" />
+    <orderEntry type="library" exported="" name="hamcrest-core-1.3" level="project" />
+    <orderEntry type="library" exported="" name="guice-4.0-no_aop" level="project" />
+    <orderEntry type="library" exported="" name="bsh-2.0b4" level="project" />
+    <orderEntry type="library" exported="" name="ant-1.7.0" level="project" />
+    <orderEntry type="library" exported="" name="jcommander-1.48" level="project" />
+    <orderEntry type="library" exported="" name="snakeyaml-1.15" level="project" />
     <orderEntry type="library" exported="" name="jsinterop-annotations-1.0.1" level="project" />
     <orderEntry type="library" exported="" name="jsinterop-annotations-1.0.1-sources" level="project" />
     <orderEntry type="library" exported="" name="validation-api-1.0.0.GA" level="project" />
@@ -65,6 +73,10 @@
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.2-natives-linux" level="project" />
     <orderEntry type="library" exported="" name="lwjgl-platform-2.9.2-natives-osx" level="project" />
     <orderEntry type="library" exported="" name="jinput-2.0.5" level="project" />
+    <orderEntry type="library" exported="" name="javax.inject-1" level="project" />
+    <orderEntry type="library" exported="" name="aopalliance-1.0" level="project" />
+    <orderEntry type="library" exported="" name="guava-16.0.1" level="project" />
+    <orderEntry type="library" exported="" name="ant-launcher-1.7.0" level="project" />
     <orderEntry type="library" exported="" name="jutils-1.0.0" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-linux" level="project" />
     <orderEntry type="library" exported="" name="jinput-platform-2.0.5-natives-windows" level="project" />
