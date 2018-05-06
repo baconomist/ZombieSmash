@@ -1,13 +1,11 @@
 package com.fcfruit.zombiesmash.release;
 
 import com.badlogic.gdx.Application;
+import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.Game;
-
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.fcfruit.zombiesmash.release.screens.MainMenu;
 
 
 public class ZombieSmash extends Game

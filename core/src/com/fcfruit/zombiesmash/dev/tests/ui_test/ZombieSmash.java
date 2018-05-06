@@ -1,9 +1,5 @@
 package com.fcfruit.zombiesmash.dev.tests.ui_test;
 
-import com.badlogic.gdx.Application;
-import com.badlogic.gdx.Gdx;
-
-
 public class ZombieSmash extends com.fcfruit.zombiesmash.release.ZombieSmash
 {
 

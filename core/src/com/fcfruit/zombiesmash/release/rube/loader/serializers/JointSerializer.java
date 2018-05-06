@@ -18,8 +18,8 @@ import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
+import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
 public class JointSerializer extends ReadOnlySerializer<Joint>

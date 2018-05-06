@@ -17,7 +17,6 @@ import com.fcfruit.zombiesmash.release.entity.interfaces.event.LevelEventListene
 import com.fcfruit.zombiesmash.release.physics.Physics;
 import com.fcfruit.zombiesmash.release.zombies.NewZombie;
 
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;

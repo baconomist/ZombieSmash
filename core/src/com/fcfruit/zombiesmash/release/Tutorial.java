@@ -2,8 +2,6 @@ package com.fcfruit.zombiesmash.release;
 
 import com.badlogic.gdx.Gdx;
 
-import java.util.ArrayList;
-
 /**
  * Created by Lucas on 2017-07-21.
  */

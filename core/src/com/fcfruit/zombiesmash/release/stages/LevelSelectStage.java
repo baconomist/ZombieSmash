@@ -1,18 +1,12 @@
 package com.fcfruit.zombiesmash.release.stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.release.Environment;
-import com.fcfruit.zombiesmash.release.ZombieSmash;
-import com.fcfruit.zombiesmash.release.level.NightLevel;
-import com.fcfruit.zombiesmash.release.physics.Physics;
-import com.fcfruit.zombiesmash.release.powerups.PowerupManager;
-import com.fcfruit.zombiesmash.release.screens.GameScreen;
 import com.fcfruit.zombiesmash.release.ui.CustomImageButton;
 
 import java.util.ArrayList;

@@ -9,8 +9,8 @@ import com.badlogic.gdx.physics.box2d.MassData;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
-import com.badlogic.gdx.utils.JsonValue;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
+import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
 public class BodySerializer extends ReadOnlySerializer<Body>

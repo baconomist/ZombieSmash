@@ -14,7 +14,6 @@ import com.fcfruit.zombiesmash.release.level.Level;
 import com.fcfruit.zombiesmash.release.level.NightLevel;
 import com.fcfruit.zombiesmash.release.physics.Physics;
 import com.fcfruit.zombiesmash.release.powerups.PowerupManager;
-import com.fcfruit.zombiesmash.release.screens.GameScreen;
 
 import java.util.ArrayList;
 

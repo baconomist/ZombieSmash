@@ -15,10 +15,7 @@ import com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterfa
 import com.fcfruit.zombiesmash.release.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
-
 import java.util.ArrayList;
-
-import static java.util.Collections.min;
 
 /**
  * Created by Lucas on 2017-07-21.

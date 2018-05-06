@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.release;
 
-import com.badlogic.gdx.Screen;
 import com.fcfruit.zombiesmash.release.screens.GameScreen;
 import com.fcfruit.zombiesmash.release.screens.MainMenu;
 
