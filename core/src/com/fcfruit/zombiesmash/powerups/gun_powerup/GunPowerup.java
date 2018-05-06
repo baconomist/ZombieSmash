@@ -121,7 +121,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
 
             if(this.currentControllingGun == 1)
             {
-                angle = (float) Math.atan2((pos.y - screenY), (pos.x - screenX) + 100f);
+                angle = (float) Math.atan2((pos.y - screenY), (pos.x - screenX) + Gdx.graphics.getWidth()/10);
             }
 
             angle = (float) Math.toDegrees(angle);
