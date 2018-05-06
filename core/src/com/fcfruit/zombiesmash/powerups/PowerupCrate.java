@@ -59,6 +59,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         fixtureDef.shape = circleShape;
         fixtureDef.friction = 0;
         fixtureDef.density = 0.3f;
+        fixtureDef.filter.groupIndex = -1;
 
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(this);

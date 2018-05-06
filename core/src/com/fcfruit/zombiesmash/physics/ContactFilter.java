@@ -3,6 +3,13 @@ package com.fcfruit.zombiesmash.physics;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.entity.ParticleEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
+import com.fcfruit.zombiesmash.powerups.PowerupCrate;
+import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
+import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
+import com.fcfruit.zombiesmash.zombies.NewZombie;
 
 
 /**
@@ -16,10 +23,10 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     {
 
 
-        if (fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.zombies.NewZombie && fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.zombies.NewZombie)
+        if (fixtureA.getUserData() instanceof NewZombie && fixtureB.getUserData() instanceof NewZombie)
         {
 
-            if (((com.fcfruit.zombiesmash.zombies.NewZombie) fixtureA.getUserData()).id == ((com.fcfruit.zombiesmash.zombies.NewZombie) fixtureB.getUserData()).id)
+            if (((NewZombie) fixtureA.getUserData()).id == ((NewZombie) fixtureB.getUserData()).id)
             {
 
                 if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
@@ -35,7 +42,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
                 return false;
             }
 
-        } else if (fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.effects.Blood || fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.effects.Blood)
+        } else if (fixtureA.getUserData() instanceof Blood || fixtureB.getUserData() instanceof Blood)
         {
             return false;
         }
@@ -44,29 +51,33 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
                 || (fixtureB.getUserData().equals("ground") && Environment.physics.whichGround(fixtureB.getBody()) == 0))
         {
             return true;
-        } else if ((fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface && fixtureB.getUserData().equals("ground") &&
-                ((com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface) fixtureA.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody()) &&
-                !((com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface) fixtureA.getUserData()).isMovingToNewGround()))
+        } else if ((fixtureA.getUserData() instanceof MultiGroundEntityInterface && fixtureB.getUserData().equals("ground") &&
+                ((MultiGroundEntityInterface) fixtureA.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody()) &&
+                !((MultiGroundEntityInterface) fixtureA.getUserData()).isMovingToNewGround()))
         {
             return true;
-        } else if ((fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface && fixtureA.getUserData().equals("ground")
-                && ((com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface) fixtureB.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
-                && !((com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface) fixtureB.getUserData()).isMovingToNewGround()))
+        } else if ((fixtureB.getUserData() instanceof MultiGroundEntityInterface && fixtureA.getUserData().equals("ground")
+                && ((MultiGroundEntityInterface) fixtureB.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
+                && !((MultiGroundEntityInterface) fixtureB.getUserData()).isMovingToNewGround()))
         {
             return true;
-        } else if (fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.entity.ParticleEntity && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody
-                || fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.entity.ParticleEntity && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
-        {
-            return true;
-        } else if (fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.powerups.rock_powerup.Rock && fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.zombies.NewZombie
-                || fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.powerups.rock_powerup.Rock && fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.zombies.NewZombie)
+        } else if (fixtureA.getUserData() instanceof Rock && fixtureB.getUserData() instanceof NewZombie
+                || fixtureB.getUserData() instanceof Rock && fixtureA.getUserData() instanceof NewZombie)
         {
             return true;
         }
-        else if (fixtureA.getUserData() instanceof com.fcfruit.zombiesmash.powerups.grenade.Grenade && fixtureB.getUserData() instanceof com.fcfruit.zombiesmash.powerups.grenade.Grenade)
+        else if (fixtureA.getUserData() instanceof PowerupCrate || fixtureB.getUserData() instanceof PowerupCrate)
+        {
+            return false;
+        } else if (fixtureA.getUserData() instanceof Grenade && fixtureB.getUserData() instanceof Grenade)
+        {
+            return true;
+        } else if (fixtureA.getUserData() instanceof ParticleEntity && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody
+                || fixtureB.getUserData() instanceof ParticleEntity && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
         {
             return true;
         }
+
         return false;
 
         /*return (fixtureA.getUserData().equals("ground") && Environment.physics.whichGround(fixtureA.getBody()) == 0)
