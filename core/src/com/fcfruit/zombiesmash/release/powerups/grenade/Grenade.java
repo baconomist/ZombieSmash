@@ -40,18 +40,7 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
     public Grenade(Body body, ArrayList<Joint> joints)
     {
 
-        /*RubeSceneLoader loader = new RubeSceneLoader(Environment.physics.getWorld());
-        RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/grenade/grenade_rube.json"));
-
-        Body physicsBody = scene.getBodies().get(0);
-        physicsBody.setUserData(this);
-
-        ArrayList<Joint> joints = new ArrayList<Joint>();
-        joints.add(physicsBody.getJointList().get(0).joint);*/
-
         Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png")));
-        //Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(sprite.getWidth(), sprite.getHeight(), 0)));
-        //size.y = Environment.physicsCamera.viewportHeight - size.y;
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
         this.detachableEntity = new DetachableEntity(joints);
@@ -60,8 +49,10 @@ public class Grenade implements DrawableEntityInterface, DetachableEntityInterfa
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
         size.y = Environment.gameCamera.viewportHeight - size.y;
-        Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
+
+        Polygon polygon = new Polygon(new float[]{0, 0, size.x*4, 0, size.x*4, size.y*4, 0, size.y*4});
         polygon.setOrigin(size.x / 2, size.y / 2);
+
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(body, polygon);
 
     }

@@ -21,6 +21,8 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
         this.powerups = new Array<PowerupInterface>();
     }
 
+    private Vector3 grenadePosition;
+
     public void addPowerup(PowerupInterface powerup)
     {
         this.powerups.add(powerup);
@@ -50,21 +52,16 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
 
     public Vector3 getGrenadeSpawnPosition(GrenadePowerup grenadePowerup)
     {
-        Vector3 pos;
-
-        pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(grenadePowerup.getUIDrawable().getX(), grenadePowerup.getUIDrawable().getY(), 0)));
-        pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-
-        for (PowerupInterface powerupInterface : this.powerups)
+        if(grenadePosition == null)
         {
-            if (powerupInterface instanceof GrenadePowerup && powerupInterface.isActive())
-            {
-                pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(powerupInterface.getUIDrawable().getX(), powerupInterface.getUIDrawable().getY(), 0)));
-                pos.y = Environment.physicsCamera.viewportHeight - pos.y;
-                break;
-            }
+            Vector3 pos;
+
+            pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(grenadePowerup.getUIDrawable().getX(), grenadePowerup.getUIDrawable().getY(), 0)));
+            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+
+            grenadePosition = pos;
         }
 
-        return pos;
+        return grenadePosition;
     }
 }

@@ -30,11 +30,14 @@ public class GrenadePowerup implements PowerupInterface
 
     private boolean isActive;
 
+    private boolean isGrenadeDetached;
+
     public GrenadePowerup()
     {
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade_ui.png")));
 
         this.isActive = false;
+        this.isGrenadeDetached = false;
     }
 
     @Override
@@ -42,6 +45,7 @@ public class GrenadePowerup implements PowerupInterface
     {
         if(grenade.shouldDetach()){
             grenade.detach();
+            this.isGrenadeDetached = true;
         }
     }
 
@@ -102,6 +106,8 @@ public class GrenadePowerup implements PowerupInterface
     {
         return this.isActive;
     }
+
+    public boolean isGrenadeDetached(){return this.isGrenadeDetached;}
 
     @Override
     public Sprite getUIDrawable()
