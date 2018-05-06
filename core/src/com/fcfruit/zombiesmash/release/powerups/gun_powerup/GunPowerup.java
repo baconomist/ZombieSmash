@@ -119,6 +119,12 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
             pos.y = Gdx.graphics.getHeight() - pos.y;
 
             float angle = (float) Math.atan2((pos.y - screenY), (pos.x - screenX));
+
+            if(this.currentControllingGun == 1)
+            {
+                angle = (float) Math.atan2((pos.y - screenY), (pos.x - screenX) + 100f);
+            }
+
             angle = (float) Math.toDegrees(angle);
 
             if (this.currentControllingGun == 0)
@@ -129,7 +135,6 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
 
             } else if (this.currentControllingGun == 1)
             {
-
                 if (angle != 0 && angle < 90 && angle > -90)
                     this.guns[1].setAngle(-angle);
 
