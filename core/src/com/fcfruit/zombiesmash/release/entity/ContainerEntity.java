@@ -1,6 +1,9 @@
 package com.fcfruit.zombiesmash.release.entity;
 
+import com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
 
 import java.util.HashMap;
 
@@ -8,24 +11,24 @@ import java.util.HashMap;
  * Created by Lucas on 2018-01-25.
  */
 
-public class ContainerEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface
+public class ContainerEntity implements ContainerEntityInterface
 {
-    private HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface> drawableEntities;
+    private HashMap<String, DrawableEntityInterface> drawableEntities;
     private HashMap<String, InteractiveEntityInterface> interactiveEntities;
-    private HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface> detachableEntities;
-    private HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface> containerEntities;
+    private HashMap<String, DetachableEntityInterface> detachableEntities;
+    private HashMap<String, ContainerEntityInterface> containerEntities;
 
 
     public ContainerEntity()
     {
-        this.drawableEntities = new HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface>();
+        this.drawableEntities = new HashMap<String, DrawableEntityInterface>();
         this.interactiveEntities = new HashMap<String, InteractiveEntityInterface>();
-        this.detachableEntities = new HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface>();
-        this.containerEntities = new HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface>();
+        this.detachableEntities = new HashMap<String, DetachableEntityInterface>();
+        this.containerEntities = new HashMap<String, ContainerEntityInterface>();
     }
 
     @Override
-    public HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface> getDrawableEntities()
+    public HashMap<String, DrawableEntityInterface> getDrawableEntities()
     {
         return this.drawableEntities;
     }
@@ -37,13 +40,13 @@ public class ContainerEntity implements com.fcfruit.zombiesmash.release.entity.i
     }
 
     @Override
-    public HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface> getDetachableEntities()
+    public HashMap<String, DetachableEntityInterface> getDetachableEntities()
     {
         return this.detachableEntities;
     }
 
     @Override
-    public void setDrawableEntities(HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface> drawableEntities)
+    public void setDrawableEntities(HashMap<String, DrawableEntityInterface> drawableEntities)
     {
         this.drawableEntities = drawableEntities;
     }
@@ -55,13 +58,13 @@ public class ContainerEntity implements com.fcfruit.zombiesmash.release.entity.i
     }
 
     @Override
-    public void setDetachableEntities(HashMap<String, com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface> detachableEntities)
+    public void setDetachableEntities(HashMap<String, DetachableEntityInterface> detachableEntities)
     {
         this.detachableEntities = detachableEntities;
     }
 
     @Override
-    public void detach(com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface detachableEntity)
+    public void detach(DetachableEntityInterface detachableEntity)
     {
 
         String key = "";

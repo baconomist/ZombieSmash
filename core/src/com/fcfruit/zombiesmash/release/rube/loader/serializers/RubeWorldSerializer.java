@@ -4,6 +4,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.zombiesmash.release.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
 public class RubeWorldSerializer extends ReadOnlySerializer<RubeScene>
@@ -45,13 +46,13 @@ public class RubeWorldSerializer extends ReadOnlySerializer<RubeScene>
 	
 	@SuppressWarnings("rawtypes")
 	@Override
-	public RubeScene read(Json json, JsonValue jsonData, Class type) 
+	public RubeScene read(Json json, JsonValue jsonData, Class type)
 	{
 	   if (!mScenePopulated)
 	   {
-	      scene.stepsPerSecond 		= json.readValue("stepsPerSecond", 		int.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.stepsPerSecond, 		jsonData);
-	      scene.positionIterations 	= json.readValue("positionIterations", 	int.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.positionIterations, 	jsonData);
-	      scene.velocityIterations 	= json.readValue("velocityIterations", 	int.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.velocityIterations, 	jsonData);
+	      scene.stepsPerSecond 		= json.readValue("stepsPerSecond", 		int.class, RubeDefaults.World.stepsPerSecond, 		jsonData);
+	      scene.positionIterations 	= json.readValue("positionIterations", 	int.class, RubeDefaults.World.positionIterations, 	jsonData);
+	      scene.velocityIterations 	= json.readValue("velocityIterations", 	int.class, RubeDefaults.World.velocityIterations, 	jsonData);
 	      scene.setWorld(json.readValue(World.class,	jsonData));
 	      mScenePopulated = true;
 	   }

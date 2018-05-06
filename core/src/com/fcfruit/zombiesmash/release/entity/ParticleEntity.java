@@ -8,10 +8,11 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
-import com.fcfruit.zombiesmash.release.Environment;
 import com.fcfruit.zombiesmash.release.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.release.zombies.NewZombie;
 
 /**
@@ -63,7 +64,7 @@ public class ParticleEntity
 
     public void update(float delta)
     {
-        for (com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
+        for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
             if (drawableEntity instanceof InteractiveEntityInterface && drawableEntity instanceof OptimizableEntityInterface)
             {

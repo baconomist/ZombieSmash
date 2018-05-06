@@ -6,6 +6,8 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.release.effects.Blood;
+import com.fcfruit.zombiesmash.release.entity.interfaces.BleedableEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -14,10 +16,10 @@ import java.util.HashMap;
  * Created by Lucas on 2018-02-02.
  */
 
-public class BleedableEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.BleedableEntityInterface
+public class BleedableEntity implements BleedableEntityInterface
 {
 
-    private com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface detachableEntity;
+    private DetachableEntityInterface detachableEntity;
 
     private ArrayList<Body> bleedableBodies;
     private HashMap<Body, Vector2> bleedPositions;
@@ -28,7 +30,7 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.release.entity.i
     private double timeBeforeBlood = 100;
     private double bloodTimer = System.currentTimeMillis();
 
-    public BleedableEntity(com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface detachableEntity)
+    public BleedableEntity(DetachableEntityInterface detachableEntity)
     {
 
         this.detachableEntity = detachableEntity;

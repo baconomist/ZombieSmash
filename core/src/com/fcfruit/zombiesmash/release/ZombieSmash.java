@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
+import com.fcfruit.zombiesmash.Flags;
 
 
 public class ZombieSmash extends Game
@@ -27,12 +28,21 @@ public class ZombieSmash extends Game
     public void create()
     {
 
-        Environment.create();
+        if(Flags.DEBUG)
+        {
+            Gdx.app.setLogLevel(Application.LOG_DEBUG);
+        }
+        else
+        {
+            Gdx.app.setLogLevel(Application.LOG_ERROR);
+        }
 
         if (Gdx.app.getType() == Application.ApplicationType.Android)
         {
             Gdx.input.setCatchBackKey(true);
         }
+
+        Environment.create();
 
         this.setScreen(Environment.screens.mainmenu);
     }

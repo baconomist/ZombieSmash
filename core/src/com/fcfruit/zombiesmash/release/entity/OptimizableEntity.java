@@ -1,16 +1,21 @@
 package com.fcfruit.zombiesmash.release.entity;
 
+import com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface;
 
 /**
  * Created by Lucas on 2018-01-25.
  */
 
-public class OptimizableEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.OptimizableEntityInterface
+public class OptimizableEntity implements OptimizableEntityInterface
 {
-    private com.fcfruit.zombiesmash.release.entity.interfaces.InteractivePhysicsEntityInterface interactivePhysicsEntity;
-    private com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface detachableEntity;
-    private com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface containerEntity;
+    private InteractivePhysicsEntityInterface interactivePhysicsEntity;
+    private DetachableEntityInterface detachableEntity;
+    private ContainerEntityInterface containerEntity;
 
     // Optimization
     private double optimizationTimer;
@@ -18,7 +23,7 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.release.entity
 
     private boolean isOptimizationEnabled;
 
-    public OptimizableEntity(com.fcfruit.zombiesmash.release.entity.interfaces.InteractivePhysicsEntityInterface interactivePhysicsEntity, com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface detachableEntity, com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface containerEntity)
+    public OptimizableEntity(InteractivePhysicsEntityInterface interactivePhysicsEntity, DetachableEntityInterface detachableEntity, ContainerEntityInterface containerEntity)
     {
         this.detachableEntity = detachableEntity;
         this.interactivePhysicsEntity = interactivePhysicsEntity;
@@ -71,10 +76,10 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.release.entity
         {
             for (InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
-                if (interactiveEntity instanceof com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface)
+                if (interactiveEntity instanceof PhysicsEntityInterface)
                 {
-                    ((com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setActive(false);
-                    ((com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setAwake(false);
+                    ((PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setActive(false);
+                    ((PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setAwake(false);
 
                 }
             }
@@ -91,10 +96,10 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.release.entity
         {
             for (InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
-                if (interactiveEntity instanceof com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface)
+                if (interactiveEntity instanceof PhysicsEntityInterface)
                 {
-                    ((com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setActive(true);
-                    ((com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setAwake(true);
+                    ((PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setActive(true);
+                    ((PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setAwake(true);
 
                 }
             }

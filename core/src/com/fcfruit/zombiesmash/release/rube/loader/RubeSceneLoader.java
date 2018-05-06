@@ -4,6 +4,7 @@ import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.SerializationException;
+import com.fcfruit.zombiesmash.release.rube.loader.serializers.RubeWorldSerializer;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
 
@@ -16,7 +17,7 @@ import com.fcfruit.zombiesmash.release.rube.RubeScene;
 public class RubeSceneLoader
 {
    private final Json json;
-   private final com.fcfruit.zombiesmash.release.rube.loader.serializers.RubeWorldSerializer mRubeWorldSerializer;
+   private final RubeWorldSerializer mRubeWorldSerializer;
    private final World mWorld;
 
    public RubeSceneLoader()
@@ -41,7 +42,7 @@ public class RubeSceneLoader
       json = gameJson;
       json.setTypeName(null);
       json.setUsePrototypes(false);
-      json.setSerializer(RubeScene.class, mRubeWorldSerializer = new com.fcfruit.zombiesmash.release.rube.loader.serializers.RubeWorldSerializer(json));
+      json.setSerializer(RubeScene.class, mRubeWorldSerializer = new RubeWorldSerializer(json));
       mWorld = world;
    }
 

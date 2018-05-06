@@ -1,6 +1,8 @@
 package com.fcfruit.zombiesmash.release.entity;
 
 import com.badlogic.gdx.math.Vector2;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.MovableEntityInterface;
 
 import java.util.ArrayList;
 
@@ -8,14 +10,14 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-20.
  */
 
-public class MovableEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.MovableEntityInterface
+public class MovableEntity implements MovableEntityInterface
 {
-    com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface drawableEntity;
+    DrawableEntityInterface drawableEntity;
     private Vector2 moveToPosition;
     private float speed;
     private ArrayList<Vector2> moveQueue;
 
-    public MovableEntity(com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface drawableEntity)
+    public MovableEntity(DrawableEntityInterface drawableEntity)
     {
         this.drawableEntity = drawableEntity;
         this.speed = 1f;

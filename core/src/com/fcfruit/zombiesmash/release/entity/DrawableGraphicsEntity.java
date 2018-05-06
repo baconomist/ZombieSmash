@@ -4,13 +4,14 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.release.Environment;
 
 /**
  * Created by Lucas on 2018-01-10.
  */
 
-public class DrawableGraphicsEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface
+public class DrawableGraphicsEntity implements DrawableEntityInterface
 {
 
     private com.badlogic.gdx.graphics.g2d.Sprite sprite;

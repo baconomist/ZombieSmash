@@ -20,6 +20,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.zombiesmash.release.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
 public class JointSerializer extends ReadOnlySerializer<Joint>
@@ -31,7 +32,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 	private RubeScene scene;
 	private final MouseJointDefSerializer mouseJointDefSerializer;
 	
-	public JointSerializer(RubeScene scene,Json _json)
+	public JointSerializer(RubeScene scene, Json _json)
 	{
 		this.scene = scene;
 		_json.setSerializer(RevoluteJointDef.class, 	new RevoluteJointDefSerializer());
@@ -126,7 +127,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		{
 			jointDef.bodyA = bodies.get(indexA);
 			jointDef.bodyB = bodies.get(indexB);
-			jointDef.collideConnected = json.readValue("collideConnected", boolean.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.collideConnected, jsonData);
+			jointDef.collideConnected = json.readValue("collideConnected", boolean.class, RubeDefaults.Joint.collideConnected, jsonData);
 			
 			joint = world.createJoint(jointDef);
 			
@@ -150,7 +151,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public RevoluteJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			RevoluteJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.revoluteDef;
+			RevoluteJointDef defaults = RubeDefaults.Joint.revoluteDef;
 			
 			RevoluteJointDef def = new RevoluteJointDef();
 			
@@ -180,7 +181,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public PrismaticJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			PrismaticJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.prismaticDef;
+			PrismaticJointDef defaults = RubeDefaults.Joint.prismaticDef;
 			
 			PrismaticJointDef def = new PrismaticJointDef();
 
@@ -217,7 +218,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public DistanceJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			DistanceJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.distanceDef;
+			DistanceJointDef defaults = RubeDefaults.Joint.distanceDef;
 			
 			DistanceJointDef def = new DistanceJointDef();
 
@@ -243,7 +244,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public PulleyJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			PulleyJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.pulleyDef;
+			PulleyJointDef defaults = RubeDefaults.Joint.pulleyDef;
 			
 			PulleyJointDef def = new PulleyJointDef();
 
@@ -277,7 +278,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public MouseJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			MouseJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.mouseDef;
+			MouseJointDef defaults = RubeDefaults.Joint.mouseDef;
 			
 			MouseJointDef def = new MouseJointDef();
 
@@ -304,7 +305,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public WeldJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			WeldJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.weldDef;
+			WeldJointDef defaults = RubeDefaults.Joint.weldDef;
 			
 			WeldJointDef def = new WeldJointDef();
 			
@@ -328,7 +329,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public FrictionJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			FrictionJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.frictionDef;
+			FrictionJointDef defaults = RubeDefaults.Joint.frictionDef;
 			
 			FrictionJointDef def = new FrictionJointDef();
 			
@@ -353,7 +354,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public WheelJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			WheelJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.wheelDef;
+			WheelJointDef defaults = RubeDefaults.Joint.wheelDef;
 			
 			WheelJointDef def = new WheelJointDef();
 
@@ -384,7 +385,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 		@Override
 		public RopeJointDef read(Json json, JsonValue jsonData, Class type)
 		{	
-			RopeJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.ropeDef;
+			RopeJointDef defaults = RubeDefaults.Joint.ropeDef;
 			
 			RopeJointDef def = new RopeJointDef();
 
@@ -411,7 +412,7 @@ public class JointSerializer extends ReadOnlySerializer<Joint>
 			if(joints == null )
 				return null;
 			
-			GearJointDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Joint.gearDef;
+			GearJointDef defaults = RubeDefaults.Joint.gearDef;
 			
 			GearJointDef def = null;
 

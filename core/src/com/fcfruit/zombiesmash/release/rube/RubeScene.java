@@ -9,6 +9,7 @@ import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,8 +27,8 @@ public class RubeScene
 	private World world;
 	
 	private Array<Body> mBodies;
-	private Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage> mImages;
-	private Map<Body,Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage>> mBodyImageMap;
+	private Array<RubeImage> mImages;
+	private Map<Body,Array<RubeImage>> mBodyImageMap;
 	private Array<Fixture> mFixtures;
 	private Array<Joint> mJoints;
 	private Map<String,Array<Object>> mItemsByName;
@@ -48,7 +49,7 @@ public class RubeScene
 		velocityIterations 	= RubeDefaults.World.velocityIterations;
 		
 		mCustomPropertiesMap = new HashMap<Object, Map<String, Object>>();
-		mBodyImageMap = new HashMap<Body,Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage>>();
+		mBodyImageMap = new HashMap<Body,Array<RubeImage>>();
 		
 		mItemsByName = new HashMap<String,Array<Object>>();
 		
@@ -265,24 +266,24 @@ public class RubeScene
       return mJoints;
    }
    
-   public void setImages(Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage> images)
+   public void setImages(Array<RubeImage> images)
    {
       mImages = images;
    }
    
-   public Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage> getImages()
+   public Array<RubeImage> getImages()
    {
       return mImages;
    }
    
-   public void setMappedImage(Body body, com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage image)
+   public void setMappedImage(Body body, RubeImage image)
    {
-      Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage> images = mBodyImageMap.get(body);
+      Array<RubeImage> images = mBodyImageMap.get(body);
       // if the mapping hasn't been created yet...
       if (images == null)
       {
          // initialize the key's value...
-         images = new Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage>(false,1); // expectation is that most, if not all, bodies will have a single image.
+         images = new Array<RubeImage>(false,1); // expectation is that most, if not all, bodies will have a single image.
          images.add(image);
          mBodyImageMap.put(body, images);
       }
@@ -293,7 +294,7 @@ public class RubeScene
       }
    }
    
-   public Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage> getMappedImage(Body body)
+   public Array<RubeImage> getMappedImage(Body body)
    {
       return mBodyImageMap.get(body);
    }

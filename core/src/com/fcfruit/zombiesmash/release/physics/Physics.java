@@ -36,7 +36,7 @@ public class Physics
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
 
-    private com.fcfruit.zombiesmash.release.physics.Lighting lighting;
+    private Lighting lighting;
 
     private World world;
 
@@ -59,7 +59,7 @@ public class Physics
 
         this.constructPhysicsBoundaries();
 
-        this.lighting = new com.fcfruit.zombiesmash.release.physics.Lighting(world);
+        this.lighting = new Lighting(world);
 
     }
 
@@ -237,8 +237,8 @@ public class Physics
     {
         if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
 
-        //Gdx.app.log("destroyBody", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
-        //Gdx.app.log("body", ""+body);
+        //Gdx.app.debug("destroyBody", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.debug("body", ""+body);
 
         if (this.get_world_bodies().contains(body, true))
             this.world.destroyBody(body);
@@ -249,8 +249,8 @@ public class Physics
     {
         if (Environment.isMethodInStack("stepWorld")) throw new Error("Don't call physics methods in the world time step!");
 
-        //Gdx.app.log("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
-        //Gdx.app.log("joint", ""+joint);
+        //Gdx.app.debug("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
+        //Gdx.app.debug("joint", ""+joint);
 
         if (this.get_world_joints().contains(joint, true))
             this.world.destroyJoint(joint);

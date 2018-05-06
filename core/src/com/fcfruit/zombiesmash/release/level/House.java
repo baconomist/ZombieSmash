@@ -6,7 +6,8 @@ import com.badlogic.gdx.math.Polygon;
  * Created by Lucas on 2017-11-18.
  */
 
-public class House extends Objective {
+public class House extends Objective
+{
 
 
     House() {

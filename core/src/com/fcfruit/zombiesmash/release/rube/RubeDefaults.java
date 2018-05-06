@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.joints.RevoluteJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WeldJointDef;
 import com.badlogic.gdx.physics.box2d.joints.WheelJointDef;
+import com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage;
 
 /**
  * Static data that give the default values to use for a bunch of parameters.
@@ -69,7 +70,7 @@ public class RubeDefaults
 	
 	public static class Image
 	{
-	   public static final com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage image = new com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage();
+	   public static final RubeImage image = new RubeImage();
 	   
 	   public static final int [] colorArray = new int[]{255,255,255,255};
 	}

@@ -9,12 +9,13 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.attachments.BoundingBoxAttachment;
 import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.release.entity.interfaces.AnimatableEntityInterface;
 
 /**
  * Created by Lucas on 2018-01-13.
  */
 
-public class AnimatableGraphicsEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.AnimatableEntityInterface
+public class AnimatableGraphicsEntity implements AnimatableEntityInterface
 {
 
     private Skeleton skeleton;

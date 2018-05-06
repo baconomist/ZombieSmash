@@ -8,7 +8,9 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.zombiesmash.release.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
+import com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage;
 
 public class WorldSerializer extends ReadOnlySerializer<World>
 {
@@ -28,7 +30,7 @@ public class WorldSerializer extends ReadOnlySerializer<World>
 		_json.setSerializer(Joint.class, jointSerializer);
 		
 		imageSerializer = new ImageSerializer(scene);
-		_json.setSerializer(com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage.class, imageSerializer);
+		_json.setSerializer(RubeImage.class, imageSerializer);
 	}
 	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
@@ -38,12 +40,12 @@ public class WorldSerializer extends ReadOnlySerializer<World>
 	   World world = scene.getWorld();
 	   if (world == null)
 	   {
-	      boolean allowSleep = json.readValue("allowSleep", boolean.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.allowSleep, jsonData);
-	      boolean autoClearForces = json.readValue("autoClearForces", boolean.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.autoClearForces, jsonData);
-	      boolean continuousPhysics = json.readValue("continuousPhysics", boolean.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.continuousPhysics, jsonData);
-	      boolean warmStarting = json.readValue("warmStarting", boolean.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.warmStarting, jsonData);
+	      boolean allowSleep = json.readValue("allowSleep", boolean.class, RubeDefaults.World.allowSleep, jsonData);
+	      boolean autoClearForces = json.readValue("autoClearForces", boolean.class, RubeDefaults.World.autoClearForces, jsonData);
+	      boolean continuousPhysics = json.readValue("continuousPhysics", boolean.class, RubeDefaults.World.continuousPhysics, jsonData);
+	      boolean warmStarting = json.readValue("warmStarting", boolean.class, RubeDefaults.World.warmStarting, jsonData);
 
-	      Vector2 gravity = json.readValue("gravity", Vector2.class, com.fcfruit.zombiesmash.release.rube.RubeDefaults.World.gravity, jsonData);
+	      Vector2 gravity = json.readValue("gravity", Vector2.class, RubeDefaults.World.gravity, jsonData);
 
 		   world = new World(gravity, allowSleep);
 		   world.setAutoClearForces(autoClearForces);
@@ -89,7 +91,7 @@ public class WorldSerializer extends ReadOnlySerializer<World>
 		
 		
 		// Images
-		Array<com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage> images = json.readValue("image", Array.class, com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage.class, jsonData);
+		Array<RubeImage> images = json.readValue("image", Array.class, RubeImage.class, jsonData);
 		if (images != null)
 		{
 		   if (scene.getImages() == null)
@@ -103,7 +105,7 @@ public class WorldSerializer extends ReadOnlySerializer<World>
 		   
 		   for (int i = 0; i < images.size; i++)
 		   {
-		      com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeImage image = images.get(i);
+		      RubeImage image = images.get(i);
 		      scene.setMappedImage(image.body, image);
 		   }
 		}

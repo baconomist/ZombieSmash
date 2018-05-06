@@ -2,10 +2,11 @@ package com.fcfruit.zombiesmash.release.entity;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.fcfruit.zombiesmash.release.Environment;
 import com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.release.Environment;
 import com.fcfruit.zombiesmash.release.physics.Physics;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
 
 import java.util.ArrayList;
 
@@ -45,7 +46,7 @@ public class DetachableEntity implements DetachableEntityInterface
     @Override
     public void detach()
     {
-        Gdx.app.log("destroying joints...", "detachableEntity detach");
+        Gdx.app.debug("destroying joints...", "detachableEntity detach");
         for(Joint joint : this.joints)
         {
             Environment.physics.destroyJoint(joint);
@@ -54,7 +55,7 @@ public class DetachableEntity implements DetachableEntityInterface
         if(this.containerEntity != null)
         {
             this.containerEntity.detach(instance);
-            Environment.level.addDrawableEntity((com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface) instance);
+            Environment.level.addDrawableEntity((DrawableEntityInterface) instance);
         }
         this.setState("detached");
     }
@@ -81,7 +82,7 @@ public class DetachableEntity implements DetachableEntityInterface
         {
             for(Joint joint : this.joints)
             {
-                //Gdx.app.log("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
+                //Gdx.app.debug("reaction force", ""+joint.getReactionForce(1f / Physics.STEP_TIME));
                 if (Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).x) > this.forceForDetach || Math.abs(joint.getReactionForce(1f / Physics.STEP_TIME).y) > this.forceForDetach)
                 {
                     return true;

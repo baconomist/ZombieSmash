@@ -11,6 +11,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.zombiesmash.release.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 
 public class BodySerializer extends ReadOnlySerializer<Body>
@@ -43,7 +44,7 @@ public class BodySerializer extends ReadOnlySerializer<Body>
 	{
 		if(world == null)
 			return null;
-		BodyDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Body.definition;
+		BodyDef defaults = RubeDefaults.Body.definition;
 
 		int bodyType = json.readValue("type", int.class, defaults.type.getValue(), jsonData);
 		

@@ -1,9 +1,10 @@
 package com.fcfruit.zombiesmash.release.entity;
 
 import com.badlogic.gdx.math.Vector2;
-import com.fcfruit.zombiesmash.release.Environment;
 import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.release.entity.interfaces.MultiGroundEntityInterface;
+import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.release.entity.interfaces.MovableEntityInterface;
 
 /**
  * Created by Lucas on 2018-02-19.
@@ -15,10 +16,10 @@ public class MultiGroundEntity implements MultiGroundEntityInterface
     private int currentGround;
     private boolean isMovingToNewGround;
 
-    private com.fcfruit.zombiesmash.release.entity.interfaces.MovableEntityInterface movableEntity;
+    private MovableEntityInterface movableEntity;
     private DrawableEntityInterface drawableEntity;
 
-    public MultiGroundEntity(DrawableEntityInterface drawableEntity, com.fcfruit.zombiesmash.release.entity.interfaces.MovableEntityInterface movableEntity)
+    public MultiGroundEntity(DrawableEntityInterface drawableEntity, MovableEntityInterface movableEntity)
     {
         this.isMovingToNewGround = false;
 

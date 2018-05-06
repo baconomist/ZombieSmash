@@ -88,7 +88,7 @@ public class Spawner
         }
         catch (Exception e){
             this.quantity = 1;
-            System.err.println("Spawner: Quantity not found. Defaulting to 1");
+            Gdx.app.debug("Spawner", "Quantity not found. Defaulting to 1");
         }
 
         this.init_delay = data.getFloat("init_delay");
@@ -126,7 +126,7 @@ public class Spawner
 
             Environment.level.addDrawableEntity(tempZombie);
 
-            Gdx.app.log("Spawner", "Added Zombie");
+            Gdx.app.debug("Spawner", "Added Zombie");
 
         } catch (Exception e)
         {
@@ -154,7 +154,7 @@ public class Spawner
             e.printStackTrace();
         }
 
-        Gdx.app.log("Spawner", "Added Crate");
+        Gdx.app.debug("Spawner", "Added Crate");
     }
 
     private void spawnEntity()

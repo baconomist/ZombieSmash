@@ -66,7 +66,7 @@ public class MainMenuStage extends Stage {
         play_button.addListener(new ClickListener(){
             @Override
             public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Gdx.app.log("aaaaa", ""+Environment.game);
+                Gdx.app.debug("aaaaa", ""+Environment.game);
                 Environment.game.setScreen(new LevelSelect());
                 return super.touchDown(event, x, y, pointer, button);
             }
@@ -138,7 +138,7 @@ public class MainMenuStage extends Stage {
     public boolean keyDown(int keyCode) {
         /*json.setOutputType(JsonWriter.OutputType.json);
         Gdx.files.local("gui/main_menu/main_menu.json").writeString(json.prettyPrint(pos), true);
-        Gdx.app.log("write", ""+pos.x + " " + pos.y);*/
+        Gdx.app.debug("write", ""+pos.x + " " + pos.y);*/
         return super.keyDown(keyCode);
     }
 

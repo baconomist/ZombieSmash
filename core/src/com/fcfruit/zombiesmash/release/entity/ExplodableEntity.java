@@ -12,14 +12,16 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
-import com.fcfruit.zombiesmash.release.Environment;
 import com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.ExplodableEntityInterface;
+import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.release.entity.interfaces.AnimatableEntityInterface;
 
 /**
  * Created by Lucas on 2018-02-11.
  */
 
-public class ExplodableEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.ExplodableEntityInterface, com.fcfruit.zombiesmash.release.entity.interfaces.AnimatableEntityInterface
+public class ExplodableEntity implements ExplodableEntityInterface, AnimatableEntityInterface
 {
     private static final int NUMRAYS = 10;
 

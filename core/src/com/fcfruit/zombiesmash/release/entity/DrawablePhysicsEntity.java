@@ -7,13 +7,15 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface;
 
 
 /**
  * Created by Lucas on 2018-01-06.
  */
 
-public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface, com.fcfruit.zombiesmash.release.entity.interfaces.PhysicsEntityInterface
+public class DrawablePhysicsEntity implements DrawableEntityInterface, PhysicsEntityInterface
 {
     private Sprite sprite;
     private Body physicsBody;

@@ -7,15 +7,17 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.release.Environment;
+import com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.release.entity.interfaces.InteractivePhysicsEntityInterface;
 
 /**
  * Created by lucas on 2018-01-07.
  */
 
-public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.release.entity.interfaces.InteractivePhysicsEntityInterface
+public class InteractivePhysicsEntity implements InteractivePhysicsEntityInterface
 {
 
-    private com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface containerEntity;
+    private ContainerEntityInterface containerEntity;
 
     private boolean isTouching;
     private boolean powerfulJoint;
@@ -37,7 +39,7 @@ public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.release
         this.powerfulJoint = true;
     }
 
-    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, com.fcfruit.zombiesmash.release.entity.interfaces.ContainerEntityInterface containerEntity)
+    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, ContainerEntityInterface containerEntity)
     {
         this.containerEntity = containerEntity;
 

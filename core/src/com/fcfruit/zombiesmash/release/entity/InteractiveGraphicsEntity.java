@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash.release.entity;
 
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector3;
+import com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.release.Environment;
 import com.fcfruit.zombiesmash.release.entity.interfaces.InteractiveEntityInterface;
 
@@ -15,10 +16,10 @@ public class InteractiveGraphicsEntity implements InteractiveEntityInterface
     private boolean isTouching;
     private int pointer;
 
-    private com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface drawableEntity;
+    private DrawableEntityInterface drawableEntity;
     private Polygon polygon;
 
-    public InteractiveGraphicsEntity(com.fcfruit.zombiesmash.release.entity.interfaces.DrawableEntityInterface drawableEntity, Polygon polygon)
+    public InteractiveGraphicsEntity(DrawableEntityInterface drawableEntity, Polygon polygon)
     {
         this.isTouching = false;
         this.pointer = -1;

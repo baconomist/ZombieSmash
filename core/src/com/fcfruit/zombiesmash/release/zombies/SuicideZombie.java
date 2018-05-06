@@ -50,7 +50,7 @@ public class SuicideZombie extends NewZombie
     {
         if(!this.isMoving())
         {
-            Gdx.app.log("changing", "anm " + this.isMoving());
+            Gdx.app.debug("changing", "anm " + this.isMoving());
             this.setAnimation("attack1");
         }
     }

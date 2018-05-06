@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.Json.ReadOnlySerializer;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.zombiesmash.release.rube.RubeDefaults;
 import com.fcfruit.zombiesmash.release.rube.RubeScene;
 import com.fcfruit.zombiesmash.release.rube.loader.serializers.utils.RubeVertexArray;
 
@@ -46,7 +47,7 @@ public class FixtureSerializer extends ReadOnlySerializer<Fixture>
 			
 		json.setIgnoreUnknownFields(true);
 		
-		FixtureDef defaults = com.fcfruit.zombiesmash.release.rube.RubeDefaults.Fixture.definition;
+		FixtureDef defaults = RubeDefaults.Fixture.definition;
 		FixtureDef def = new FixtureDef();
 		json.readFields(def, jsonData);
 		def.friction = json.readValue("friction", float.class, defaults.friction, jsonData);
