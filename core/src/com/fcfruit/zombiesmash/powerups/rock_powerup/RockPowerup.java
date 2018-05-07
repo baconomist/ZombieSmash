@@ -99,7 +99,7 @@ public class RockPowerup implements PowerupInterface
     @Override
     public boolean hasCompleted()
     {
-        return System.currentTimeMillis() - this.durationTimer >= this.duration;
+        return this.isActive() && System.currentTimeMillis() - this.durationTimer >= this.duration;
     }
 
     @Override

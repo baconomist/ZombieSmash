@@ -172,7 +172,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
     @Override
     public boolean hasCompleted()
     {
-        return System.currentTimeMillis() - this.durationTimer >= this.duration;
+        return this.isActive() && System.currentTimeMillis() - this.durationTimer >= this.duration;
     }
 
     @Override

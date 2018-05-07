@@ -41,11 +41,15 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     private boolean isFloatingUp;
 
     private boolean isOpening;
+    private boolean isOpen;
 
     public PowerupCrate(PowerupInterface powerup)
     {
 
         this.powerup = powerup;
+
+        this.isOpening = false;
+        this.isOpen = false;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -78,6 +82,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.crateDrawable, polygon);
+
+        Environment.powerupManager.addCrate(this);
     }
 
     private void open()
@@ -101,7 +107,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void onTouchDown(float screenX, float screenY, int pointer)
     {
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, pointer);
-        if (this.isTouching() && !this.isOpening)
+        if (this.isTouching() && !this.isOpening && Environment.powerupManager.has_room_for_powerup())
         {
             this.open();
         }
@@ -174,6 +180,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             {
                 Environment.drawableRemoveQueue.add(this);
                 Environment.powerupManager.addPowerup(this.powerup);
+                this.isOpening = false;
+                this.isOpen = true;
             }
         }
 
@@ -240,6 +248,10 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     {
         return false;
     }
+
+    public boolean isOpening(){return this.isOpening;}
+
+    public boolean isOpen(){return this.isOpen;}
 
     @Override
     public void dispose()
