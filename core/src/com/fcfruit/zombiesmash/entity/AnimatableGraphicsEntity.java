@@ -75,7 +75,7 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
     public void setPosition(Vector2 position)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
-        this.skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+        this.skeleton.setPosition(pos.x, Environment.gameCamera.position.y*2 - pos.y);
         this.position = position;
     }
 
@@ -151,7 +151,7 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
         float[] verticies = ((BoundingBoxAttachment)this.skeleton.findSlot("bounding_box").getAttachment()).getVertices();
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3((verticies[2] - verticies[0]) * this.skeleton.getRootBone().getScaleX(),
                 verticies[5] * this.skeleton.getRootBone().getScaleY(), 0)));
-        size.y = Environment.physicsCamera.viewportHeight - size.y;
+        size.y = Environment.physicsCamera.position.y*2 - size.y;
         return new Vector2(size.x, size.y);
     }
 

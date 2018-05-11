@@ -138,7 +138,7 @@ public class Zombie
 
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x, this.getPosition().y, 0)));
         // Center polygon with polygon width/2(polygon.getVerticies[2]/2) and polygon height/2(polygon.getVerticies[5]/2)
-        polygon.setPosition(pos.x - polygon.getVertices()[2] / 2, Environment.gameCamera.viewportHeight - pos.y - polygon.getVertices()[5] / 2);
+        polygon.setPosition(pos.x - polygon.getVertices()[2] / 2, Environment.gameCamera.position.y*2 - pos.y - polygon.getVertices()[5] / 2);
         polygon.setRotation(this.getRotation());
 
 
@@ -342,7 +342,7 @@ public class Zombie
     {
 
         // -0.2f to give it wiggle room to detect get up
-        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y) - 0.2f)
+        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.position.y*2 - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y) - 0.2f)
         {
 
             isGettingUp = false;
@@ -383,7 +383,7 @@ public class Zombie
                 Environment.physics.destroyJoint(getUpMouseJoint);
             }
             getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
-            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.viewportHeight - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
+            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.position.y*2 - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
 
             isGettingUp = true;
 
@@ -400,7 +400,7 @@ public class Zombie
         } else
         {
             Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
-            skeleton.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+            skeleton.setPosition(pos.x, Environment.gameCamera.position.y*2 - pos.y);
             skeleton.updateWorldTransform();
         }
 

@@ -50,7 +50,7 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
 
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
+        size.y = Environment.gameCamera.position.y*2 - size.y;
 
         this.polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
         polygon.setOrigin(size.x / 2, size.y / 2);
@@ -63,7 +63,7 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
         this.drawablePhysicsEntity.update(delta);
 
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition(), 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
         // Center the this.polygon on physics body
         this.polygon.setPosition(pos.x - (this.polygon.getVertices()[2] / 2), pos.y - (this.polygon.getVertices()[5] / 2));
         this.polygon.setRotation(this.getAngle());

@@ -66,7 +66,7 @@ public class ParticleEntity
             {
 
                 Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.physicsBody.getPosition(), 0)));
-                if (((com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, Environment.gameCamera.viewportHeight - pos.y))
+                if (((com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, Environment.gameCamera.position.y*2 - pos.y))
                 {
                     ((com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface)drawableEntity).disable_optimization();
 

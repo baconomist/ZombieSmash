@@ -52,7 +52,7 @@ public class Star extends Sprite {
     @Override
     public void draw(Batch batch) {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
-        this.setPosition(pos.x, Environment.gameCamera.viewportHeight - pos.y);
+        this.setPosition(pos.x, Environment.gameCamera.position.y*2 - pos.y);
         this.rotate(30*Gdx.graphics.getDeltaTime());
 
         if(disappearTimer == 0){

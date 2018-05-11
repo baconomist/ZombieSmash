@@ -118,7 +118,7 @@ public class Part{
         }
 
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight()/2);
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.position.y*2 - pos.y - sprite.getHeight()/2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
 
         //make polygon follow part
@@ -138,7 +138,7 @@ public class Part{
 
                 sprite.setRotation(body.getSkeleton().findBone(name).getWorldRotationX());
 
-                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.position.y*2 - pos.y, rot);
 
             }
 
@@ -150,7 +150,7 @@ public class Part{
                 // -180 degrees cus the api is messed up
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX() - 180);
 
-                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.position.y*2 - pos.y, rot);
 
             }
 
@@ -162,7 +162,7 @@ public class Part{
 
                 sprite.setRotation(body.getSkeleton().findBone(name).getWorldRotationX());
 
-                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.position.y*2 - pos.y, rot);
             }
 
             else{
@@ -173,7 +173,7 @@ public class Part{
                 float rot = (float) Math.toRadians(body.getSkeleton().findBone(name).getWorldRotationX());
 
 
-                physicsBody.setTransform(pos.x, Environment.physicsCamera.viewportHeight - pos.y, rot);
+                physicsBody.setTransform(pos.x, Environment.physicsCamera.position.y*2 - pos.y, rot);
 
             }
 

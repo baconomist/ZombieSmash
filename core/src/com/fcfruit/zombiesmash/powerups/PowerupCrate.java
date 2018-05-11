@@ -73,7 +73,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
+        size.y = Environment.gameCamera.position.y*2 - size.y;
 
         this.powerupUIDrawable = powerup.getUIDrawable();
         this.powerupUIDrawable.setSize(size.x, size.y);
@@ -89,7 +89,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     private void open()
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - this.getSize().x / 2, this.getPosition().y - this.getSize().y / 2, 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
 
         this.powerupUIDrawable.setPosition(pos.x, pos.y);
 
@@ -170,7 +170,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         if (this.isOpening)
         {
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.powerupUIDrawable.getX(), this.powerupUIDrawable.getY(), 0)));
-            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+            pos.y = Environment.physicsCamera.position.y*2 - pos.y;
 
             if (pos.y < this.crateDrawable.getPosition().y + 1)
             {

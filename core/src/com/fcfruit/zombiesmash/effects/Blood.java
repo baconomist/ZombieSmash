@@ -80,7 +80,7 @@ public class Blood
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(
                 new Vector3(this.physicsBody.getPosition().x - x, this.physicsBody.getPosition().y - y, 0)));
 
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight() / 2);
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.position.y*2 - pos.y - sprite.getHeight() / 2);
 
         sprite.draw(batch);
 

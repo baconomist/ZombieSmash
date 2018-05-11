@@ -68,7 +68,7 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         Vector3 pos = Environment.powerupManager.getGrenadeSpawnPosition(this);
 
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getWidth(), this.getUIDrawable().getHeight(), 0)));
-        size.y = Environment.physicsCamera.viewportHeight - size.y;
+        size.y = Environment.physicsCamera.position.y*2 - size.y;
 
         // Make rope swing
         this.rope = new Rope(5, new Vector2(pos.x, pos.y + 1));

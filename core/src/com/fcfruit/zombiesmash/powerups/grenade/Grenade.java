@@ -42,7 +42,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 1f);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
+        size.y = Environment.gameCamera.position.y*2 - size.y;
 
         Polygon polygon = new Polygon(new float[]{0, 0, size.x*4, 0, size.x*4, size.y*4, 0, size.y*4});
         polygon.setOrigin(size.x * 2, size.y * 2);
@@ -57,7 +57,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         this.detachableEntity = new com.fcfruit.zombiesmash.entity.DetachableEntity(joints, containerEntity, this);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
+        size.y = Environment.gameCamera.position.y*2 - size.y;
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);

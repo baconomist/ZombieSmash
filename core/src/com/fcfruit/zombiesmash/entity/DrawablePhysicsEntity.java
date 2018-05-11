@@ -40,7 +40,7 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
         sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
     }
@@ -73,7 +73,7 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     public Vector2 getSize()
     {
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(sprite.getWidth(), sprite.getHeight(), 0)));
-        return new Vector2(size.x, Environment.physicsCamera.viewportHeight - size.y);
+        return new Vector2(size.x, Environment.physicsCamera.position.y*2 - size.y);
     }
 
     public Body getPhysicsBody()

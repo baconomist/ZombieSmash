@@ -31,7 +31,7 @@ public class InteractiveGraphicsEntity implements InteractiveEntityInterface
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getPosition(), 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
         /**
          * InteractiveGraphicsEntity uses polygon origin for custom offset rather than size.x/2 and size.y/2 like physics does
          * **/

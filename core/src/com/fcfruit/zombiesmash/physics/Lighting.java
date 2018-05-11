@@ -31,7 +31,7 @@ public class Lighting {
             rayHandler.setAmbientLight(0f, 0f, 0f, 0.7f);
             lights = new ArrayList<Light>();
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(1050, 902.4f, 0)));
-            lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2.5f, pos.x, Environment.physicsCamera.viewportHeight - pos.y));
+            lights.add(new PointLight(rayHandler, Environment.settings.getLightIntensity(), Color.WHITE, 2.5f, pos.x, Environment.physicsCamera.position.y*2 - pos.y));
 
         }
     }

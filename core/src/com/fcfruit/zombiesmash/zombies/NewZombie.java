@@ -248,7 +248,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
     private void interactiveEntitySetup()
     {
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
+        size.y = Environment.gameCamera.position.y*2 - size.y;
         Polygon polygon = new Polygon(new float[]{0, 0, size.x*2, 0, size.x*2, size.y*1.5f, 0, size.y*1.5f});
         polygon.setOrigin(size.x, 0);
         this.interactiveGraphicsEntity = new com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
@@ -497,7 +497,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
             Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(key, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(key), new Vector2(0, 0));
 
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
-            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+            pos.y = Environment.physicsCamera.position.y*2 - pos.y;
             this.getDrawableEntities().get(key).setPosition(new Vector2(pos.x, pos.y));
             this.getDrawableEntities().get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
 

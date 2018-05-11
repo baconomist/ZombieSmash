@@ -54,7 +54,7 @@ public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
         // Center the polygon on physics body
         polygon.setPosition(pos.x - (polygon.getVertices()[2] / 2), pos.y - (polygon.getVertices()[5] / 2));
         polygon.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
