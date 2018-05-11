@@ -532,7 +532,12 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
         {
             return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
         }
+        else if(Environment.level.getCurrentCameraPosition().equals("middle") && this.direction == 0)
+        {
+            return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
+        }
         return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
+
     }
 
     /**
@@ -569,6 +574,9 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
     {
 
         float move = new Random().nextFloat() * (int) this.getDistanceToObjective();
+
+        this.clearMoveQueue();
+
         if (this.direction == 0)
         {
             this.moveBy(new Vector2(move, 0));

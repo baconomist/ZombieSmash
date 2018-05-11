@@ -1,10 +1,10 @@
 {
-  "middle": {
+  "right": {
     "big_zombie": {
       "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 1,
-      "position": "middle_left",
+      "position": "right",
       "depth": 1
     },
     "crate": {

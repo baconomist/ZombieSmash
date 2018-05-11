@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -39,7 +40,8 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight() / 2);
+        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
     }
 

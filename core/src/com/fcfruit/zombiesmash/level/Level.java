@@ -35,7 +35,7 @@ public class Level
     JsonReader json;
     JsonValue data;
 
-    Sprite sprite;
+    public Sprite sprite;
 
     public Objective objective;
 

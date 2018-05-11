@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 

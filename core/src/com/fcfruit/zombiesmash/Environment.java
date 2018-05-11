@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -113,7 +114,9 @@ public class Environment
     {
         gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
         gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
+
         gameCamera.update();
+
     }
 
     private static void setupPhysicsCamera()
@@ -125,7 +128,9 @@ public class Environment
         // Also cam.project(worldpos) is x and y from bottom left corner
         // But cam.unproject(screenpos) is x and y from top left corner
         physicsCamera.position.set(Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight/2, 0);
+
         physicsCamera.update();
+
     }
 
     private static void setupLevel(int levelid)
