@@ -89,7 +89,17 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     @Override
     public void setAlpha(float alpha)
     {
-        this.alpha = alpha;
+        if(alpha >= 0 && alpha <= 1)
+        {
+            this.alpha = alpha;
+        }
+
+        if(alpha < 0)
+            this.alpha = 0;
+
+        if(alpha > 1)
+            this.alpha = 1;
+
         this.sprite.setAlpha(this.alpha);
     }
 

@@ -86,8 +86,18 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
     @Override
     public void setAlpha(float alpha)
     {
-        this.alpha = alpha;
-        this.sprite.setAlpha(this.alpha);
+        if(alpha >= 0 && alpha <= 1)
+        {
+            this.alpha = alpha;
+        }
+
+        if(alpha < 0)
+            this.alpha = 0;
+
+        if(alpha > 1)
+            this.alpha = 1;
+
+        this.sprite.setAlpha(alpha);
     }
 
     @Override
