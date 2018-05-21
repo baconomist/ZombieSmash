@@ -9,7 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Flags;
+import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
@@ -68,7 +68,7 @@ public class GameStage extends Stage
         Environment.physics.update(Gdx.graphics.getDeltaTime());
         Environment.physics.draw();
 
-        if(Flags.DEBUG_POLYGONS)
+        if(Config.DEBUG_POLYGONS)
         {
             this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
             this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);

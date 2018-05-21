@@ -241,6 +241,18 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     }
 
     @Override
+    public float getAlpha()
+    {
+        return this.drawableEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.drawableEntity.setAlpha(alpha);
+    }
+
+    @Override
     public void dispose()
     {
 

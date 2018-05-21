@@ -196,6 +196,18 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
     }
 
     @Override
+    public float getAlpha()
+    {
+        return this.animatableGraphicsEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.animatableGraphicsEntity.setAlpha(alpha);
+    }
+
+    @Override
     public void dispose()
     {
         this.animatableGraphicsEntity.dispose();

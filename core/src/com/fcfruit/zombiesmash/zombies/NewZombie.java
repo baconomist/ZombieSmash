@@ -25,6 +25,7 @@ import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 
@@ -1003,6 +1004,22 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
     public boolean isMovingToNewGround()
     {
         return this.multiGroundEntity.isMovingToNewGround();
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.animatableGraphicsEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.animatableGraphicsEntity.setAlpha(alpha);
+        for(DrawableEntityInterface drawableEntityInterface : this.containerEntity.getDrawableEntities().values())
+        {
+            drawableEntityInterface.setAlpha(alpha);
+        }
     }
 
     @Override

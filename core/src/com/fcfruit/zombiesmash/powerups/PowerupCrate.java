@@ -43,6 +43,9 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     private boolean isOpening;
     private boolean isOpen;
 
+    private double timeBeforeExpire = 3000;
+    private double expiryTimer = System.currentTimeMillis();
+
     public PowerupCrate(PowerupInterface powerup)
     {
 
@@ -143,6 +146,11 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public void update(float delta)
     {
+
+        if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire)
+        {
+
+        }
 
         if (this.isOpening)
         {
@@ -252,6 +260,18 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public boolean isOpening(){return this.isOpening;}
 
     public boolean isOpen(){return this.isOpen;}
+
+    @Override
+    public float getAlpha()
+    {
+        return this.crateDrawable.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.crateDrawable.setAlpha(alpha);
+    }
 
     @Override
     public void dispose()

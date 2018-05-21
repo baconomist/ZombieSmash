@@ -8,7 +8,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.Flags;
+import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.stages.GameStage;
 import com.fcfruit.zombiesmash.stages.GameUIStage;
@@ -134,7 +134,7 @@ public class GameScreen implements Screen{
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
 
-        if(Flags.DEBUG_PHYSICS)
+        if(Config.DEBUG_PHYSICS)
             debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }

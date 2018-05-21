@@ -27,7 +27,7 @@ public class ZombieSmash extends Game
     public void create()
     {
 
-        if(Flags.DEBUG)
+        if(Config.DEBUG)
         {
             Gdx.app.setLogLevel(Application.LOG_DEBUG);
         }

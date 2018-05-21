@@ -19,10 +19,14 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     private Sprite sprite;
     private Body physicsBody;
 
+    private float alpha;
+
     public DrawablePhysicsEntity(Sprite sprite, Body physicsBody)
     {
         this.sprite = sprite;
         this.physicsBody = physicsBody;
+
+        this.alpha = 1;
     }
 
     @Override
@@ -74,6 +78,19 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     {
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(sprite.getWidth(), sprite.getHeight(), 0)));
         return new Vector2(size.x, Environment.physicsCamera.position.y*2 - size.y);
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.alpha;
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.alpha = alpha;
+        this.sprite.setAlpha(this.alpha);
     }
 
     public Body getPhysicsBody()

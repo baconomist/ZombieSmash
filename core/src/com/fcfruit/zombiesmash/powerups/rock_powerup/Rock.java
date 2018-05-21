@@ -133,6 +133,18 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
     }
 
     @Override
+    public float getAlpha()
+    {
+        return this.drawablePhysicsEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.drawablePhysicsEntity.setAlpha(alpha);
+    }
+
+    @Override
     public void dispose()
     {
         this.drawablePhysicsEntity.dispose();

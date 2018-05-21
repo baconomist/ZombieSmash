@@ -186,6 +186,18 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     }
 
     @Override
+    public float getAlpha()
+    {
+        return this.drawableEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.drawableEntity.setAlpha(alpha);
+    }
+
+    @Override
     public void dispose()
     {
 

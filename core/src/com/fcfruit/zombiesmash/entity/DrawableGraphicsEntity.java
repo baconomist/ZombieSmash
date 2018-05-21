@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -14,13 +15,17 @@ import com.fcfruit.zombiesmash.Environment;
 public class DrawableGraphicsEntity implements DrawableEntityInterface
 {
 
-    private com.badlogic.gdx.graphics.g2d.Sprite sprite;
+    private Sprite sprite;
     private Vector2 position;
+
+    private float alpha;
 
     public DrawableGraphicsEntity(com.badlogic.gdx.graphics.g2d.Sprite sprite)
     {
         this.sprite = sprite;
         this.position = new Vector2();
+
+        this.alpha = 1;
     }
 
     @Override
@@ -70,6 +75,19 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
 
     public com.badlogic.gdx.graphics.g2d.Sprite getSprite(){
         return this.sprite;
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.alpha;
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.alpha = alpha;
+        this.sprite.setAlpha(this.alpha);
     }
 
     @Override

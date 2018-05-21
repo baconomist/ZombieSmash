@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Vector3;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.BoundingBoxAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
@@ -29,6 +30,8 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
 
     private int timesAnimationCompleted;
 
+    private float alpha;
+
     public AnimatableGraphicsEntity(Skeleton skeleton, AnimationState state, TextureAtlas atlas)
     {
         this.skeleton = skeleton;
@@ -46,6 +49,8 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
                 super.complete(entry);
             }
         });
+
+        this.alpha = 1;
     }
 
     @Override
@@ -153,6 +158,22 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
                 verticies[5] * this.skeleton.getRootBone().getScaleY(), 0)));
         size.y = Environment.physicsCamera.position.y*2 - size.y;
         return new Vector2(size.x, size.y);
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.alpha;
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.alpha = alpha;
+        for(Slot slot : this.skeleton.getSlots())
+        {
+            slot.getColor().a = this.alpha;
+        }
     }
 
     @Override
