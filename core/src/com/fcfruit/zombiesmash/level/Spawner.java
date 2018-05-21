@@ -4,7 +4,16 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
+import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
+import com.fcfruit.zombiesmash.zombies.BigZombie;
+import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.zombies.PoliceZombie;
+import com.fcfruit.zombiesmash.zombies.RegularZombie;
+import com.fcfruit.zombiesmash.zombies.SuicideZombie;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -30,21 +39,21 @@ public class Spawner
 
     static
     {
-        zombieType.put("reg_zombie", com.fcfruit.zombiesmash.zombies.RegularZombie.class);
-        zombieType.put("girl_zombie", com.fcfruit.zombiesmash.zombies.GirlZombie.class);
-        zombieType.put("police_zombie", com.fcfruit.zombiesmash.zombies.PoliceZombie.class);
-        zombieType.put("big_zombie", com.fcfruit.zombiesmash.zombies.BigZombie.class);
-        zombieType.put("suicide_zombie", com.fcfruit.zombiesmash.zombies.SuicideZombie.class);
+        zombieType.put("reg_zombie", RegularZombie.class);
+        zombieType.put("girl_zombie", GirlZombie.class);
+        zombieType.put("police_zombie", PoliceZombie.class);
+        zombieType.put("big_zombie", BigZombie.class);
+        zombieType.put("suicide_zombie", SuicideZombie.class);
     }
 
     static HashMap<String, Class> powerupType = new HashMap<String, Class>();
 
     static
     {
-        powerupType.put("rifle", com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup.class);
-        powerupType.put("rock", com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup.class);
-        powerupType.put("pistol", com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup.class);
-        powerupType.put("grenade", com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup.class);
+        powerupType.put("rifle", RiflePowerup.class);
+        powerupType.put("rock", RockPowerup.class);
+        powerupType.put("pistol", PistolPowerup.class);
+        powerupType.put("grenade", GrenadePowerup.class);
     }
 
     String type;
