@@ -11,7 +11,7 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
 
 import java.util.ArrayList;
 
@@ -57,7 +57,7 @@ public class Part{
 
     String state;
 
-    ArrayList<Blood> blood;
+    ArrayList<BleedBlood> blood;
 
 
     public Part(String name, Sprite sprite, Body physicsBody, Joint bodyJoint, Zombie zombie){
@@ -89,13 +89,13 @@ public class Part{
         polygon.setVertices(new float[]{0, 0, sprite.getWidth(), 0, sprite.getWidth(), sprite.getHeight(), 0, sprite.getHeight()});
         polygon.setOrigin(sprite.getWidth()/2, sprite.getHeight()/2);
 
-        blood = new ArrayList<Blood>();
+        blood = new ArrayList<BleedBlood>();
 
     }
 
     public void draw(SpriteBatch batch){
 
-        for (Blood b : blood) {
+        for (BleedBlood b : blood) {
             b.draw(batch);
         }
 
@@ -114,7 +114,7 @@ public class Part{
     public void update(){
 
         if(state.equals("detached")){
-            blood.add(new Blood(this.physicsBody.getPosition().x, this.physicsBody.getPosition().y, initialJointPosition.y, initialJointPosition.x, this.sprite.getRotation() + 90));
+            blood.add(new BleedBlood(this.physicsBody.getPosition().x, this.physicsBody.getPosition().y, initialJointPosition.y, initialJointPosition.x, this.sprite.getRotation() + 90));
         }
 
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));

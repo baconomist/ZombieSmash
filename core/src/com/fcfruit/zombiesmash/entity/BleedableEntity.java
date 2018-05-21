@@ -5,7 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
-import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 
 import java.util.ArrayList;
@@ -23,7 +23,7 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
     private ArrayList<Body> bleedableBodies;
     private HashMap<Body, Vector2> bleedPositions;
 
-    private ArrayList<Blood> blood;
+    private ArrayList<BleedBlood> blood;
 
 
     private double timeBeforeBlood = 100;
@@ -36,7 +36,7 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
 
         this.bleedableBodies = new ArrayList<Body>();
         this.bleedPositions = new HashMap<Body, Vector2>();
-        this.blood = new ArrayList<Blood>();
+        this.blood = new ArrayList<BleedBlood>();
 
         for (Joint joint : this.detachableEntity.getJoints())
         {
@@ -61,7 +61,7 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
     @Override
     public void draw(SpriteBatch batch)
     {
-        for (Blood blood : this.blood)
+        for (BleedBlood blood : this.blood)
         {
             blood.draw(batch);
         }
@@ -71,12 +71,12 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
     public void update(float delta)
     {
 
-        ArrayList<Blood> copy = new ArrayList<Blood>();
-        for (Blood blood : this.blood)
+        ArrayList<BleedBlood> copy = new ArrayList<BleedBlood>();
+        for (BleedBlood blood : this.blood)
         {
             copy.add(blood);
         }
-        for (Blood blood : copy)
+        for (BleedBlood blood : copy)
         {
             if (blood.readyForDestroy)
             {
@@ -91,7 +91,7 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
             {
                 for (Body physicsBody : bleedableBodies)
                 {
-                    this.blood.add(new Blood(physicsBody.getPosition().x, physicsBody.getPosition().y, this.bleedPositions.get(physicsBody).y, this.bleedPositions.get(physicsBody).x, (float) Math.toDegrees(physicsBody.getAngle()) + 90));
+                    this.blood.add(new BleedBlood(physicsBody.getPosition().x, physicsBody.getPosition().y, this.bleedPositions.get(physicsBody).y, this.bleedPositions.get(physicsBody).x, (float) Math.toDegrees(physicsBody.getAngle()) + 90));
                 }
                 this.bloodTimer = System.currentTimeMillis();
             }

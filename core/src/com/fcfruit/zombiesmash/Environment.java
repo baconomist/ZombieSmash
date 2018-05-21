@@ -62,7 +62,12 @@ public class Environment
 
         for(int i = 1; i < 14; i++)
         {
-            assets.load("effects/flowing_blood/"+i+".png", Texture.class);
+            assets.load("effects/blood/flowing_blood/"+i+".png", Texture.class);
+        }
+
+        for(int i = 1; i < 5; i++)
+        {
+            assets.load("effects/blood/ground_blood/"+i+".png", Texture.class);
         }
 
     }

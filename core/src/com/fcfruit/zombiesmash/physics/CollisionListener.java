@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 
@@ -24,15 +25,6 @@ public class CollisionListener implements ContactListener
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
         {
-            /*
-            if (contact.getFixtureA().getUserData() instanceof Blood)
-            {
-                ((Blood) contact.getFixtureA().getUserData()).readyForDestroy = true;
-            } else if (contact.getFixtureB().getUserData() instanceof Blood)
-            {
-                ((Blood) contact.getFixtureB().getUserData()).readyForDestroy = true;
-            }*/
-
 
             for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
             {

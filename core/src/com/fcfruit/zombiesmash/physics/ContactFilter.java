@@ -3,7 +3,7 @@ package com.fcfruit.zombiesmash.physics;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.effects.Blood;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
@@ -42,7 +42,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
                 return false;
             }
 
-        } else if (fixtureA.getUserData() instanceof Blood || fixtureB.getUserData() instanceof Blood)
+        } else if (fixtureA.getUserData() instanceof BleedBlood || fixtureB.getUserData() instanceof BleedBlood)
         {
             return false;
         }

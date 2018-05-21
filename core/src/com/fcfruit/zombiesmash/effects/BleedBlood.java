@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 
 import java.util.Random;
 
@@ -18,7 +19,7 @@ import java.util.Random;
  * Created by Lucas on 2018-01-03.
  */
 
-public class Blood
+public class BleedBlood
 {
 
     private Body physicsBody;
@@ -32,7 +33,7 @@ public class Blood
 
     public boolean readyForDestroy = false;
 
-    public Blood(float x, float y, float offsetX, float offsetY, float rotationOffset)
+    public BleedBlood(float x, float y, float offsetX, float offsetY, float rotationOffset)
     {
 
         this.offsetX = offsetX;
@@ -65,7 +66,7 @@ public class Blood
         this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
         this.physicsBody.setTransform(x, y, 0);
 
-        sprite = new Sprite(Environment.assets.get("effects/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
+        sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
 
     }
 
@@ -85,10 +86,15 @@ public class Blood
 
         if (this.physicsBody.getPosition().y < 0.1f)
         {
+            GroundBlood groundBlood = new GroundBlood();
+            groundBlood.setPosition(this.physicsBody.getPosition());
+            Environment.drawableAddQueue.add(groundBlood);
+
             this.readyForDestroy = true;
         }
 
     }
+
 
     public void destroy()
     {
