@@ -9,6 +9,10 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Flags;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -64,22 +68,26 @@ public class GameStage extends Stage
         Environment.physics.update(Gdx.graphics.getDeltaTime());
         Environment.physics.draw();
 
-        /*this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
-        this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        for(DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
+        if(Flags.DEBUG_POLYGONS)
         {
-            if(drawableEntity instanceof InteractiveEntityInterface)
+            this.shapeRenderer.setProjectionMatrix(Environment.gameCamera.combined);
+            this.shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
+            for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
             {
-                this.shapeRenderer.polygon(((InteractiveEntityInterface) drawableEntity).getPolygon().getTransformedVertices());
-            }
-            if(drawableEntity instanceof ContainerEntityInterface){
-                for (InteractiveEntityInterface InteractiveEntityInterface : ((ContainerEntityInterface)drawableEntity).getInteractiveEntities().values())
+                if (drawableEntity instanceof InteractiveEntityInterface)
                 {
-                    this.shapeRenderer.polygon(InteractiveEntityInterface.getPolygon().getTransformedVertices());
+                    this.shapeRenderer.polygon(((InteractiveEntityInterface) drawableEntity).getPolygon().getTransformedVertices());
+                }
+                if (drawableEntity instanceof ContainerEntityInterface)
+                {
+                    for (InteractiveEntityInterface InteractiveEntityInterface : ((ContainerEntityInterface) drawableEntity).getInteractiveEntities().values())
+                    {
+                        this.shapeRenderer.polygon(InteractiveEntityInterface.getPolygon().getTransformedVertices());
+                    }
                 }
             }
+            this.shapeRenderer.end();
         }
-        this.shapeRenderer.end();*/
 
     }
 

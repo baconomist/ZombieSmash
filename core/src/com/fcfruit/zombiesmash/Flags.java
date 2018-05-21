@@ -7,4 +7,6 @@ package com.fcfruit.zombiesmash;
 public class Flags
 {
     public static boolean DEBUG = true;
+    public static boolean DEBUG_PHYSICS = false;
+    public static boolean DEBUG_POLYGONS = true;
 }
