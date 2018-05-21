@@ -568,6 +568,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
 
     private void onDeath()
     {
+        this.getPolygon().setPosition(9999, 9999);
     }
 
     private void onObjectiveOnce()
