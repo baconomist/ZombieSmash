@@ -22,6 +22,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 
+import org.lwjgl.Sys;
+
 
 /**
  * Created by Lucas on 2018-03-10.
@@ -147,11 +149,6 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public void update(float delta)
     {
 
-        if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire)
-        {
-
-        }
-
         if (this.isOpening)
         {
             this.getPhysicsBody().setLinearVelocity(0, 0);
@@ -161,6 +158,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             this.getPhysicsBody().setGravityScale(0);
             this.getPhysicsBody().setLinearVelocity(0, 0.3f);
             this.setAngle(this.getAngle() + 1);
+
+            this.expiryTimer = System.currentTimeMillis();
         } else if (!this.isFloatingUp)
         {
             this.isFloatingUp = this.getPosition().y < Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y + 0.2f;
@@ -171,6 +170,19 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         {
             this.getPhysicsBody().setLinearVelocity(0, 0);
             this.setAngle(this.getAngle() + 1);
+
+
+            if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire)
+            {
+                this.setAlpha(this.getAlpha()-0.25f*Gdx.graphics.getDeltaTime());
+            }
+
+            if(this.getAlpha() == 0)
+            {
+                this.isOpening = false;
+                this.isOpen = true;
+                Environment.drawableRemoveQueue.add(this);
+            }
         }
 
         this.crateDrawable.update(delta);
