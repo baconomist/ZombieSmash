@@ -60,7 +60,10 @@ public class Environment
         //assets.load("zombies/reg_zombie/reg_zombie.png", Texture.class);
         //assets.load("zombies/reg_zombie/reg_zombie_rube.json", Json.class);
 
-        assets.load("effects/blood/blood.png", Texture.class);
+        for(int i = 1; i < 14; i++)
+        {
+            assets.load("effects/flowing_blood/"+i+".png", Texture.class);
+        }
 
     }
 

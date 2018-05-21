@@ -65,8 +65,7 @@ public class Blood
         this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
         this.physicsBody.setTransform(x, y, 0);
 
-        sprite = new Sprite(Environment.assets.get("effects/blood/blood.png", Texture.class));
-        sprite.setScale(0.25f);
+        sprite = new Sprite(Environment.assets.get("effects/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
 
     }
 
