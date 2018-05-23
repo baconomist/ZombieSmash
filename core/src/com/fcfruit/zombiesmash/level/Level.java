@@ -9,6 +9,7 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -244,6 +245,14 @@ public class Level
             this.drawableEntities.add(drawableEntity);
         }
         Environment.drawableAddQueue.clear();
+
+        Collections.reverse(this.drawableEntities);
+        for(DrawableEntityInterface drawableEntityInterface : Environment.groundBloodAddQueue)
+        {
+            this.drawableEntities.add(drawableEntityInterface);
+        }
+        Collections.reverse(this.drawableEntities);
+        Environment.groundBloodAddQueue.clear();
 
     }
 

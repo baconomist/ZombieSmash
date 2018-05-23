@@ -88,7 +88,7 @@ public class BleedBlood
         {
             GroundBlood groundBlood = new GroundBlood();
             groundBlood.setPosition(this.physicsBody.getPosition());
-            Environment.drawableAddQueue.add(groundBlood);
+            Environment.groundBloodAddQueue.add(groundBlood);
 
             this.readyForDestroy = true;
         }

@@ -102,6 +102,8 @@ public class Environment
 
     public static ArrayList<DrawableEntityInterface> drawableAddQueue = new ArrayList<DrawableEntityInterface>();
 
+    public static ArrayList<DrawableEntityInterface> groundBloodAddQueue = new ArrayList<DrawableEntityInterface>();
+
     public static ArrayList<UpdatableEntityInterface> updatableAddQueue = new ArrayList<UpdatableEntityInterface>();
 
     public static void setupGame(int levelid){
