@@ -125,6 +125,13 @@ public class GameScreen implements Screen{
 
         if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
         {
+            try
+            {
+                Thread.sleep(100);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
             Gdx.app.debug("ada", ""+Environment.gameCamera.position);
             Gdx.app.debug("ada", ""+Environment.physicsCamera.position);
         }

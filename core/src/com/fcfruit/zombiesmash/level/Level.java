@@ -22,14 +22,7 @@ import java.util.HashMap;
 public class Level
 {
 
-    public static HashMap<String, Vector2> cameraPositions = new HashMap<String, Vector2>();
-
-    static
-    {
-        cameraPositions.put("left", new Vector2(Environment.physicsCamera.viewportWidth / 2, 0));
-        cameraPositions.put("right", new Vector2(Environment.physicsCamera.viewportWidth * 1.4f, 0));
-        cameraPositions.put("middle", new Vector2(10, 0));
-    }
+    public HashMap<String, Vector2> cameraPositions = new HashMap<String, Vector2>();
 
     public int level_id;
 
@@ -81,7 +74,7 @@ public class Level
         this.data = json.parse(Gdx.files.internal("maps/" + this.getClass().getSimpleName().replace("Level", "").toLowerCase() + "_map/levels/" + this.level_id + ".json"));
 
 
-        Environment.physicsCamera.position.x = Level.cameraPositions.get(data.get(0).name).x;
+        Environment.physicsCamera.position.x = Environment.level.cameraPositions.get(data.get(0).name).x;
         Environment.physicsCamera.update();
         Environment.gameCamera.position.x = Environment.physicsCamera.position.x * com.fcfruit.zombiesmash.physics.Physics.PIXELS_PER_METER;
         Environment.gameCamera.update();
