@@ -25,9 +25,13 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
 
     private ArrayList<BleedBlood> blood;
 
+    private double bleedTime = 5000;
+    private double bleedTimer;
 
-    private double timeBeforeBlood = 100;
-    private double bloodTimer = System.currentTimeMillis();
+    private double timeBeforeBlood;
+    private double bloodTimer;
+
+    private boolean initUpdate = true;
 
     public BleedableEntity(DetachableEntityInterface detachableEntity)
     {
@@ -85,9 +89,23 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
             }
         }
 
+        this.updateBlood();
+    }
+
+    private void updateBlood()
+    {
         if (this.detachableEntity.getState().equals("detached"))
         {
-            if (System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
+            if(initUpdate)
+            {
+                this.bleedTimer = System.currentTimeMillis();
+                this.bloodTimer = System.currentTimeMillis();
+                this.initUpdate = false;
+            }
+
+            this.timeBeforeBlood = (System.currentTimeMillis() - this.bleedTimer)/20;
+
+            if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
             {
                 for (Body physicsBody : bleedableBodies)
                 {
