@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -103,7 +104,9 @@ public class BleedableEntity implements com.fcfruit.zombiesmash.entity.interface
                 this.initUpdate = false;
             }
 
-            this.timeBeforeBlood = (System.currentTimeMillis() - this.bleedTimer)/20;
+            this.timeBeforeBlood = 200+(System.currentTimeMillis() - this.bleedTimer)*(System.currentTimeMillis() - this.bleedTimer)/10000;
+
+            Gdx.app.debug("TimeBeforeBlood", ""+this.timeBeforeBlood + " "+ (System.currentTimeMillis() - this.bleedTimer) + 100);
 
             if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
             {
