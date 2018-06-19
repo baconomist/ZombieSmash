@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.effects;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 
@@ -63,19 +66,28 @@ public class BleedBlood
         {
             randomForceX = randomForceX * -1;
         }
-        this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
+        //this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
         this.physicsBody.setTransform(x, y, 0);
 
         sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
+
+
+        double rot = -rotationOffset;
+
+        double a = Math.sin(rot);
+        double o = Math.cos(rot);
+
+        Vector2 direction = new Vector2((float)a/10, (float)o/10);
+
+        this.physicsBody.applyLinearImpulse(direction, this.physicsBody.getPosition(), true);
 
     }
 
     public void draw(SpriteBatch batch)
     {
 
-        float x = (float) (offsetX * Math.cos(Math.toRadians(rotationOffset)) - offsetY * Math.sin(Math.toRadians(rotationOffset)));
-        float y = (float) (offsetX * Math.sin(Math.toRadians(rotationOffset)) + offsetY * Math.cos(Math.toRadians(rotationOffset)));
-
+        float x = (float) (offsetX * Math.cos(rotationOffset) - offsetY * Math.sin(rotationOffset));
+        float y = (float) (offsetX * Math.sin(rotationOffset) + offsetY * Math.cos(rotationOffset));
 
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(
                 new Vector3(this.physicsBody.getPosition().x - x, this.physicsBody.getPosition().y - y, 0)));
