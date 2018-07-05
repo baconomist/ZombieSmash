@@ -500,8 +500,10 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
             pos.y = Environment.physicsCamera.position.y*2 - pos.y;
             this.getDrawableEntities().get(key).setPosition(new Vector2(pos.x, pos.y));
-            this.getDrawableEntities().get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX());
-
+            if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
+                this.getDrawableEntities().get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(key).getAttachment()).getRotation());
+            else
+                this.getDrawableEntities().get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(key).getAttachment()).getRotation());
         }
     }
 
@@ -873,7 +875,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
     }
 
     /**
-     * Container
+     * ContainerEntity
      **/
     @Override
     public void detach(DetachableEntityInterface detachableEntityInterface)
