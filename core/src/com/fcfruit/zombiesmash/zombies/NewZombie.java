@@ -117,6 +117,28 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
         this.interactiveEntitySetup();
     }
 
+    private void calc_anim_scale(RubeScene rubeScene)
+    {
+
+        float height = 0;
+        for (RubeImage i : rubeScene.getImages())
+        {
+            height += i.height * Physics.PIXELS_PER_METER;
+        }
+
+        float height2 = 0;
+        for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
+        {
+            if (slot.getAttachment() instanceof RegionAttachment)
+                height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
+        }
+
+        this.animScale = height / height2;
+
+
+        Gdx.app.log("calc_anim_scale", ""+this.animScale);
+    }
+
     public void constructPhysicsBodies()
     {
         boolean flip = this.direction == 1;
@@ -149,7 +171,12 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
         this.setInteractiveEntities(new HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface>());
         this.setDetachableEntities(new HashMap<String, DetachableEntityInterface>());
 
-        float height = 0;
+        // Only set animScale once because later on when you loop through the slots of the anim
+        // the scale is inaccurate because you remove certain slots when parts detach
+        if(this.animScale == 0)
+        {
+            this.calc_anim_scale(rubeScene);
+        }
 
         for (Body body : rubeScene.getBodies())
         {
@@ -198,22 +225,6 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
                     Environment.physics.destroyBody(body);
 
             }
-
-        }
-
-        // Only set animScale once because later on when you loop through the slots of the anim
-        // The scale is inaccurate because you remove certain slots when parts detach
-        if(this.animScale == 0)
-        {
-
-            float height2 = 0;
-            for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
-            {
-                if (slot.getAttachment() instanceof RegionAttachment)
-                    height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
-            }
-
-            this.animScale = height / height2;
         }
 
         this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
