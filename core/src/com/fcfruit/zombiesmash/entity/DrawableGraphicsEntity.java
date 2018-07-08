@@ -50,7 +50,7 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(position, 0)));
         pos.y = Environment.gameCamera.position.y*2 - pos.y;
         this.sprite.setPosition(pos.x, pos.y);
-        this.position = new Vector2(pos.x, pos.y);
+        this.position = new Vector2(position.x, position.y);
     }
 
     @Override
