@@ -10,4 +10,6 @@ public interface BleedableEntityInterface extends UpdatableEntityInterface
 {
     void draw(SpriteBatch batch);
 
+    void enable_bleeding();
+    void disable_bleeding();
 }
