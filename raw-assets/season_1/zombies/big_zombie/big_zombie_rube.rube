@@ -43,6 +43,13 @@
     
     {
       "class" : "body",
+      "displayName" : "isPart",
+      "name" : "isPart",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "body",
       "comboboxEntries" : 
       [
         
@@ -77,13 +84,6 @@
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
-    },
-    
-    {
-      "class" : "body",
-      "displayName" : "isPart",
-      "name" : "isPart",
-      "type" : "bool"
     }
   ],
   "metaworld" : 
