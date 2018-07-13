@@ -30,6 +30,7 @@ import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
@@ -436,11 +437,11 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
      **/
     public void updateEntities(float delta)
     {
-        for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
+        for (DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
         {
             drawableEntityInterface.update(delta);
         }
-        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntityInterface : this.getInteractiveEntities().values())
+        for (InteractiveEntityInterface interactiveEntityInterface : this.getInteractiveEntities().values())
         {
             interactiveEntityInterface.update(delta);
         }
