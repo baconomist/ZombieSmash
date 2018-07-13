@@ -1,8 +1,8 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 
 /**
  * Created by Lucas on 2018-01-25.

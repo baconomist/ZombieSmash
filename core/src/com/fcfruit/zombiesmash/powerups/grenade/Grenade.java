@@ -11,7 +11,9 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
@@ -24,7 +26,7 @@ import java.util.ArrayList;
 
 public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, DetachableEntityInterface, InteractivePhysicsEntityInterface, ExplodableEntityInterface
 {
-    private com.fcfruit.zombiesmash.entity.ContainerEntity containerEntity;
+    private ContainerEntity containerEntity;
 
     private com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity drawablePhysicsEntity;
     private com.fcfruit.zombiesmash.entity.DetachableEntity detachableEntity;
@@ -51,7 +53,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
 
     }
 
-    public Grenade(Sprite sprite, Body physicsBody, ArrayList<Joint> joints, com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface containerEntity)
+    public Grenade(Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
     {
         this.drawablePhysicsEntity = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(sprite, physicsBody);
         this.detachableEntity = new com.fcfruit.zombiesmash.entity.DetachableEntity(joints, containerEntity, this);
@@ -194,7 +196,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     }
 
     @Override
-    public com.fcfruit.zombiesmash.entity.ContainerEntity getContainer()
+    public ContainerEntity getContainer()
     {
         return this.containerEntity;
     }

@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 
 /**
  * Created by lucas on 2018-01-07.
@@ -15,7 +16,7 @@ import com.fcfruit.zombiesmash.Environment;
 public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface
 {
 
-    private com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface containerEntity;
+    private ContainerEntityInterface containerEntity;
 
     private boolean isTouching;
     private boolean powerfulJoint;
@@ -37,7 +38,7 @@ public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.
         this.powerfulJoint = true;
     }
 
-    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface containerEntity)
+    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, ContainerEntityInterface containerEntity)
     {
         this.containerEntity = containerEntity;
 
