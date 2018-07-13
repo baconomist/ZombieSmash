@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.BleedableEntity;
+import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
@@ -20,6 +20,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 
 import java.util.ArrayList;
@@ -28,7 +29,7 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, BleedableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface
+public class NewPart implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, BleedableEntityInterface, NameableEntityInterface
 {
     private String name;
 
@@ -37,9 +38,9 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     private DrawablePhysicsEntity drawableEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
-    private BleedableEntityInterface bleedableEntity;
+    private BleedablePoint bleedablePoint;
 
-    public NewPart(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
+    public NewPart(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint bleedablePoint)
     {
         this.name = name;
 
@@ -56,7 +57,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
 
         this.optimizableEntity = new OptimizableEntity(this, this, null);
 
-        this.bleedableEntity = new BleedableEntity(this);
+        this.bleedablePoint = bleedablePoint;
 
     }
 
@@ -64,6 +65,8 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     public void detach()
     {
         this.detachableEntity.detach();
+
+        this.enable_bleeding();
 
         /*maybe set joint state to waiting for detach when detaching
             joint user data probably gets instantly deleted when you call joint.destroy
@@ -74,7 +77,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     public void draw(SpriteBatch batch)
     {
         this.drawableEntity.draw(batch);
-        this.bleedableEntity.draw(batch);
+        this.bleedablePoint.draw(batch);
     }
 
     @Override
@@ -82,7 +85,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     {
         this.drawableEntity.update(delta);
         this.interactivePhysicsEntity.update(delta);
-        this.bleedableEntity.update(delta);
+        this.bleedablePoint.update(delta);
 
         this.optimizableEntity.update(delta);
         for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
@@ -99,6 +102,7 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
                 }
             }
         }
+
     }
 
 
@@ -250,6 +254,18 @@ public class NewPart implements DrawableEntityInterface, DetachableEntityInterfa
     public void setAlpha(float alpha)
     {
         this.drawableEntity.setAlpha(alpha);
+    }
+
+    @Override
+    public void enable_bleeding()
+    {
+        this.bleedablePoint.enable_bleeding();
+    }
+
+    @Override
+    public void disable_bleeding()
+    {
+        this.bleedablePoint.disable_bleeding();
     }
 
     @Override
