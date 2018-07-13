@@ -15,7 +15,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
  * Created by Lucas on 2017-12-02.
@@ -72,8 +72,8 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
         {
-            if (drawableEntityInterface instanceof NewZombie)
-                for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntityInterface : ((NewZombie) drawableEntityInterface).getInteractiveEntities().values())
+            if (drawableEntityInterface instanceof Zombie)
+                for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntityInterface : ((Zombie) drawableEntityInterface).getInteractiveEntities().values())
                 {
                     if (Environment.areQuadrilaterallsColliding(interactiveEntityInterface.getPolygon(), this.polygon) && this.isFalling)
                     {

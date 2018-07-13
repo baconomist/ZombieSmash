@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
@@ -21,11 +22,16 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.BleedablePoint;
+import com.fcfruit.zombiesmash.entity.ContainerEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
-import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.ArrayList;
@@ -36,536 +42,424 @@ import java.util.Random;
  * Created by Lucas on 2017-07-30.
  */
 
-public class Zombie
+public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface,
+        ContainerEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface,
+        com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface
 {
 
-    ArrayList partsToStayAlive = new ArrayList();
-
-    public int id;
-
-    public String type;
-
-    float scale;
-
-    TextureAtlas atlas;
-    Skeleton skeleton;
-    AnimationState state;
-
-    public HashMap<String, Part> parts = new HashMap<String, Part>();
-
-    private MouseJoint getUpMouseJoint = null;
-
-    private float speed = 200;
-
-    // Default direction is left
-    private int direction = 0;
-
-
-    double timeBeforeAnimate = 5000;
-    double timeBeforeAttack = 3000;
-    double timeBeforeOptimize = 500;
-
-    double getUpTimer = System.currentTimeMillis();
-    double attackTimer = System.currentTimeMillis();
-    double optimizationTimer = System.currentTimeMillis();
-
-
-    String currentAnimation;
+    /**
+     * Animation
+     **/
     String moveAnimation;
 
+    /**
+     * Identifier
+     **/
+    public int id;
 
-    public boolean physicsEnabled = false;
+    /**
+     * Composition
+     **/
+    private com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity animatableGraphicsEntity;
+    private com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity interactiveGraphicsEntity;
+    private com.fcfruit.zombiesmash.entity.OptimizableEntity optimizableEntity;
+    private com.fcfruit.zombiesmash.entity.MovableEntity movableEntity;
+    private com.fcfruit.zombiesmash.entity.MultiGroundEntity multiGroundEntity;
+    public ContainerEntity containerEntity;
 
-    public boolean hasPowerfulPart = false;
+    /**
+     * Zombie Specific Fields
+     **/
+    private boolean shouldObjectiveOnce;
+    private int direction;
+    private int speed;
+    ArrayList detachableEntitiesToStayAlive;
+    ArrayList<String> currentParts;
+    private float animScale = 0;
 
-    private boolean isMoving = false;
+    /**
+     * Getup fields (need to make getupable entity)
+     **/
+    private double getUpTimer;
+    private double timeBeforeGetup;
+    private boolean isGettingUp;
+    private MouseJoint getUpMouseJoint;
 
-    private boolean isGettingUp = false;
-
-    public boolean isTouching = false;
-
-    public boolean justTouched = false;
-
-    public boolean isAtObjective = false;
-
-    public boolean alive = true;
-
-    public boolean enteredLevel = false;
-
-    boolean isOnGround = false;
-
-    boolean isAttacking = false;
-
-    boolean isCrawler = false;
-
-    int timesCompleteAttack1 = 0;
-
-    float randomObjectiveX = 0;
-
-    public boolean optimize = false;
-
-    public Polygon polygon;
-
-    Zombie(int id)
+    /**
+     * Zombie
+     **/
+    public Zombie(int id)
     {
         this.id = id;
+
+        this.speed = 1;
+
+        this.movableEntity = new com.fcfruit.zombiesmash.entity.MovableEntity(this);
+        this.multiGroundEntity = new com.fcfruit.zombiesmash.entity.MultiGroundEntity(this, this);
+        this.setSpeed(this.speed);
+        this.containerEntity = new ContainerEntity();
+        this.optimizableEntity = new com.fcfruit.zombiesmash.entity.OptimizableEntity(null, null, this);
+
+        this.shouldObjectiveOnce = true;
+        this.detachableEntitiesToStayAlive = new ArrayList();
+        this.currentParts = new ArrayList<String>();
+
+        this.timeBeforeGetup = 5000;
+        this.isGettingUp = false;
+
+        this.enable_optimization();
+
     }
 
-
-    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer, float delta)
+    /**
+     * Init
+     **/
+    public void setup()
     {
-        for (Slot slot : skeleton.getDrawOrder())
-        {
-            if (parts.get(slot.getAttachment().getName()) != null)
-            {
-                parts.get(slot.getAttachment().getName()).draw(batch);
-            }
-        }
-        if (!physicsEnabled)
-        {
-            skeletonRenderer.draw(batch, skeleton);
-        }
-        update(delta);
-
+        // Need to have separate function here because reflection does not work in constructor
+        this.animationSetup();
+        this.constructBody();
+        this.interactiveEntitySetup();
     }
 
-    private void update(float delta)
+    private void calc_anim_scale(RubeScene rubeScene)
     {
 
-        updateSkeleton(delta);
-
-        updateParts();
-
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x, this.getPosition().y, 0)));
-        // Center polygon with polygon width/2(polygon.getVerticies[2]/2) and polygon height/2(polygon.getVerticies[5]/2)
-        polygon.setPosition(pos.x - polygon.getVertices()[2] / 2, Environment.gameCamera.position.y*2 - pos.y - polygon.getVertices()[5] / 2);
-        polygon.setRotation(this.getRotation());
-
-
-        // Prevents zombie from being totally lost out of the map
-        if (!enteredLevel && this.getPosition().x < -1)
+        float height = 0;
+        for (RubeImage i : rubeScene.getImages())
         {
-            //this.setPosition(Level.cameraPositions.get(Environment.level.currentCameraPosition).x - (Environment.physicsCamera.viewportWidth / 2 + 1), 0);
-            this.speed = 400;
-            this.checkDirection();
-        } else if (!enteredLevel && this.getPosition().y > 21)
-        {
-            //this.setPosition(Level.cameraPositions.get(Environment.level.currentCameraPosition).x + Environment.physicsCamera.viewportWidth / 2 + 1, 0);
-            this.speed = 400;
-            this.checkDirection();
+            height += i.height * Physics.PIXELS_PER_METER;
         }
 
-
-        if (isMoving && !isGettingUp || isTouching)
+        float height2 = 0;
+        for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getSlots())
         {
-            getUpTimer = System.currentTimeMillis();
+            if (slot.getAttachment() instanceof RegionAttachment)
+                height2 += ((RegionAttachment) slot.getAttachment()).getHeight();
         }
 
-        if (justTouched)
-        {
-            //Make the physics bodies unstuck, sometimes the animation goes into the ground.
-            this.setPosition(this.getPosition().x, this.getPosition().y + 0.1f);
-            // Un-freezes the zombie when holding click
-            for (Part p : parts.values())
-            {
-                p.physicsBody.setAwake(true);
-            }
+        this.animScale = height / height2;
 
+
+        Gdx.app.log("calc_anim_scale", ""+this.animScale);
+    }
+
+    public void constructBody()
+    {
+        boolean flip = this.direction == 1;
+        World world = Environment.physics.getWorld();
+
+        com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader loader = new com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader(world);
+        RubeScene rubeScene;
+        if (flip)
+        {
+            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_flip_rube.json"));
+        } else
+        {
+            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie_rube.json"));
         }
 
-        if (isTouching)
+        // Remove old entities from world
+        if (this.getDrawableEntities() != null)
         {
-            if (getUpMouseJoint != null)
+            for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.getDrawableEntities().values())
             {
-                Environment.physics.destroyJoint(getUpMouseJoint);
-                getUpMouseJoint = null;
-            }
-            isGettingUp = false;
-
-            physicsEnabled = true;
-            isAtObjective = false;
-
-        } else if (parts.get("head") != null && parts.get("left_leg") != null && parts.get("right_leg") != null && this.alive)
-        {
-            if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate)
-            {
-                this.getUp();
-            } else if (isGettingUp)
-            {
-                this.getUp();
-            }
-        } else if (parts.get("head") != null && (parts.get("left_arm") != null || parts.get("right_arm") != null) && this.alive)
-        {
-            if (physicsEnabled && !isMoving && System.currentTimeMillis() - getUpTimer >= timeBeforeAnimate)
-            {
-                this.checkDirection();
-                this.crawl();
-            }
-        }
-        if (alive)
-        {
-            for (Object o : partsToStayAlive)
-            {
-                if (o instanceof String)
+                drawableEntity.dispose();
+                if (drawableEntity instanceof com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface)
                 {
-                    if (parts.get((String) o) != null)
+                    Environment.physics.destroyBody(((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface) drawableEntity).getPhysicsBody());
+                }
+            }
+        }
+
+        this.setDrawableEntities(new HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface>());
+        this.setInteractiveEntities(new HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface>());
+        this.setDetachableEntities(new HashMap<String, DetachableEntityInterface>());
+
+        // Only set animScale once because later on when you loop through the slots of the anim
+        // the scale is inaccurate because you remove certain slots when parts detach
+        if(this.animScale == 0)
+        {
+            this.calc_anim_scale(rubeScene);
+        }
+
+        // Update the animation
+        this.animatableGraphicsEntity.getSkeleton().setFlipX(flip);
+        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
+
+        for (Body body : rubeScene.getBodies())
+        {
+            if ((Boolean) rubeScene.getCustom(body, "isPart"))
+            {
+                String bodyName = (String) rubeScene.getCustom(body, "name");
+                Sprite sprite = new Sprite(this.animatableGraphicsEntity.getAtlas().findRegion(bodyName));
+
+                for (RubeImage i : rubeScene.getImages())
+                {
+                    if (i.body == body)
                     {
-                        alive = true;
+                        sprite.flip(flip, false);
+                        sprite.setColor(i.color);
+                        sprite.setOriginCenter();
+                        sprite.setSize(i.width * Physics.PIXELS_PER_METER, i.height * Physics.PIXELS_PER_METER);
+                        sprite.setOriginCenter();
+                    }
+
+                }
+
+                ArrayList<Joint> joints = new ArrayList<Joint>();
+                for (Joint joint : rubeScene.getJoints())
+                {
+                    // Only detachableEntity/Child gets the joints
+                    if (joint.getBodyB() == body)
+                    {
+                        joints.add(joint);
+                    }
+                }
+
+                for (Fixture fixture : body.getFixtureList())
+                {
+                    // Makes different zombies not collide with each other
+                    fixture.setUserData(this);
+                }
+
+                Array<Attachment> attachments = new Array<Attachment>();
+                this.animatableGraphicsEntity.getSkeleton().getData().getDefaultSkin().findAttachmentsForSlot(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getData().getIndex(), attachments);
+
+                // Attachments.size is incorrect, but it doesn't matter..................
+                BleedablePoint[] bleedablePoints = new BleedablePoint[attachments.size];
+
+                for (int i = 0, c = 0; c < attachments.size; c++)
+                {
+                    Attachment attachment = attachments.get(c);
+
+                    // ******************************************************************THIS if statement CAUSES NULL BLEEDABLE POINT OBJECTS IN THE LIST******************************************************************
+                    if (attachment.getName().contains("blood_pos"))
+                    {
+
+                        if(bodyName.equals("left_arm"))
+                            Gdx.app.log("aaarfra", "" + body.getAngle());
+
+                        // Match Body Pos And Rotation To Spine For BloodPoint Calculations
+                        Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
+
+                        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
+                        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+                        body.setTransform(new Vector2(pos.x, pos.y), 0);
+
+                        if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
+                            body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+                        else
+                            body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+
+                        // Create Bleed Point
+                        bleedablePoints[i] = new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
+                                ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body);
+
+                        i++;
+                    }
+                }
+
+                // If we still have the part
+                // If not, we destroy the body loaded into the world by rube
+                // Prevents invisible bodies for when parts are detached from the zombie
+                if (this.currentParts.contains(bodyName))
+                    this.createPart(body, bodyName, sprite, joints, this, bleedablePoints);
+                else
+                    Environment.physics.destroyBody(body);
+
+            }
+        }
+
+    }
+
+    /**
+     * Zombie subclasses should override this method
+     **/
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint[] bleedablePoints)
+    {
+        physicsBody.setUserData(bodyName);
+        // If child
+        if (joints.size() > 0)
+        {
+            Part part = new Part(bodyName, sprite, physicsBody, joints, containerEntity, bleedablePoints[0]);
+            this.getDrawableEntities().put(bodyName, part);
+            this.getInteractiveEntities().put(bodyName, part);
+            this.getDetachableEntities().put(bodyName, part);
+        }
+        // If parent
+        else if (bodyName.equals("torso"))
+        {
+            Torso torso = new Torso(bodyName, sprite, physicsBody, containerEntity, bleedablePoints);
+            this.getDrawableEntities().put(bodyName, torso);
+            this.getInteractiveEntities().put(bodyName, torso);
+        }
+    }
+
+    private void interactiveEntitySetup()
+    {
+        Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
+        size.y = Environment.gameCamera.position.y*2 - size.y;
+        Polygon polygon = new Polygon(new float[]{0, 0, size.x*2, 0, size.x*2, size.y*1.5f, 0, size.y*1.5f});
+        polygon.setOrigin(size.x, 0);
+        this.interactiveGraphicsEntity = new com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
+    }
+
+    private void animationSetup()
+    {
+        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.atlas"));
+        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
+        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
+        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.json"));
+        Skeleton skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
+        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
+
+        AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+        //state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
+
+        state.addListener(new AnimationState.AnimationStateAdapter()
+        {
+            @Override
+            public void complete(AnimationState.TrackEntry entry)
+            {
+                onAnimationComplete(entry);
+                super.complete(entry);
+            }
+        });
+
+        this.animatableGraphicsEntity = new com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity(skeleton, state, atlas);
+        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
+    }
+
+    /**
+     * Booleans
+     **/
+    public boolean isInLevel()
+    {
+        /*boolean isInLevel = false;
+        for (DrawableEntityInterface i : this.getDrawableEntities().values())
+        {
+            isInLevel = i.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.1f
+                    && i.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.1f;
+        }
+
+        return isInLevel;*/
+
+        boolean isInLevel = false;
+        for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface i : this.getDrawableEntities().values())
+        {
+            isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
+                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2;
+        }
+        return isInLevel;
+
+    }
+
+    private boolean isAtObjective()
+    {
+        boolean isAtObjective = false;
+        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface i : this.getInteractiveEntities().values())
+        {
+            if (Environment.level.objective.polygon.contains(i.getPolygon().getX(), i.getPolygon().getY()))
+            {
+                isAtObjective = true;
+            } else
+            {
+                isAtObjective = false;
+                break;
+            }
+        }
+
+        return isAtObjective && this.isInLevel();
+
+    }
+
+    private boolean isAttacking()
+    {
+        return this.animatableGraphicsEntity.getCurrentAnimation().contains("attack");
+    }
+
+    public boolean isAlive()
+    {
+
+        boolean isAlive = true;
+        for (Object o : this.detachableEntitiesToStayAlive)
+        {
+            if (o instanceof String)
+            {
+                if (this.getDetachableEntities().get(o) != null)
+                {
+                    isAlive = true;
+                } else
+                {
+                    isAlive = false;
+                    break;
+                }
+            } else if (o instanceof String[])
+            {
+                for (String s : (String[]) o)
+                {
+                    if (this.getDetachableEntities().get(s) != null)
+                    {
+                        isAlive = true;
+                        break;
                     } else
                     {
-                        alive = false;
-                        break;
-                    }
-                } else if (o instanceof String[])
-                {
-                    for (String s : (String[]) o)
-                    {
-                        if (parts.get(s) != null)
-                        {
-                            alive = true;
-                            break;
-                        } else
-                        {
-                            alive = false;
-                        }
+                        isAlive = false;
                     }
                 }
             }
-
-            if (!alive)
-            {
-                onDeath();
-            }
-
         }
 
-        if (!physicsEnabled && !this.isGettingUp && !this.isAttacking)
+        if (!isAlive)
         {
-            this.move();
+            this.onDeath();
         }
 
+        return isAlive;
+    }
 
-        if (isTouching || isMoving || !isOnGround || isGettingUp)
+    private boolean isAnimating()
+    {
+        return !this.isTouching() && this.isOptimizationEnabled();
+    }
+
+    private boolean hasRequiredPartsForGetup()
+    {
+        return this.getDrawableEntities().get("head") != null && this.getDrawableEntities().get("left_leg") != null
+                && this.getDrawableEntities().get("right_leg") != null;
+    }
+
+    /**
+     * Misc.
+     **/
+    public void updateEntities(float delta)
+    {
+        for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
         {
-            optimize = false;
-            optimizationTimer = System.currentTimeMillis();
-        } else if (System.currentTimeMillis() - optimizationTimer >= timeBeforeOptimize)
+            drawableEntityInterface.update(delta);
+        }
+        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntityInterface : this.getInteractiveEntities().values())
         {
-            optimize = true;
+            interactiveEntityInterface.update(delta);
         }
     }
 
-
-    private void updateSkeleton(float delta)
-    {
-        state.update(delta); // Update the animation getUpTimer.
-
-        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
-
-        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
-
-        for (Slot s : skeleton.getSlots())
-        {
-            if (parts.get(s.getData().getName()) == null)
-            {
-                s.setAttachment(new Attachment("new attachement")
-                {
-                    @Override
-                    public String getName()
-                    {
-                        return super.getName();
-                    }
-                });
-            }
-        }
-
-        if (!this.currentAnimation.equals(state.getCurrent(0).getAnimation().getName()))
-        {
-            state.setAnimation(0, currentAnimation, true);
-        }
-
-    }
-
-    private void updateParts()
+    private void checkDirection()
     {
 
-        // Run update method for each body part
-        boolean ispowerfulpart = false;
-        boolean istouching = false;
-        boolean isatobjective = false;
-        boolean elvl = true;
-        for (Part p : parts.values())
-        {
-            p.update();
-            if (p.isPowerfulPart && !ispowerfulpart)
-            {
-                ispowerfulpart = true;
-            }
-            if (p.isTouching && !istouching)
-            {
-                istouching = true;
-            }
-            if (!isatobjective && Environment.level.objective.polygon.contains(p.polygon.getX(), p.polygon.getY()))
-            {
-                isatobjective = true;
-            }
-            if (elvl)
-            {/*
-                if (p.physicsBody.getPosition().x > Environment.physics.getWall_1().getPosition().x + 0.5f
-                        && p.physicsBody.getPosition().x < Environment.physics.getWall_2().getPosition().x - 0.5f)
-                {
-                    elvl = true;
-                } else
-                {
-                    elvl = false;
-                }*/
-            }
-        }
-
-        // Update body touching state
-        hasPowerfulPart = ispowerfulpart;
-        justTouched = !isTouching && istouching;
-        isTouching = istouching;
-        isMoving = parts.get("torso").isMoving;
-        isOnGround = parts.get("torso").isOnGround;
-        isAtObjective = isatobjective;
-        if (!enteredLevel && elvl)
-        {
-            this.onEnteredLevel();
-        }
-        enteredLevel = elvl;
-
-    }
-
-
-    private void getUp()
-    {
-
-        // -0.2f to give it wiggle room to detect get up
-        if (isGettingUp && parts.get("head").physicsBody.getPosition().y >= (Environment.physicsCamera.position.y*2 - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y) - 0.2f)
-        {
-
-            isGettingUp = false;
-            physicsEnabled = false;
-            setPosition(parts.get("torso").physicsBody.getPosition().x, 0);
-
-            if (getUpMouseJoint != null)
-            {
-                Environment.physics.destroyJoint(getUpMouseJoint);
-                getUpMouseJoint = null;
-            }
-
-            this.onGetUp();
-
-            // Restart animation
-            state.setAnimation(0, currentAnimation, true);
-
-        } else if (!isGettingUp)
-        {
-
-            MouseJointDef mouseJointDef = new MouseJointDef();
-
-            // Needs 2 bodies, first one not used, so we use an arbitrary body.
-            // http://www.binarytides.com/mouse-joint-box2d-javascript/
-            mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
-            mouseJointDef.bodyB = parts.get("head").physicsBody;
-            mouseJointDef.collideConnected = true;
-            mouseJointDef.target.set(parts.get("head").physicsBody.getPosition());
-
-            // The higher the ratio, the slower the movement of body to mousejoint
-            mouseJointDef.dampingRatio = 7;
-
-            mouseJointDef.maxForce = 100000f;
-
-            // Destroy the current mouseJoint
-            if (getUpMouseJoint != null)
-            {
-                Environment.physics.destroyJoint(getUpMouseJoint);
-            }
-            getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
-            getUpMouseJoint.setTarget(new Vector2(parts.get("torso").physicsBody.getPosition().x, Environment.physicsCamera.position.y*2 - Environment.physicsCamera.unproject((Environment.gameCamera.project(new Vector3(0, this.getHeight(), 0)))).y));
-
-            isGettingUp = true;
-
-        }
-
-
-    }
-
-    public void setPosition(float x, float y)
-    {
-        if (physicsEnabled)
-        {
-            parts.get("torso").setPosition(x, y);
-        } else
-        {
-            Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
-            skeleton.setPosition(pos.x, Environment.gameCamera.position.y*2 - pos.y);
-            skeleton.updateWorldTransform();
-        }
-
-
-    }
-
-    Vector2 getPosition()
-    {
-        return parts.get("torso").physicsBody.getPosition();
-    }
-
-    float getRotation()
-    {
-        return (float) Math.toDegrees(parts.get("torso").physicsBody.getAngle());
-    }
-
-
-    public Part getPartFromPhysicsBody(Body physicsBody)
-    {
-
-        for (Part p : parts.values())
-        {
-            if (p.physicsBody.equals(physicsBody))
-            {
-                return p;
-            }
-        }
-
-        return null;
-
-    }
-
-    public Skeleton getSkeleton()
-    {
-        return skeleton;
-    }
-
-    // Recursion!
-    /*float getHeight(ArrayList<Part> p){
-        ArrayList<Part> pCopy = new ArrayList<Part>();
-        for(Part prt : p){
-            pCopy.add(prt);
-        }
-
-        if (p.size() == 0){
-            return 0;
-        }
-        else{
-            pCopy.remove(0);
-            return getHeight(pCopy) + p.get(0).sprite.getHeight();
-        }
-
-    }*/
-
-    float getHeight()
-    {
-        float total = 0;
-
-        total += parts.get("head").sprite.getHeight();
-        total += parts.get("torso").sprite.getHeight();
-        total += parts.get("left_leg").sprite.getHeight();
-
-        return total;
-    }
-
-    float getWidth()
-    {
-        float total = 0;
-
-        total += parts.get("left_arm").sprite.getWidth();
-        total += parts.get("torso").sprite.getWidth();
-
-        return total;
-    }
-
-    float getDistanceToObjective()
-    {
-        //this is broken
-        if (this.direction == 0)
-        {
-            return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
-        }
-        return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
-    }
-
-    public HashMap<String, Part> getParts()
-    {
-        return parts;
-    }
-
-    void crawl()
-    {
-        this.isCrawler = true;
-    }
-
-    void onObjective()
-    {
-        this.attack();
-    }
-
-    void attack()
-    {
-        // Only attack if inside the level
-        this.isAttacking = this.enteredLevel;
-    }
-
-    void move()
-    {
-
-        this.currentAnimation = this.moveAnimation;
-
-        if (isAtObjective && this.randomObjectiveX == 0)
-        {
-            this.checkDirection();
-            if (this.direction == 0)
-            {
-                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getDistanceToObjective(), 0, 0)));
-                this.randomObjectiveX = skeleton.getRootBone().getWorldX() + new Random().nextInt((int) pos.x);
-            } else
-            {
-                Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getDistanceToObjective(), 0, 0)));
-                this.randomObjectiveX = skeleton.getRootBone().getWorldX() - new Random().nextInt((int) pos.x);
-            }
-        }
-        if (!isAtObjective && !isAttacking)
-        {
-            if (this.direction == 0)
-            {
-                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            } else
-            {
-                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            }
-            this.randomObjectiveX = 0;
-        } else if (skeleton.getRootBone().getWorldX() < this.randomObjectiveX && this.direction == 0 || skeleton.getRootBone().getWorldX() > this.randomObjectiveX && this.direction == 1)
-        {
-            if (this.direction == 0)
-            {
-                skeleton.setPosition(skeleton.getX() + this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            } else
-            {
-                skeleton.setPosition(skeleton.getX() - this.speed * Gdx.graphics.getDeltaTime(), skeleton.getY());
-            }
-        } else
-        {
-            this.onObjective();
-        }
-
-
-    }
-
-    void onGetUp()
-    {
-        this.checkDirection();
-    }
-
-    void checkDirection()
-    {
         int previous_direction = this.direction;
+
         if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2)
         {
-            this.direction = 1;
+            if (Environment.level.getCurrentCameraPosition().equals("right"))
+            {
+                this.direction = 0;
+            } else this.direction = 1;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2 + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
@@ -579,243 +473,618 @@ public class Zombie
         }
     }
 
-    private void onDirectionChange()
+    public void setDirection(int direction)
     {
-        if (this.direction == 1)
+        if (this.direction != direction)
         {
-            skeleton.setFlipX(true);
-        } else
-        {
-            skeleton.setFlipX(false);
-        }
-
-        for (Part p : parts.values())
-        {
-            p.setState("waiting_for_destroy");
-        }
-
-        if (this.direction == 1)
-        {
-            constructPhysicsBody(Environment.physics.getWorld(), true);
-        } else
-        {
-            constructPhysicsBody(Environment.physics.getWorld(), false);
-        }
-    }
-
-    public void setDirection(int i)
-    {
-        if (this.direction != i)
-        {
-            this.direction = i;
+            this.direction = direction;
             onDirectionChange();
         }
     }
 
     public int getDirection()
     {
-        if (direction == 0)
+        return this.direction;
+    }
+
+    private void handleGetup()
+    {
+        if (!this.isAnimating() && !this.isGettingUp && this.hasRequiredPartsForGetup() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
         {
-            return 0;
+
+            MouseJointDef mouseJointDef = new MouseJointDef();
+            // Needs 2 bodies, first one not used, so we use an arbitrary body.
+            // http://www.binarytides.com/mouse-joint-box2d-javascript/
+            mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
+            mouseJointDef.bodyB = ((Part) this.getInteractiveEntities().get("head")).getPhysicsBody();
+            mouseJointDef.collideConnected = true;
+            mouseJointDef.target.set(this.getDrawableEntities().get("head").getPosition());
+            // The higher the ratio, the slower the movement of body to mousejoint
+            mouseJointDef.dampingRatio = 7;
+            mouseJointDef.maxForce = 100000f;
+            // Destroy the current mouseJoint
+            if (getUpMouseJoint != null)
+            {
+                Environment.physics.destroyJoint(getUpMouseJoint);
+            }
+            getUpMouseJoint = (MouseJoint) Environment.physics.createJoint(mouseJointDef);
+            getUpMouseJoint.setTarget(new Vector2(this.getDrawableEntities().get("torso").getPosition().x,
+                    this.animatableGraphicsEntity.getSize().y + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
+
+            this.isGettingUp = true;
+
+            this.onGetupStart();
+
+        }
+
+        // -0.3f to give it wiggle room to detect get up
+        if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
+        {
+            this.onGetupEnd();
+        }
+
+    }
+
+    /*private boolean isGettingUp(){
+         return this.isPhysicsEnabled && System.currentTimeMillis() - this.getUpTimer > this.timeBeforeGetup;
+     }*/
+
+    public void stopGetUp()
+    {
+
+        if (this.getUpMouseJoint != null && !Environment.jointDestroyQueue.contains(this.getUpMouseJoint))
+        {
+            Environment.jointDestroyQueue.add(this.getUpMouseJoint);
+        }
+        this.getUpTimer = System.currentTimeMillis();
+        this.isGettingUp = false;
+
+    }
+
+    private void syncEntitiesToAnimation()
+    {
+        for (String key : this.getDrawableEntities().keySet())
+        {
+
+            Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(key, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(key), new Vector2(0, 0));
+
+            Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
+            pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+            this.getDrawableEntities().get(key).setPosition(new Vector2(pos.x, pos.y));
+            if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
+                this.getDrawableEntities().get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(key).getAttachment()).getRotation());
+            else
+                this.getDrawableEntities().get(key).setAngle(this.animatableGraphicsEntity.getSkeleton().findBone(key).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(key).getAttachment()).getRotation());
+        }
+    }
+
+    private void detachAnimationLimbs()
+    {
+        // Do not draw detached parts in animation
+        for (Slot s : this.animatableGraphicsEntity.getSkeleton().getSlots())
+        {
+            // If the part is detached...
+            if (!s.getData().getName().equals("bounding_box") && this.getDrawableEntities().get(s.getData().getName()) == null)
+            {
+                // Replace current attachment with a new empty one
+                s.setAttachment(new Attachment(" ")
+                {
+                    @Override
+                    public String getName()
+                    {
+                        return super.getName();
+                    }
+                });
+            }
+        }
+    }
+
+    // May need to be changed to some more general system in the future(using points in data files or something)
+    private float getDistanceToObjective()
+    {
+        if (Environment.level.getCurrentCameraPosition().equals("left"))
+        {
+            return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
+        }
+        else if(Environment.level.getCurrentCameraPosition().equals("middle") && this.direction == 0)
+        {
+            return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
+        }
+        return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
+
+    }
+
+    /**
+     * Events
+     **/
+    private void onAnimationComplete(AnimationState.TrackEntry entry)
+    {
+        if (entry.getAnimation().getName().equals("attack1"))
+        {
+            this.onAttack1Complete();
+        } else if (entry.getAnimation().getName().equals("attack2"))
+        {
+            this.onAttack2Complete();
+        }
+
+        if (entry.getAnimation().getName().equals(this.moveAnimation) && !this.isAtObjective())
+        {
+            if (this.direction == 0)
+            {
+                this.moveBy(new Vector2(1f, 0));
+            } else
+            {
+                this.moveBy(new Vector2(-1f, 0));
+            }
+        }
+
+    }
+
+    private void onDeath()
+    {
+        this.getPolygon().setPosition(9999, 9999);
+    }
+
+    private void onObjectiveOnce()
+    {
+
+        float move = new Random().nextFloat() * (int) this.getDistanceToObjective();
+
+        this.clearMoveQueue();
+
+        if (this.direction == 0)
+        {
+            this.moveBy(new Vector2(move, 0));
         } else
         {
-            return 1;
+            this.moveBy(new Vector2(-move, 0));
+        }
+        this.changeToGround(new Random().nextInt(1) + 1);
+
+        this.shouldObjectiveOnce = false;
+    }
+
+    protected void onObjective()
+    {
+        if (this.timesAnimationCompleted() >= 2 && this.getCurrentAnimation().contains("attack"))
+        {
+            this.setAnimation("attack2");
+        } else if (this.timesAnimationCompleted() >= 1)
+        {
+            this.setAnimation("attack1");
         }
     }
 
-    public void constructPhysicsBody(World world, boolean flip)
+    private void onGetupStart()
     {
-        RubeSceneLoader loader = new RubeSceneLoader(world);
-        RubeScene rubeScene;
-        if (flip)
+        this.disable_optimization();
+    }
+
+    private void onGetupEnd()
+    {
+        this.setAnimation(this.moveAnimation);
+        this.shouldObjectiveOnce = true;
+
+        this.isGettingUp = false;
+        this.enable_optimization();
+
+        if (getUpMouseJoint != null)
         {
-            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + type + "_zombie/" + type + "_zombie_flip_rube.json"));
+            Environment.physics.destroyJoint(getUpMouseJoint);
+            getUpMouseJoint = null;
+        }
+
+        this.animatableGraphicsEntity.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x, Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
+
+        // Restart animation
+        this.animatableGraphicsEntity.restartAnimation();
+
+        this.checkDirection();
+
+    }
+
+    private void onDirectionChange()
+    {
+        this.constructBody();
+    }
+
+    private void onAnimate()
+    {
+        this.detachAnimationLimbs();
+
+        if (this.isAtObjective() && this.shouldObjectiveOnce)
+        {
+            this.onObjectiveOnce();
+        } else if (this.isAtObjective() && !this.isMoving())
+        {
+            this.onObjective();
+        }
+
+        if (!this.isTouching())
+        {
+            this.syncEntitiesToAnimation();
+        }
+
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
+
+        this.getUpTimer = System.currentTimeMillis();
+    }
+
+    private void onPhysicsEnabled()
+    {
+        this.resetToInitialGround();
+        this.clearMoveQueue();
+    }
+
+    private void onTouching()
+    {
+        if (this.getUpMouseJoint != null)
+        {
+            Environment.physics.destroyJoint(this.getUpMouseJoint);
+            this.getUpMouseJoint = null;
+        }
+        this.clearMoveQueue();
+        this.disable_optimization();
+        this.isGettingUp = false;
+        this.getUpTimer = System.currentTimeMillis();
+    }
+
+    protected void onAttack1Complete()
+    {
+        Environment.level.objective.takeDamage(0.5f);
+    }
+
+    protected void onAttack2Complete()
+    {
+        Environment.level.objective.takeDamage(1f);
+    }
+
+
+    /**
+     * DrawableEntity
+     **/
+    @Override
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+
+        if (this.isAnimating())
+        {
+            this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
         } else
         {
-            rubeScene = loader.loadScene(Gdx.files.internal("zombies/" + type + "_zombie/" + type + "_zombie_rube.json"));
-        }
-
-        parts = new HashMap<String, Part>();
-
-        for (Body b : rubeScene.getBodies())
-        {
-
-            if ((Boolean) rubeScene.getCustom(b, "isPart"))
+            for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
             {
-
-                String bodyName = (String) rubeScene.getCustom(b, "name");
-                Sprite sprite = new Sprite(atlas.findRegion(bodyName));
-
-                for (RubeImage i : rubeScene.getImages())
+                if (this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
                 {
-                    if (i.body == b)
-                    {
-                        sprite.flip(flip, false);
-                        sprite.setColor(i.color);
-                        sprite.setOriginCenter();
-                        sprite.setSize(i.width * Physics.PIXELS_PER_METER, i.height * Physics.PIXELS_PER_METER);
-                        sprite.setOriginCenter();
-                    }
-
-                }
-
-                Joint joint = null;
-                for (Joint j : rubeScene.getJoints())
-                {
-                    if (j.getBodyA() == b || j.getBodyB() == b)
-                    {
-                        joint = j;
-                        break;
-                    }
-                }
-
-                for (Fixture f : b.getFixtureList())
-                {
-                    // Makes different zombies not collide with each other
-                    f.setUserData(this);
-                }
-
-                parts.put(bodyName, new Part(bodyName, sprite, b, joint, this));
-            }
-
-        }
-
-        skeleton.getRootBone().setScale(parts.get("head").sprite.getWidth() / ((RegionAttachment) skeleton.findSlot("head").getAttachment()).getWidth(), parts.get("head").sprite.getHeight() / ((RegionAttachment) skeleton.findSlot("head").getAttachment()).getHeight());
-
-        state.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
-
-        state.apply(skeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
-
-        skeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
-
-        parts.get("torso").isDetachable = false;
-
-        polygon = new Polygon(new float[]{0, 0, this.getWidth(), 0, this.getWidth(), this.getHeight(), 0, this.getHeight()});
-        polygon.setOrigin(this.getWidth() / 2, this.getHeight() / 2);
-
-    }
-
-    void animationSetup()
-    {
-        atlas = new TextureAtlas(Gdx.files.internal("zombies/" + this.type + "_zombie/" + this.type + "_zombie.atlas"));
-        SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
-        json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
-        SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.type + "_zombie/" + this.type + "_zombie.json"));
-
-        skeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
-        AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
-        //stateData.setMix("run", "jump", 0.2f);
-        //stateData.setMix("jump", "run", 0.2f);
-
-        state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
-
-        // Queue animations on track 0.
-        this.currentAnimation = this.moveAnimation;
-        state.setAnimation(0, currentAnimation, true);
-
-        state.addListener(new AnimationState.AnimationStateAdapter()
-        {
-            @Override
-            public void complete(AnimationState.TrackEntry entry)
-            {
-                super.complete(entry);
-            }
-        });
-
-        state.addListener(new AnimationState.AnimationStateAdapter()
-        {
-            @Override
-            public void complete(AnimationState.TrackEntry entry)
-            {
-                if (alive)
-                {
-                    if (currentAnimation.equals("attack1"))
-                    {
-                        timesCompleteAttack1++;
-                    } else if (currentAnimation.equals("attack2"))
-                    {
-                        timesCompleteAttack1 = 0;
-                    }
-                    if (currentAnimation.contains("attack"))
-                    {
-                        isAttacking = false;
-                        //Environment.level.objective.onHit();
-                    }
-                    super.complete(entry);
+                    this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
+                    this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch, skeletonRenderer);
                 }
             }
-        });
+        }
 
     }
 
-    void onEnteredLevel()
+    @Override
+    public void update(float delta)
     {
-        this.speed = this.getSpeed();
-    }
-
-    float getSpeed()
-    {
-        return 200;
-    }
-
-    void onDeath()
-    {
-        Random rand = new Random();
-        int ammount_points = rand.nextInt(2);
-        String s = "";
-        for (int i = 0; i <= ammount_points; i++)
+        this.updateEntities(delta);
+        if (this.isAlive())
         {
-            int type = rand.nextInt(10);
-            if (type <= 2)
+            this.interactiveGraphicsEntity.update(delta);
+
+            if (this.isTouching())
             {
-                type = 0;
-                s = "stars/gold_star.png";
+                this.onTouching();
             }
-            if (type > 2 && type <= 5)
+
+            if (this.isAnimating())
             {
-                type = 1;
-                s = "stars/silver_star.png";
-            }
-            if (type > 5)
+                this.onAnimate();
+                this.movableEntity.update(delta);
+                this.multiGroundEntity.update(delta);
+            } else
             {
-                type = 2;
-                s = "stars/bronze_star.png";
+                this.onPhysicsEnabled();
+                this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
+                this.animatableGraphicsEntity.update(delta);
             }
-            //Environment.physics.addBody(new Star(new Texture(Gdx.files.internal(s)), this.getPosition().x + i, 1.5f, type));
+
+            this.optimizableEntity.update(delta);
+
+            this.handleGetup();
         }
+
     }
 
-    public void touchDown(float x, float y, int pointer)
+    @Override
+    public Vector2 getPosition()
     {
-        for (String name : parts.keySet())
+        if (!this.isAnimating())
         {
-            parts.get(name).touchDown(x, y, pointer);
-        }
-    }
-
-    public void touchDragged(float x, float y, int pointer)
-    {
-
-        for (String name : parts.keySet())
+            return this.getDrawableEntities().get("torso").getPosition();
+        } else
         {
-            parts.get(name).touchDragged(x, y, pointer);
+            return this.animatableGraphicsEntity.getPosition();
         }
-
     }
 
-    public void touchUp(float x, float y, int pointer)
+    @Override
+    public void setPosition(Vector2 position)
     {
-
-        for (String name : parts.keySet())
+        if (!this.isAnimating())
         {
-            parts.get(name).touchUp(x, y, pointer);
+            this.getDrawableEntities().get("torso").setPosition(position);
+        } else
+        {
+            this.animatableGraphicsEntity.setPosition(position);
         }
+    }
+
+    @Override
+    public float getAngle()
+    {
+        return this.animatableGraphicsEntity.getAngle();
+    }
+
+    @Override
+    public void setAngle(float angle)
+    {
+        this.animatableGraphicsEntity.setAngle(angle);
+    }
+
+    @Override
+    public Vector2 getSize()
+    {
+        return this.animatableGraphicsEntity.getSize();
+    }
+
+
+    /**
+     * InteractiveEntity
+     **/
+    @Override
+    public void onTouchDown(float screenX, float screenY, int p)
+    {
+        boolean touching = false;
+        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        {
+            interactiveEntity.onTouchDown(screenX, screenY, p);
+            if (interactiveEntity.isTouching())
+            {
+                touching = true;
+            }
+        }
+        this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
+
+        if (this.isTouching() && !touching && this.isAlive() && this.isInLevel())
+        {
+            ((com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
+        }
+    }
+
+    @Override
+    public void onTouchDragged(float screenX, float screenY, int p)
+    {
+        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        {
+            interactiveEntity.onTouchDragged(screenX, screenY, p);
+        }
+        this.interactiveGraphicsEntity.onTouchDragged(screenX, screenY, p);
+    }
+
+    @Override
+    public void onTouchUp(float screenX, float screenY, int p)
+    {
+        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        {
+            interactiveEntity.onTouchUp(screenX, screenY, p);
+        }
+        this.interactiveGraphicsEntity.onTouchUp(screenX, screenY, p);
+    }
+
+    @Override
+    public boolean isTouching()
+    {
+        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        {
+            if (interactiveEntity.isTouching())
+            {
+                return true;
+            }
+        }
+        return this.interactiveGraphicsEntity.isTouching();
+    }
+
+    @Override
+    public Polygon getPolygon()
+    {
+        return this.interactiveGraphicsEntity.getPolygon();
+    }
+
+
+    /**
+     * OptimizableEntity
+     **/
+    @Override
+    public void enable_optimization()
+    {
+        this.optimizableEntity.enable_optimization();
+    }
+
+    @Override
+    public void disable_optimization()
+    {
+        this.onPhysicsEnabled();
+        this.optimizableEntity.disable_optimization();
+    }
+
+    @Override
+    public boolean isOptimizationEnabled()
+    {
+        return this.optimizableEntity.isOptimizationEnabled();
+    }
+
+    /**
+     * ContainerEntity
+     **/
+    @Override
+    public void detach(DetachableEntityInterface detachableEntityInterface)
+    {
+        for(String name : this.getDetachableEntities().keySet())
+        {
+            if(this.getDetachableEntities().get(name).equals(detachableEntityInterface))
+                this.currentParts.remove(name);
+        }
+        this.containerEntity.detach(detachableEntityInterface);
+    }
+
+    @Override
+    public HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface> getDrawableEntities()
+    {
+        return this.containerEntity.getDrawableEntities();
+    }
+
+    @Override
+    public HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface> getInteractiveEntities()
+    {
+        return this.containerEntity.getInteractiveEntities();
+    }
+
+    @Override
+    public HashMap<String, DetachableEntityInterface> getDetachableEntities()
+    {
+        return this.containerEntity.getDetachableEntities();
+    }
+
+    @Override
+    public void setDrawableEntities(HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface> drawableEntities)
+    {
+        this.containerEntity.setDrawableEntities(drawableEntities);
+    }
+
+    @Override
+    public void setInteractiveEntities(HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface> interactiveEntities)
+    {
+        this.containerEntity.setInteractiveEntities(interactiveEntities);
+    }
+
+    @Override
+    public void setDetachableEntities(HashMap<String, DetachableEntityInterface> detachableEntities)
+    {
+        this.containerEntity.setDetachableEntities(detachableEntities);
+    }
+
+    @Override
+    public void moveBy(Vector2 moveBy)
+    {
+        this.movableEntity.moveBy(moveBy);
+    }
+
+    @Override
+    public void moveTo(Vector2 moveTo)
+    {
+        this.movableEntity.moveTo(moveTo);
+    }
+
+    @Override
+    public boolean isMoving()
+    {
+        return this.movableEntity.isMoving();
+    }
+
+    @Override
+    public void setSpeed(float speed)
+    {
+        this.movableEntity.setSpeed(speed);
+    }
+
+    @Override
+    public void clearMoveQueue()
+    {
+        this.movableEntity.clearMoveQueue();
+    }
+
+    @Override
+    public void setAnimation(String animation)
+    {
+        this.animatableGraphicsEntity.setAnimation(animation);
+    }
+
+    @Override
+    public String getCurrentAnimation()
+    {
+        return this.animatableGraphicsEntity.getCurrentAnimation();
+    }
+
+    @Override
+    public int timesAnimationCompleted()
+    {
+        return this.animatableGraphicsEntity.timesAnimationCompleted();
+    }
+
+    @Override
+    public void changeToGround(int ground)
+    {
+        this.multiGroundEntity.changeToGround(ground);
+    }
+
+    @Override
+    public int getCurrentGround()
+    {
+        return this.multiGroundEntity.getCurrentGround();
+    }
+
+    @Override
+    public void resetToInitialGround()
+    {
+        this.multiGroundEntity.resetToInitialGround();
+    }
+
+    @Override
+    public int getInitialGround()
+    {
+        return this.multiGroundEntity.getInitialGround();
+    }
+
+    @Override
+    public void setInitialGround(int initialGround)
+    {
+        this.multiGroundEntity.setInitialGround(initialGround);
+    }
+
+    @Override
+    public boolean isMovingToNewGround()
+    {
+        return this.multiGroundEntity.isMovingToNewGround();
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.animatableGraphicsEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.animatableGraphicsEntity.setAlpha(alpha);
+        for(DrawableEntityInterface drawableEntityInterface : this.containerEntity.getDrawableEntities().values())
+        {
+            drawableEntityInterface.setAlpha(alpha);
+        }
+    }
+
+    @Override
+    public void dispose()
+    {
 
     }
 
-    public void destroy()
+    // Unused
+    @Override
+    public void draw(SpriteBatch batch)
     {
+
     }
 
 }

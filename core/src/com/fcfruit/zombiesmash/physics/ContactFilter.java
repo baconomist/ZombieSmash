@@ -9,7 +9,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
 import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 
 
 /**
@@ -23,10 +23,10 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     {
 
 
-        if (fixtureA.getUserData() instanceof NewZombie && fixtureB.getUserData() instanceof NewZombie)
+        if (fixtureA.getUserData() instanceof Zombie && fixtureB.getUserData() instanceof Zombie)
         {
 
-            if (((NewZombie) fixtureA.getUserData()).id == ((NewZombie) fixtureB.getUserData()).id)
+            if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id)
             {
 
                 if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
@@ -61,8 +61,8 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
                 && !((MultiGroundEntityInterface) fixtureB.getUserData()).isMovingToNewGround()))
         {
             return true;
-        } else if (fixtureA.getUserData() instanceof Rock && fixtureB.getUserData() instanceof NewZombie
-                || fixtureB.getUserData() instanceof Rock && fixtureA.getUserData() instanceof NewZombie)
+        } else if (fixtureA.getUserData() instanceof Rock && fixtureB.getUserData() instanceof Zombie
+                || fixtureB.getUserData() instanceof Rock && fixtureA.getUserData() instanceof Zombie)
         {
             return true;
         }
@@ -91,7 +91,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         Gdx.app.debug("baba", ""+fixtureA.getBody().getUserData() + " " + fixtureB.getBody().getUserData());
         Gdx.app.debug("baba", ""+fixtureA.getUserData() + " " + fixtureB.getUserData());
         return true;
-        return !(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")) || (fixtureA.getUserData() instanceof NewZombie && ((NewZombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof NewZombie && ((NewZombie) fixtureB.getUserData()).isInLevel());
+        return !(fixtureA.getUserData().equals("wall") || fixtureB.getUserData().equals("wall")) || (fixtureA.getUserData() instanceof Zombie && ((Zombie) fixtureA.getUserData()).isInLevel()) || (fixtureB.getUserData() instanceof Zombie && ((Zombie) fixtureB.getUserData()).isInLevel());
         */
     }
 }

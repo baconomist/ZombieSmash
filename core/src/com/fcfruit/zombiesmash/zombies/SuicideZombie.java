@@ -6,13 +6,12 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
-import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 
 import java.util.ArrayList;
 
-public class SuicideZombie extends NewZombie
+public class SuicideZombie extends Zombie
 {
 
     public SuicideZombie(Integer id)

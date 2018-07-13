@@ -9,7 +9,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.World;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
  * Created by Lucas on 2018-02-13.
@@ -70,10 +70,10 @@ public class ParticleEntity
                 {
                     ((com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface)drawableEntity).disable_optimization();
 
-                    if(drawableEntity instanceof NewZombie)
+                    if(drawableEntity instanceof Zombie)
                     {
-                        ((NewZombie) drawableEntity).stopGetUp();
-                        ((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface) ((NewZombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(new Vector2(1, 1), this.initialPos, true);
+                        ((Zombie) drawableEntity).stopGetUp();
+                        ((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(new Vector2(1, 1), this.initialPos, true);
                     }
                     
                 }

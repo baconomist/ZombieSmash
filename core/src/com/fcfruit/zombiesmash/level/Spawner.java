@@ -10,7 +10,7 @@ import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegularZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
@@ -101,8 +101,8 @@ public class Spawner
 
         try
         {
-            NewZombie tempZombie;
-            tempZombie = (NewZombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
+            Zombie tempZombie;
+            tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
             tempZombie.setup();
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 

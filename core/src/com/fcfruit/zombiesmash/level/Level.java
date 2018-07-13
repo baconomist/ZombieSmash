@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -263,9 +264,9 @@ public class Level
         boolean zombiesDead = false;
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
-            if (drawableEntity instanceof com.fcfruit.zombiesmash.zombies.NewZombie)
+            if (drawableEntity instanceof Zombie)
             {
-                if (((com.fcfruit.zombiesmash.zombies.NewZombie) drawableEntity).isAlive())
+                if (((Zombie) drawableEntity).isAlive())
                 {
                     zombiesDead = false;
                     break;

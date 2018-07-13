@@ -4,7 +4,7 @@ package com.fcfruit.zombiesmash.zombies;
  * Created by Lucas on 2017-11-05.
  */
 
-public class GirlZombie extends NewZombie
+public class GirlZombie extends Zombie
 {
     
     public GirlZombie(Integer id){

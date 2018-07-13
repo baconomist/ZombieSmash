@@ -4,7 +4,7 @@ package com.fcfruit.zombiesmash.zombies;
  * Created by Lucas on 2017-11-06.
  */
 
-public class PoliceZombie extends NewZombie
+public class PoliceZombie extends Zombie
 {
 
 
