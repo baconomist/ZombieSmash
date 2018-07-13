@@ -13,6 +13,7 @@ import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
 import com.esotericsoftware.spine.Skeleton;
@@ -24,10 +25,14 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.BleedablePoint;
+import com.fcfruit.zombiesmash.entity.ContainerEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
+import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -38,7 +43,7 @@ import java.util.Random;
  */
 
 public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface,
-        com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface,
+        ContainerEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface,
         com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface
 {
 
@@ -60,7 +65,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
     private com.fcfruit.zombiesmash.entity.OptimizableEntity optimizableEntity;
     private com.fcfruit.zombiesmash.entity.MovableEntity movableEntity;
     private com.fcfruit.zombiesmash.entity.MultiGroundEntity multiGroundEntity;
-    public com.fcfruit.zombiesmash.entity.ContainerEntity containerEntity;
+    public ContainerEntity containerEntity;
 
     /**
      * Zombie Specific Fields
@@ -92,7 +97,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
         this.movableEntity = new com.fcfruit.zombiesmash.entity.MovableEntity(this);
         this.multiGroundEntity = new com.fcfruit.zombiesmash.entity.MultiGroundEntity(this, this);
         this.setSpeed(this.speed);
-        this.containerEntity = new com.fcfruit.zombiesmash.entity.ContainerEntity();
+        this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new com.fcfruit.zombiesmash.entity.OptimizableEntity(null, null, this);
 
         this.shouldObjectiveOnce = true;
@@ -113,7 +118,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
     {
         // Need to have separate function here because reflection does not work in constructor
         this.animationSetup();
-        this.constructPhysicsBodies();
+        this.constructBody();
         this.interactiveEntitySetup();
     }
 
@@ -139,7 +144,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
         Gdx.app.log("calc_anim_scale", ""+this.animScale);
     }
 
-    public void constructPhysicsBodies()
+    public void constructBody()
     {
         boolean flip = this.direction == 1;
         World world = Environment.physics.getWorld();
@@ -178,15 +183,19 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
             this.calc_anim_scale(rubeScene);
         }
 
+        // Update the animation
+        this.animatableGraphicsEntity.getSkeleton().setFlipX(flip);
+        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
+
         for (Body body : rubeScene.getBodies())
         {
             if ((Boolean) rubeScene.getCustom(body, "isPart"))
             {
-
                 String bodyName = (String) rubeScene.getCustom(body, "name");
                 Sprite sprite = new Sprite(this.animatableGraphicsEntity.getAtlas().findRegion(bodyName));
 
-                for (com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage i : rubeScene.getImages())
+                for (RubeImage i : rubeScene.getImages())
                 {
                     if (i.body == body)
                     {
@@ -195,8 +204,6 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
                         sprite.setOriginCenter();
                         sprite.setSize(i.width * Physics.PIXELS_PER_METER, i.height * Physics.PIXELS_PER_METER);
                         sprite.setOriginCenter();
-
-                        height += i.height * Physics.PIXELS_PER_METER;
                     }
 
                 }
@@ -217,41 +224,74 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
                     fixture.setUserData(this);
                 }
 
+                Array<Attachment> attachments = new Array<Attachment>();
+                this.animatableGraphicsEntity.getSkeleton().getData().getDefaultSkin().findAttachmentsForSlot(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getData().getIndex(), attachments);
+
+                // Attachments.size is incorrect, but it doesn't matter..................
+                BleedablePoint[] bleedablePoints = new BleedablePoint[attachments.size];
+
+                for (int i = 0, c = 0; c < attachments.size; c++)
+                {
+                    Attachment attachment = attachments.get(c);
+
+                    // ******************************************************************THIS if statement CAUSES NULL BLEEDABLE POINT OBJECTS IN THE LIST******************************************************************
+                    if (attachment.getName().contains("blood_pos"))
+                    {
+
+                        if(bodyName.equals("left_arm"))
+                            Gdx.app.log("aaarfra", "" + body.getAngle());
+
+                        // Match Body Pos And Rotation To Spine For BloodPoint Calculations
+                        Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
+
+                        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
+                        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+                        body.setTransform(new Vector2(pos.x, pos.y), 0);
+
+                        if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
+                            body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+                        else
+                            body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+
+                        // Create Bleed Point
+                        bleedablePoints[i] = new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
+                                ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body);
+
+                        i++;
+                    }
+                }
+
                 // If we still have the part
                 // If not, we destroy the body loaded into the world by rube
-                if(this.currentParts.contains(bodyName))
-                    this.createPart(body, bodyName, sprite, joints, this);
+                // Prevents invisible bodies for when parts are detached from the zombie
+                if (this.currentParts.contains(bodyName))
+                    this.createPart(body, bodyName, sprite, joints, this, bleedablePoints);
                 else
                     Environment.physics.destroyBody(body);
 
             }
         }
 
-        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
-
-        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime()); // Update the animation getUpTimer.
-
     }
 
     /**
      * Zombie subclasses should override this method
      **/
-    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface containerEntity)
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint[] bleedablePoints)
     {
-        physicsBody.setUserData("");
-
+        physicsBody.setUserData(bodyName);
         // If child
         if (joints.size() > 0)
         {
-            NewPart part = new NewPart(bodyName, sprite, physicsBody, joints, containerEntity);
+            NewPart part = new NewPart(bodyName, sprite, physicsBody, joints, containerEntity, bleedablePoints[0]);
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
             this.getDetachableEntities().put(bodyName, part);
         }
-        //If parent
+        // If parent
         else if (bodyName.equals("torso"))
         {
-            Torso torso = new Torso(bodyName, sprite, physicsBody, containerEntity);
+            Torso torso = new Torso(bodyName, sprite, physicsBody, containerEntity, bleedablePoints);
             this.getDrawableEntities().put(bodyName, torso);
             this.getInteractiveEntities().put(bodyName, torso);
         }
@@ -645,8 +685,7 @@ public class NewZombie implements com.fcfruit.zombiesmash.entity.interfaces.Draw
 
     private void onDirectionChange()
     {
-        this.animatableGraphicsEntity.getSkeleton().setFlipX(this.direction == 1);
-        this.constructPhysicsBodies();
+        this.constructBody();
     }
 
     private void onAnimate()
