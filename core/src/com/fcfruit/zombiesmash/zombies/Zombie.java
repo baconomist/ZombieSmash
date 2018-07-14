@@ -25,15 +25,28 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
+import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.MovableEntity;
+import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
+import com.fcfruit.zombiesmash.entity.OptimizableEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
+import com.fcfruit.zombiesmash.zombies.parts.Part;
+import com.fcfruit.zombiesmash.zombies.parts.Torso;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -43,9 +56,9 @@ import java.util.Random;
  * Created by Lucas on 2017-07-30.
  */
 
-public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface,
-        ContainerEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface,
-        com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface, com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface
+public class Zombie implements DrawableEntityInterface, InteractiveEntityInterface,
+        ContainerEntityInterface, OptimizableEntityInterface,
+        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface
 {
 
     /**
@@ -61,11 +74,11 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     /**
      * Composition
      **/
-    private com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity animatableGraphicsEntity;
-    private com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity interactiveGraphicsEntity;
-    private com.fcfruit.zombiesmash.entity.OptimizableEntity optimizableEntity;
-    private com.fcfruit.zombiesmash.entity.MovableEntity movableEntity;
-    private com.fcfruit.zombiesmash.entity.MultiGroundEntity multiGroundEntity;
+    private AnimatableGraphicsEntity animatableGraphicsEntity;
+    private InteractiveGraphicsEntity interactiveGraphicsEntity;
+    private OptimizableEntity optimizableEntity;
+    private MovableEntity movableEntity;
+    private MultiGroundEntity multiGroundEntity;
     public ContainerEntity containerEntity;
 
     /**
@@ -95,11 +108,11 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
 
         this.speed = 1;
 
-        this.movableEntity = new com.fcfruit.zombiesmash.entity.MovableEntity(this);
-        this.multiGroundEntity = new com.fcfruit.zombiesmash.entity.MultiGroundEntity(this, this);
+        this.movableEntity = new MovableEntity(this);
+        this.multiGroundEntity = new MultiGroundEntity(this, this);
         this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
-        this.optimizableEntity = new com.fcfruit.zombiesmash.entity.OptimizableEntity(null, null, this);
+        this.optimizableEntity = new OptimizableEntity(null, null, this);
 
         this.shouldObjectiveOnce = true;
         this.detachableEntitiesToStayAlive = new ArrayList();
@@ -163,18 +176,18 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
         // Remove old entities from world
         if (this.getDrawableEntities() != null)
         {
-            for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.getDrawableEntities().values())
+            for (DrawableEntityInterface drawableEntity : this.getDrawableEntities().values())
             {
                 drawableEntity.dispose();
-                if (drawableEntity instanceof com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface)
+                if (drawableEntity instanceof PhysicsEntityInterface)
                 {
-                    Environment.physics.destroyBody(((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface) drawableEntity).getPhysicsBody());
+                    Environment.physics.destroyBody(((PhysicsEntityInterface) drawableEntity).getPhysicsBody());
                 }
             }
         }
 
-        this.setDrawableEntities(new HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface>());
-        this.setInteractiveEntities(new HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface>());
+        this.setDrawableEntities(new HashMap<String, DrawableEntityInterface>());
+        this.setInteractiveEntities(new HashMap<String, InteractiveEntityInterface>());
         this.setDetachableEntities(new HashMap<String, DetachableEntityInterface>());
 
         // Only set animScale once because later on when you loop through the slots of the anim
@@ -244,11 +257,9 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
 
                         // Match Body Pos And Rotation To Spine For BloodPoint Calculations
                         Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
-
                         Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
                         pos.y = Environment.physicsCamera.position.y*2 - pos.y;
                         body.setTransform(new Vector2(pos.x, pos.y), 0);
-
                         if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
                             body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
                         else
@@ -304,7 +315,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
         size.y = Environment.gameCamera.position.y*2 - size.y;
         Polygon polygon = new Polygon(new float[]{0, 0, size.x*2, 0, size.x*2, size.y*1.5f, 0, size.y*1.5f});
         polygon.setOrigin(size.x, 0);
-        this.interactiveGraphicsEntity = new com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
+        this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
     }
 
     private void animationSetup()
@@ -329,7 +340,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
             }
         });
 
-        this.animatableGraphicsEntity = new com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity(skeleton, state, atlas);
+        this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
         this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
     }
 
@@ -348,7 +359,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
         return isInLevel;*/
 
         boolean isInLevel = false;
-        for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface i : this.getDrawableEntities().values())
+        for (DrawableEntityInterface i : this.getDrawableEntities().values())
         {
             isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
                     && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2;
@@ -360,7 +371,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     private boolean isAtObjective()
     {
         boolean isAtObjective = false;
-        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface i : this.getInteractiveEntities().values())
+        for (InteractiveEntityInterface i : this.getInteractiveEntities().values())
         {
             if (Environment.level.objective.polygon.contains(i.getPolygon().getX(), i.getPolygon().getY()))
             {
@@ -847,7 +858,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     public void onTouchDown(float screenX, float screenY, int p)
     {
         boolean touching = false;
-        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchDown(screenX, screenY, p);
             if (interactiveEntity.isTouching())
@@ -859,14 +870,14 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
 
         if (this.isTouching() && !touching && this.isAlive() && this.isInLevel())
         {
-            ((com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
+            ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
     }
 
     @Override
     public void onTouchDragged(float screenX, float screenY, int p)
     {
-        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchDragged(screenX, screenY, p);
         }
@@ -876,7 +887,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     @Override
     public void onTouchUp(float screenX, float screenY, int p)
     {
-        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchUp(screenX, screenY, p);
         }
@@ -886,7 +897,7 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     @Override
     public boolean isTouching()
     {
-        for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             if (interactiveEntity.isTouching())
             {
@@ -940,13 +951,13 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     }
 
     @Override
-    public HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface> getDrawableEntities()
+    public HashMap<String, DrawableEntityInterface> getDrawableEntities()
     {
         return this.containerEntity.getDrawableEntities();
     }
 
     @Override
-    public HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface> getInteractiveEntities()
+    public HashMap<String, InteractiveEntityInterface> getInteractiveEntities()
     {
         return this.containerEntity.getInteractiveEntities();
     }
@@ -958,13 +969,13 @@ public class Zombie implements com.fcfruit.zombiesmash.entity.interfaces.Drawabl
     }
 
     @Override
-    public void setDrawableEntities(HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface> drawableEntities)
+    public void setDrawableEntities(HashMap<String, DrawableEntityInterface> drawableEntities)
     {
         this.containerEntity.setDrawableEntities(drawableEntities);
     }
 
     @Override
-    public void setInteractiveEntities(HashMap<String, com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface> interactiveEntities)
+    public void setInteractiveEntities(HashMap<String, InteractiveEntityInterface> interactiveEntities)
     {
         this.containerEntity.setInteractiveEntities(interactiveEntities);
     }

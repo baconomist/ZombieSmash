@@ -12,6 +12,7 @@ import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 
 import java.util.ArrayList;
 
@@ -21,9 +22,12 @@ import java.util.ArrayList;
 
 public class BleedablePoint implements BleedableEntityInterface
 {
+    public String blood_pos_name;
+
     private float rotOffset;
     private float physics_h;
     private Vector2 physics_offset;
+    private Vector2 complete_physics_pos;
     private Body physicsBody;
 
     private boolean isBleeding;
@@ -40,6 +44,16 @@ public class BleedablePoint implements BleedableEntityInterface
 
     public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody)
     {
+        this.create(physics_pos, blood_pos, bone, physicsBody);
+    }
+
+    /**
+     * General create method as to not copy and paste code
+     * **/
+    private void create(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody)
+    {
+        this.blood_pos_name = blood_pos.getName();
+
         this.physicsBody = physicsBody;
 
         Vector2 spine_pos = physics_pos.computeWorldPosition(bone, new Vector2(0, 0)).sub(blood_pos.computeWorldPosition(bone, new Vector2(0, 0)));
@@ -59,12 +73,11 @@ public class BleedablePoint implements BleedableEntityInterface
         this.calc_phys_pos();
         float angle = (float)Math.atan2(this.physics_offset.y, this.physics_offset.x);
         this.rotOffset = angle - (float)Math.atan2(y, x);
-
-        drawableGraphicsEntity.getSprite().setSize(10, 10);
-        Environment.drawableAddQueue.add(this.drawableGraphicsEntity);
-
     }
 
+    /**
+     * Calculate the position for blood to spawn at relative to the physicsBody
+     * **/
     private void calc_phys_pos()
     {
         this.physics_offset = new Vector2(this.physics_h*(float)Math.cos(this.physicsBody.getAngle() - rotOffset), this.physics_h*(float)Math.sin(this.physicsBody.getAngle() - rotOffset));
@@ -84,8 +97,8 @@ public class BleedablePoint implements BleedableEntityInterface
     {
         this.calc_phys_pos();
 
-        Vector2 complete_physics_pos = this.physicsBody.getPosition().sub(this.physics_offset);
-        this.drawableGraphicsEntity.setPosition(complete_physics_pos);
+        this.complete_physics_pos = this.physicsBody.getPosition();
+        this.complete_physics_pos.sub(this.physics_offset);
 
         ArrayList<BleedBlood> copy = new ArrayList<BleedBlood>();
         for (BleedBlood blood : this.blood)
@@ -96,14 +109,18 @@ public class BleedablePoint implements BleedableEntityInterface
         {
             if (blood.readyForDestroy)
             {
-                blood.destroy();
+                blood.dispose();
                 this.blood.remove(blood);
             }
         }
 
         this.updateBlood();
+
     }
 
+    /**
+     * Create blood accordingly
+     * **/
     private void updateBlood()
     {
         if (this.isBleeding)
@@ -120,7 +137,7 @@ public class BleedablePoint implements BleedableEntityInterface
             if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
             {
 
-                //this.blood.add(new BleedBlood(this.physicsBody.getPosition().x, this.physicsBody.getPosition().y, this.physicsBody.getPosition().x, this.physicsBody.getPosition().y, this.rotation));
+                this.blood.add(new BleedBlood(this.complete_physics_pos, this.physics_offset));
 
                 this.bloodTimer = System.currentTimeMillis();
             }
@@ -134,7 +151,6 @@ public class BleedablePoint implements BleedableEntityInterface
     public void enable_bleeding()
     {
         this.isBleeding = true;
-        Environment.drawableAddQueue.add(this.drawableGraphicsEntity);
     }
 
     @Override
