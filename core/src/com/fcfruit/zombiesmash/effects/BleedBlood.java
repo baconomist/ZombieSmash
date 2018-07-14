@@ -11,10 +11,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Joint;
-import com.badlogic.gdx.physics.box2d.joints.RevoluteJoint;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 
 import java.util.Random;
 
@@ -22,26 +23,17 @@ import java.util.Random;
  * Created by Lucas on 2018-01-03.
  */
 
-public class BleedBlood
+public class BleedBlood implements DrawableEntityInterface
 {
 
+    private DrawablePhysicsEntity drawablePhysicsEntity;
     private Body physicsBody;
     private Fixture fixture;
 
-    private Sprite sprite;
-
-    private float offsetX;
-    private float offsetY;
-    private float rotationOffset;
-
     public boolean readyForDestroy = false;
 
-    public BleedBlood(float x, float y, float offsetX, float offsetY, float rotationOffset)
+    public BleedBlood(Vector2 center, Vector2 direction)
     {
-
-        this.offsetX = offsetX;
-        this.offsetY = offsetY;
-        this.rotationOffset = rotationOffset;
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
@@ -59,42 +51,20 @@ public class BleedBlood
         fixture = this.physicsBody.createFixture(fixtureDef);
         fixture.setUserData(this);
 
+        this.physicsBody.setTransform(center, 0);
 
-        float randomForceX = new Random().nextInt(6) + 1;
-        float randomForceY = new Random().nextInt(1) + 1;
-        if (new Random().nextInt(2) == 1)
-        {
-            randomForceX = randomForceX * -1;
-        }
-        //this.physicsBody.applyForceToCenter(new Vector2(randomForceX, randomForceY), true);
-        this.physicsBody.setTransform(x, y, 0);
+        this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)), this.physicsBody);
+        Environment.drawableAddQueue.add(this.drawablePhysicsEntity);
 
-        sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
-
-
-        double rot = -rotationOffset;
-
-        double a = Math.sin(rot);
-        double o = Math.cos(rot);
-
-        Vector2 direction = new Vector2((float)a/10, (float)o/10);
-
-        this.physicsBody.applyLinearImpulse(direction, this.physicsBody.getPosition(), true);
+        // Set blood trajectory and scale down speed to half
+        // Also negate trajectory cus in BleedablePoint the physics_offset is subtracted from the physics_body_pos
+        this.physicsBody.applyLinearImpulse(direction.scl(-0.5f), this.physicsBody.getPosition(), true);
 
     }
 
     public void draw(SpriteBatch batch)
     {
-
-        float x = (float) (offsetX * Math.cos(rotationOffset) - offsetY * Math.sin(rotationOffset));
-        float y = (float) (offsetX * Math.sin(rotationOffset) + offsetY * Math.cos(rotationOffset));
-
-        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(
-                new Vector3(this.physicsBody.getPosition().x - x, this.physicsBody.getPosition().y - y, 0)));
-
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.position.y*2 - pos.y - sprite.getHeight() / 2);
-
-        sprite.draw(batch);
+        this.drawablePhysicsEntity.draw(batch);
 
         if (this.physicsBody.getPosition().y < 0.1f)
         {
@@ -107,11 +77,66 @@ public class BleedBlood
 
     }
 
+    @Override
+    public void update(float delta)
+    {
+        this.drawablePhysicsEntity.update(delta);
+    }
 
-    public void destroy()
+    @Override
+    public Vector2 getPosition()
+    {
+        return this.drawablePhysicsEntity.getPosition();
+    }
+
+    @Override
+    public void setPosition(Vector2 position)
+    {
+        this.drawablePhysicsEntity.setPosition(position);
+    }
+
+    @Override
+    public float getAngle()
+    {
+        return this.drawablePhysicsEntity.getAngle();
+    }
+
+    @Override
+    public void setAngle(float angle)
+    {
+        this.drawablePhysicsEntity.setAngle(angle);
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.drawablePhysicsEntity.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.drawablePhysicsEntity.setAlpha(alpha);
+    }
+
+    @Override
+    public Vector2 getSize()
+    {
+        return this.drawablePhysicsEntity.getSize();
+    }
+
+    @Override
+    public void dispose()
     {
         Environment.physics.destroyBody(this.physicsBody);
-        this.sprite = null;
+        this.drawablePhysicsEntity.dispose();
+    }
+
+    // Unused
+    @Override
+    public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+
     }
 
 }
