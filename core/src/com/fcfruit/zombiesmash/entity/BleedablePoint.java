@@ -40,8 +40,24 @@ public class BleedablePoint implements BleedableEntityInterface
 
     private boolean initUpdate = true;
 
-    DrawableGraphicsEntity drawableGraphicsEntity = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("badlogic.jpg"))));
 
+    /**
+     * Child constructor
+     * **/
+    private BleedablePoint parentBleedablePoint;
+    private DetachableEntityInterface detachableEntity;
+
+    public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, BleedablePoint parentBleedablePoint, DetachableEntityInterface detachableEntity)
+    {
+        this.create(physics_pos, blood_pos, bone, physicsBody);
+        this.parentBleedablePoint = parentBleedablePoint;
+        this.detachableEntity = detachableEntity;
+    }
+
+
+    /**
+     * Parent constructor
+     * **/
     public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody)
     {
         this.create(physics_pos, blood_pos, bone, physicsBody);
