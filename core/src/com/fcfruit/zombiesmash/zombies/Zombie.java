@@ -252,9 +252,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     if (attachment.getName().contains("blood_pos"))
                     {
 
-                        if(bodyName.equals("left_arm"))
-                            Gdx.app.log("aaarfra", "" + body.getAngle());
-
                         // Match Body Pos And Rotation To Spine For BloodPoint Calculations
                         Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
                         Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
