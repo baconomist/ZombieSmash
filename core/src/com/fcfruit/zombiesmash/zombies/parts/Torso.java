@@ -67,9 +67,6 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
 
         for(BleedablePoint bleedablePoint : this.bleedablePoints)
         {
-            if(bleedablePoint == null)
-                continue;
-
             bleedablePoint.update(delta);
         }
 

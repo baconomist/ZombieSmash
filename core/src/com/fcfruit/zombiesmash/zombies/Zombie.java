@@ -241,33 +241,34 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 Array<Attachment> attachments = new Array<Attachment>();
                 this.animatableGraphicsEntity.getSkeleton().getData().getDefaultSkin().findAttachmentsForSlot(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getData().getIndex(), attachments);
 
-                // Attachments.size is incorrect, but it doesn't matter..................
-                BleedablePoint[] bleedablePoints = new BleedablePoint[attachments.size];
 
-                for (int i = 0, c = 0; c < attachments.size; c++)
+                Array<Attachment> blood_pos_attachments = new Array<Attachment>();
+                for(int i = 0; i < attachments.size; i++)
                 {
-                    Attachment attachment = attachments.get(c);
+                    if(attachments.get(i).getName().contains("blood_pos"))
+                        blood_pos_attachments.add(attachments.get(i));
+                }
 
-                    // ******************************************************************THIS if statement CAUSES NULL BLEEDABLE POINT OBJECTS IN THE LIST******************************************************************
-                    if (attachment.getName().contains("blood_pos"))
-                    {
+                BleedablePoint[] bleedablePoints = new BleedablePoint[blood_pos_attachments.size];
 
-                        // Match Body Pos And Rotation To Spine For BloodPoint Calculations
-                        Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
-                        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
-                        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
-                        body.setTransform(new Vector2(pos.x, pos.y), 0);
-                        if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
-                            body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
-                        else
-                            body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+                for (int i = 0; i < blood_pos_attachments.size; i++)
+                {
+                    Attachment attachment = blood_pos_attachments.get(i);
 
-                        // Create Bleed Point
-                        bleedablePoints[i] = new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
-                                ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body);
+                    // Match Body Pos And Rotation To Spine For BloodPoint Calculations
+                    Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
+                    Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
+                    pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+                    body.setTransform(new Vector2(pos.x, pos.y), 0);
+                    if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
+                        body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+                    else
+                        body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
 
-                        i++;
-                    }
+                    // Create Bleed Point
+                    bleedablePoints[i] = new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
+                            ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body);
+
                 }
 
                 // If we still have the part
