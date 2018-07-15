@@ -12,9 +12,11 @@ import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by Lucas on 2018-02-02.
@@ -30,6 +32,9 @@ public class BleedablePoint implements BleedableEntityInterface
     private Vector2 complete_physics_pos;
     private Body physicsBody;
 
+    private DrawableGraphicsEntity bodypartBlood;
+    private float blood_pos_rot_offset;
+
     private boolean isBleeding;
 
     private ArrayList<BleedBlood> blood;
@@ -39,7 +44,6 @@ public class BleedablePoint implements BleedableEntityInterface
     private double bloodTimer;
 
     private boolean initUpdate = true;
-
 
     /**
      * Child code
@@ -85,6 +89,11 @@ public class BleedablePoint implements BleedableEntityInterface
         this.calc_phys_pos();
         float angle = (float)Math.atan2(this.physics_offset.y, this.physics_offset.x);
         this.rotOffset = angle - (float)Math.atan2(y, x);
+
+
+        this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)));
+        this.blood_pos_rot_offset = (float) Math.toDegrees(this.physicsBody.getAngle()) - blood_pos.computeWorldRotation(bone); // - 180; // -180 because pointAttachments have a different "0 degrees" than everything else
+
     }
 
     /**
@@ -102,6 +111,9 @@ public class BleedablePoint implements BleedableEntityInterface
         {
             blood.draw(batch);
         }
+
+        if(this.isBleeding)
+            this.bodypartBlood.draw(batch);
     }
 
     @Override
@@ -137,6 +149,9 @@ public class BleedablePoint implements BleedableEntityInterface
     {
         if (this.isBleeding)
         {
+            this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
+            this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()));
+
             if(initUpdate)
             {
                 this.bleedTimer = System.currentTimeMillis();

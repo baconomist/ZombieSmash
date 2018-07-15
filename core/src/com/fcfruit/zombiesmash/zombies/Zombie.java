@@ -794,7 +794,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
-
         if (this.isAnimating())
         {
             this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
@@ -809,7 +808,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 }
             }
         }
-
     }
 
     @Override
