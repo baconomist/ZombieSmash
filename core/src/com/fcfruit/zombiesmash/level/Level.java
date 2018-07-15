@@ -222,31 +222,33 @@ public class Level
         }
 
 
+        // Add updatableEntities to level
         for (com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
         {
             this.updatableEntities.add(updatableEntityInterface);
         }
         Environment.updatableAddQueue.clear();
 
+        // Remove drawableEntities from level
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
         {
             this.drawableEntities.remove(drawableEntity);
         }
         Environment.drawableRemoveQueue.clear();
 
+        // Add drawableEntities to background
+        for(DrawableEntityInterface drawableEntityInterface : Environment.drawableBackgroundAddQueue)
+        {
+            this.drawableEntities.add(0, drawableEntityInterface);
+        }
+
+        // Add drawableEntities to level
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
         {
             this.drawableEntities.add(drawableEntity);
         }
         Environment.drawableAddQueue.clear();
-
-        Collections.reverse(this.drawableEntities);
-        for(DrawableEntityInterface drawableEntityInterface : Environment.groundBloodAddQueue)
-        {
-            this.drawableEntities.add(drawableEntityInterface);
-        }
-        Collections.reverse(this.drawableEntities);
-        Environment.groundBloodAddQueue.clear();
+        Environment.drawableBackgroundAddQueue.clear();
 
     }
 

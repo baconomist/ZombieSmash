@@ -54,7 +54,7 @@ public class BleedBlood implements DrawableEntityInterface
         this.physicsBody.setTransform(center, 0);
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)), this.physicsBody);
-        Environment.drawableAddQueue.add(this.drawablePhysicsEntity);
+        Environment.drawableBackgroundAddQueue.add(this.drawablePhysicsEntity);
 
         // Set blood trajectory and scale down speed to half
         // Also negate trajectory cus in BleedablePoint the physics_offset is subtracted from the physics_body_pos
@@ -70,7 +70,7 @@ public class BleedBlood implements DrawableEntityInterface
         {
             GroundBlood groundBlood = new GroundBlood();
             groundBlood.setPosition(this.physicsBody.getPosition());
-            Environment.groundBloodAddQueue.add(groundBlood);
+            Environment.drawableBackgroundAddQueue.add(groundBlood);
 
             this.readyForDestroy = true;
         }

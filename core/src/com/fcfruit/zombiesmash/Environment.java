@@ -101,8 +101,7 @@ public class Environment
     public static ArrayList<DrawableEntityInterface> drawableRemoveQueue = new ArrayList<DrawableEntityInterface>();
 
     public static ArrayList<DrawableEntityInterface> drawableAddQueue = new ArrayList<DrawableEntityInterface>();
-
-    public static ArrayList<DrawableEntityInterface> groundBloodAddQueue = new ArrayList<DrawableEntityInterface>();
+    public static ArrayList<DrawableEntityInterface> drawableBackgroundAddQueue = new ArrayList<DrawableEntityInterface>();
 
     public static ArrayList<UpdatableEntityInterface> updatableAddQueue = new ArrayList<UpdatableEntityInterface>();
 
