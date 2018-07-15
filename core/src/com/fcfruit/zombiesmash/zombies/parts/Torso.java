@@ -6,6 +6,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
@@ -13,11 +14,14 @@ import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+
+import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2018-01-07.
@@ -32,9 +36,9 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     private DrawablePhysicsEntity drawableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 
-    private BleedablePoint[] bleedablePoints;
+    private Array<BleedablePoint> bleedablePoints;
 
-    public Torso(String name, Sprite sprite, Body physicsBody, ContainerEntityInterface parentContainer, BleedablePoint[] bleedablePoints)
+    public Torso(String name, Sprite sprite, Body physicsBody, ContainerEntityInterface parentContainer, Array<BleedablePoint> bleedablePoints)
     {
         this.name = name;
 

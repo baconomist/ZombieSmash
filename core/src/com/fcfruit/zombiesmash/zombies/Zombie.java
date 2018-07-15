@@ -158,6 +158,57 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         Gdx.app.log("calc_anim_scale", ""+this.animScale);
     }
 
+    private HashMap<String, Array<BleedablePoint>> create_bleedable_points(RubeScene rubeScene)
+    {
+        HashMap<String, Array<BleedablePoint>> bleedable_points = new HashMap<String, Array<BleedablePoint>>();
+
+        for (Body body : rubeScene.getBodies())
+        {
+            if ((Boolean) rubeScene.getCustom(body, "isPart"))
+            {
+                String bodyName = (String) rubeScene.getCustom(body, "name");
+
+                Array<Attachment> attachments = new Array<Attachment>();
+                this.animatableGraphicsEntity.getSkeleton().getData().getDefaultSkin().findAttachmentsForSlot(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getData().getIndex(), attachments);
+
+
+                Array<Attachment> blood_pos_attachments = new Array<Attachment>();
+                for (int i = 0; i < attachments.size; i++)
+                {
+                    if (attachments.get(i).getName().contains("blood_pos"))
+                        blood_pos_attachments.add(attachments.get(i));
+                }
+
+                Array<BleedablePoint> bleedablePoints = new Array<BleedablePoint>();
+
+                for (int i = 0; i < blood_pos_attachments.size; i++)
+                {
+                    Attachment attachment = blood_pos_attachments.get(i);
+
+                    // Match Body Pos And Rotation To Spine For BloodPoint Calculations
+                    Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
+                    Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
+                    pos.y = Environment.physicsCamera.position.y * 2 - pos.y;
+                    body.setTransform(new Vector2(pos.x, pos.y), 0);
+                    if (this.animatableGraphicsEntity.getSkeleton().getFlipX())
+                        body.setTransform(body.getPosition(), (float) Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+                    else
+                        body.setTransform(body.getPosition(), (float) Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
+
+                    // Create Bleed Point
+                    bleedablePoints.add(new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
+                            ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body));
+
+                }
+
+                bleedable_points.put(bodyName, bleedablePoints);
+
+            }
+        }
+
+        return bleedable_points;
+    }
+
     public void constructBody()
     {
         boolean flip = this.direction == 1;
@@ -202,6 +253,24 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
         this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
 
+        HashMap<String, Array<BleedablePoint>> bleedablePoints = this.create_bleedable_points(rubeScene);
+        for(String part : bleedablePoints.keySet())
+        {
+            if(bleedablePoints.get(part).size > 1)
+            {
+                for(BleedablePoint bleedablePoint : bleedablePoints.get(part))
+                {
+                    /*
+                    * TODO:
+                    * TODO:
+                    * TODO:
+                    *   - Make this work for parts which may have more than 1 bleed position but are still children
+                    * */
+                    bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
+                }
+            }
+        }
+
         for (Body body : rubeScene.getBodies())
         {
             if ((Boolean) rubeScene.getCustom(body, "isPart"))
@@ -238,44 +307,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     fixture.setUserData(this);
                 }
 
-                Array<Attachment> attachments = new Array<Attachment>();
-                this.animatableGraphicsEntity.getSkeleton().getData().getDefaultSkin().findAttachmentsForSlot(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getData().getIndex(), attachments);
 
-
-                Array<Attachment> blood_pos_attachments = new Array<Attachment>();
-                for(int i = 0; i < attachments.size; i++)
-                {
-                    if(attachments.get(i).getName().contains("blood_pos"))
-                        blood_pos_attachments.add(attachments.get(i));
-                }
-
-                BleedablePoint[] bleedablePoints = new BleedablePoint[blood_pos_attachments.size];
-
-                for (int i = 0; i < blood_pos_attachments.size; i++)
-                {
-                    Attachment attachment = blood_pos_attachments.get(i);
-
-                    // Match Body Pos And Rotation To Spine For BloodPoint Calculations
-                    Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), new Vector2(0, 0));
-                    Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
-                    pos.y = Environment.physicsCamera.position.y*2 - pos.y;
-                    body.setTransform(new Vector2(pos.x, pos.y), 0);
-                    if(this.animatableGraphicsEntity.getSkeleton().getFlipX())
-                        body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + 180 - ((RegionAttachment) this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
-                    else
-                        body.setTransform(body.getPosition(), (float)Math.toRadians(this.animatableGraphicsEntity.getSkeleton().findBone(bodyName).getWorldRotationX() + ((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRotation()));
-
-                    // Create Bleed Point
-                    bleedablePoints[i] = new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
-                            ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body);
-
-                }
 
                 // If we still have the part
                 // If not, we destroy the body loaded into the world by rube
                 // Prevents invisible bodies for when parts are detached from the zombie
                 if (this.currentParts.contains(bodyName))
-                    this.createPart(body, bodyName, sprite, joints, this, bleedablePoints);
+                    this.createPart(body, bodyName, sprite, joints, this, bleedablePoints.get(bodyName));
                 else
                     Environment.physics.destroyBody(body);
 
@@ -287,13 +325,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     /**
      * Zombie subclasses should override this method
      **/
-    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint[] bleedablePoints)
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
         physicsBody.setUserData(bodyName);
         // If child
         if (joints.size() > 0)
         {
-            Part part = new Part(bodyName, sprite, physicsBody, joints, containerEntity, bleedablePoints[0]);
+            Part part = new Part(bodyName, sprite, physicsBody, joints, containerEntity, bleedablePoints.get(0));
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
             this.getDetachableEntities().put(bodyName, part);

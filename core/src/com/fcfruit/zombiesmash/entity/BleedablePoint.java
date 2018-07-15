@@ -42,18 +42,14 @@ public class BleedablePoint implements BleedableEntityInterface
 
 
     /**
-     * Child constructor
+     * Child code
      * **/
     private BleedablePoint parentBleedablePoint;
-    private DetachableEntityInterface detachableEntity;
 
-    public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, BleedablePoint parentBleedablePoint, DetachableEntityInterface detachableEntity)
+    public void setParent(BleedablePoint parent)
     {
-        this.create(physics_pos, blood_pos, bone, physicsBody);
-        this.parentBleedablePoint = parentBleedablePoint;
-        this.detachableEntity = detachableEntity;
+        this.parentBleedablePoint = parent;
     }
-
 
     /**
      * Parent constructor
@@ -167,11 +163,15 @@ public class BleedablePoint implements BleedableEntityInterface
     public void enable_bleeding()
     {
         this.isBleeding = true;
+        if(this.parentBleedablePoint != null)
+            this.parentBleedablePoint.enable_bleeding();
     }
 
     @Override
     public void disable_bleeding()
     {
         this.isBleeding = false;
+        if(this.parentBleedablePoint != null)
+            this.parentBleedablePoint.disable_bleeding();
     }
 }

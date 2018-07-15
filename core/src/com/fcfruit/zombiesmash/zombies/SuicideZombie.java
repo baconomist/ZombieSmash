@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
@@ -57,7 +58,7 @@ public class SuicideZombie extends Zombie
     }
 
     @Override
-    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint[] bleedablePoints)
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
         super.createPart(physicsBody, bodyName, sprite, joints, containerEntity, bleedablePoints);
 
@@ -68,6 +69,5 @@ public class SuicideZombie extends Zombie
             this.getInteractiveEntities().put("grenade", grenade);
             this.getDetachableEntities().put("grenade", grenade);
         }
-
     }
 }

@@ -3,6 +3,7 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.zombies.parts.BodyRock;
@@ -39,7 +40,7 @@ public class BigZombie extends Zombie
     }
 
     @Override
-    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint[] bleedablePoints)
+    protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
         if(bodyName.equals("rock"))
         {
