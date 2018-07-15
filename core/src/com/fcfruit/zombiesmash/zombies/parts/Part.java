@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.zombies.parts;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
@@ -47,7 +48,9 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.containerEntity = containerEntity;
 
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
+
         this.detachableEntity = new DetachableEntity(joints, containerEntity, this);
+        this.detachableEntity.setForceForDetach(400f*physicsBody.getMass());
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;
