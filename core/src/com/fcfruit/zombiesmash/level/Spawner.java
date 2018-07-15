@@ -29,10 +29,11 @@ public class Spawner
 
     static
     {
-        positions.put("left", new Vector2(-1, 0));
-        positions.put("right", new Vector2(21, 0));
-        positions.put("middle_left", new Vector2(4, 0));
-        positions.put("middle_right", new Vector2(16, 0));
+        // 0.1f on y to keep zombie out of the ground
+        positions.put("left", new Vector2(-1, 0.1f));
+        positions.put("right", new Vector2(21, 0.1f));
+        positions.put("middle_left", new Vector2(4, 0.1f));
+        positions.put("middle_right", new Vector2(16, 0.1f));
     }
 
     static HashMap<String, Class> zombieType = new HashMap<String, Class>();
