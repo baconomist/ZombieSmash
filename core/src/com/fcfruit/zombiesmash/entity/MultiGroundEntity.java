@@ -39,6 +39,7 @@ public class MultiGroundEntity implements MultiGroundEntityInterface
         if (ground != this.currentGround)
         {
             float y = Environment.physics.getGroundBodies().get(ground).getPosition().y - Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y;
+            y = y + 0.1f; // Prevents zombie from getting stuck in the ground
             this.movableEntity.moveBy(new Vector2(0, y));
             this.isMovingToNewGround = true;
             this.currentGround = ground;
