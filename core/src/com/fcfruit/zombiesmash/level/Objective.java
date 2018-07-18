@@ -20,11 +20,13 @@ public class Objective {
 
     public void setPosition(float x, float y){
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
-        this.polygon.setPosition(pos.x, Environment.gameCamera.position.y*2 - pos.y);
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
+        this.polygon.setPosition(pos.x, pos.y);
     }
 
     public Vector2 getPosition(){
         Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(polygon.getX(), polygon.getY(), 0)));
+        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
         return new Vector2(pos.x, pos.y);
     }
 

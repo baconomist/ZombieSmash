@@ -27,7 +27,7 @@ public class NightLevel extends Level
         this.sprite.setPosition(-956, 0);
 
         this.objective = new House();
-        this.objective.setPosition(13f, 0f);
+        this.objective.setPosition(13f, 0.8f);
 
 
     }
