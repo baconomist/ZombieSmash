@@ -10,6 +10,7 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
@@ -77,9 +78,10 @@ public class Level
 
         Environment.physicsCamera.position.x = Environment.level.cameraPositions.get(data.get(0).name).x;
         Environment.physicsCamera.update();
-        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * com.fcfruit.zombiesmash.physics.Physics.PIXELS_PER_METER;
+        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
         Environment.gameCamera.update();
         Environment.physics.constructPhysicsBoundaries();
+
         this.createSpawners();
     }
 

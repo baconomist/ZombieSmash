@@ -29,6 +29,7 @@ public class NightLevel extends Level
         this.objective = new House();
         this.objective.setPosition(13f, 0f);
 
+
     }
 
 }
