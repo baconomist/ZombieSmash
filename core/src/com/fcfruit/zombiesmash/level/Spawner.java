@@ -35,7 +35,7 @@ public class Spawner
 
         // x position relative to the camera
         // 0.1f on y to keep zombie out of the ground
-        positions.put("left", new Vector2(pos.x + 2.6f, 0.1f));
+        positions.put("left", new Vector2(pos.x + 2f, 0.1f));
         positions.put("right", new Vector2(pos.x + 38.54f, 0.1f));
         positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
         positions.put("middle_right", new Vector2(pos.x + 33.33f, 0.1f));
