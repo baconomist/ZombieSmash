@@ -1,6 +1,6 @@
 {
 "skeleton": {
-	"hash": "jWP4sXbEbC6b1FvbNUGRTZ1isSI",
+	"hash": "TgaMG2FPJJKTuJwpPkohMxiTYDM",
 	"spine": "3.6.53",
 	"width": 993.9,
 	"height": 1144,
@@ -54,7 +54,7 @@
 			"physics_pos": { "type": "point", "x": 123.69, "y": 0.85 }
 		},
 		"left_arm": {
-			"blood_pos": { "type": "point", "x": -37.75 },
+			"blood_pos": { "type": "point", "x": -37.75, "rotation": 176.01 },
 			"left_arm": { "x": 144.5, "y": -4.67, "rotation": -1.61, "width": 411, "height": 139 },
 			"physics_pos": { "type": "point", "x": 131.93 }
 		},
@@ -64,7 +64,7 @@
 			"physics_pos": { "type": "point", "x": 117.71 }
 		},
 		"right_arm": {
-			"blood_pos": { "type": "point", "x": -21.61, "rotation": 144.26 },
+			"blood_pos": { "type": "point", "x": -21.61, "rotation": 167.15 },
 			"physics_pos": { "type": "point", "x": 114.13 },
 			"right_arm": { "x": 152.13, "y": -8.33, "width": 411, "height": 139 }
 		},
@@ -79,10 +79,10 @@
 		},
 		"torso": {
 			"blood_pos_head": { "type": "point", "x": 294.24, "y": -67.59 },
-			"blood_pos_left_arm": { "type": "point", "x": 218.7, "y": -161.79 },
-			"blood_pos_left_leg": { "type": "point", "x": -24.8, "y": -120.98, "rotation": -141.95 },
-			"blood_pos_right_arm": { "type": "point", "x": 237.66, "y": 99.3 },
-			"blood_pos_right_leg": { "type": "point", "x": -15.22, "y": 124.4 },
+			"blood_pos_left_arm": { "type": "point", "x": 218.7, "y": -161.79, "rotation": -82.83 },
+			"blood_pos_left_leg": { "type": "point", "x": -24.8, "y": -120.98, "rotation": -158.19 },
+			"blood_pos_right_arm": { "type": "point", "x": 237.66, "y": 99.3, "rotation": 76.28 },
+			"blood_pos_right_leg": { "type": "point", "x": -15.22, "y": 124.4, "rotation": 175.06 },
 			"physics_pos": { "type": "point", "x": 134.39 },
 			"torso": { "x": 149.1, "y": 19.8, "rotation": 9.96, "width": 439, "height": 470 }
 		}

@@ -58,15 +58,15 @@ public class BleedablePoint implements BleedableEntityInterface
     /**
      * Parent constructor
      * **/
-    public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody)
+    public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, float animScale)
     {
-        this.create(physics_pos, blood_pos, bone, physicsBody);
+        this.create(physics_pos, blood_pos, bone, physicsBody, animScale);
     }
 
     /**
      * General create method as to not copy and paste code
      * **/
-    private void create(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody)
+    private void create(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, float animScale)
     {
         this.blood_pos_name = blood_pos.getName();
 
@@ -91,8 +91,13 @@ public class BleedablePoint implements BleedableEntityInterface
         this.rotOffset = angle - (float)Math.atan2(y, x);
 
 
-        this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)));
+        //this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)));
+        this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png"))));
+        this.bodypartBlood.getSprite().setScale(animScale);
+
         this.blood_pos_rot_offset = (float) Math.toDegrees(this.physicsBody.getAngle()) - blood_pos.computeWorldRotation(bone); // - 180; // -180 because pointAttachments have a different "0 degrees" than everything else
+
+        Gdx.app.log(blood_pos_name, ""+blood_pos.computeWorldRotation(bone));
 
     }
 
@@ -150,7 +155,7 @@ public class BleedablePoint implements BleedableEntityInterface
         if (this.isBleeding)
         {
             this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
-            this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()));
+            this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
 
             if(initUpdate)
             {

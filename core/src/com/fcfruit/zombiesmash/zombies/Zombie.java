@@ -197,7 +197,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
                     // Create Bleed Point
                     bleedablePoints.add(new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
-                            ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body));
+                            ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body, this.animScale));
 
                 }
 
