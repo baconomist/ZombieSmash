@@ -37,7 +37,10 @@ public class BleedBlood implements DrawableEntityInterface
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        this.physicsBody = Environment.physics.createBody(bodyDef);
+
+        // This causes the gun to shoot blood!?!?!??!
+        this.physicsBody = Environment.physics.createBody(bodyDef); // This causes the gun to shoot blood!?!?!??!
+        // This causes the gun to shoot blood!?!?!??!
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.1f);
@@ -53,7 +56,7 @@ public class BleedBlood implements DrawableEntityInterface
 
         this.physicsBody.setTransform(center, 0);
 
-        this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)), this.physicsBody);
+        this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)), Environment.physics.createBody(bodyDef));// This causes the gun to shoot blood!?!?!??!
         Environment.drawableBackgroundAddQueue.add(this.drawablePhysicsEntity);
 
         // Set blood trajectory and scale down speed to half
