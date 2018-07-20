@@ -32,7 +32,7 @@ public class ParticleEntity
 
     private Vector2 initialPos;
 
-    public ParticleEntity(World world, Vector2 particlePos, Vector2 rayDir, float NUMRAYS, float blastPower, float drag)
+    public ParticleEntity(Vector2 particlePos, Vector2 rayDir, float NUMRAYS, float blastPower, float drag)
     {
         this.blastPower = blastPower;
         this.initialPos = particlePos;
@@ -50,9 +50,11 @@ public class ParticleEntity
         rayDir.scl(blastPower); // scale raydir to blastPower
         bd.linearVelocity.x = rayDir.x;
         bd.linearVelocity.y = rayDir.y;
-        physicsBody = world.createBody(bd);
+
+        this.physicsBody = Environment.physics.createBody(bd);
+
         //create a reference to this class in the body(this allows us to loop through the world bodies and check if the body is an Explosion particle)
-        physicsBody.setUserData(this);
+        this.physicsBody.setUserData(this);
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.05f); // very small
@@ -64,7 +66,7 @@ public class ParticleEntity
         fd.restitution = 0.99f; // high restitution to reflect off obstacles
         //fd.filter.groupIndex = -1; // particles should not collide with each other
 
-        this.fixture = physicsBody.createFixture(fd);
+        this.fixture = this.physicsBody.createFixture(fd);
         this.fixture.setUserData(this);
 
         this.rayDir = rayDir;
@@ -88,7 +90,7 @@ public class ParticleEntity
                     if(drawableEntity instanceof Zombie)
                     {
                         ((Zombie) drawableEntity).stopGetUp();
-                        //((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+                        //((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getthis.physicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
 
                         for(DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntity).getDetachableEntities().values())
                         {

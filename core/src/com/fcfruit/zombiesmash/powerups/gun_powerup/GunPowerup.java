@@ -5,9 +5,13 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
+import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
+
+import java.util.Set;
 
 /**
  * Created by Lucas on 2018-03-19.
@@ -18,7 +22,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
 
     private Sprite ui_image;
 
-    protected com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity[] guns;
+    protected DrawableGraphicsEntity[] guns;
 
     private double duration;
     private double durationTimer;
@@ -33,20 +37,37 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
 
     private boolean isActive;
 
-    public GunPowerup(Sprite ui_image)
+    private float blastPower;
+    private float drag;
+    private Vector2 explosionRadius;
+
+    private DrawableGraphicsEntity lastShotGun;
+
+    public GunPowerup(Sprite ui_image, float blastPower, float drag, Vector2 explosionRadius)
     {
         this.ui_image = ui_image;
-        this.duration = 1000000000;
-        this.timeBeforeShoot = 1000;
+        this.duration = 10000; // 10 seconds
+        this.timeBeforeShoot = 1000; // 1 shot/second
         this.currentControllingGun = -1;
         this.pointer = -1;
 
         this.isActive = false;
+
+        this.blastPower = blastPower;
+        this.drag = drag;
+        this.explosionRadius = explosionRadius;
     }
 
     @Override
     public void update(float delta)
     {
+
+        if (this.particleEntity != null && (Math.abs(this.particleEntity.physicsBody.getPosition().x - this.lastShotGun.getPosition().x) > this.explosionRadius.x
+                || Math.abs(this.particleEntity.physicsBody.getPosition().y - this.lastShotGun.getPosition().y) > this.explosionRadius.y))
+        {
+            Environment.physics.destroyBody(this.particleEntity.physicsBody);
+            this.particleEntity = null;
+        }
 
         if (this.hasCompleted())
         {
@@ -98,12 +119,12 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
                 this.shootTimer = System.currentTimeMillis();
             }
 
-            if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 4 && screenX < Gdx.graphics.getWidth() / 2 || Environment.level.getCurrentCameraPosition().equals("left") && screenX > Gdx.graphics.getWidth() / 2)
+            if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 2 || Environment.level.getCurrentCameraPosition().equals("left"))
                 this.currentControllingGun = 0;
-            else if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 2 && screenX < Gdx.graphics.getWidth() * 3 / 4)
+            else if (Environment.level.getCurrentCameraPosition().equals("middle") && screenX < Gdx.graphics.getWidth() / 2)
                 this.currentControllingGun = 1;
-            else if (Environment.level.getCurrentCameraPosition().equals("right") && screenX < Gdx.graphics.getWidth() / 2)
-                this.currentControllingGun = 0;
+            else if (Environment.level.getCurrentCameraPosition().equals("right"))
+                this.currentControllingGun = 1;
 
         }
     }
@@ -161,11 +182,17 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
         else
             angle = (float) Math.toRadians(-this.guns[this.currentControllingGun].getAngle() + 90);
 
+        // Set bullet direction
         Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-        this.particleEntity = (new ParticleEntity(Environment.physics.getWorld(), new Vector2(this.guns[currentControllingGun].getPosition().x + this.guns[currentControllingGun].getSize().x / 2,
-                this.guns[currentControllingGun].getPosition().y + this.guns[currentControllingGun].getSize().y / 2), rayDir, 1)); // create the this.particleEntity
 
+        // Create the bullet particle
+        this.particleEntity = new ParticleEntity(new Vector2(this.guns[currentControllingGun].getPosition().x + this.guns[currentControllingGun].getSize().x / 2,
+                this.guns[currentControllingGun].getPosition().y + this.guns[currentControllingGun].getSize().y / 2), rayDir, 1, this.blastPower, this.drag);
+
+        // Reset shoot timer
         this.shootTimer = System.currentTimeMillis();
+
+        this.lastShotGun = this.guns[currentControllingGun];
 
     }
 
