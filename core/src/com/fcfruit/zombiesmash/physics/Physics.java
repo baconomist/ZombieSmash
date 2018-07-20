@@ -24,8 +24,8 @@ import java.util.ArrayList;
 public class Physics
 {
 
-    public static final float WIDTH = 10f;
-    public static final float HEIGHT = 5.625f;
+    public static final float WIDTH = 20f;
+    public static final float HEIGHT = 11.25f;
 
     public static final float PIXELS_PER_METER = ZombieSmash.WIDTH / WIDTH;
     public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;

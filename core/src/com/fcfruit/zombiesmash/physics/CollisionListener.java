@@ -6,8 +6,11 @@ import com.badlogic.gdx.physics.box2d.ContactImpulse;
 import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Manifold;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 /**
  * Created by Lucas on 2017-09-19.
@@ -24,17 +27,8 @@ public class CollisionListener implements ContactListener
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
         {
-            /*
-            if (contact.getFixtureA().getUserData() instanceof Blood)
-            {
-                ((Blood) contact.getFixtureA().getUserData()).readyForDestroy = true;
-            } else if (contact.getFixtureB().getUserData() instanceof Blood)
-            {
-                ((Blood) contact.getFixtureB().getUserData()).readyForDestroy = true;
-            }*/
 
-
-            for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
+            for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
             {
                 if (drawableEntity instanceof ExplodableEntityInterface)
                 {
@@ -48,10 +42,10 @@ public class CollisionListener implements ContactListener
                     }
                 }
 
-                if (drawableEntity instanceof com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface)
+                if (drawableEntity instanceof ContainerEntityInterface)
                 {
 
-                    for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity1 : ((com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface) drawableEntity).getDrawableEntities().values())
+                    for (DrawableEntityInterface drawableEntity1 : ((ContainerEntityInterface) drawableEntity).getDrawableEntities().values())
                     {
                         if (drawableEntity1 instanceof ExplodableEntityInterface)
                         {
@@ -66,9 +60,9 @@ public class CollisionListener implements ContactListener
                         }
                     }
 
-                    for (DetachableEntityInterface detachableEntity : ((com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface) drawableEntity).getDetachableEntities().values())
+                    for (DetachableEntityInterface detachableEntity : ((ContainerEntityInterface) drawableEntity).getDetachableEntities().values())
                     {
-                        if(contact.getFixtureA().getBody().equals(((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface)detachableEntity).getPhysicsBody()) || contact.getFixtureB().getBody().equals(((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface)detachableEntity).getPhysicsBody()))
+                        if(contact.getFixtureA().getBody().equals(((PhysicsEntityInterface)detachableEntity).getPhysicsBody()) || contact.getFixtureB().getBody().equals(((PhysicsEntityInterface)detachableEntity).getPhysicsBody()))
                         {
                             if (!detachableEntity.getState().equals("detached") && detachableEntity.shouldDetach())
                             {

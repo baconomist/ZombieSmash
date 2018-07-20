@@ -11,8 +11,8 @@ import com.badlogic.gdx.graphics.GL20;
 public class ZombieSmash extends Game
 {
 
-    public static float WIDTH = 1920;
-    public static float HEIGHT = 1080;
+    public static float WIDTH = 3840;
+    public static float HEIGHT = 2160;
 
     FPSLogger logger = new FPSLogger();
 
@@ -27,7 +27,7 @@ public class ZombieSmash extends Game
     public void create()
     {
 
-        if(Flags.DEBUG)
+        if(Config.DEBUG)
         {
             Gdx.app.setLogLevel(Application.LOG_DEBUG);
         }

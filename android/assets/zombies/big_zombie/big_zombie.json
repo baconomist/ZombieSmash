@@ -1,15 +1,21 @@
 {
-"skeleton": { "hash": "wJIN/Nl0xu5j3cnsux2623sQKU0", "spine": "3.6.52", "width": 0, "height": 0, "images": "./big_zombie/images/" },
+"skeleton": {
+	"hash": "TgaMG2FPJJKTuJwpPkohMxiTYDM",
+	"spine": "3.6.53",
+	"width": 993.9,
+	"height": 1144,
+	"images": "./season_1/zombies/big_zombie/images/"
+},
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -2.92, "y": 2.81 },
-	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": 172.74, "y": 262.9 },
-	{ "name": "head", "parent": "torso", "length": 199.55, "rotation": 0.51, "x": 245.46, "y": -20.88 },
+	{ "name": "torso", "parent": "root", "length": 246.18, "rotation": 85.75, "x": 248.65, "y": 378.3 },
+	{ "name": "head", "parent": "torso", "length": 199.55, "rotation": 0.51, "x": 294.66, "y": -68.69 },
 	{ "name": "left_shoulder", "parent": "torso", "length": 126.58, "rotation": -92.96, "x": 245.23, "y": 0.93, "scaleX": 0.752 },
-	{ "name": "left_arm", "parent": "left_shoulder", "length": 214.67, "rotation": 6.36, "x": 122.8, "y": -0.76 },
+	{ "name": "left_arm", "parent": "left_shoulder", "length": 214.67, "rotation": 6.36, "x": 215, "y": -15.28 },
 	{ "name": "left_hip", "parent": "torso", "length": 103.07, "rotation": -86.07, "x": 0.72, "y": 1.97 },
-	{ "name": "left_leg", "parent": "left_hip", "length": 249.23, "rotation": -81.79, "x": 97.5, "y": -1.19 },
+	{ "name": "left_leg", "parent": "left_hip", "length": 249.23, "rotation": -81.79, "x": 121.54, "y": -33.92 },
 	{ "name": "right_shoulder", "parent": "torso", "length": 110.45, "rotation": 90.92, "x": 243.36, "y": 0.91, "scaleX": 0.81 },
-	{ "name": "right_arm", "parent": "right_shoulder", "length": 246.44, "rotation": -177.61, "x": 120.37, "y": 9.04 },
+	{ "name": "right_arm", "parent": "right_shoulder", "length": 246.44, "rotation": -177.61, "x": 121.15, "y": 2.63 },
 	{
 		"name": "right_hip",
 		"parent": "torso",
@@ -20,8 +26,8 @@
 		"scaleX": 1.038,
 		"scaleY": 1.038
 	},
-	{ "name": "right_leg", "parent": "right_hip", "length": 267.59, "rotation": 93.07, "x": 87.16, "y": 1.54 },
-	{ "name": "rock", "parent": "root", "length": 349.38, "rotation": -116.55, "x": 56.88, "y": 607.83 }
+	{ "name": "right_leg", "parent": "right_hip", "length": 267.59, "rotation": 93.07, "x": 119.99, "y": 3.81 },
+	{ "name": "rock", "parent": "root", "length": 349.38, "rotation": -116.55, "x": 84.86, "y": 673.36 }
 ],
 "slots": [
 	{ "name": "left_arm", "bone": "left_arm", "attachment": "left_arm" },
@@ -39,36 +45,46 @@
 			"bounding_box": {
 				"type": "boundingbox",
 				"vertexCount": 4,
-				"vertices": [ -219.39, -16.27, 546.12, 13.24, 525.35, 813.54, -292.83, 783.95 ]
+				"vertices": [ -213.07, -107.33, 718.27, -73.03, 677.67, 1006.84, -238.43, 971.25 ]
 			}
 		},
 		"head": {
-			"head": { "x": 146.34, "y": -1.2, "width": 286, "height": 295 },
+			"blood_pos": { "type": "point", "rotation": 170.26 },
+			"head": { "x": 146.34, "y": -1.2, "rotation": -10.71, "width": 363, "height": 372 },
 			"physics_pos": { "type": "point", "x": 123.69, "y": 0.85 }
 		},
 		"left_arm": {
-			"left_arm": { "x": 144.5, "y": -4.67, "rotation": -1.61, "width": 369, "height": 103 },
+			"blood_pos": { "type": "point", "x": -37.75, "rotation": 176.01 },
+			"left_arm": { "x": 144.5, "y": -4.67, "rotation": -1.61, "width": 411, "height": 139 },
 			"physics_pos": { "type": "point", "x": 131.93 }
 		},
 		"left_leg": {
-			"left_leg": { "x": 122.74, "y": -2.31, "rotation": -175.6, "width": 306, "height": 131 },
+			"blood_pos": { "type": "point", "x": -62.93, "y": -16.09, "rotation": 179.81 },
+			"left_leg": { "x": 122.74, "y": -2.31, "rotation": -155.87, "width": 499, "height": 281 },
 			"physics_pos": { "type": "point", "x": 117.71 }
 		},
 		"right_arm": {
+			"blood_pos": { "type": "point", "x": -21.61, "rotation": 167.15 },
 			"physics_pos": { "type": "point", "x": 114.13 },
-			"right_arm": { "x": 152.13, "y": -8.33, "width": 369, "height": 103 }
+			"right_arm": { "x": 152.13, "y": -8.33, "width": 411, "height": 139 }
 		},
 		"right_leg": {
-			"physics_pos": { "type": "point", "x": 131.76 },
-			"right_leg": { "x": 118.44, "y": -1.31, "rotation": 175.06, "width": 306, "height": 131 }
+			"blood_pos": { "type": "point", "x": -1.17, "rotation": 178.84 },
+			"physics_pos": { "type": "point", "x": 173.5, "y": -0.82 },
+			"right_leg": { "x": 205.83, "y": 11.14, "rotation": -156.48, "width": 499, "height": 281 }
 		},
 		"rock": {
-			"physics_pos": { "type": "point", "x": 154.58 },
-			"rock": { "x": 150.21, "y": 4.69, "rotation": -158.75, "width": 540, "height": 474 }
+			"physics_pos": { "type": "point", "x": 125.8, "y": -0.01 },
+			"rock": { "x": 103.27, "y": -10.13, "rotation": 162.14, "width": 543, "height": 383 }
 		},
 		"torso": {
+			"blood_pos_head": { "type": "point", "x": 294.24, "y": -67.59 },
+			"blood_pos_left_arm": { "type": "point", "x": 218.7, "y": -161.79, "rotation": -82.83 },
+			"blood_pos_left_leg": { "type": "point", "x": -24.8, "y": -120.98, "rotation": -158.19 },
+			"blood_pos_right_arm": { "type": "point", "x": 237.66, "y": 99.3, "rotation": 76.28 },
+			"blood_pos_right_leg": { "type": "point", "x": -15.22, "y": 124.4, "rotation": 175.06 },
 			"physics_pos": { "type": "point", "x": 134.39 },
-			"torso": { "x": 147.27, "y": 22.61, "rotation": 10.91, "width": 321, "height": 345 }
+			"torso": { "x": 149.1, "y": 19.8, "rotation": 9.96, "width": 439, "height": 470 }
 		}
 	}
 },
@@ -407,6 +423,7 @@
 				"translate": [
 					{ "time": 0, "x": 1.61, "y": 8.91 },
 					{ "time": 0.5, "x": -18.21, "y": -4.06 },
+					{ "time": 0.8, "x": 1.18, "y": -26.28 },
 					{ "time": 1, "x": 0.19, "y": 8.7 }
 				]
 			},

@@ -2,9 +2,19 @@ package com.fcfruit.zombiesmash.level;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
+import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
+import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
+import com.fcfruit.zombiesmash.zombies.BigZombie;
+import com.fcfruit.zombiesmash.zombies.GirlZombie;
+import com.fcfruit.zombiesmash.zombies.Zombie;
+import com.fcfruit.zombiesmash.zombies.PoliceZombie;
+import com.fcfruit.zombiesmash.zombies.RegularZombie;
+import com.fcfruit.zombiesmash.zombies.SuicideZombie;
 
 import java.util.HashMap;
 import java.util.Random;
@@ -20,31 +30,36 @@ public class Spawner
 
     static
     {
-        positions.put("left", new Vector2(-1, 0));
-        positions.put("right", new Vector2(21, 0));
-        positions.put("middle_left", new Vector2(4, 0));
-        positions.put("middle_right", new Vector2(16, 0));
+        // Not sure if this is ok with static context....
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(Environment.level.sprite.getX(), Environment.level.sprite.getY(), 0)));
+
+        // x position relative to the camera
+        // 0.1f on y to keep zombie out of the ground
+        positions.put("left", new Vector2(pos.x + 2f, 0.1f));
+        positions.put("right", new Vector2(pos.x + 38.54f, 0.1f));
+        positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
+        positions.put("middle_right", new Vector2(pos.x + 33.33f, 0.1f));
     }
 
     static HashMap<String, Class> zombieType = new HashMap<String, Class>();
 
     static
     {
-        zombieType.put("reg_zombie", com.fcfruit.zombiesmash.zombies.RegularZombie.class);
-        zombieType.put("girl_zombie", com.fcfruit.zombiesmash.zombies.GirlZombie.class);
-        zombieType.put("police_zombie", com.fcfruit.zombiesmash.zombies.PoliceZombie.class);
-        zombieType.put("big_zombie", com.fcfruit.zombiesmash.zombies.BigZombie.class);
-        zombieType.put("suicide_zombie", com.fcfruit.zombiesmash.zombies.SuicideZombie.class);
+        zombieType.put("reg_zombie", RegularZombie.class);
+        zombieType.put("girl_zombie", GirlZombie.class);
+        zombieType.put("police_zombie", PoliceZombie.class);
+        zombieType.put("big_zombie", BigZombie.class);
+        zombieType.put("suicide_zombie", SuicideZombie.class);
     }
 
     static HashMap<String, Class> powerupType = new HashMap<String, Class>();
 
     static
     {
-        powerupType.put("rifle", com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup.class);
-        powerupType.put("rock", com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup.class);
-        powerupType.put("pistol", com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup.class);
-        powerupType.put("grenade", com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup.class);
+        powerupType.put("rifle", RiflePowerup.class);
+        powerupType.put("rock", RockPowerup.class);
+        powerupType.put("pistol", PistolPowerup.class);
+        powerupType.put("grenade", GrenadePowerup.class);
     }
 
     String type;
@@ -92,10 +107,12 @@ public class Spawner
 
         try
         {
-            NewZombie tempZombie;
-            tempZombie = (NewZombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
+            Zombie tempZombie;
+            tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
             tempZombie.setup();
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
+
+            Gdx.app.log("sdada", ""+(Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(positions.get("left").x, 0, 0))).x));
 
             try
             {

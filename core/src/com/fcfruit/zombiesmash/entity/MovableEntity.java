@@ -1,6 +1,8 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 
 import java.util.ArrayList;
@@ -11,10 +13,12 @@ import java.util.ArrayList;
 
 public class MovableEntity implements MovableEntityInterface
 {
-    com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity;
+    DrawableEntityInterface drawableEntity;
     private Vector2 moveToPosition;
     private float speed;
     private ArrayList<Vector2> moveQueue;
+    
+    private double sensitivity = 0.1d;
 
     public MovableEntity(com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity)
     {
@@ -30,8 +34,8 @@ public class MovableEntity implements MovableEntityInterface
         if (this.isMoving())
         {
             // Stops zombie from glitching slightly
-            // Only move if ammount to move is > 0.01
-            if (Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > 0.01d)
+            // Only move if ammount to move is > this.sensitivity
+            if (Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > this.sensitivity)
             {
                 if (this.drawableEntity.getPosition().x < this.moveToPosition.x)
                 {
@@ -43,8 +47,8 @@ public class MovableEntity implements MovableEntityInterface
             }
 
             // Stops zombie from glitching slightly
-            // Only move if ammount to move is > 0.01
-            if (Math.abs(this.drawableEntity.getPosition().y - this.moveToPosition.y) > 0.01d)
+            // Only move if ammount to move is > this.sensitivity
+            if (Math.abs(this.drawableEntity.getPosition().y - this.moveToPosition.y) > this.sensitivity)
             {
                 if (this.drawableEntity.getPosition().y < this.moveToPosition.y)
                 {
@@ -87,7 +91,7 @@ public class MovableEntity implements MovableEntityInterface
             this.moveToPosition = this.moveQueue.get(0);
             this.moveQueue.remove(0);
         }
-        return this.moveToPosition != null && (Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > 0.01f || Math.abs(this.drawableEntity.getPosition().y - this.moveToPosition.y) > 0.01f);
+        return this.moveToPosition != null && (Math.abs(this.drawableEntity.getPosition().x - this.moveToPosition.x) > this.sensitivity || Math.abs(this.drawableEntity.getPosition().y - this.moveToPosition.y) > this.sensitivity);
     }
 
     @Override

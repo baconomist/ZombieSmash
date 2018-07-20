@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.entity;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -18,10 +19,14 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     private Sprite sprite;
     private Body physicsBody;
 
+    private float alpha;
+
     public DrawablePhysicsEntity(Sprite sprite, Body physicsBody)
     {
         this.sprite = sprite;
         this.physicsBody = physicsBody;
+
+        this.alpha = 1;
     }
 
     @Override
@@ -39,7 +44,8 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition().x, physicsBody.getPosition().y, 0)));
-        sprite.setPosition(pos.x - sprite.getWidth() / 2, Environment.gameCamera.viewportHeight - pos.y - sprite.getHeight() / 2);
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
+        sprite.setPosition(pos.x - sprite.getWidth() / 2, pos.y - sprite.getHeight() / 2);
         sprite.setRotation((float) Math.toDegrees(physicsBody.getAngle()));
     }
 
@@ -71,7 +77,30 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     public Vector2 getSize()
     {
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(sprite.getWidth(), sprite.getHeight(), 0)));
-        return new Vector2(size.x, Environment.physicsCamera.viewportHeight - size.y);
+        return new Vector2(size.x, Environment.physicsCamera.position.y*2 - size.y);
+    }
+
+    @Override
+    public float getAlpha()
+    {
+        return this.alpha;
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        if(alpha >= 0 && alpha <= 1)
+        {
+            this.alpha = alpha;
+        }
+
+        if(alpha < 0)
+            this.alpha = 0;
+
+        if(alpha > 1)
+            this.alpha = 1;
+
+        this.sprite.setAlpha(this.alpha);
     }
 
     public Body getPhysicsBody()

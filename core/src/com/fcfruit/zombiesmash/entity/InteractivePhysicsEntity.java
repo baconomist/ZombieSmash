@@ -7,6 +7,7 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.joints.MouseJoint;
 import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 
 /**
  * Created by lucas on 2018-01-07.
@@ -15,7 +16,7 @@ import com.fcfruit.zombiesmash.Environment;
 public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface
 {
 
-    private com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface containerEntity;
+    private ContainerEntityInterface containerEntity;
 
     private boolean isTouching;
     private boolean powerfulJoint;
@@ -37,7 +38,7 @@ public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.
         this.powerfulJoint = true;
     }
 
-    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface containerEntity)
+    public InteractivePhysicsEntity(Body physicsBody, Polygon polygon, ContainerEntityInterface containerEntity)
     {
         this.containerEntity = containerEntity;
 
@@ -54,7 +55,7 @@ public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.
     public void update(float delta)
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(physicsBody.getPosition(), 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
         // Center the polygon on physics body
         polygon.setPosition(pos.x - (polygon.getVertices()[2] / 2), pos.y - (polygon.getVertices()[5] / 2));
         polygon.setRotation((float) Math.toDegrees(physicsBody.getAngle()));

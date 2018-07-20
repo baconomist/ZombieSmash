@@ -8,8 +8,10 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.stages.GameStage;
+import com.fcfruit.zombiesmash.stages.GameUIStage;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -44,9 +46,9 @@ public class GameScreen implements Screen{
 
         game_stage = new GameStage(game_view);
 
-        ui_view = new StretchViewport(Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight);
+        ui_view = new StretchViewport(1920, 1080);
         ui_view.apply();
-        ui_stage = new com.fcfruit.zombiesmash.stages.GameUIStage(ui_view);
+        ui_stage = new GameUIStage(ui_view);
 
         inputMultiplexer = new InputMultiplexer();
 
@@ -95,9 +97,6 @@ public class GameScreen implements Screen{
             Environment.gameCamera.update();
             Environment.physicsCamera.update();
             Environment.physics.constructPhysicsBoundaries();
-
-            Environment.physicsCamera.update();
-            Environment.gameCamera.update();
         }
         else if(Gdx.input.isKeyPressed(Input.Keys.D)) {
 
@@ -106,21 +105,44 @@ public class GameScreen implements Screen{
             Environment.gameCamera.update();
             Environment.physicsCamera.update();
             Environment.physics.constructPhysicsBoundaries();
+        }
+        if(Gdx.input.isKeyPressed(Input.Keys.W)) {
 
-            Environment.physicsCamera.update();
+            Environment.gameCamera.position.y += 19.2f;
+            Environment.physicsCamera.position.y += 0.1f;
             Environment.gameCamera.update();
+            Environment.physicsCamera.update();
+            Environment.physics.constructPhysicsBoundaries();
+        }
+        else if(Gdx.input.isKeyPressed(Input.Keys.S)) {
+
+            Environment.gameCamera.position.y -= 19.2f;
+            Environment.physicsCamera.position.y -= 0.1f;
+            Environment.gameCamera.update();
+            Environment.physicsCamera.update();
+            Environment.physics.constructPhysicsBoundaries();
         }
 
+        if(Gdx.input.isKeyPressed(Input.Keys.SPACE))
+        {
+            try
+            {
+                Thread.sleep(100);
+            } catch (InterruptedException e)
+            {
+                e.printStackTrace();
+            }
+            Gdx.app.debug("ada", ""+Environment.gameCamera.position);
+            Gdx.app.debug("ada", ""+Environment.physicsCamera.position);
+        }
 
         //Environment.physics.constructPhysicsBoundaries();
 
         //Environment.physicsCamera.position.x=10f;
         //Environment.gameCamera.position.x=10*192;
 
-
-
-        //
-        //debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
+        if(Config.DEBUG_PHYSICS)
+            debugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
 
     }
 

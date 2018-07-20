@@ -17,6 +17,13 @@ import java.util.ArrayList;
 public class DetachableEntity implements DetachableEntityInterface
 {
     private ArrayList<Joint> joints;
+
+    /**
+     * States:
+     * attached
+     * waiting_for_detach
+     * detached
+    * **/
     private String state;
 
     private ContainerEntityInterface containerEntity;

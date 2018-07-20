@@ -102,7 +102,7 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
             Vector3 pos;
 
             pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(grenadePowerup.getUIDrawable().getX(), grenadePowerup.getUIDrawable().getY(), 0)));
-            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+            pos.y = Environment.physicsCamera.position.y*2 - pos.y;
 
             grenadePosition = pos;
         }

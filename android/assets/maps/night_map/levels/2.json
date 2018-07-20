@@ -7,6 +7,13 @@
       "position": "middle_left",
       "depth": 1
     },
+    "police_zombie": {
+      "quantity": 1,
+      "init_delay": 0,
+      "spawn_delay": 1,
+      "position": "right",
+      "depth": 1
+    },
     "crate": {
       "type": "rock",
       "init_delay": 0,

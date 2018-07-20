@@ -22,6 +22,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 
+import org.lwjgl.Sys;
+
 
 /**
  * Created by Lucas on 2018-03-10.
@@ -42,6 +44,9 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
     private boolean isOpening;
     private boolean isOpen;
+
+    private double timeBeforeExpire = 3000;
+    private double expiryTimer = System.currentTimeMillis();
 
     public PowerupCrate(PowerupInterface powerup)
     {
@@ -73,7 +78,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
-        size.y = Environment.gameCamera.viewportHeight - size.y;
+        size.y = Environment.gameCamera.position.y*2 - size.y;
 
         this.powerupUIDrawable = powerup.getUIDrawable();
         this.powerupUIDrawable.setSize(size.x, size.y);
@@ -89,7 +94,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     private void open()
     {
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition().x - this.getSize().x / 2, this.getPosition().y - this.getSize().y / 2, 0)));
-        pos.y = Environment.gameCamera.viewportHeight - pos.y;
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
 
         this.powerupUIDrawable.setPosition(pos.x, pos.y);
 
@@ -153,6 +158,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             this.getPhysicsBody().setGravityScale(0);
             this.getPhysicsBody().setLinearVelocity(0, 0.3f);
             this.setAngle(this.getAngle() + 1);
+
+            this.expiryTimer = System.currentTimeMillis();
         } else if (!this.isFloatingUp)
         {
             this.isFloatingUp = this.getPosition().y < Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y + 0.2f;
@@ -163,6 +170,19 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         {
             this.getPhysicsBody().setLinearVelocity(0, 0);
             this.setAngle(this.getAngle() + 1);
+
+
+            if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire)
+            {
+                this.setAlpha(this.getAlpha()-0.25f*Gdx.graphics.getDeltaTime());
+            }
+
+            if(this.getAlpha() == 0)
+            {
+                this.isOpening = false;
+                this.isOpen = true;
+                Environment.drawableRemoveQueue.add(this);
+            }
         }
 
         this.crateDrawable.update(delta);
@@ -170,7 +190,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         if (this.isOpening)
         {
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.powerupUIDrawable.getX(), this.powerupUIDrawable.getY(), 0)));
-            pos.y = Environment.physicsCamera.viewportHeight - pos.y;
+            pos.y = Environment.physicsCamera.position.y*2 - pos.y;
 
             if (pos.y < this.crateDrawable.getPosition().y + 1)
             {
@@ -252,6 +272,18 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     public boolean isOpening(){return this.isOpening;}
 
     public boolean isOpen(){return this.isOpen;}
+
+    @Override
+    public float getAlpha()
+    {
+        return this.crateDrawable.getAlpha();
+    }
+
+    @Override
+    public void setAlpha(float alpha)
+    {
+        this.crateDrawable.setAlpha(alpha);
+    }
 
     @Override
     public void dispose()

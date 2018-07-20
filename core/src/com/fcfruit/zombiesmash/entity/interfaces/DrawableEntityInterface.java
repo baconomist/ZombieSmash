@@ -20,6 +20,9 @@ public interface DrawableEntityInterface extends UpdatableEntityInterface
     float getAngle();
     void setAngle(float angle);
 
+    float getAlpha();
+    void setAlpha(float alpha);
+
     Vector2 getSize();
 
     void dispose();

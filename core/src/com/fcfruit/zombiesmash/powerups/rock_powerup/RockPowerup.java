@@ -6,7 +6,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
-import com.fcfruit.zombiesmash.zombies.NewZombie;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -77,13 +77,13 @@ public class RockPowerup implements PowerupInterface
 
     private Float getClosestRockSpawnZombiePosition()
     {
-        HashMap<Float, NewZombie> zombieDistances = new HashMap<Float, NewZombie>();
+        HashMap<Float, Zombie> zombieDistances = new HashMap<Float, Zombie>();
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
-            if (drawableEntity instanceof NewZombie && ((NewZombie) drawableEntity).isInLevel())
+            if (drawableEntity instanceof Zombie && ((Zombie) drawableEntity).isInLevel())
             {
-                zombieDistances.put(Math.abs(Environment.level.objective.getPosition().x - drawableEntity.getPosition().x), ((NewZombie) drawableEntity));
+                zombieDistances.put(Math.abs(Environment.level.objective.getPosition().x - drawableEntity.getPosition().x), ((Zombie) drawableEntity));
             }
         }
 
