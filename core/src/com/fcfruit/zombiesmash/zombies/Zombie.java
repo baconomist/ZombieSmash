@@ -412,10 +412,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             if (Environment.level.objective.polygon.contains(i.getPolygon().getX() + i.getPolygon().getVertices()[2]/2, i.getPolygon().getY() + i.getPolygon().getVertices()[5]/2))
             {
                 isAtObjective = true;
+                break;
             } else
             {
                 isAtObjective = false;
-                break;
             }
         }
 
