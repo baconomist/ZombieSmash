@@ -59,4 +59,14 @@ public class PoliceZombie extends Zombie
             this.setAnimation(this.moveAnimation);
         }
     }
+
+    @Override
+    protected void onCrawlAttackComplete()
+    {
+        super.onCrawlAttackComplete();
+        if (!this.isAtObjective())
+        {
+            this.setAnimation(this.moveAnimation);
+        }
+    }
 }
