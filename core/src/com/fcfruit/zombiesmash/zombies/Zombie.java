@@ -356,7 +356,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void animationSetup()
     {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.atlas"));
+        TextureAtlas atlas = Environment.assets.get("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.json"));
@@ -404,7 +404,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
-    private boolean isAtObjective()
+    protected boolean isAtObjective()
     {
         boolean isAtObjective = false;
         for (InteractiveEntityInterface i : this.getInteractiveEntities().values())
@@ -436,7 +436,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             if (o instanceof String)
             {
-                if (this.getDetachableEntities().get(o) != null)
+                if (this.getDetachableEntities().get(o).getState().equals("attached"))
                 {
                     isAlive = true;
                 } else
@@ -448,7 +448,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             {
                 for (String s : (String[]) o)
                 {
-                    if (this.getDetachableEntities().get(s) != null)
+                    if (this.getDetachableEntities().get(s).getState().equals("attached"))
                     {
                         isAlive = true;
                         break;
@@ -564,6 +564,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.onGetupStart();
 
         }
+        else if(!this.isAnimating() && !this.hasRequiredPartsForGetup() && this.isAlive() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
+        {
+            this.onGetupEnd();
+            this.startCrawl();
+        }
 
         // -0.3f to give it wiggle room to detect get up
         if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
@@ -571,6 +576,19 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.onGetupEnd();
         }
 
+    }
+
+    private void startCrawl()
+    {
+        this.moveAnimation = "crawl";
+        try
+        {
+            this.animatableGraphicsEntity.setAnimation("crawl");
+        }
+        catch (Exception e)
+        {
+            Gdx.app.debug("startCrawl", "Error occurred while attempting to startCrawl()! Zombie may not have a 'crawl' animation!");
+        }
     }
 
     /*private boolean isGettingUp(){
@@ -653,6 +671,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         } else if (entry.getAnimation().getName().equals("attack2"))
         {
             this.onAttack2Complete();
+        } else if (entry.getAnimation().getName().equals("crawl_attack"))
+        {
+            this.onCrawlAttackComplete();
         }
 
         if (entry.getAnimation().getName().equals(this.moveAnimation) && !this.isAtObjective())
@@ -694,7 +715,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     protected void onObjective()
     {
-        if (this.timesAnimationCompleted() >= 2 && this.getCurrentAnimation().contains("attack"))
+        if(this.getCurrentAnimation().contains("crawl"))
+        {
+            this.setAnimation("crawl_attack");
+        } else if (this.timesAnimationCompleted() >= 2 && this.getCurrentAnimation().contains("attack"))
         {
             this.setAnimation("attack2");
         } else if (this.timesAnimationCompleted() >= 1)
@@ -785,6 +809,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     protected void onAttack2Complete()
     {
         Environment.level.objective.takeDamage(1f);
+    }
+
+    protected  void onCrawlAttackComplete()
+    {
+        Environment.level.objective.takeDamage(0.2f);
     }
 
 
