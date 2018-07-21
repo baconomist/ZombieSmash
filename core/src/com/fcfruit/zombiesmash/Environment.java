@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -59,6 +60,9 @@ public class Environment
         //assets.load("zombies/reg_zombie/reg_zombie.json", Json.class);
         //assets.load("zombies/reg_zombie/reg_zombie.png", Texture.class);
         //assets.load("zombies/reg_zombie/reg_zombie_rube.json", Json.class);
+
+        assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
 
         for(int i = 1; i < 14; i++)
         {
