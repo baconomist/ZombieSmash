@@ -394,13 +394,24 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
         return isInLevel;*/
 
-        boolean isInLevel = false;
+        /*boolean isInLevel = false;
         for (DrawableEntityInterface i : this.getDrawableEntities().values())
         {
             isInLevel = i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
-                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2;
+                    && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2
+                    && i.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2
+                    && i.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2;
+
+            if(isInLevel)
+                break;
         }
-        return isInLevel;
+        return isInLevel;*/
+
+        DrawableEntityInterface i = this.getDrawableEntities().get("torso");
+        return i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
+                && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2
+                && i.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2
+                && i.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2;
 
     }
 
@@ -490,7 +501,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
         for (InteractiveEntityInterface interactiveEntityInterface : this.getInteractiveEntities().values())
         {
-            interactiveEntityInterface.update(delta);
+            if(!this.getDrawableEntities().values().contains(interactiveEntityInterface))
+                interactiveEntityInterface.update(delta);
         }
     }
 
@@ -842,7 +854,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void update(float delta)
     {
-        this.updateEntities(delta);
+        if(this.isInLevel())
+            this.updateEntities(delta);
+
         if (this.isAlive())
         {
             this.interactiveGraphicsEntity.update(delta);
