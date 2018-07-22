@@ -30,7 +30,7 @@ public class Physics
     public static final float PIXELS_PER_METER = ZombieSmash.WIDTH / WIDTH;
     public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;
 
-    public static final float STEP_TIME = 1f / 40f;
+    public static final float STEP_TIME = 1f / 30f;
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
 
