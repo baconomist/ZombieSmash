@@ -86,6 +86,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     /**
      * Zombie Specific Fields
      **/
+    private HashMap<String, Array<BleedablePoint>> bleedablePoints;
     private boolean shouldObjectiveOnce;
     private int direction;
     private int speed;
@@ -845,6 +846,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         if (this.isAnimating())
         {
             this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
+            for(String part : this.bleedablePoints.keySet())
+            {
+                for (BleedablePoint bleedablePoint : this.bleedablePoints.get(part))
+                {
+                    bleedablePoint.draw(batch);
+                }
+            }
         } else
         {
             for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
