@@ -22,8 +22,10 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.esotericsoftware.spine.Slot;
 import com.esotericsoftware.spine.attachments.Attachment;
+import com.esotericsoftware.spine.attachments.ClippingAttachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
+import com.esotericsoftware.spine.attachments.VertexAttachment;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
@@ -183,6 +185,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
                 for (int i = 0; i < blood_pos_attachments.size; i++)
                 {
+                    // If part is detached...
+                    if(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment() == null)
+                        continue;
+
                     Attachment attachment = blood_pos_attachments.get(i);
 
                     // Match Body Pos And Rotation To Spine For BloodPoint Calculations
@@ -198,6 +204,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     // Create Bleed Point
                     bleedablePoints.add(new BleedablePoint((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(bodyName, "physics_pos"),
                             ((PointAttachment) attachment), this.animatableGraphicsEntity.getSkeleton().findBone(bodyName), body, this.animScale));
+
 
                 }
 
@@ -253,7 +260,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
         this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
 
-        HashMap<String, Array<BleedablePoint>> bleedablePoints = this.create_bleedable_points(rubeScene);
+        this.bleedablePoints = this.create_bleedable_points(rubeScene);
         for(String part : bleedablePoints.keySet())
         {
             if(bleedablePoints.get(part).size > 1)
@@ -266,14 +273,17 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     * TODO:
                     *   - Make this work for parts which may have more than 1 bleed position but are still children
                     * */
-                    bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
+                    if(bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).size > 0)
+                        bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
+                    else
+                        bleedablePoint.enable_body_blood();
                 }
             }
         }
 
         for (Body body : rubeScene.getBodies())
         {
-            if ((Boolean) rubeScene.getCustom(body, "isPart"))
+            if ((Boolean) rubeScene.getCustom(body, "isPart") && this.currentParts.contains((String) rubeScene.getCustom(body, "name")))
             {
                 String bodyName = (String) rubeScene.getCustom(body, "name");
                 Sprite sprite = new Sprite(this.animatableGraphicsEntity.getAtlas().findRegion(bodyName));
@@ -317,6 +327,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 else
                     Environment.physics.destroyBody(body);
 
+            }
+            else
+            {
+                Environment.physics.destroyBody(body);
             }
         }
 
@@ -447,7 +461,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             if (o instanceof String)
             {
-                if (this.getDetachableEntities().get(o).getState().equals("attached"))
+                if (this.getDetachableEntities().get(o) != null && this.getDetachableEntities().get(o).getState().equals("attached"))
                 {
                     isAlive = true;
                 } else
@@ -459,7 +473,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             {
                 for (String s : (String[]) o)
                 {
-                    if (this.getDetachableEntities().get(s).getState().equals("attached"))
+                    if (this.getDetachableEntities().get(s) != null && this.getDetachableEntities().get(s).getState().equals("attached"))
                     {
                         isAlive = true;
                         break;
@@ -645,14 +659,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             if (!s.getData().getName().equals("bounding_box") && this.getDrawableEntities().get(s.getData().getName()) == null)
             {
                 // Replace current attachment with a new empty one
-                s.setAttachment(new Attachment(" ")
-                {
-                    @Override
-                    public String getName()
-                    {
-                        return super.getName();
-                    }
-                });
+                s.setAttachment(null);
             }
         }
     }
@@ -746,6 +753,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void onGetupEnd()
     {
+        this.detachAnimationLimbs();
+
         this.setAnimation(this.moveAnimation);
         this.shouldObjectiveOnce = true;
 
@@ -774,8 +783,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void onAnimate()
     {
-        this.detachAnimationLimbs();
-
         if (this.isAtObjective() && this.shouldObjectiveOnce)
         {
             this.onObjectiveOnce();
@@ -842,7 +849,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
             {
-                if (this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
+                if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
                 {
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch, skeletonRenderer);
@@ -854,8 +861,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void update(float delta)
     {
-        if(this.isInLevel())
-            this.updateEntities(delta);
+        //if(this.isInLevel())
+        this.updateEntities(delta);
 
         if (this.isAlive())
         {

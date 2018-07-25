@@ -179,6 +179,15 @@ public class BleedablePoint implements BleedableEntityInterface
         }
     }
 
+    /**
+     * Used when you don't want blood particles but instead blood on the body
+     **/
+    public void enable_body_blood()
+    {
+        this.initUpdate = false;
+        this.enable_bleeding();
+    }
+
     @Override
     public void enable_bleeding()
     {
@@ -194,4 +203,5 @@ public class BleedablePoint implements BleedableEntityInterface
         if(this.parentBleedablePoint != null)
             this.parentBleedablePoint.disable_bleeding();
     }
+
 }
