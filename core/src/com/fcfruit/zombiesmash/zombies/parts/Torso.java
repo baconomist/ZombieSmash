@@ -74,13 +74,13 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     public void update(float delta)
     {
 
+        this.drawableEntity.update(delta);
+        this.interactivePhysicsEntity.update(delta);
+
         for(BleedablePoint bleedablePoint : this.bleedablePoints)
         {
             bleedablePoint.update(delta);
         }
-
-        this.drawableEntity.update(delta);
-        this.interactivePhysicsEntity.update(delta);
 
         this.optimizableEntity.update(delta);
         for (InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())

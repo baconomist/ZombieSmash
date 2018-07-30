@@ -124,27 +124,33 @@ public class BleedablePoint implements BleedableEntityInterface
     @Override
     public void update(float delta)
     {
-        this.calc_phys_pos();
-
-        this.complete_physics_pos = this.physicsBody.getPosition();
-        this.complete_physics_pos.sub(this.physics_offset);
-
-        ArrayList<BleedBlood> copy = new ArrayList<BleedBlood>();
-        for (BleedBlood blood : this.blood)
+        if(this.isBleeding)
         {
-            copy.add(blood);
-        }
-        for (BleedBlood blood : copy)
-        {
-            if (blood.readyForDestroy)
+            this.calc_phys_pos();
+
+            this.complete_physics_pos = this.physicsBody.getPosition();
+            this.complete_physics_pos.sub(this.physics_offset);
+
+            ArrayList<BleedBlood> copy = new ArrayList<BleedBlood>();
+            for (BleedBlood blood : this.blood)
             {
-                blood.dispose();
-                this.blood.remove(blood);
+                copy.add(blood);
             }
+            for (BleedBlood blood : copy)
+            {
+                if (blood.readyForDestroy)
+                {
+                    blood.dispose();
+                    this.blood.remove(blood);
+                }
+            }
+
+            this.updateBlood();
         }
-
-        this.updateBlood();
-
+        else
+        {
+            this.bloodTimer = System.currentTimeMillis();
+        }
     }
 
     /**
@@ -152,29 +158,23 @@ public class BleedablePoint implements BleedableEntityInterface
      * **/
     private void updateBlood()
     {
-        if (this.isBleeding)
+        this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
+        this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
+
+        if(initUpdate)
         {
-            this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
-            this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
+            this.bleedTimer = System.currentTimeMillis();
+            this.bloodTimer = System.currentTimeMillis();
+            this.initUpdate = false;
+        }
 
-            if(initUpdate)
-            {
-                this.bleedTimer = System.currentTimeMillis();
-                this.bloodTimer = System.currentTimeMillis();
-                this.initUpdate = false;
-            }
+        this.timeBeforeBlood = 200+(System.currentTimeMillis() - this.bleedTimer)*(System.currentTimeMillis() - this.bleedTimer)/10000;
 
-            this.timeBeforeBlood = 200+(System.currentTimeMillis() - this.bleedTimer)*(System.currentTimeMillis() - this.bleedTimer)/10000;
-
-            if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
-            {
-
-                this.blood.add(new BleedBlood(this.complete_physics_pos, this.physics_offset));
-
-                this.bloodTimer = System.currentTimeMillis();
-            }
-        } else
+        if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
         {
+
+            this.blood.add(new BleedBlood(this.complete_physics_pos, this.physics_offset));
+
             this.bloodTimer = System.currentTimeMillis();
         }
     }
