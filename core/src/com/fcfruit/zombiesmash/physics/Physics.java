@@ -134,6 +134,7 @@ public class Physics
         PolygonShape planeShape = new PolygonShape();
         planeShape.setAsBox(Environment.physicsCamera.viewportWidth * 10, 0);
         planeFixture.shape = planeShape;
+        planeFixture.restitution = 0.5f;
 
         this.groundBodies = new ArrayList<Body>();
         for (float i = 0f, c = 0; c < 3; i += 0.4f, c++)
