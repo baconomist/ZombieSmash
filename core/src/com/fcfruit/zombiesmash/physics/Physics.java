@@ -137,7 +137,7 @@ public class Physics
         planeFixture.restitution = 0.5f;
 
         this.groundBodies = new ArrayList<Body>();
-        for (float i = 0f, c = 0; c < 3; i += 0.4f, c++)
+        for (float i = 0f, c = 0; c < 3; i += 0.3f, c++)
         {
             Body ground = this.world.createBody(plane);
             ground.createFixture(planeFixture);
