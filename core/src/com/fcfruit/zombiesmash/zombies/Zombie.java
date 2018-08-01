@@ -428,7 +428,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         return isInLevel;*/
 
         DrawableEntityInterface i = this.getDrawableEntities().get("torso");
-        return i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
+        return i != null && i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2
                 && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2
                 && i.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2
                 && i.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2;
