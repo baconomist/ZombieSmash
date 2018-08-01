@@ -73,7 +73,6 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     @Override
     public void update(float delta)
     {
-
         this.drawableEntity.update(delta);
         this.interactivePhysicsEntity.update(delta);
 
@@ -83,6 +82,12 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         }
 
         this.optimizableEntity.update(delta);
+    }
+
+
+    @Override
+    public void onTouchDown(float x, float y, int p)
+    {
         for (InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
@@ -97,12 +102,7 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
                 }
             }
         }
-    }
 
-
-    @Override
-    public void onTouchDown(float x, float y, int p)
-    {
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 

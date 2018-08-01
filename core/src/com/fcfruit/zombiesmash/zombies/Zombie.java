@@ -131,8 +131,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     /**
      * Init
      **/
-    public void setup()
+    public void setup(int direction)
     {
+        this.direction = direction;
+
         // Need to have separate function here because reflection does not work in constructor
         this.animationSetup();
         this.constructBody();
@@ -284,6 +286,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
         for (Body body : rubeScene.getBodies())
         {
+            body.setActive(false);
+            body.setAwake(false);
+
             if ((Boolean) rubeScene.getCustom(body, "isPart") && this.currentParts.contains((String) rubeScene.getCustom(body, "name")))
             {
                 String bodyName = (String) rubeScene.getCustom(body, "name");

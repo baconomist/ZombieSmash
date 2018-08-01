@@ -91,6 +91,12 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.bleedablePoint.update(delta);
 
         this.optimizableEntity.update(delta);
+    }
+
+
+    @Override
+    public void onTouchDown(float x, float y, int p)
+    {
         for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
@@ -106,12 +112,6 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
             }
         }
 
-    }
-
-
-    @Override
-    public void onTouchDown(float x, float y, int p)
-    {
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 
