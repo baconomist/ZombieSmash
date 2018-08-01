@@ -16,6 +16,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.Random;
 
@@ -50,7 +51,7 @@ public class BleedBlood implements DrawableEntityInterface
         fixtureDef.density = 0.3f;
 
         fixture = this.physicsBody.createFixture(fixtureDef);
-        fixture.setUserData(this);
+        fixture.setUserData(new PhysicsData(this));
 
         this.physicsBody.setTransform(center, 0);
 

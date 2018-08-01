@@ -22,6 +22,10 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB)
     {
 
+        PhysicsData fixtureAData = ((PhysicsData) fixtureA.getUserData());
+        PhysicsData fixtureBData = ((PhysicsData) fixtureB.getUserData());
+
+        PhysicsData[] fixtureData = {fixtureAData, fixtureBData};
 
         if (fixtureA.getUserData() instanceof Zombie && fixtureB.getUserData() instanceof Zombie)
         {
@@ -29,50 +33,69 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id)
             {
 
-                return (fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0;
+                if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
+                {
+                    return true;
+                } else
+                {
+                    return false;
+                }
 
             } else
             {
                 return false;
             }
 
-        } else if (fixtureA.getUserData() instanceof BleedBlood || fixtureB.getUserData() instanceof BleedBlood)
+        }
+        // Blood
+        if(fixtureAData.containsInstanceOf(BleedBlood.class) || fixtureBData.containsInstanceOf(BleedBlood.class))
         {
             return false;
         }
-
-        if ((fixtureA.getUserData().equals("ground") && Environment.physics.whichGround(fixtureA.getBody()) == 0)
-                || (fixtureB.getUserData().equals("ground") && Environment.physics.whichGround(fixtureB.getBody()) == 0))
-        {
-            return true;
-        } else if ((fixtureA.getUserData() instanceof MultiGroundEntityInterface && fixtureB.getUserData().equals("ground") &&
-                ((MultiGroundEntityInterface) fixtureA.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody()) &&
-                !((MultiGroundEntityInterface) fixtureA.getUserData()).isMovingToNewGround()))
-        {
-            return true;
-        } else if ((fixtureB.getUserData() instanceof MultiGroundEntityInterface && fixtureA.getUserData().equals("ground")
-                && ((MultiGroundEntityInterface) fixtureB.getUserData()).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
-                && !((MultiGroundEntityInterface) fixtureB.getUserData()).isMovingToNewGround()))
-        {
-            return true;
-        } else if (fixtureA.getUserData() instanceof Rock && fixtureB.getUserData() instanceof Zombie
-                || fixtureB.getUserData() instanceof Rock && fixtureA.getUserData() instanceof Zombie)
+        // Ground
+        else if ((fixtureAData.getData().contains("ground", true) && Environment.physics.whichGround(fixtureA.getBody()) == 0)
+                || (fixtureBData.getData().contains("ground", true) && Environment.physics.whichGround(fixtureB.getBody()) == 0))
         {
             return true;
         }
-        else if (fixtureA.getUserData() instanceof PowerupCrate || fixtureB.getUserData() instanceof PowerupCrate)
+        // Multiground Entity
+        else if(fixtureAData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureBData.getData().contains("ground", true) &&
+                ((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody())
+                && !((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
+        {
+            return true;
+        }
+        // Multiground Entity
+        else if(fixtureBData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureAData.getData().contains("ground", true) &&
+                ((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
+                && !((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
+        {
+            return true;
+        }
+        // Rock Powerup
+        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class)
+                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class))
+        {
+            return true;
+        }
+        // Powerup Crate
+        else if(fixtureAData.containsInstanceOf(PowerupCrate.class) || fixtureBData.containsInstanceOf(PowerupCrate.class))
         {
             return false;
-        } else if (fixtureA.getUserData() instanceof Grenade && fixtureB.getUserData() instanceof Grenade)
-        {
-            return true;
-        } else if (fixtureA.getUserData() instanceof ParticleEntity && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody
-                || fixtureB.getUserData() instanceof ParticleEntity && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
+        }
+        // Grenade
+        else if(fixtureAData.containsInstanceOf(Grenade.class) && fixtureBData.containsInstanceOf(Grenade.class))
         {
             return true;
         }
-
+        else if(fixtureAData.containsInstanceOf(ParticleEntity.class) && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody
+                || fixtureBData.containsInstanceOf(ParticleEntity.class) && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
+        {
+            return true;
+        }
         return false;
+
+
 
         /*return (fixtureA.getUserData().equals("ground") && Environment.physics.whichGround(fixtureA.getBody()) == 0)
                 || (fixtureB.getUserData().equals("ground") && Environment.physics.whichGround(fixtureB.getBody()) == 0)

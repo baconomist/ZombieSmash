@@ -8,6 +8,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Filter;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.World;
@@ -45,6 +46,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 import com.fcfruit.zombiesmash.zombies.parts.Part;
@@ -320,7 +322,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 for (Fixture fixture : body.getFixtureList())
                 {
                     // Makes different zombies not collide with each other
-                    fixture.setUserData(this);
+                    fixture.setUserData(new PhysicsData(this));
                 }
 
 
@@ -347,7 +349,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
     protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
-        physicsBody.setUserData(bodyName);
+        physicsBody.setUserData(new PhysicsData(this));
         // If child
         if (joints.size() > 0)
         {

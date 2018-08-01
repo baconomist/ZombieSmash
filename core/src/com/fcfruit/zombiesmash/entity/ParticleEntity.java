@@ -16,6 +16,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
@@ -54,7 +55,7 @@ public class ParticleEntity
         this.physicsBody = Environment.physics.createBody(bd);
 
         //create a reference to this class in the body(this allows us to loop through the world bodies and check if the body is an Explosion particle)
-        this.physicsBody.setUserData(this);
+        this.physicsBody.setUserData(new PhysicsData(this));
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.05f); // very small
@@ -67,7 +68,7 @@ public class ParticleEntity
         //fd.filter.groupIndex = -1; // particles should not collide with each other
 
         this.fixture = this.physicsBody.createFixture(fd);
-        this.fixture.setUserData(this);
+        this.fixture.setUserData(new PhysicsData(this));
 
         this.rayDir = rayDir;
 

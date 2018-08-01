@@ -141,7 +141,7 @@ public class Physics
         {
             Body ground = this.world.createBody(plane);
             ground.createFixture(planeFixture);
-            ground.getFixtureList().get(0).setUserData("ground");
+            ground.getFixtureList().get(0).setUserData(new PhysicsData("ground"));
             ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, i, 0);
             this.groundBodies.add(ground);
         }
@@ -149,7 +149,7 @@ public class Physics
 
         this.roof = this.world.createBody(plane);
         this.roof.createFixture(planeFixture);
-        this.roof.getFixtureList().get(0).setUserData("roof");
+        this.roof.getFixtureList().get(0).setUserData(new PhysicsData("ground"));
         this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
 
         planeShape.dispose();

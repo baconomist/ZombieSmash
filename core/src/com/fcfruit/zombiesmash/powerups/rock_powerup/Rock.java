@@ -14,6 +14,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -36,10 +37,10 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
         RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/rock/rock_rube.json"));
 
         Body body = scene.getBodies().get(0);
-        body.setUserData(this);
+        body.setUserData(new PhysicsData(this));
         for (Fixture fixture : body.getFixtureList())
         {
-            fixture.setUserData(this);
+            fixture.setUserData(new PhysicsData(this));
         }
 
         Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock.png")));
