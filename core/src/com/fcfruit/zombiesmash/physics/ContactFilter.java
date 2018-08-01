@@ -29,13 +29,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id)
             {
 
-                if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
-                {
-                    return true;
-                } else
-                {
-                    return false;
-                }
+                return (fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0;
 
             } else
             {
