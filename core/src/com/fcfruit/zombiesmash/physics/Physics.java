@@ -31,7 +31,7 @@ public class Physics
     public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;
 
     public static final float STEP_TIME = 1f / 30f;
-    private static final int VELOCITY_ITERATIONS = 6;
+    private static final int VELOCITY_ITERATIONS = 8;
     private static final int POSITION_ITERATIONS = 2;
 
     private Lighting lighting;
