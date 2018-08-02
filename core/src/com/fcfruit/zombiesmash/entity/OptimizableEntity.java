@@ -8,6 +8,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
 import static com.sun.org.apache.xalan.internal.xsltc.compiler.util.Type.Int;
@@ -68,35 +69,25 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
 
     private boolean shouldOptimize()
     {
-        if(this.interactivePhysicsEntity != null && this.containerEntity != null)
+        if(this.containerEntity != null)
         {
             for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
-                Body b = this.interactivePhysicsEntity.getPhysicsBody();
-                if(!this.interactivePhysicsEntity.isTouching()
-                        && b.getLinearVelocity().x < 0.1f && b.getLinearVelocity().y < 0.1f && b.getPosition().y < 0.5f
-                        && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize)
-                {
-                    return true;
-                }
-            }
-            return false;
-        }
-        else if (this.containerEntity != null)
-        {
-            for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
-            {
-                if (interactiveEntity.isTouching())
+                Body b = ((PhysicsEntityInterface)interactiveEntity).getPhysicsBody();
+                if(!(!interactiveEntity.isTouching()
+                        && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 0.5f
+                        && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize))
                 {
                     return false;
                 }
             }
-            return System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
-        } else if(this.detachableEntity != null)
+            return true;
+        }
+        else if(this.detachableEntity != null)
         {
             Body b = this.interactivePhysicsEntity.getPhysicsBody();
             return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching()
-                    && b.getLinearVelocity().x < 0.1f && b.getLinearVelocity().y < 0.1f && b.getPosition().y < 0.5f
+                    && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 0.5f
                     && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
         }
         return this.interactivePhysicsEntity.isTouching() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
@@ -111,7 +102,7 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
                 if(interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
-                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 0.01f && b.getLinearVelocity().y < 0.01f && b.getPosition().y < 1f
+                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 1f
                         && System.currentTimeMillis() - this.passiveOptimizationTimer >= this.timeBeforePassiveOptimize))
                     {
                         return false;
@@ -133,7 +124,6 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
                 {
                     ((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setActive(false);
                     ((com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface) interactiveEntity).getPhysicsBody().setAwake(false);
-
                 }
             }
         } else
