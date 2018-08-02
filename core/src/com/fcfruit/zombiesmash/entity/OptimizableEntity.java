@@ -152,9 +152,16 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
         }
     }
 
+    @Override
     public void enable_passive_optimization()
     {
         this.isPassiveOptimizationEnabled = true;
+    }
+
+    @Override
+    public boolean isPassiveOptimizationEnabled()
+    {
+        return this.isPassiveOptimizationEnabled;
     }
 
     @Override

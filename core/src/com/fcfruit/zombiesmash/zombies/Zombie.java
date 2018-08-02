@@ -804,8 +804,12 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Switch zombie direction if needed
         this.checkDirection();
 
-        // Set physicsBody pos out of screen
-        this.getDrawableEntities().get("torso").setPosition(new Vector2(99, 99));
+        // Position physicsBody out of screen
+        for(DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
+        {
+            drawableEntityInterface.setPosition(new Vector2(99, 99));
+        }
+        this.updateEntities(Gdx.graphics.getDeltaTime());
 
         // Enable optimization
         this.enable_optimization();
@@ -908,6 +912,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             if(!this.isGettingUp)
                this.optimizableEntity.enable_passive_optimization();
         }
+        this.optimizableEntity.update(delta);
 
         if (this.isAlive())
         {
@@ -930,10 +935,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 this.animatableGraphicsEntity.update(delta);
                 this.handleGetup();
             }
-
-            this.optimizableEntity.update(delta);
-
         }
+
     }
 
     @Override
@@ -1051,6 +1054,19 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     /**
      * OptimizableEntity
      **/
+
+    @Override
+    public void enable_passive_optimization()
+    {
+        this.optimizableEntity.enable_passive_optimization();
+    }
+
+    @Override
+    public boolean isPassiveOptimizationEnabled()
+    {
+        return this.optimizableEntity.isPassiveOptimizationEnabled();
+    }
+
     @Override
     public void enable_optimization()
     {
