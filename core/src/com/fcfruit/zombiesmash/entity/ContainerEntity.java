@@ -77,18 +77,9 @@ public class ContainerEntity implements ContainerEntityInterface
             }
         }
 
-        if (this.drawableEntities.containsValue(detachableEntity))
-        {
-            this.drawableEntities.remove(key);
-        }
-        if (this.interactiveEntities.containsValue(detachableEntity))
-        {
-            this.interactiveEntities.remove(key);
-        }
-        if (this.containerEntities.containsValue(detachableEntity))
-        {
-            this.containerEntities.remove(key);
-        }
+        this.drawableEntities.remove(key);
+        this.interactiveEntities.remove(key);
+        this.containerEntities.remove(key);
 
     }
 

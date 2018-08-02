@@ -103,6 +103,20 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
             }
         }
 
+        /*
+        * TODO:
+        * - Fix this if need be because this can cause bugs
+        * where even if something isn't attached to torso
+        * the torso will disable optimization.
+        * */
+        for(InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())
+        {
+            if(interactiveEntityInterface.isTouching())
+            {
+                this.disable_optimization();
+            }
+        }
+
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 

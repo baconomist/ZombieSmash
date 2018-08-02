@@ -124,7 +124,7 @@ public class BleedablePoint implements BleedableEntityInterface
     @Override
     public void update(float delta)
     {
-        if(this.isBleeding)
+        if(this.isBleeding && false)
         {
             this.calc_phys_pos();
 

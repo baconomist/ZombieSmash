@@ -53,20 +53,20 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             return false;
         }
         // Ground
-        else if ((fixtureAData.getData().contains("ground", true) && Environment.physics.whichGround(fixtureA.getBody()) == 0)
-                || (fixtureBData.getData().contains("ground", true) && Environment.physics.whichGround(fixtureB.getBody()) == 0))
+        else if ((fixtureAData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureA.getBody()) == 0)
+                || (fixtureBData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureB.getBody()) == 0))
         {
             return true;
         }
         // Multiground Entity
-        else if(fixtureAData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureBData.getData().contains("ground", true) &&
+        else if(fixtureAData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureBData.getData().contains("ground", false) &&
                 ((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody())
                 && !((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
         {
             return true;
         }
         // Multiground Entity
-        else if(fixtureBData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureAData.getData().contains("ground", true) &&
+        else if(fixtureBData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureAData.getData().contains("ground", false) &&
                 ((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
                 && !((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
         {

@@ -43,7 +43,7 @@ public class CollisionListener implements ContactListener
                 // Explodable Entity
                 if(physicsData.containsInstanceOf(ExplodableEntityInterface.class))
                 {
-                    ExplodableEntityInterface explodableEntityInterface = (ExplodableEntityInterface) fixtureAData.getClassInstance(ExplodableEntityInterface.class);
+                    ExplodableEntityInterface explodableEntityInterface = (ExplodableEntityInterface) physicsData.getClassInstance(ExplodableEntityInterface.class);
 
                     if (!Environment.explodableEntityQueue.contains(explodableEntityInterface) && explodableEntityInterface.shouldExplode())
                     {

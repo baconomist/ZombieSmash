@@ -31,7 +31,7 @@ public class Physics
     public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;
 
     public static final float STEP_TIME = 1f / 30f;
-    private static final int VELOCITY_ITERATIONS = 8;
+    private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
 
     private Lighting lighting;
@@ -134,7 +134,8 @@ public class Physics
         PolygonShape planeShape = new PolygonShape();
         planeShape.setAsBox(Environment.physicsCamera.viewportWidth * 10, 0);
         planeFixture.shape = planeShape;
-        planeFixture.restitution = 0.5f;
+        planeFixture.restitution = 0.4f;
+        planeFixture.friction = 0.4f;
 
         this.groundBodies = new ArrayList<Body>();
         for (float i = 0f, c = 0; c < 3; i += 0.3f, c++)

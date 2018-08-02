@@ -79,6 +79,7 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.detachableEntity.detach();
 
         this.enable_bleeding();
+        this.enable_optimization();
 
         /*maybe set joint state to waiting for detach when detaching
             joint user data probably gets instantly deleted when you call joint.destroy
