@@ -832,8 +832,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
         this.updateEntities(Gdx.graphics.getDeltaTime());
 
-        // Enable optimization
-        this.enable_optimization();
+        // Enable optimization instantly, without optimizationTimer
+        this.force_instant_optimize();
 
     }
 
@@ -1026,13 +1026,15 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
         this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
 
-        if (this.isTouching() && !touching && this.isAlive() && this.isInLevel())
+        if (this.interactiveGraphicsEntity.isTouching() && !touching && this.isAlive() && this.isInLevel())
         {
             ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
 
         this.isTouching = touching || this.interactiveGraphicsEntity.isTouching();
-        this.isAnimating = !this.isTouching;
+
+        if(this.isTouching())
+            this.isAnimating = false;
     }
 
     @Override
