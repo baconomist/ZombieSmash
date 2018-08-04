@@ -116,25 +116,37 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
     public Zombie(int id)
     {
+        
+        // Identifier
         this.id = id;
 
-        this.speed = 1;
-
+        // Composition
         this.movableEntity = new MovableEntity(this);
         this.multiGroundEntity = new MultiGroundEntity(this, this);
-        this.setSpeed(this.speed);
         this.containerEntity = new ContainerEntity();
         this.optimizableEntity = new OptimizableEntity(null, null, this);
 
+        // Zombie Specific Fields
         this.shouldObjectiveOnce = true;
+        this.speed = 1;
         this.detachableEntitiesToStayAlive = new ArrayList();
         this.currentParts = new ArrayList<String>();
 
+        // Getup Fields
         this.timeBeforeGetup = 5000;
         this.isGettingUp = false;
 
+        // Status fields
+        this.isAlive = true; // Zombie is alive by default :)
+        this.isAnimating = true; // Zombie starts in an animating state
+        this.isTouching = false;
+        
+        // Optimize zombie
         this.enable_optimization();
 
+        // Set Zombie Speed While Moving/Animating
+        this.setSpeed(this.speed);
+        
     }
 
     /**
@@ -413,8 +425,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     }
 
     /**
-     * Booleans
+     * Booleans( Status )
      **/
+    private boolean isGettingUp()
+    {
+         return this.isGettingUp;
+    }
+    
     public boolean isInLevel()
     {
         /*boolean isInLevel = false;
@@ -480,6 +497,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     public boolean isAlive()
     {
+        return this.isAlive;
+    }
+
+    private void isAliveCheck()
+    {
 
         boolean isAlive = true;
         for (Object o : this.detachableEntitiesToStayAlive)
@@ -515,12 +537,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.onDeath();
         }
 
-        return isAlive;
+        this.isAlive = isAlive;
     }
 
     private boolean isAnimating()
     {
-        return !this.isTouching() && this.isOptimizationEnabled();
+        //return !this.isTouching() && this.isOptimizationEnabled();
+        return this.isAnimating;
     }
 
     private boolean hasRequiredPartsForGetup()
@@ -588,6 +611,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void handleGetup()
     {
+        this.isAliveCheck();
         if (!this.isGettingUp && this.hasRequiredPartsForGetup() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
         {
 
@@ -622,7 +646,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
 
         // -0.3f to give it wiggle room to detect get up
-        if (this.isGettingUp && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
+        if (this.isGettingUp() && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
         {
             this.onGetupEnd();
         }
@@ -641,10 +665,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             Gdx.app.debug("startCrawl", "Error occurred while attempting to startCrawl()! Zombie may not have a 'crawl' animation!");
         }
     }
-
-    /*private boolean isGettingUp(){
-         return this.isPhysicsEnabled && System.currentTimeMillis() - this.getUpTimer > this.timeBeforeGetup;
-     }*/
 
     public void stopGetUp()
     {
@@ -785,6 +805,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Status
         this.shouldObjectiveOnce = true;
         this.isGettingUp = false;
+        this.isAnimating = true;
 
         if (getUpMouseJoint != null)
         {
@@ -903,14 +924,14 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void update(float delta)
     {
-
+        Gdx.app.log("aaa", ""+this.isTouching() + " " + this.isAnimating() + " " + this.isAlive() + " " + this.isGettingUp);
         // Has to be outside of isAlive() because when zombie dies, torso
         // stops updating and freezes otherwise
         if(!this.isAnimating())
         {
             this.updateEntities(delta);
             if(!this.isGettingUp)
-               this.optimizableEntity.enable_passive_optimization();
+               this.optimizableEntity.enable_optimization();
         }
         this.optimizableEntity.update(delta);
 
@@ -1009,6 +1030,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
+
+        this.isTouching = touching || this.interactiveGraphicsEntity.isTouching();
+        this.isAnimating = !this.isTouching;
     }
 
     @Override
@@ -1024,24 +1048,31 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void onTouchUp(float screenX, float screenY, int p)
     {
+        boolean touching = false;
         for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             interactiveEntity.onTouchUp(screenX, screenY, p);
+
+            if(interactiveEntity.isTouching())
+                touching = true;
         }
         this.interactiveGraphicsEntity.onTouchUp(screenX, screenY, p);
+
+        this.isTouching = touching || this.interactiveGraphicsEntity.isTouching();
     }
 
     @Override
     public boolean isTouching()
     {
-        for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
+        /*for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
         {
             if (interactiveEntity.isTouching())
             {
                 return true;
             }
         }
-        return this.interactiveGraphicsEntity.isTouching();
+        return this.interactiveGraphicsEntity.isTouching();*/
+        return this.isTouching;
     }
 
     @Override
@@ -1055,16 +1086,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      * OptimizableEntity
      **/
 
-    @Override
-    public void enable_passive_optimization()
-    {
-        this.optimizableEntity.enable_passive_optimization();
-    }
 
     @Override
-    public boolean isPassiveOptimizationEnabled()
+    public void force_instant_optimize()
     {
-        return this.optimizableEntity.isPassiveOptimizationEnabled();
+        this.optimizableEntity.force_instant_optimize();
     }
 
     @Override

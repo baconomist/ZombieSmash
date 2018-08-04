@@ -29,10 +29,6 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
 
     private boolean isOptimizationEnabled;
 
-    // Passive Optimization
-    private double passiveOptimizationTimer;
-    private double timeBeforePassiveOptimize = 1000;
-
     private boolean isPassiveOptimizationEnabled;
 
     public OptimizableEntity(InteractivePhysicsEntityInterface interactivePhysicsEntity, DetachableEntityInterface detachableEntity, ContainerEntityInterface containerEntity)
@@ -56,12 +52,6 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
         {
             this.unoptimize();
             this.optimizationTimer = System.currentTimeMillis();
-            this.passiveOptimizationTimer = System.currentTimeMillis();
-        }
-
-        if(this.isPassiveOptimizationEnabled && this.shouldPassiveOptimize())
-        {
-            this.optimize();
         }
     }
 
@@ -71,14 +61,16 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
     {
         if(this.containerEntity != null)
         {
-            for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
+            for(InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
-                Body b = ((PhysicsEntityInterface)interactiveEntity).getPhysicsBody();
-                if(!(!interactiveEntity.isTouching()
-                        && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 0.5f
-                        && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize))
+                if(interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
-                    return false;
+                    Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
+                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 1f
+                            && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize))
+                    {
+                        return false;
+                    }
                 }
             }
             return true;
@@ -91,27 +83,6 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
                     && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
         }
         return this.interactivePhysicsEntity.isTouching() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize;
-    }
-
-    private boolean shouldPassiveOptimize()
-    {
-        if(this.containerEntity != null)
-        {
-            for(InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
-            {
-                if(interactiveEntityInterface instanceof PhysicsEntityInterface)
-                {
-                    Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
-                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 0.05f && b.getLinearVelocity().y < 0.05f && b.getPosition().y < 1f
-                        && System.currentTimeMillis() - this.passiveOptimizationTimer >= this.timeBeforePassiveOptimize))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
-        return false;
     }
 
     private void optimize()
@@ -153,15 +124,10 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
     }
 
     @Override
-    public void enable_passive_optimization()
+    public void force_instant_optimize()
     {
-        this.isPassiveOptimizationEnabled = true;
-    }
-
-    @Override
-    public boolean isPassiveOptimizationEnabled()
-    {
-        return this.isPassiveOptimizationEnabled;
+        this.enable_optimization();
+        this.optimize();
     }
 
     @Override

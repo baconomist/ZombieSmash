@@ -158,6 +158,12 @@ public class BodyRock implements DrawableEntityInterface, OptimizableEntityInter
     }
 
     @Override
+    public void force_instant_optimize()
+    {
+        this.optimizableEntity.force_instant_optimize();
+    }
+
+    @Override
     public void enable_optimization()
     {
         this.optimizableEntity.enable_optimization();
