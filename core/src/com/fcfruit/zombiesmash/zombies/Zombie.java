@@ -293,8 +293,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     * */
                     if(bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).size > 0)
                         bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
-                    else
-                        bleedablePoint.enable_body_blood();
+                    //else
+                        //bleedablePoint.enable_body_blood();
                 }
             }
         }

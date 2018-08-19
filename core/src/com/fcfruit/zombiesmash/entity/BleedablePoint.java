@@ -32,7 +32,7 @@ public class BleedablePoint implements BleedableEntityInterface
     private Vector2 complete_physics_pos;
     private Body physicsBody;
 
-    private DrawableGraphicsEntity bodypartBlood;
+    //private DrawableGraphicsEntity bodypartBlood;
     private float blood_pos_rot_offset;
 
     private boolean isBleeding;
@@ -91,9 +91,8 @@ public class BleedablePoint implements BleedableEntityInterface
         this.rotOffset = angle - (float)Math.atan2(y, x);
 
 
-        //this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)));
-        this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png"))));
-        this.bodypartBlood.getSprite().setScale(animScale);
+        //this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png"))));
+        //this.bodypartBlood.getSprite().setScale(animScale);
 
         this.blood_pos_rot_offset = (float) Math.toDegrees(this.physicsBody.getAngle()) - blood_pos.computeWorldRotation(bone); // - 180; // -180 because pointAttachments have a different "0 degrees" than everything else
 
@@ -115,8 +114,8 @@ public class BleedablePoint implements BleedableEntityInterface
             blood.draw(batch);
         }
 
-        if(this.isBleeding)
-            this.bodypartBlood.draw(batch);
+        //if(this.isBleeding)
+            //this.bodypartBlood.draw(batch);
     }
 
     @Override
@@ -156,8 +155,8 @@ public class BleedablePoint implements BleedableEntityInterface
      * **/
     private void updateBlood()
     {
-        this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
-        this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
+        //this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
+        //this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
 
         if(initUpdate)
         {
@@ -180,11 +179,11 @@ public class BleedablePoint implements BleedableEntityInterface
     /**
      * Used when you don't want blood particles but instead blood on the body
      **/
-    public void enable_body_blood()
+    /*public void enable_body_blood()
     {
         this.initUpdate = false;
         this.enable_bleeding();
-    }
+    }*/
 
     @Override
     public void enable_bleeding()
