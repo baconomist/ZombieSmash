@@ -1,16 +1,9 @@
 {
   "middle": {
-    "big_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position": "middle_left",
-      "depth": 1
-    },
     "police_zombie": {
-      "quantity": 1,
+      "quantity": 40,
       "init_delay": 0,
-      "spawn_delay": 1,
+      "spawn_delay": 0,
       "position": "right",
       "depth": 1
     },

@@ -152,7 +152,7 @@ public class DestroyableEntity implements DestroyableEntityInterface
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
         this.animatableGraphicsEntity.setAnimation("animation");
         this.animatableGraphicsEntity.setPosition(this.interactivePhysicsEntity.getPhysicsBody().getPosition());
-        Environment.drawableAddQueue.add(this.animatableGraphicsEntity);
+        Environment.drawableBackgroundAddQueue.add(this.animatableGraphicsEntity);
     }
 
 }
