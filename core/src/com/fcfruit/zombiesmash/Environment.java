@@ -1,12 +1,12 @@
 package com.fcfruit.zombiesmash;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.fcfruit.zombiesmash.effects.BleedableBloodData;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
@@ -90,6 +90,8 @@ public class Environment
 
     public static Physics physics;
 
+    public static BleedableBloodData bleedableBloodData;
+
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
     // Used so interactive items can decide to activate if only they have been touched,
@@ -119,6 +121,7 @@ public class Environment
         physics = new Physics();
         screens.gamescreen.create();
         powerupManager = new PowerupManager();
+        bleedableBloodData = new BleedableBloodData();
 
         setupLevel(levelid);
     }
