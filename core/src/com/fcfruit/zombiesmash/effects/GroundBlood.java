@@ -21,6 +21,7 @@ public class GroundBlood extends DrawableGraphicsEntity
     public GroundBlood()
     {
         super(new Sprite(Environment.assets.get("effects/blood/ground_blood/"+(new Random().nextInt(4)+1)+".png", Texture.class)));
+        this.getSprite().setScale(0.5f);
     }
 
     @Override

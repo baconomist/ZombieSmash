@@ -55,7 +55,9 @@ public class BleedBlood implements DrawableEntityInterface
 
         this.physicsBody.setTransform(center, 0);
 
-        this.drawablePhysicsEntity = new DrawablePhysicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)), this.physicsBody);
+        Sprite sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
+        sprite.setScale(0.5f);
+        this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, this.physicsBody);
         Environment.drawableBackgroundAddQueue.add(this.drawablePhysicsEntity);
 
         // Set blood trajectory and scale down speed to half
