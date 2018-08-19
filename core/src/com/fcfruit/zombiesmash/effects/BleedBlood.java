@@ -3,9 +3,13 @@ package com.fcfruit.zombiesmash.effects;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
@@ -21,45 +25,82 @@ import java.util.Random;
 public class BleedBlood implements DrawableEntityInterface
 {
 
+    public boolean enabled = false;
+
     private DrawablePhysicsEntity drawablePhysicsEntity;
     private Body physicsBody;
     private Fixture fixture;
 
-    public boolean readyForDestroy = false;
+    private GroundBlood groundBlood;
 
-    public BleedBlood(Vector2 center, Vector2 direction)
+    public BleedBlood()
     {
-        
-        this.physicsBody = Environment.physics.createBody(Environment.bleedableBloodData.bodyDef);
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
 
-        fixture = this.physicsBody.createFixture(Environment.bleedableBloodData.fixtureDef);
+        CircleShape circleShape = new CircleShape();
+        circleShape.setRadius(0.1f);
+        circleShape.setPosition(new Vector2(0, 0));
+
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = circleShape;
+        fixtureDef.friction = 0;
+        fixtureDef.density = 0.3f;
+        
+        this.physicsBody = Environment.physics.createBody(bodyDef);
+
+        fixture = this.physicsBody.createFixture(fixtureDef);
         fixture.setUserData(new PhysicsData(this));
 
-        this.physicsBody.setTransform(center, 0);
-
-        Sprite sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class));
+        Sprite sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class).findRegion(""+(new Random().nextInt(13)+1)));
         sprite.setScale(0.5f);
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, this.physicsBody);
+
+        circleShape.dispose();
+        circleShape = null;
+        fixtureDef = null;
+        bodyDef = null;
+
+        this.groundBlood = new GroundBlood();
+
+        // Blood is disabled by default
+        this.disable();
+
+    }
+
+    public void enable(Vector2 center, Vector2 direction)
+    {
+        this.physicsBody.setTransform(center, 0);
+        this.physicsBody.setActive(true);
 
         // Set blood trajectory and scale down speed to half
         // Also negate trajectory cus in BleedablePoint the physics_offset is subtracted from the physics_body_pos
         this.physicsBody.applyLinearImpulse(direction.scl(-0.5f), this.physicsBody.getPosition(), true);
 
+        this.enabled = true;
+    }
+
+    public void disable()
+    {
+        this.physicsBody.setActive(false);
+        this.physicsBody.setLinearVelocity(0, 0);
+        this.physicsBody.setTransform(99, 99, 0);
+
+        this.enabled = false;
     }
 
     public void draw(SpriteBatch batch)
     {
-
         if (this.physicsBody.getPosition().y < 0.1f)
         {
-            GroundBlood groundBlood = new GroundBlood();
-            groundBlood.setPosition(this.physicsBody.getPosition());
-            Environment.drawableBackgroundAddQueue.add(groundBlood);
+            this.groundBlood.enable();
+            this.groundBlood.setPosition(this.getPosition());
+            Environment.drawableBackgroundAddQueue.add(this.groundBlood);
 
-            this.readyForDestroy = true;
-            this.dispose();
+            Environment.bleedableBloodPool.returnBlood(this);
+            Environment.drawableRemoveQueue.add(this);
         }
-        else if(!this.readyForDestroy)
+        else if(this.enabled)
             this.drawablePhysicsEntity.draw(batch);
 
     }
@@ -67,7 +108,7 @@ public class BleedBlood implements DrawableEntityInterface
     @Override
     public void update(float delta)
     {
-        if(!this.readyForDestroy)
+        if(this.enabled)
             this.drawablePhysicsEntity.update(delta);
     }
 
@@ -113,16 +154,15 @@ public class BleedBlood implements DrawableEntityInterface
         return this.drawablePhysicsEntity.getSize();
     }
 
-    @Override
-    public void dispose()
-    {
-        Environment.drawableRemoveQueue.add(this);
-        this.drawablePhysicsEntity.dispose();
-    }
-
     // Unused
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
+    {
+
+    }
+
+    @Override
+    public void dispose()
     {
 
     }

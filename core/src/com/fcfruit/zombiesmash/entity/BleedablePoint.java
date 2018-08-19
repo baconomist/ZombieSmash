@@ -149,7 +149,7 @@ public class BleedablePoint implements BleedableEntityInterface
         if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
         {
 
-            Environment.drawableBackgroundAddQueue.add(new BleedBlood(this.complete_physics_pos, this.physics_offset));
+            Environment.drawableBackgroundAddQueue.add(Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset));
 
             this.bloodTimer = System.currentTimeMillis();
         } else if (System.currentTimeMillis() - this.bleedTimer > this.bleedTime)
