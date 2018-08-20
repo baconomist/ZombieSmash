@@ -1,7 +1,7 @@
 {
   "middle": {
     "police_zombie": {
-      "quantity": 40,
+      "quantity": 33,
       "init_delay": 0,
       "spawn_delay": 0,
       "position": "right",
