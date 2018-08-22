@@ -22,9 +22,6 @@ public class RockPowerup implements PowerupInterface
 
     private Rock[] rocks;
 
-    private double duration;
-    private double durationTimer;
-
     private double timeBetweenRocks;
     private double rockSpawnTimer;
 
@@ -34,7 +31,6 @@ public class RockPowerup implements PowerupInterface
 
     public RockPowerup()
     {
-        this.duration = 10000000;
         this.timeBetweenRocks = 50;
 
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock_ui.png")));
@@ -50,12 +46,12 @@ public class RockPowerup implements PowerupInterface
     public void update(float delta)
     {
         // If rocks haven't been spawned yet spawn rocks with a time delay.
-        if (this.rocksSpawned != this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
+        if (this.rocksSpawned < this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
         {
 
             Rock rock = new Rock();
             rock.setPosition(new Vector2(this.getClosestRockSpawnZombiePosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
-            Environment.level.addDrawableEntity(rock);
+            Environment.drawableBackgroundAddQueue.add(rock);
 
             this.rockSpawnTimer = System.currentTimeMillis();
 
@@ -68,7 +64,6 @@ public class RockPowerup implements PowerupInterface
     public void activate()
     {
         Environment.level.addUpdatableEntity(this);
-        this.durationTimer = System.currentTimeMillis();
         this.rockSpawnTimer = System.currentTimeMillis();
 
         this.isActive = true;
@@ -81,7 +76,7 @@ public class RockPowerup implements PowerupInterface
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
-            if (drawableEntity instanceof Zombie && ((Zombie) drawableEntity).isInLevel())
+            if (drawableEntity instanceof Zombie && ((Zombie) drawableEntity).isAlive() && ((Zombie) drawableEntity).isInLevel())
             {
                 zombieDistances.put(Math.abs(Environment.level.objective.getPosition().x - drawableEntity.getPosition().x), ((Zombie) drawableEntity));
             }
@@ -99,7 +94,7 @@ public class RockPowerup implements PowerupInterface
     @Override
     public boolean hasCompleted()
     {
-        return this.isActive() && System.currentTimeMillis() - this.durationTimer >= this.duration;
+        return this.isActive() && this.rocksSpawned == this.rocks.length;
     }
 
     @Override

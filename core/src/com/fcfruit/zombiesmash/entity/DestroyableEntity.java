@@ -20,6 +20,8 @@ import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 
+import java.util.Random;
+
 /**
  * Created by Lucas on 2018-08-02.
  */
@@ -33,8 +35,11 @@ public class DestroyableEntity implements DestroyableEntityInterface
     private DetachableEntityInterface detachableEntity;
     private InteractivePhysicsEntityInterface interactivePhysicsEntity;
 
+    private DrawableEntityInterface drawableEntity;
+    private PhysicsEntityInterface physicsEntity;
+
     private double destroyTimer;
-    private double timeBeforeDestroy = 3000;
+    private double timeBeforeDestroy = 2500 + new Random().nextInt(500);
 
     private boolean destroying = false;
 
@@ -58,6 +63,12 @@ public class DestroyableEntity implements DestroyableEntityInterface
         this.optimizableEntity = optimizableEntity;
     }
 
+    public DestroyableEntity(DrawableEntityInterface drawableEntityInterface, PhysicsEntityInterface physicsEntityInterface)
+    {
+        this.drawableEntity = drawableEntityInterface;
+        this.physicsEntity = physicsEntityInterface;
+    }
+
     @Override
     public void update(float delta)
     {
@@ -65,9 +76,7 @@ public class DestroyableEntity implements DestroyableEntityInterface
             this.destroyTimer = System.currentTimeMillis();
         else if(this.shouldDestroy() && !this.destroying)
         {
-            this.createSmoke();
             this.destroy();
-            this.destroying = true;
         }
     }
 
@@ -99,6 +108,9 @@ public class DestroyableEntity implements DestroyableEntityInterface
     @Override
     public void destroy()
     {
+        this.createSmoke();
+        this.destroying = true;
+
         if (this.containerEntity != null && this.containerEntity instanceof DrawableEntityInterface)
         {
             Environment.drawableRemoveQueue.add((DrawableEntityInterface) this.containerEntity);
@@ -124,6 +136,15 @@ public class DestroyableEntity implements DestroyableEntityInterface
             // Probably safer in terms of crashing anyways
             this.interactivePhysicsEntity.getPhysicsBody().setTransform(new Vector2(99, 99), 0);
             this.interactivePhysicsEntity.getPhysicsBody().setActive(false);
+        } else if(this.drawableEntity != null)
+        {
+            Environment.drawableRemoveQueue.add(this.drawableEntity);
+            // Instead of destroying body, move it out of screen
+            // Destroying bodies here causes other zombies to lose limbs
+            // because box2d re-uses memory for bodies
+            // Probably safer in terms of crashing anyways
+            this.physicsEntity.getPhysicsBody().setTransform(new Vector2(99, 99), 0);
+            this.physicsEntity.getPhysicsBody().setActive(false);
         }
     }
 
@@ -151,7 +172,12 @@ public class DestroyableEntity implements DestroyableEntityInterface
 
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
         this.animatableGraphicsEntity.setAnimation("animation");
-        this.animatableGraphicsEntity.setPosition(this.interactivePhysicsEntity.getPhysicsBody().getPosition());
+
+        if(this.drawableEntity != null)
+            this.animatableGraphicsEntity.setPosition(this.physicsEntity.getPhysicsBody().getPosition());
+        else
+            this.animatableGraphicsEntity.setPosition(this.interactivePhysicsEntity.getPhysicsBody().getPosition());
+
         Environment.drawableBackgroundAddQueue.add(this.animatableGraphicsEntity);
     }
 

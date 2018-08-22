@@ -10,13 +10,20 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.zombies.Zombie;
+
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-12-02.
@@ -30,6 +37,13 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
 
     private boolean isFalling;
 
+    private DestroyableEntity destroyableEntity;
+
+    private double timeBeforeDestroy = 1000 + new Random().nextInt(500);
+    private double destroyTimer;
+
+    private Array<Zombie> hitZombies = new Array<Zombie>();
+
     public Rock()
     {
 
@@ -37,6 +51,7 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
         RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/rock/rock_rube.json"));
 
         Body body = scene.getBodies().get(0);
+        body.setGravityScale(2);
         body.setUserData(new PhysicsData(this));
         for (Fixture fixture : body.getFixtureList())
         {
@@ -56,6 +71,8 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
         this.polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
         polygon.setOrigin(size.x / 2, size.y / 2);
 
+        this.destroyableEntity = new DestroyableEntity(this, this);
+
     }
 
     @Override
@@ -69,24 +86,37 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
         this.polygon.setPosition(pos.x - (this.polygon.getVertices()[2] / 2), pos.y - (this.polygon.getVertices()[5] / 2));
         this.polygon.setRotation(this.getAngle());
 
-        this.isFalling = this.getPosition().y > 0.5f;
+        if(this.isFalling && this.getPosition().y < 1f)
+            this.destroyTimer = System.currentTimeMillis();
 
-        for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+        this.isFalling = this.getPosition().y > 1f;
+
+        if(!this.isFalling && System.currentTimeMillis() - this.destroyTimer > this.timeBeforeDestroy)
+            this.destroyableEntity.destroy();
+
+
+        for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
         {
-            if (drawableEntityInterface instanceof Zombie)
-                for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntityInterface : ((Zombie) drawableEntityInterface).getInteractiveEntities().values())
+            if (this.isFalling && drawableEntityInterface instanceof Zombie)
+            {
+                if (!this.hitZombies.contains((Zombie) drawableEntityInterface, false) && Environment.areQuadrilaterallsColliding(((Zombie) drawableEntityInterface).getPolygon(), this.polygon))
                 {
-                    if (Environment.areQuadrilaterallsColliding(interactiveEntityInterface.getPolygon(), this.polygon) && this.isFalling)
+                    if (((Zombie) drawableEntityInterface).isAccuratePolygonColliding(this.polygon))
                     {
-                        ((com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface) drawableEntityInterface).disable_optimization();
-                        if (interactiveEntityInterface instanceof DetachableEntityInterface)
+                        ((Zombie) drawableEntityInterface).stopGetUp();
+                        ((Zombie) drawableEntityInterface).enable_physics();
+                        hitZombies.add((Zombie) drawableEntityInterface);
+                        for (DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntityInterface).getDetachableEntities().values())
                         {
-                           ((DetachableEntityInterface)interactiveEntityInterface).setForceForDetach(0.1f);
+                            detachableEntityInterface.setForceForDetach(0.1f);
+                            if (detachableEntityInterface instanceof PhysicsEntityInterface)
+                                ((PhysicsEntityInterface) detachableEntityInterface).getPhysicsBody().applyLinearImpulse(new Vector2(0, -0.1f), this.getPhysicsBody().getPosition(), true);
                         }
                     }
-
                 }
+            }
         }
+
 
     }
 

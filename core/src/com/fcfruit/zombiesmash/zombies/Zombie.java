@@ -549,6 +549,30 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     /**
      * Misc.
      **/
+
+
+    /**
+     * @expensive operation
+     * **/
+    public boolean isAccuratePolygonColliding(Polygon polygon)
+    {
+        // Without an animation check the zombies slide with physics enabled, not what we want
+        if(this.isAnimating())
+        {
+            this.syncEntitiesToAnimation();
+            this.updateEntities(Gdx.graphics.getDeltaTime());
+        }
+
+        for(InteractiveEntityInterface interactiveEntityInterface : this.getInteractiveEntities().values())
+        {
+            if(Environment.areQuadrilaterallsColliding(interactiveEntityInterface.getPolygon(), polygon))
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     public void updateEntities(float delta)
     {
         for (DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
@@ -672,6 +696,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
+    /**
+     * @expensive operation
+     * **/
     private void syncEntitiesToAnimation()
     {
         for (String key : this.getDrawableEntities().keySet())
@@ -857,6 +884,18 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.clearMoveQueue();
     }
 
+    public void enable_physics()
+    {
+        this.onPhysicsEnabled();
+
+        // To prevent zombie moving if multiple calls to enable_physics are made
+        if(this.isAnimating())
+            this.syncEntitiesToAnimation();
+
+        this.disable_optimization();
+        this.isAnimating = false;
+    }
+
     private void onTouching()
     {
         if (this.getUpMouseJoint != null)
@@ -1005,7 +1044,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
         if (this.isAnimating() && Environment.touchedDownItems.size() < 1 && this.getPolygon().contains(pos.x, pos.y))
         {
-            this.syncEntitiesToAnimation();
+            this.enable_physics();
         }
 
         boolean touching = false;
@@ -1097,7 +1136,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void disable_optimization()
     {
-        this.onPhysicsEnabled();
         this.optimizableEntity.disable_optimization();
     }
 

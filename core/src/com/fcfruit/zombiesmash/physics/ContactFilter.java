@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
@@ -72,9 +73,9 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         {
             return true;
         }
-        // Rock Powerup
-        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class)
-                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class))
+        // Rock Powerup, Make Rock Collide with ground higher than 0
+        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class) || (fixtureBData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureB.getBody()) > 0)
+                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class) || (fixtureAData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureA.getBody()) > 0))
         {
             return true;
         }
@@ -83,7 +84,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         {
             return false;
         }
-        // Grenade
+        // Grenade and Gun
         else if(fixtureAData.containsInstanceOf(Grenade.class) && fixtureBData.containsInstanceOf(Grenade.class))
         {
             return true;

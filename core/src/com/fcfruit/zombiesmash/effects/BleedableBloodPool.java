@@ -62,7 +62,7 @@ public class BleedableBloodPool
         // If body not in pool, delete it
         if(!bloodReturned)
         {
-            Gdx.app.error("BloodPool", "Deleting unknown body...");
+            Gdx.app.error("BloodPool", "Deleting body not from pool originally...");
             blood.disable();
         }
     }
