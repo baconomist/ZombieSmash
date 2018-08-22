@@ -9,6 +9,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.Event;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -72,6 +74,9 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     public void explode()
     {
         this.explodableEntity.explode();
+        Environment.drawableAddQueue.add(this.explodableEntity);
+        Environment.drawableRemoveQueue.add(this);
+        this.dispose();
     }
 
     @Override

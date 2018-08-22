@@ -153,9 +153,11 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
     @Override
     public Vector2 getSize()
     {
-        float[] verticies = ((BoundingBoxAttachment)this.skeleton.findSlot("bounding_box").getAttachment()).getVertices();
+        /*float[] verticies = ((BoundingBoxAttachment)this.skeleton.findSlot("bounding_box").getAttachment()).getVertices();
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3((verticies[2] - verticies[0]) * this.skeleton.getRootBone().getScaleX(),
-                verticies[5] * this.skeleton.getRootBone().getScaleY(), 0)));
+                (verticies[5] - verticies[3]) * this.skeleton.getRootBone().getScaleY(), 0)));*/
+        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getData().getWidth()*this.skeleton.getRootBone().getScaleX(),
+                this.skeleton.getData().getHeight()*this.skeleton.getRootBone().getScaleY(), 0)));
         size.y = Environment.physicsCamera.position.y*2 - size.y;
         return new Vector2(size.x, size.y);
     }

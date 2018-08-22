@@ -1,11 +1,12 @@
 package com.fcfruit.zombiesmash;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.fcfruit.zombiesmash.effects.BleedableBloodPool;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
@@ -60,15 +61,13 @@ public class Environment
         //assets.load("zombies/reg_zombie/reg_zombie.png", Texture.class);
         //assets.load("zombies/reg_zombie/reg_zombie_rube.json", Json.class);
 
-        for(int i = 1; i < 14; i++)
-        {
-            assets.load("effects/blood/flowing_blood/"+i+".png", Texture.class);
-        }
+        assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
 
-        for(int i = 1; i < 5; i++)
-        {
-            assets.load("effects/blood/ground_blood/"+i+".png", Texture.class);
-        }
+
+        assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
+        assets.load("effects/blood/ground_blood/ground_blood.atlas", TextureAtlas.class);
+
 
     }
 
@@ -85,6 +84,8 @@ public class Environment
     public static OrthographicCamera physicsCamera;
 
     public static Physics physics;
+
+    public static BleedableBloodPool bleedableBloodPool;
 
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
@@ -115,6 +116,7 @@ public class Environment
         physics = new Physics();
         screens.gamescreen.create();
         powerupManager = new PowerupManager();
+        bleedableBloodPool = new BleedableBloodPool();
 
         setupLevel(levelid);
     }

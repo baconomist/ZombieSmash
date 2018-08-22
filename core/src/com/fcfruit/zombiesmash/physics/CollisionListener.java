@@ -23,59 +23,48 @@ public class CollisionListener implements ContactListener
     public void beginContact(Contact contact)
     {
 
-        // Probably can't detach parts here because this is in the world timestep
+        PhysicsData fixtureAData = ((PhysicsData) contact.getFixtureA().getUserData());
+        PhysicsData fixtureBData = ((PhysicsData) contact.getFixtureB().getUserData());
+
+        PhysicsData[] fixtureData = {fixtureAData, fixtureBData};
+
+        /*
+        * Probably can't detach parts here because this is in the world timestep
+        * */
+
+        // Only check the collision if an entity collided with a static body (ie the ground)
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
         {
 
-            for (DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
+            // Loop through fixtureA and fixtureB to avoid copy-pasting code
+            for(PhysicsData physicsData : fixtureData)
             {
-                if (drawableEntity instanceof ExplodableEntityInterface)
+                // Explodable Entity
+                if(physicsData.containsInstanceOf(ExplodableEntityInterface.class))
                 {
-                    if (contact.getFixtureA().getBody().equals(((ExplodableEntityInterface) drawableEntity).getPhysicsBody())
-                            || contact.getFixtureB().getBody().equals(((ExplodableEntityInterface) drawableEntity).getPhysicsBody()))
+                    ExplodableEntityInterface explodableEntityInterface = (ExplodableEntityInterface) physicsData.getClassInstance(ExplodableEntityInterface.class);
+
+                    if (!Environment.explodableEntityQueue.contains(explodableEntityInterface) && explodableEntityInterface.shouldExplode())
                     {
-                        if (!Environment.explodableEntityQueue.contains(drawableEntity) && ((ExplodableEntityInterface) drawableEntity).shouldExplode())
+                        Environment.explodableEntityQueue.add(explodableEntityInterface);
+                    }
+                }
+                // Detachable Entity
+                else if(physicsData.containsInstanceOf(DetachableEntityInterface.class))
+                {
+                    DetachableEntityInterface detachableEntityInterface = (DetachableEntityInterface) physicsData.getClassInstance(DetachableEntityInterface.class);
+
+                    if (!detachableEntityInterface.getState().equals("detached") && detachableEntityInterface.shouldDetach())
+                    {
+                        detachableEntityInterface.setState("waiting_for_detach");
+                        if (!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
                         {
-                            Environment.explodableEntityQueue.add(((ExplodableEntityInterface) drawableEntity));
+                            Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
                         }
                     }
                 }
 
-                if (drawableEntity instanceof ContainerEntityInterface)
-                {
-
-                    for (DrawableEntityInterface drawableEntity1 : ((ContainerEntityInterface) drawableEntity).getDrawableEntities().values())
-                    {
-                        if (drawableEntity1 instanceof ExplodableEntityInterface)
-                        {
-                            if (contact.getFixtureA().getBody().equals(((ExplodableEntityInterface) drawableEntity1).getPhysicsBody())
-                                    || contact.getFixtureB().getBody().equals(((ExplodableEntityInterface) drawableEntity1).getPhysicsBody()))
-                            {
-                                if (!Environment.explodableEntityQueue.contains(drawableEntity1) && ((ExplodableEntityInterface) drawableEntity1).shouldExplode())
-                                {
-                                    Environment.explodableEntityQueue.add(((ExplodableEntityInterface) drawableEntity1));
-                                }
-                            }
-                        }
-                    }
-
-                    for (DetachableEntityInterface detachableEntity : ((ContainerEntityInterface) drawableEntity).getDetachableEntities().values())
-                    {
-                        if(contact.getFixtureA().getBody().equals(((PhysicsEntityInterface)detachableEntity).getPhysicsBody()) || contact.getFixtureB().getBody().equals(((PhysicsEntityInterface)detachableEntity).getPhysicsBody()))
-                        {
-                            if (!detachableEntity.getState().equals("detached") && detachableEntity.shouldDetach())
-                            {
-                                detachableEntity.setState("waiting_for_detach");
-                                if (!Environment.detachableEntityDetachQueue.contains(detachableEntity))
-                                {
-                                    Environment.detachableEntityDetachQueue.add(detachableEntity);
-                                }
-                            }
-                        }
-
-                    }
-                }
 
             }
 

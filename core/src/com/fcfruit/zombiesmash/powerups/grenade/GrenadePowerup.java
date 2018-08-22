@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.ArrayList;
 
@@ -82,7 +83,7 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         // Make grenade easy to detach from rope
         this.grenade.setForceForDetach(20f);
 
-        fixture.setUserData(this.grenade);
+        fixture.setUserData(new PhysicsData(this.grenade));
 
         Environment.drawableAddQueue.add(this.grenade);
         Environment.updatableAddQueue.add(this);

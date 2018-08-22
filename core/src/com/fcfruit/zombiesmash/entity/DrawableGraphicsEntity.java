@@ -103,7 +103,9 @@ public class DrawableGraphicsEntity implements DrawableEntityInterface
     @Override
     public void dispose()
     {
-
+        this.sprite = null;
+        this.position = null;
+        this.alpha = 0;
     }
 
     // Unused

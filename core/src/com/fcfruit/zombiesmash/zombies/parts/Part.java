@@ -7,22 +7,27 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
+import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.ArrayList;
 
@@ -30,12 +35,14 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Part implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, BleedableEntityInterface, NameableEntityInterface
+public class Part implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
+        BleedableEntityInterface, NameableEntityInterface, DestroyableEntityInterface
 {
     private String name;
 
     private ContainerEntityInterface containerEntity;
     private OptimizableEntity optimizableEntity;
+    private DestroyableEntity destroyableEntity;
     private DrawablePhysicsEntity drawableEntity;
     private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
@@ -50,7 +57,7 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
 
         this.detachableEntity = new DetachableEntity(joints, containerEntity, this);
-        this.detachableEntity.setForceForDetach(400f*physicsBody.getMass());
+        this.detachableEntity.setForceForDetach(200f*physicsBody.getMass());
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;
@@ -59,8 +66,15 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.optimizableEntity = new OptimizableEntity(this, this, null);
+        this.destroyableEntity = new DestroyableEntity(this, this, this);
 
         this.bleedablePoint = bleedablePoint;
+
+        ((PhysicsData) physicsBody.getUserData()).add_data(this);
+        for(Fixture f : physicsBody.getFixtureList())
+        {
+            ((PhysicsData) f.getUserData()).add_data(this);
+        }
 
     }
 
@@ -70,6 +84,7 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.detachableEntity.detach();
 
         this.enable_bleeding();
+        this.enable_optimization();
 
         /*maybe set joint state to waiting for detach when detaching
             joint user data probably gets instantly deleted when you call joint.destroy
@@ -91,6 +106,13 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         this.bleedablePoint.update(delta);
 
         this.optimizableEntity.update(delta);
+        this.destroyableEntity.update(delta);
+    }
+
+
+    @Override
+    public void onTouchDown(float x, float y, int p)
+    {
         for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
@@ -106,12 +128,6 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
             }
         }
 
-    }
-
-
-    @Override
-    public void onTouchDown(float x, float y, int p)
-    {
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 
@@ -203,6 +219,18 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     public ContainerEntityInterface getContainer()
     {
         return this.containerEntity;
+    }
+
+    @Override
+    public void destroy()
+    {
+        this.destroyableEntity.destroy();
+    }
+
+    @Override
+    public void force_instant_optimize()
+    {
+        this.optimizableEntity.force_instant_optimize();
     }
 
     @Override

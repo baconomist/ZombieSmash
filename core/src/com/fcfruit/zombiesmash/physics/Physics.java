@@ -6,6 +6,7 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef;
+import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
@@ -30,7 +31,7 @@ public class Physics
     public static final float PIXELS_PER_METER = ZombieSmash.WIDTH / WIDTH;
     public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;
 
-    public static final float STEP_TIME = 1f / 40f;
+    public static final float STEP_TIME = 1f / 30f;
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
 
@@ -134,13 +135,15 @@ public class Physics
         PolygonShape planeShape = new PolygonShape();
         planeShape.setAsBox(Environment.physicsCamera.viewportWidth * 10, 0);
         planeFixture.shape = planeShape;
+        planeFixture.restitution = 0.3f;
+        planeFixture.friction = 2f;
 
         this.groundBodies = new ArrayList<Body>();
-        for (float i = 0f, c = 0; c < 3; i += 0.4f, c++)
+        for (float i = 0f, c = 0; c < 3; i += 0.3f, c++)
         {
             Body ground = this.world.createBody(plane);
             ground.createFixture(planeFixture);
-            ground.getFixtureList().get(0).setUserData("ground");
+            ground.getFixtureList().get(0).setUserData(new PhysicsData("ground"));
             ground.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, i, 0);
             this.groundBodies.add(ground);
         }
@@ -148,7 +151,7 @@ public class Physics
 
         this.roof = this.world.createBody(plane);
         this.roof.createFixture(planeFixture);
-        this.roof.getFixtureList().get(0).setUserData("roof");
+        this.roof.getFixtureList().get(0).setUserData(new PhysicsData("ground"));
         this.roof.setTransform(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight * 2, 0);
 
         planeShape.dispose();
@@ -239,7 +242,9 @@ public class Physics
         //Gdx.app.debug("body", ""+body);
 
         if (this.get_world_bodies().contains(body, true))
+        {
             this.world.destroyBody(body);
+        }
 
     }
 

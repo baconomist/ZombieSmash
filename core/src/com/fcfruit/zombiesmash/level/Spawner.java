@@ -5,6 +5,8 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
@@ -38,7 +40,7 @@ public class Spawner
         positions.put("left", new Vector2(pos.x + 2f, 0.1f));
         positions.put("right", new Vector2(pos.x + 38.54f, 0.1f));
         positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
-        positions.put("middle_right", new Vector2(pos.x + 33.33f, 0.1f));
+        positions.put("middle_right", new Vector2(pos.x + 22f, 0.1f));
     }
 
     static HashMap<String, Class> zombieType = new HashMap<String, Class>();
@@ -107,12 +109,19 @@ public class Spawner
 
         try
         {
+            int direction = 0;
+            if (data.getString("position").contains("left"))
+            {
+                direction = 0;
+            } else if (data.getString("position").contains("right"))
+            {
+                direction = 1;
+            }
+
             Zombie tempZombie;
             tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
-            tempZombie.setup();
+            tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
-
-            Gdx.app.log("sdada", ""+(Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(positions.get("left").x, 0, 0))).x));
 
             try
             {
@@ -120,14 +129,6 @@ public class Spawner
             } catch (Exception e)
             {
                 tempZombie.setInitialGround(new Random().nextInt(2));
-            }
-
-            if (data.getString("position").contains("left"))
-            {
-                tempZombie.setDirection(0);
-            } else if (data.getString("position").contains("right"))
-            {
-                tempZombie.setDirection(1);
             }
 
             Environment.level.addDrawableEntity(tempZombie);

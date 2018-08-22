@@ -52,7 +52,7 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     @Override
     public Vector2 getPosition()
     {
-        return this.physicsBody.getTransform().getPosition();
+        return this.physicsBody.getPosition();
     }
 
     @Override
@@ -112,6 +112,9 @@ public class DrawablePhysicsEntity implements com.fcfruit.zombiesmash.entity.int
     @Override
     public void dispose()
     {
-
+        this.sprite = null;
+        Environment.physics.destroyBody(this.physicsBody);
+        this.physicsBody = null;
+        this.alpha = 0;
     }
 }

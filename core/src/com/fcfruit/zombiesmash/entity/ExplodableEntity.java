@@ -36,7 +36,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
     public Array<ParticleEntity> particles = new Array<ParticleEntity>();
 
-    private AnimatableGraphicsEntity animatableGraphicsEntity;
+    public AnimatableGraphicsEntity animatableGraphicsEntity;
 
     public ExplodableEntity(com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface physicsEntityInterface, float explosionForce)
     {
@@ -114,7 +114,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         {
             float angle = (float) Math.toRadians((i / (float) numRays) * 360);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            ParticleEntity particle = new ParticleEntity(Environment.physics.getWorld(), this.physicsBody.getPosition(), rayDir, NUMRAYS, 100f, 10f);
+            ParticleEntity particle = new ParticleEntity(this.physicsBody.getPosition(), rayDir, NUMRAYS, 100f, 10f);
             particle.blastPower = 10;
             this.particles.add(particle); // create the particle
         }

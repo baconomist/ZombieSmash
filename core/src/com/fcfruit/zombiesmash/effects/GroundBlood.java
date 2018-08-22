@@ -1,8 +1,9 @@
 package com.fcfruit.zombiesmash.effects;
 
-import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 
@@ -15,12 +16,23 @@ import java.util.Random;
 public class GroundBlood extends DrawableGraphicsEntity
 {
 
-    private double timeBeforeDestroy = 3000;
-    private double destroyTimer = System.currentTimeMillis();
+    private double timeBeforeDisable = 3000;
+    private double disableTimer = System.currentTimeMillis();
 
     public GroundBlood()
     {
-        super(new Sprite(Environment.assets.get("effects/blood/ground_blood/"+(new Random().nextInt(4)+1)+".png", Texture.class)));
+        super(new Sprite(Environment.assets.get("effects/blood/ground_blood/ground_blood.atlas", TextureAtlas.class).findRegion(""+(new Random().nextInt(4)+1))));
+        this.getSprite().setScale(0.5f);
+    }
+
+    public void enable()
+    {
+        this.disableTimer = System.currentTimeMillis();
+    }
+
+    public void disable()
+    {
+        Environment.drawableRemoveQueue.add(this);
     }
 
     @Override
@@ -33,10 +45,9 @@ public class GroundBlood extends DrawableGraphicsEntity
 
     private void update()
     {
-        if(System.currentTimeMillis() - this.destroyTimer > this.timeBeforeDestroy)
+        if(System.currentTimeMillis() - this.disableTimer > this.timeBeforeDisable)
         {
-            Environment.drawableRemoveQueue.add(this);
-            this.dispose();
+            this.disable();
         }
     }
 

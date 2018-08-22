@@ -90,7 +90,8 @@ public class InteractivePhysicsEntity implements com.fcfruit.zombiesmash.entity.
         //mouseJointDef.dampingRatio = 10;
 
         // Makes the joint moveBy body faster
-        mouseJointDef.dampingRatio = 0.1f;
+        mouseJointDef.dampingRatio = 1;
+        mouseJointDef.frequencyHz = 100;
 
         if (this.powerfulJoint)
         {

@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.Bone;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.fcfruit.zombiesmash.Environment;
@@ -32,12 +33,11 @@ public class BleedablePoint implements BleedableEntityInterface
     private Vector2 complete_physics_pos;
     private Body physicsBody;
 
-    private DrawableGraphicsEntity bodypartBlood;
+    //private DrawableGraphicsEntity bodypartBlood;
     private float blood_pos_rot_offset;
 
     private boolean isBleeding;
 
-    private ArrayList<BleedBlood> blood;
     private double bleedTime = 5000;
     private double bleedTimer;
     private double timeBeforeBlood;
@@ -47,7 +47,7 @@ public class BleedablePoint implements BleedableEntityInterface
 
     /**
      * Child code
-     * **/
+     **/
     private BleedablePoint parentBleedablePoint;
 
     public void setParent(BleedablePoint parent)
@@ -57,7 +57,7 @@ public class BleedablePoint implements BleedableEntityInterface
 
     /**
      * Parent constructor
-     * **/
+     **/
     public BleedablePoint(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, float animScale)
     {
         this.create(physics_pos, blood_pos, bone, physicsBody, animScale);
@@ -65,7 +65,7 @@ public class BleedablePoint implements BleedableEntityInterface
 
     /**
      * General create method as to not copy and paste code
-     * **/
+     **/
     private void create(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, float animScale)
     {
         this.blood_pos_name = blood_pos.getName();
@@ -77,113 +77,98 @@ public class BleedablePoint implements BleedableEntityInterface
         float y = spine_pos.y;
 
         Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(x, y, 0)));
-        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+        pos.y = Environment.physicsCamera.position.y * 2 - pos.y;
 
-        this.physics_h = (float)Math.sqrt(pos.x*pos.x + pos.y*pos.y);
+        this.physics_h = (float) Math.sqrt(pos.x * pos.x + pos.y * pos.y);
 
-        this.blood = new ArrayList<BleedBlood>();
         this.isBleeding = false;
 
         //this.rotOffset = this.physicsBody.getAngle() - (float)Math.atan2(y, x);
         this.rotOffset = 0;
         this.calc_phys_pos();
-        float angle = (float)Math.atan2(this.physics_offset.y, this.physics_offset.x);
-        this.rotOffset = angle - (float)Math.atan2(y, x);
+        float angle = (float) Math.atan2(this.physics_offset.y, this.physics_offset.x);
+        this.rotOffset = angle - (float) Math.atan2(y, x);
 
 
-        //this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(Environment.assets.get("effects/blood/flowing_blood/"+(new Random().nextInt(13)+1)+".png", Texture.class)));
-        this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png"))));
-        this.bodypartBlood.getSprite().setScale(animScale);
+        //this.bodypartBlood = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("effects/blood/blood.png"))));
+        //this.bodypartBlood.getSprite().setScale(animScale);
 
         this.blood_pos_rot_offset = (float) Math.toDegrees(this.physicsBody.getAngle()) - blood_pos.computeWorldRotation(bone); // - 180; // -180 because pointAttachments have a different "0 degrees" than everything else
-
-        Gdx.app.log(blood_pos_name, ""+blood_pos.computeWorldRotation(bone));
 
     }
 
     /**
      * Calculate the position for blood to spawn at relative to the physicsBody
-     * **/
+     **/
     private void calc_phys_pos()
     {
-        this.physics_offset = new Vector2(this.physics_h*(float)Math.cos(this.physicsBody.getAngle() - rotOffset), this.physics_h*(float)Math.sin(this.physicsBody.getAngle() - rotOffset));
+        this.physics_offset = new Vector2(this.physics_h * (float) Math.cos(this.physicsBody.getAngle() - rotOffset), this.physics_h * (float) Math.sin(this.physicsBody.getAngle() - rotOffset));
     }
 
     @Override
     public void draw(SpriteBatch batch)
     {
-        for (BleedBlood blood : this.blood)
-        {
-            blood.draw(batch);
-        }
-
-        if(this.isBleeding)
-            this.bodypartBlood.draw(batch);
+        //if(this.isBleeding)
+        //this.bodypartBlood.draw(batch);
     }
 
     @Override
     public void update(float delta)
     {
-        this.calc_phys_pos();
-
-        this.complete_physics_pos = this.physicsBody.getPosition();
-        this.complete_physics_pos.sub(this.physics_offset);
-
-        ArrayList<BleedBlood> copy = new ArrayList<BleedBlood>();
-        for (BleedBlood blood : this.blood)
-        {
-            copy.add(blood);
-        }
-        for (BleedBlood blood : copy)
-        {
-            if (blood.readyForDestroy)
-            {
-                blood.dispose();
-                this.blood.remove(blood);
-            }
-        }
-
-        this.updateBlood();
-
-    }
-
-    /**
-     * Create blood accordingly
-     * **/
-    private void updateBlood()
-    {
         if (this.isBleeding)
         {
-            this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
-            this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
+            this.calc_phys_pos();
 
-            if(initUpdate)
-            {
-                this.bleedTimer = System.currentTimeMillis();
-                this.bloodTimer = System.currentTimeMillis();
-                this.initUpdate = false;
-            }
+            this.complete_physics_pos = this.physicsBody.getPosition();
+            this.complete_physics_pos.sub(this.physics_offset);
 
-            this.timeBeforeBlood = 200+(System.currentTimeMillis() - this.bleedTimer)*(System.currentTimeMillis() - this.bleedTimer)/10000;
-
-            if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
-            {
-
-                this.blood.add(new BleedBlood(this.complete_physics_pos, this.physics_offset));
-
-                this.bloodTimer = System.currentTimeMillis();
-            }
+            this.updateBlood();
         } else
         {
             this.bloodTimer = System.currentTimeMillis();
         }
     }
 
+    /**
+     * Create blood accordingly
+     **/
+    private void updateBlood()
+    {
+        //this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
+        //this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
+
+        if (initUpdate)
+        {
+            this.bleedTimer = System.currentTimeMillis();
+            this.bloodTimer = System.currentTimeMillis();
+            this.initUpdate = false;
+        }
+
+        this.timeBeforeBlood = 200 + (System.currentTimeMillis() - this.bleedTimer) * (System.currentTimeMillis() - this.bleedTimer) / 10000;
+
+        if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
+        {
+
+            Environment.drawableBackgroundAddQueue.add(Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset));
+
+            this.bloodTimer = System.currentTimeMillis();
+        } else if (System.currentTimeMillis() - this.bleedTimer > this.bleedTime)
+            this.isBleeding = false;
+    }
+
+    /**
+     * Used when you don't want blood particles but instead blood on the body
+     **/
+    /*public void enable_body_blood()
+    {
+        this.initUpdate = false;
+        this.enable_bleeding();
+    }*/
     @Override
     public void enable_bleeding()
     {
         this.isBleeding = true;
-        if(this.parentBleedablePoint != null)
+        if (this.parentBleedablePoint != null)
             this.parentBleedablePoint.enable_bleeding();
     }
 
@@ -191,7 +176,8 @@ public class BleedablePoint implements BleedableEntityInterface
     public void disable_bleeding()
     {
         this.isBleeding = false;
-        if(this.parentBleedablePoint != null)
+        if (this.parentBleedablePoint != null)
             this.parentBleedablePoint.disable_bleeding();
     }
+
 }

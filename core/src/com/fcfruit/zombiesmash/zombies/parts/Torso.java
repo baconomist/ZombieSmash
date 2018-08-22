@@ -10,10 +10,12 @@ import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
+import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
@@ -27,12 +29,13 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Torso implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntityInterface
+public class Torso implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntityInterface, DestroyableEntityInterface
 {
     private String name;
 
     private ContainerEntityInterface parentContainer;
     private OptimizableEntity optimizableEntity;
+    private DestroyableEntity destroyableEntity;
     private DrawablePhysicsEntity drawableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
 
@@ -53,6 +56,7 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.optimizableEntity = new OptimizableEntity(this, null, parentContainer);
+        this.destroyableEntity = new DestroyableEntity(this.parentContainer, this, this);
 
         this.bleedablePoints = bleedablePoints;
 
@@ -73,16 +77,22 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     @Override
     public void update(float delta)
     {
+        this.drawableEntity.update(delta);
+        this.interactivePhysicsEntity.update(delta);
 
         for(BleedablePoint bleedablePoint : this.bleedablePoints)
         {
             bleedablePoint.update(delta);
         }
 
-        this.drawableEntity.update(delta);
-        this.interactivePhysicsEntity.update(delta);
-
         this.optimizableEntity.update(delta);
+        this.destroyableEntity.update(delta);
+    }
+
+
+    @Override
+    public void onTouchDown(float x, float y, int p)
+    {
         for (InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
@@ -97,12 +107,21 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
                 }
             }
         }
-    }
 
+        /*
+        * TODO:
+        * - Fix this if need be because this can cause bugs
+        * where even if something isn't attached to torso
+        * the torso will disable optimization.
+        * */
+        for(InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())
+        {
+            if(interactiveEntityInterface.isTouching())
+            {
+                this.disable_optimization();
+            }
+        }
 
-    @Override
-    public void onTouchDown(float x, float y, int p)
-    {
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 
@@ -164,6 +183,18 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
     public Polygon getPolygon()
     {
         return this.interactivePhysicsEntity.getPolygon();
+    }
+
+    @Override
+    public void destroy()
+    {
+        this.destroyableEntity.destroy();
+    }
+
+    @Override
+    public void force_instant_optimize()
+    {
+        this.optimizableEntity.force_instant_optimize();
     }
 
     @Override

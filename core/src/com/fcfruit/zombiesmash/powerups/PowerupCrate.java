@@ -21,6 +21,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import org.lwjgl.Sys;
 
@@ -71,7 +72,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         fixtureDef.filter.groupIndex = -1;
 
         Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(this);
+        fixture.setUserData(new PhysicsData(this));
 
         this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate.png"))),
                 body);
