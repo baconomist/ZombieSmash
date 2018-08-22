@@ -5,9 +5,12 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
+import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Random;
@@ -48,9 +51,9 @@ public class RockPowerup implements PowerupInterface
         // If rocks haven't been spawned yet spawn rocks with a time delay.
         if (this.rocksSpawned < this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
         {
-
+            Gdx.app.log(""+this.getRockSpawnPosition(), ""+this.getRockSpawnPosition());
             Rock rock = new Rock();
-            rock.setPosition(new Vector2(this.getClosestRockSpawnZombiePosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
+            rock.setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
             Environment.drawableBackgroundAddQueue.add(rock);
 
             this.rockSpawnTimer = System.currentTimeMillis();
@@ -70,9 +73,13 @@ public class RockPowerup implements PowerupInterface
     }
 
 
-    private Float getClosestRockSpawnZombiePosition()
+
+    /*
+     * This method finds the biggest group of zombies to spawn rocks on for maximal DAMAGE!
+     * */
+    private Float getRockSpawnPosition()
     {
-        HashMap<Float, Zombie> zombieDistances = new HashMap<Float, Zombie>();
+        /*HashMap<Float, Zombie> zombieDistances = new HashMap<Float, Zombie>();
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.level.getDrawableEntities())
         {
@@ -86,8 +93,39 @@ public class RockPowerup implements PowerupInterface
         if (zombieDistances.size() > 0)
             return zombieDistances.get(Collections.min(zombieDistances.keySet())).getPosition().x;
         else
-            return Environment.physicsCamera.position.x + new Random().nextInt(4);
+            return Environment.physicsCamera.position.x + new Random().nextInt(4);*/
 
+        float group_distance_increment = 5f;
+        float offset = (Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2);
+
+        HashMap<Float, Integer> zombie_groups = new HashMap<Float, Integer>();
+
+        // <= is important!
+        for(float f = group_distance_increment + offset; f <= Physics.WIDTH + offset; f+=group_distance_increment)
+        {
+            zombie_groups.put(f, 0);
+
+            for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+            {
+                if(drawableEntityInterface instanceof Zombie && ((Zombie) drawableEntityInterface).isAlive() && ((Zombie) drawableEntityInterface).isInLevel())
+                {
+                    Zombie zombie = (Zombie) drawableEntityInterface;
+                    if(zombie.getPosition().x > f-5f && zombie.getPosition().x < f)
+                    {
+                        zombie_groups.put(f, zombie_groups.get(f)+1);
+                    }
+                }
+            }
+        }
+
+        int max = Collections.max(zombie_groups.values());
+        for(float key : zombie_groups.keySet())
+        {
+            if(zombie_groups.get(key) == max)
+                return key - 2.5f; // -2.5f to spawn rocks in the middle of "group_distance_increment" zone, not at the edge where there may not be any zombies
+        }
+
+        return Environment.physicsCamera.position.x + new Random().nextInt(4);
 
     }
 
