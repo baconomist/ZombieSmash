@@ -86,20 +86,21 @@ public class ParticleEntity
 
                 if (((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, pos.y))
                 {
-                    ((OptimizableEntityInterface)drawableEntity).disable_optimization();
 
                     if(drawableEntity instanceof Zombie)
                     {
                         ((Zombie) drawableEntity).stopGetUp();
-                        //((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getthis.physicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+                        ((Zombie) drawableEntity).enable_physics();
+
+                        // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
+                        ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
 
                         for(DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntity).getDetachableEntities().values())
                         {
                             if(detachableEntityInterface.getState().equals("attached") && detachableEntityInterface instanceof InteractiveEntityInterface && ((InteractiveEntityInterface) detachableEntityInterface).getPolygon().contains(pos.x, pos.y))
                             {
-                                detachableEntityInterface.setState("waiting_for_detach");
-                                Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
-                                ((PhysicsEntityInterface) detachableEntityInterface).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+                                // Pretty much detach all zombie limbs by setting detach force to nothing
+                                detachableEntityInterface.setForceForDetach(0.01f);
                             }
                         }
 

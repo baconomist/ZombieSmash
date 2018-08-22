@@ -62,6 +62,7 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = shape;
         fixtureDef.density = 0.1f;
+        fixtureDef.restitution = 0f;
 
         Body body = Environment.physics.createBody(bodyDef);
         Fixture fixture = body.createFixture(fixtureDef);

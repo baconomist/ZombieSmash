@@ -31,8 +31,8 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
     private boolean exploded;
     private boolean isAnimating;
 
-    private float explosionRadiusX = 3;
-    private float explosionRadiusY = 3;
+    private float explosionRadiusX = 5;
+    private float explosionRadiusY = 5;
 
     public Array<ParticleEntity> particles = new Array<ParticleEntity>();
 
