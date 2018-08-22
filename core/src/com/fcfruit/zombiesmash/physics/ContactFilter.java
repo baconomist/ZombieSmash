@@ -12,6 +12,8 @@ import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
+import java.util.Random;
+
 
 /**
  * Created by Lucas on 2017-11-01.
@@ -19,6 +21,8 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
 
 public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilter
 {
+    private Random random = new Random();
+
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB)
     {
@@ -74,8 +78,8 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             return true;
         }
         // Rock Powerup, Make Rock Collide with ground higher than 0
-        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class) || (fixtureBData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureB.getBody()) > 0)
-                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class) || (fixtureAData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureA.getBody()) > 0))
+        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class) || (fixtureBData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureB.getBody()) == this.random.nextInt(1) + 1)
+                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class) || (fixtureAData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureA.getBody()) == this.random.nextInt(1) + 1))
         {
             return true;
         }
