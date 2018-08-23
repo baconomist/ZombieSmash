@@ -157,7 +157,6 @@ public class Level
 
     public void update(float delta)
     {
-        this.sortMultiGroundEntities();
 
         // Can't be put in draw bcuz it takes too long
         // When it takes too long in a spritebatch call,
@@ -227,19 +226,19 @@ public class Level
         }
 
 
-        // Add updatableEntities to level
-        for (com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
-        {
-            this.updatableEntities.add(updatableEntityInterface);
-        }
-        Environment.updatableAddQueue.clear();
-
         // Remove drawableEntities from level
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
         {
             this.drawableEntities.remove(drawableEntity);
         }
         Environment.drawableRemoveQueue.clear();
+
+        // Add updatableEntities to level
+        for (com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
+        {
+            this.updatableEntities.add(updatableEntityInterface);
+        }
+        Environment.updatableAddQueue.clear();
 
         // Add drawableEntities to background
         for(DrawableEntityInterface drawableEntityInterface : Environment.drawableBackgroundAddQueue)
@@ -254,6 +253,9 @@ public class Level
         }
         Environment.drawableAddQueue.clear();
         Environment.drawableBackgroundAddQueue.clear();
+
+        // Add depth to drawableEntities
+        this.sortMultiGroundEntities();
 
     }
 
