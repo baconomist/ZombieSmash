@@ -9,7 +9,9 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -155,6 +157,7 @@ public class Level
 
     public void update(float delta)
     {
+        this.sortMultiGroundEntities();
 
         // Can't be put in draw bcuz it takes too long
         // When it takes too long in a spritebatch call,
@@ -251,6 +254,83 @@ public class Level
         }
         Environment.drawableAddQueue.clear();
         Environment.drawableBackgroundAddQueue.clear();
+
+    }
+
+    /**
+     * @warning may be expensive, might need to test performance
+     * **/
+    private void sortMultiGroundEntities()
+    {
+
+        // Move all ground0 entities to front
+        ArrayList<DrawableEntityInterface> copy = new ArrayList<DrawableEntityInterface>(this.drawableEntities);
+        // Reverse to prevent switching of draw order
+        Collections.reverse(copy);
+
+        int last_0ground = -1;
+        for(DrawableEntityInterface drawableEntityInterface : copy)
+        {
+            if(drawableEntityInterface instanceof MultiGroundEntityInterface)
+            {
+                MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
+                if(multiGroundEntityInterface.getCurrentGround() == 0)
+                {
+                    this.drawableEntities.remove(drawableEntityInterface);
+                    this.drawableEntities.add(0, drawableEntityInterface);
+                    last_0ground += 1;
+                }
+            }
+        }
+
+        copy = new ArrayList<DrawableEntityInterface>(this.drawableEntities);
+        // Reverse to prevent switching of draw order
+        Collections.reverse(copy);
+
+        int last_1ground = -1;
+        for(DrawableEntityInterface drawableEntityInterface : copy)
+        {
+            if(drawableEntityInterface instanceof MultiGroundEntityInterface)
+            {
+                MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
+                if(multiGroundEntityInterface.getCurrentGround() == 1 && last_0ground != -1)
+                {
+                    this.drawableEntities.remove(drawableEntityInterface);
+                    this.drawableEntities.add(last_0ground, drawableEntityInterface);
+                    last_1ground += 1;
+                }
+                else if(last_0ground == -1)
+                {
+                    this.drawableEntities.remove(drawableEntityInterface);
+                    this.drawableEntities.add(0, drawableEntityInterface);
+                }
+            }
+        }
+
+        copy = new ArrayList<DrawableEntityInterface>(this.drawableEntities);
+        // Reverse to prevent switching of draw order
+        Collections.reverse(copy);
+
+        for(DrawableEntityInterface drawableEntityInterface : copy)
+        {
+            if(drawableEntityInterface instanceof MultiGroundEntityInterface)
+            {
+                MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
+                if(multiGroundEntityInterface.getCurrentGround() == 2 && last_1ground != -1)
+                {
+                    this.drawableEntities.remove(drawableEntityInterface);
+                    this.drawableEntities.add(last_1ground, drawableEntityInterface);
+                    last_1ground += 1;
+                }
+                else if(last_1ground == -1)
+                {
+                    this.drawableEntities.remove(drawableEntityInterface);
+                    this.drawableEntities.add(0, drawableEntityInterface);
+                }
+            }
+        }
+
+
 
     }
 
