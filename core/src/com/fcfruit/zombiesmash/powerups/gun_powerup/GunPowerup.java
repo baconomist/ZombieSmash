@@ -65,7 +65,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
         if (this.particleEntity != null && (Math.abs(this.particleEntity.physicsBody.getPosition().x - this.lastShotGun.getPosition().x) > this.explosionRadius.x
                 || Math.abs(this.particleEntity.physicsBody.getPosition().y - this.lastShotGun.getPosition().y) > this.explosionRadius.y))
         {
-            Environment.physics.destroyBody(this.particleEntity.physicsBody);
+            Environment.particleEntityPool.returnParticle(this.particleEntity);
             this.particleEntity = null;
         }
 
@@ -186,7 +186,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
         Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
 
         // Create the bullet particle
-        this.particleEntity = new ParticleEntity(new Vector2(this.guns[currentControllingGun].getPosition().x + this.guns[currentControllingGun].getSize().x / 2,
+        this.particleEntity = Environment.particleEntityPool.getParticle(new Vector2(this.guns[currentControllingGun].getPosition().x + this.guns[currentControllingGun].getSize().x / 2,
                 this.guns[currentControllingGun].getPosition().y + this.guns[currentControllingGun].getSize().y / 2), rayDir, 1, this.blastPower, this.drag);
 
         // Reset shoot timer

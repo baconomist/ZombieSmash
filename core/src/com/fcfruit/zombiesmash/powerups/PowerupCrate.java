@@ -90,7 +90,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.crateDrawable, polygon);
 
         Environment.powerupManager.addCrate(this);
-        
+
+        this.open();
     }
 
     private void open()

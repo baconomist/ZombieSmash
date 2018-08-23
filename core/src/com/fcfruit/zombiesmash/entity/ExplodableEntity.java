@@ -93,13 +93,13 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
             if (Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
                     && Math.abs(particle.physicsBody.getLinearVelocity().y) < 5f)
             {
-                Environment.physics.destroyBody(particle.physicsBody);
+                Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
             if (Math.abs(particle.physicsBody.getPosition().x - this.physicsBody.getPosition().x) > this.explosionRadiusX
                     || Math.abs(particle.physicsBody.getPosition().y - this.physicsBody.getPosition().y) > this.explosionRadiusY)
             {
-                Environment.physics.destroyBody(particle.physicsBody);
+                Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
         }
@@ -114,7 +114,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         {
             float angle = (float) Math.toRadians((i / (float) numRays) * 360);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            ParticleEntity particle = new ParticleEntity(this.physicsBody.getPosition(), rayDir, NUMRAYS, 100f, 10f);
+            ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, 100f, 10f);
             particle.blastPower = 10;
             this.particles.add(particle); // create the particle
         }

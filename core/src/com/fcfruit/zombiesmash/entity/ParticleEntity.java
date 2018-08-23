@@ -33,24 +33,19 @@ public class ParticleEntity
 
     private Vector2 initialPos;
 
-    public ParticleEntity(Vector2 particlePos, Vector2 rayDir, float NUMRAYS, float blastPower, float drag)
-    {
-        this.blastPower = blastPower;
-        this.initialPos = particlePos;
+    public boolean enabled = false;
 
+    public ParticleEntity()
+    {
         BodyDef bd = new BodyDef();
         bd.type = BodyDef.BodyType.DynamicBody;
         bd.fixedRotation = true; // rotation not necessary
         bd.bullet = true; // prevent tunneling at high speed
 
-        bd.linearDamping = drag; // drag due to moving through air
-
         bd.gravityScale = 0; // ignore gravity
-        bd.position.x = particlePos.x;
-        bd.position.y = particlePos.y;// start at blast center
-        rayDir.scl(blastPower); // scale raydir to blastPower
-        bd.linearVelocity.x = rayDir.x;
-        bd.linearVelocity.y = rayDir.y;
+
+        // Keep body deactivated on creation, faster, no lag
+        bd.active = false;
 
         this.physicsBody = Environment.physics.createBody(bd);
 
@@ -62,7 +57,6 @@ public class ParticleEntity
 
         FixtureDef fd = new FixtureDef();
         fd.shape = circleShape;
-        fd.density = 120 / NUMRAYS; // very high - shared across all particles
         fd.friction = 0; // friction not necessary
         fd.restitution = 0.99f; // high restitution to reflect off obstacles
         //fd.filter.groupIndex = -1; // particles should not collide with each other
@@ -70,8 +64,35 @@ public class ParticleEntity
         this.fixture = this.physicsBody.createFixture(fd);
         this.fixture.setUserData(new PhysicsData(this));
 
-        this.rayDir = rayDir;
+    }
 
+    public void enable(Vector2 particlePos, Vector2 rayDir, float NUMRAYS, float blastPower, float drag)
+    {
+        this.blastPower = blastPower;
+        this.initialPos = particlePos;
+
+        this.rayDir = rayDir;
+        this.rayDir.scl(blastPower); // scale raydir to blastPower
+
+        // Reactivate physicsBody
+        this.physicsBody.setActive(true);
+        
+        this.physicsBody.setTransform(particlePos, this.physicsBody.getAngle());
+        this.physicsBody.setLinearDamping(drag); // drag due to moving through air
+        this.physicsBody.setLinearVelocity(rayDir);
+
+        this.fixture.setDensity(120 / NUMRAYS); // very high - shared across all particles);
+
+        this.enabled = true;
+    }
+
+    public void disable()
+    {
+        this.physicsBody.setActive(false);
+        this.physicsBody.setLinearVelocity(0, 0);
+        this.physicsBody.setTransform(99, 99, 0);
+
+        this.enabled = false;
     }
 
     public void update(float delta)

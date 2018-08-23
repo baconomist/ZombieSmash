@@ -15,6 +15,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.powerups.ParticleEntityPool;
 import com.fcfruit.zombiesmash.powerups.PowerupManager;
 
 import java.util.ArrayList;
@@ -87,6 +88,8 @@ public class Environment
 
     public static BleedableBloodPool bleedableBloodPool;
 
+    public static ParticleEntityPool particleEntityPool;
+
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
     // Used so interactive items can decide to activate if only they have been touched,
@@ -116,7 +119,10 @@ public class Environment
         physics = new Physics();
         screens.gamescreen.create();
         powerupManager = new PowerupManager();
+
+        // Pools
         bleedableBloodPool = new BleedableBloodPool();
+        particleEntityPool = new ParticleEntityPool();
 
         setupLevel(levelid);
     }
