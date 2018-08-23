@@ -128,7 +128,7 @@ public class Spawner
                 tempZombie.setInitialGround(data.getInt("depth"));
             } catch (Exception e)
             {
-                tempZombie.setInitialGround(new Random().nextInt(2));
+                tempZombie.setInitialGround(new Random().nextInt(1));
             }
 
             Environment.level.addDrawableEntity(tempZombie);
