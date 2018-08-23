@@ -886,7 +886,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     public void enable_physics()
     {
-        this.onPhysicsEnabled();
+        // Move zombie to front of screen, better for gameplay
+        Environment.drawableRemoveQueue.add(this);
+        Environment.drawableAddQueue.add(this);
 
         // To prevent zombie moving if multiple calls to enable_physics are made
         if(this.isAnimating())
