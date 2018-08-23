@@ -78,8 +78,8 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
             return true;
         }
         // Rock Powerup, Make Rock Collide with ground higher than 0
-        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class) || (fixtureBData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureB.getBody()) == this.random.nextInt(1) + 1)
-                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class) || (fixtureAData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureA.getBody()) == this.random.nextInt(1) + 1))
+        else if(fixtureAData.containsInstanceOf(Rock.class) && fixtureBData.containsInstanceOf(Zombie.class) || fixtureAData.containsInstanceOf(Rock.class) && (fixtureBData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureB.getBody()) == this.random.nextInt(1) + 1)
+                || fixtureBData.containsInstanceOf(Rock.class) && fixtureAData.containsInstanceOf(Zombie.class) || fixtureBData.containsInstanceOf(Rock.class) && (fixtureAData.getData().contains("ground", false) && Environment.physics.whichGround(fixtureA.getBody()) == this.random.nextInt(1) + 1))
         {
             return true;
         }
@@ -93,6 +93,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         {
             return true;
         }
+        // ParticleEntity
         else if(fixtureAData.containsInstanceOf(ParticleEntity.class) && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody
                 || fixtureBData.containsInstanceOf(ParticleEntity.class) && fixtureA.getBody().getType() != BodyDef.BodyType.StaticBody)
         {
