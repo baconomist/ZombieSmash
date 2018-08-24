@@ -776,8 +776,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void onDeath()
     {
-        ((OptimizableEntityInterface) this.getDrawableEntities().get("torso")).enable_optimization();
-        this.getPolygon().setPosition(9999, 9999);
+        Gdx.app.debug("Zombie", "onDeath()");
     }
 
     private void onObjectiveOnce()
@@ -1003,8 +1002,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             } else
             {
                 this.onPhysicsEnabled();
-                //this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
-                //this.animatableGraphicsEntity.update(delta);
+                this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
+                this.animatableGraphicsEntity.update(delta);
                 this.handleGetup();
             }
         }
@@ -1060,11 +1059,12 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void onTouchDown(float screenX, float screenY, int p)
     {
-        Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
+
+        /*Vector3 pos = Environment.gameCamera.unproject(new Vector3(screenX, screenY, 0));
         if (this.isAnimating() && Environment.touchedDownItems.size() < 1 && this.getPolygon().contains(pos.x, pos.y))
         {
             this.enable_physics();
-        }
+        }*/
 
         boolean touching = false;
         for (InteractiveEntityInterface interactiveEntity : this.getInteractiveEntities().values())
@@ -1075,10 +1075,14 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 touching = true;
             }
         }
-        this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
+
+        // Don't enable big zombie polygon when physics enabled
+        if(this.isAnimating())
+            this.interactiveGraphicsEntity.onTouchDown(screenX, screenY, p);
 
         if (this.interactiveGraphicsEntity.isTouching() && !touching && this.isAlive() && this.isInLevel())
         {
+            this.enable_physics();
             ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
 

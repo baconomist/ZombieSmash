@@ -105,28 +105,33 @@ public class ParticleEntity
                 Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.physicsBody.getPosition(), 0)));
                 pos.y = Environment.gameCamera.position.y*2 - pos.y;
 
-                if (((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, pos.y))
+                if (drawableEntity instanceof Zombie && ((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, pos.y)) // Boom! And all the zombies are gone from a grenade!
                 {
+                    ((Zombie) drawableEntity).stopGetUp();
+                    ((Zombie) drawableEntity).enable_physics();
 
-                    if(drawableEntity instanceof Zombie)
+                    // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
+                    ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+
+                    for(DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntity).getDetachableEntities().values())
                     {
-                        ((Zombie) drawableEntity).stopGetUp();
-                        ((Zombie) drawableEntity).enable_physics();
-
-                        // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
-                        ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
-
-                        for(DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntity).getDetachableEntities().values())
+                        if(detachableEntityInterface.getState().equals("attached") && detachableEntityInterface instanceof InteractiveEntityInterface && ((InteractiveEntityInterface) detachableEntityInterface).getPolygon().contains(pos.x, pos.y))
                         {
-                            if(detachableEntityInterface.getState().equals("attached") && detachableEntityInterface instanceof InteractiveEntityInterface && ((InteractiveEntityInterface) detachableEntityInterface).getPolygon().contains(pos.x, pos.y))
-                            {
-                                // Pretty much detach all zombie limbs by setting detach force to nothing
-                                detachableEntityInterface.setForceForDetach(0.01f);
-                            }
+                            // Pretty much detach all zombie limbs by setting detach force to nothing
+                            detachableEntityInterface.setForceForDetach(0.01f);
                         }
-
                     }
-                    
+                } else if(drawableEntity instanceof Zombie && !((Zombie) drawableEntity).isAlive() && ((Zombie) drawableEntity).getInteractiveEntities().get("torso").getPolygon().contains(pos.x, pos.y)) // Need this for torso to move when zombie is dead
+                {
+                    Gdx.app.log("zomzom", "bombom");
+                    ((Zombie) drawableEntity).enable_physics();
+                    ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().setActive(true);
+                    ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+                }
+                else if(drawableEntity instanceof PhysicsEntityInterface) // Make detached zombie limbs fly too!
+                {
+                    ((OptimizableEntityInterface) drawableEntity).disable_optimization();
+                    ((PhysicsEntityInterface) drawableEntity).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
                 }
             }
         }
