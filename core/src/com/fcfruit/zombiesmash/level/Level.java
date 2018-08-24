@@ -11,7 +11,9 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -233,6 +235,13 @@ public class Level
         }
         Environment.drawableRemoveQueue.clear();
 
+        // Remove updatableEntities from level
+        for(UpdatableEntityInterface updatableEntityInterface : Environment.updatableRemoveQueue)
+        {
+            this.updatableEntities.remove(updatableEntityInterface);
+        }
+        Environment.updatableRemoveQueue.clear();
+
         // Add updatableEntities to level
         for (com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
         {
@@ -393,6 +402,11 @@ public class Level
     public void addInputCaptureEntity(com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface inputCaptureEntity)
     {
         this.inputCaptureEntities.add(inputCaptureEntity);
+    }
+
+    public void removeInputCaptureEntity(InputCaptureEntityInterface inputCaptureEntity)
+    {
+        this.inputCaptureEntities.remove(inputCaptureEntity);
     }
 
     public void addEventListener(com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener levelEventListener)

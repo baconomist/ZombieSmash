@@ -79,7 +79,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
 
                 if (this.particleEntity != null)
                 {
-                    Environment.physics.destroyBody(this.particleEntity.physicsBody);
+                    Environment.particleEntityPool.returnParticle(this.particleEntity);
                     this.particleEntity = null;
                 }
                 this.shoot();
@@ -221,6 +221,8 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
             Environment.drawableRemoveQueue.add(this.guns[i]);
             this.guns[i].dispose();
         }
+        Environment.updatableRemoveQueue.add(this);
+        Environment.level.removeInputCaptureEntity(this);
     }
 
 
