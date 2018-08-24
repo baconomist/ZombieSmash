@@ -843,6 +843,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
         // Restart animation
         this.animatableGraphicsEntity.restartAnimation();
+        // Update animation so that it changes position before drawing
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
 
         // Switch zombie direction if needed
         this.checkDirection();
