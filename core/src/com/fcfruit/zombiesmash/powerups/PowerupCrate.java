@@ -74,8 +74,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         Fixture fixture = body.createFixture(fixtureDef);
         fixture.setUserData(new PhysicsData(this));
 
-        this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate.png"))),
-                body);
+        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/box.png")));
+        this.crateDrawable = new DrawablePhysicsEntity(sprite, body);
 
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
@@ -91,7 +91,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         Environment.powerupManager.addCrate(this);
 
-        this.open();
+        //this.open();
     }
 
     private void open()
@@ -101,7 +101,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         this.powerupUIDrawable.setPosition(pos.x, pos.y);
 
-        this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate_open.png"))), this.crateDrawable.getPhysicsBody());
+        //this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate_open.png"))), this.crateDrawable.getPhysicsBody());
+
         this.isOpening = true;
     }
 
@@ -137,9 +138,10 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public void draw(SpriteBatch batch)
     {
-        this.crateDrawable.draw(batch);
         if(this.isOpening)
             this.powerupUIDrawable.draw(batch);
+        else
+            this.crateDrawable.draw(batch);
     }
 
     @Override
