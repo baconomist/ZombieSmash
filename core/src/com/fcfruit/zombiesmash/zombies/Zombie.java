@@ -794,7 +794,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             this.moveBy(new Vector2(-move, 0));
         }
-        this.changeToGround(new Random().nextInt(1) + 1);
+        this.changeToGround(2);
 
         this.shouldObjectiveOnce = false;
     }
@@ -841,7 +841,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Set animation to physics position before animating
         this.animatableGraphicsEntity.setPosition(new Vector2(this.getDrawableEntities().get("torso").getPosition().x,
                 Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y));
-        this.animatableGraphicsEntity.restartAnimation();// Restart animation
+        // Restart animation
+        this.animatableGraphicsEntity.restartAnimation();
 
         // Switch zombie direction if needed
         this.checkDirection();
@@ -886,13 +887,27 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     public void enable_physics()
     {
-        // Move zombie to front of screen, better for gameplay
-        Environment.drawableRemoveQueue.add(this);
-        Environment.drawableAddQueue.add(this);
+        // Move animatableEntity and/or interactiveGraphicsEntity polygon out of screen to prevent weirdness
+        this.animatableGraphicsEntity.setPosition(new Vector2(99, 99));
 
         // To prevent zombie moving if multiple calls to enable_physics are made
         if(this.isAnimating())
+        {
             this.syncEntitiesToAnimation();
+
+            // Move zombie to front of screen, better for gameplay
+            Environment.drawableRemoveQueue.add(this);
+
+            /*
+            drawableAddQueue.add(this) needs to be in if statement
+            because otherwise items like Grenades can cause
+            zombie to add itself to level so many times that the zombie is
+            updated more than once per frame and is super fast
+            */
+            Environment.drawableAddQueue.add(this);
+            /* *********************************************************** */
+
+        }
 
         this.disable_optimization();
         this.isAnimating = false;
@@ -986,8 +1001,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             } else
             {
                 this.onPhysicsEnabled();
-                this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
-                this.animatableGraphicsEntity.update(delta);
+                //this.animatableGraphicsEntity.setPosition(new Vector2(this.getPosition().x, this.getPosition().y - this.getSize().y/2));
+                //this.animatableGraphicsEntity.update(delta);
                 this.handleGetup();
             }
         }
