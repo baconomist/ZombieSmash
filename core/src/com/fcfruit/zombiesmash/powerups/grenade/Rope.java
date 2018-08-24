@@ -40,6 +40,7 @@ public class Rope
 
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.active = false;
         bodyDef.position.set(position);
 
         PolygonShape shape = new PolygonShape();
@@ -77,6 +78,31 @@ public class Rope
             this.ropeJoints[i] = (RopeJoint) Environment.physics.createJoint(ropeJointDef);
         }
 
+    }
+
+    public void activate()
+    {
+        for(Body body : this.segments)
+        {
+            body.setActive(true);
+        }
+    }
+
+    public void destroy()
+    {
+        for(Body body : this.segments)
+        {
+            body.setActive(false);
+            body.setTransform(99, 99, body.getAngle());
+        }
+    }
+
+    public void setPosition(Vector2 position)
+    {
+        for(Body body : this.segments)
+        {
+            body.setTransform(position, body.getAngle());
+        }
     }
 
     public RevoluteJoint attachToTop(Body body){
