@@ -37,8 +37,8 @@ public class GameUIStage extends Stage
 
     SpriteBatch spriteBatch;
 
-    Sprite starCountImage;
-    BitmapFont starCount;
+    Sprite brainCountImage;
+    BitmapFont brainCount;
 
     PowerupInterface[] powerups;
 
@@ -76,12 +76,12 @@ public class GameUIStage extends Stage
 
         spriteBatch = new SpriteBatch();
 
-        starCountImage = new Sprite(new Texture("stars/bronze_star.png"));
-        starCountImage.setSize(70, 70);
-        starCountImage.setPosition(getWidth() - starCountImage.getWidth() * 3, getHeight() - pause_button.getHeight() - starCountImage.getHeight());
+        brainCountImage = new Sprite(new Texture("brains/brain1.png"));
+        brainCountImage.setSize(70, 70);
+        brainCountImage.setPosition(getWidth() - brainCountImage.getWidth() * 3, getHeight() - pause_button.getHeight() - brainCountImage.getHeight());
 
-        starCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
-        starCount.getData().setScale(2);
+        brainCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
+        brainCount.getData().setScale(2);
 
         this.powerups = new PowerupInterface[4];
 
@@ -151,8 +151,8 @@ public class GameUIStage extends Stage
                 }
             }
             healthBar.draw(spriteBatch);
-            starCountImage.draw(spriteBatch);
-            starCount.draw(spriteBatch, "" + Environment.level.starsTouched, starCountImage.getX() + starCountImage.getWidth(), starCountImage.getY() + starCountImage.getHeight() / 2);
+            brainCountImage.draw(spriteBatch);
+            brainCount.draw(spriteBatch, "" + Environment.level.starsTouched, brainCountImage.getX() + brainCountImage.getWidth(), brainCountImage.getY() + brainCountImage.getHeight() / 2);
         }
         spriteBatch.end();
 
