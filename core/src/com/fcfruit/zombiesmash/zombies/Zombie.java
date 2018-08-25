@@ -889,7 +889,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.onObjective();
         }
 
-       this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime());
 
         this.getUpTimer = System.currentTimeMillis();
     }
