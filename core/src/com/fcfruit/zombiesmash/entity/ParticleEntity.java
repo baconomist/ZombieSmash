@@ -128,7 +128,7 @@ public class ParticleEntity
                     ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().setActive(true);
                     ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
                 }
-                else if(drawableEntity instanceof PhysicsEntityInterface) // Make detached zombie limbs fly too!
+                else if(drawableEntity instanceof PhysicsEntityInterface && ((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, pos.y)) // Make detached zombie limbs fly too!
                 {
                     ((OptimizableEntityInterface) drawableEntity).disable_optimization();
                     ((PhysicsEntityInterface) drawableEntity).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
