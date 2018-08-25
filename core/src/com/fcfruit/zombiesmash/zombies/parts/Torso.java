@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.zombies.parts;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
@@ -60,6 +61,7 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
 
         this.bleedablePoints = bleedablePoints;
 
+        this.enable_optimization();
     }
 
 
