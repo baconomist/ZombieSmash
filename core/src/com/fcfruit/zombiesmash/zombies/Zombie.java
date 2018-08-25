@@ -42,6 +42,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.level.Spawner;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -840,7 +841,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             getUpMouseJoint = null;
         }
 
-
         this.setAnimation(this.moveAnimation);// Set animation to move animation
 
         // Set animation to physics position before animating
@@ -860,6 +860,14 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             drawableEntityInterface.setPosition(new Vector2(99, 99));
         }
         this.updateEntities(Gdx.graphics.getDeltaTime());
+
+        // Make sure zombie doesn't take forever to get back inside level
+        if(!this.isInLevel() && this.getPosition().x < Environment.physicsCamera.position.x)
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 - 1f, this.getPosition().y));
+        else if(this.getPosition().x > Environment.physicsCamera.position.x)
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f, this.getPosition().y));
+
+
 
         // Enable optimization instantly, without optimizationTimer
         this.force_instant_optimize();
