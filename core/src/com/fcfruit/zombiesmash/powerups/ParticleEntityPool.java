@@ -30,7 +30,7 @@ public class ParticleEntityPool
                 return particleEntity;
             }
         }
-        Gdx.app.error("ParticlePool", "No available particle in pool. Make sure particle is being returned to the pool or" +
+        Gdx.app.error("ParticlePool", "No available particle in pool. Make sure particles are being returned to the pool or" +
                 " Increase max pool particle limit [default is 100]");
 
         // Create new blood if not available in pool
