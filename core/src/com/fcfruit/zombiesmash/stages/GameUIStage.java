@@ -152,7 +152,7 @@ public class GameUIStage extends Stage
             }
             healthBar.draw(spriteBatch);
             brainCountImage.draw(spriteBatch);
-            brainCount.draw(spriteBatch, "" + Environment.level.starsTouched, brainCountImage.getX() + brainCountImage.getWidth(), brainCountImage.getY() + brainCountImage.getHeight() / 2);
+            brainCount.draw(spriteBatch, "" + Environment.level.brainCounter, brainCountImage.getX() + brainCountImage.getWidth(), brainCountImage.getY() + brainCountImage.getHeight() / 2);
         }
         spriteBatch.end();
 

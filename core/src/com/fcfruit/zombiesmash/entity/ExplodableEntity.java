@@ -139,6 +139,24 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
 
     @Override
+    public Skeleton getSkeleton()
+    {
+        return this.animatableGraphicsEntity.getSkeleton();
+    }
+
+    @Override
+    public AnimationState getState()
+    {
+        return this.animatableGraphicsEntity.getState();
+    }
+
+    @Override
+    public TextureAtlas getAtlas()
+    {
+        return this.animatableGraphicsEntity.getAtlas();
+    }
+
+    @Override
     public int timesAnimationCompleted()
     {
         return this.animatableGraphicsEntity.timesAnimationCompleted();

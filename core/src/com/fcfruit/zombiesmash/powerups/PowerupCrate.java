@@ -85,6 +85,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         fixture.setUserData(new PhysicsData(this));
 
         Sprite sprite = new Sprite(new TextureAtlas(Gdx.files.internal("powerups/box.atlas")).findRegion("box"));
+        sprite.setSize(sprite.getWidth()/2, sprite.getHeight()/2);
+        sprite.setOriginCenter();
         this.crateDrawable = new DrawablePhysicsEntity(sprite, body);
 
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("powerups/box.atlas"));
@@ -95,7 +97,6 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 
         AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        //state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
         state.addListener(new AnimationState.AnimationStateAdapter()
         {
@@ -108,6 +109,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         });
 
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
+        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(0.5f);
 
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
@@ -211,7 +213,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         {
             this.getPhysicsBody().setGravityScale(0);
             this.getPhysicsBody().setLinearVelocity(0, 0.3f);
-            this.setAngle(this.getAngle() + 1);
+            this.setAngle(this.getAngle() + delta*50);
 
             this.expiryTimer = System.currentTimeMillis();
         } else if (!this.isFloatingUp)
@@ -219,11 +221,11 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             this.isFloatingUp = this.getPosition().y < Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y + 0.2f;
 
             this.getPhysicsBody().setGravityScale(0.01f);
-            this.setAngle(this.getAngle() + 1);
+            this.setAngle(this.getAngle() + delta*50);
         } else
         {
             this.getPhysicsBody().setLinearVelocity(0, 0);
-            this.setAngle(this.getAngle() + 1);
+            this.setAngle(this.getAngle() + delta*50);
 
 
             if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire)
@@ -264,6 +266,24 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         this.interactiveGraphicsEntity.update(delta);
 
+    }
+
+    @Override
+    public Skeleton getSkeleton()
+    {
+        return this.animatableGraphicsEntity.getSkeleton();
+    }
+
+    @Override
+    public AnimationState getState()
+    {
+        return this.animatableGraphicsEntity.getState();
+    }
+
+    @Override
+    public TextureAtlas getAtlas()
+    {
+        return this.animatableGraphicsEntity.getAtlas();
     }
 
     @Override

@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.fcfruit.zombiesmash.brains.BrainCrate;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
@@ -47,7 +47,7 @@ public class Level
 
     private Array<com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener> levelEventListeners;
 
-    public int starsTouched = 0;
+    public int brainCounter = 0;
 
     boolean levelEnd = false;
 

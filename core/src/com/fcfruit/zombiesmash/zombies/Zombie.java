@@ -25,6 +25,8 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.brains.Brain;
+import com.fcfruit.zombiesmash.brains.BrainCrate;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -159,11 +161,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.constructBody();
         this.interactiveEntitySetup();
 
-        for(DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
-        {
-            drawableEntityInterface.setPosition(new Vector2(99, 99));
-            drawableEntityInterface.update(Gdx.graphics.getDeltaTime());
-        }
+        this.returnEntitiesToOptimizedLocation();
     }
 
     private void calc_anim_scale(RubeScene rubeScene)
@@ -574,9 +572,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             if(Environment.areQuadrilaterallsColliding(interactiveEntityInterface.getPolygon(), polygon))
             {
+                if(this.isAnimating())
+                    this.returnEntitiesToOptimizedLocation();
+
                 return true;
             }
         }
+
+        if(this.isAnimating())
+            this.returnEntitiesToOptimizedLocation();
+
         return false;
     }
 
@@ -723,6 +728,19 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
     }
 
+    /**
+     *  Position physicsBody out of screen
+     *  to prevent invisible zombie hit detection
+     *  */
+    private void returnEntitiesToOptimizedLocation()
+    {
+        for(DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
+        {
+            drawableEntityInterface.setPosition(new Vector2(99, 99));
+        }
+        this.updateEntities(Gdx.graphics.getDeltaTime());
+    }
+
     private void detachAnimationLimbs()
     {
         // Do not draw detached parts in animation
@@ -784,6 +802,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     private void onDeath()
     {
         Gdx.app.debug("Zombie", "onDeath()");
+
+        // No point in spawning brains outside of level
+        if(this.isInLevel())
+        {
+            for (int i = 0; i < new Random().nextInt(4) + 1; i++)
+            {
+                Environment.drawableAddQueue.add(Environment.brainPool.getBrain(new Random().nextInt(3) + 1, this.getPosition(), new Vector2((float) Math.random() * (new Random().nextBoolean() ? 1 : -1), 2f)));
+            }
+        }
+
     }
 
     private void onObjectiveOnce()
@@ -855,11 +883,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.checkDirection();
 
         // Position physicsBody out of screen
-        for(DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
-        {
-            drawableEntityInterface.setPosition(new Vector2(99, 99));
-        }
-        this.updateEntities(Gdx.graphics.getDeltaTime());
+        this.returnEntitiesToOptimizedLocation();
 
         // Make sure zombie doesn't take forever to get back inside level
         if(!this.isInLevel() && this.getPosition().x < Environment.physicsCamera.position.x)
@@ -1260,6 +1284,24 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     public void clearMoveQueue()
     {
         this.movableEntity.clearMoveQueue();
+    }
+
+    @Override
+    public Skeleton getSkeleton()
+    {
+        return this.animatableGraphicsEntity.getSkeleton();
+    }
+
+    @Override
+    public AnimationState getState()
+    {
+        return this.animatableGraphicsEntity.getState();
+    }
+
+    @Override
+    public TextureAtlas getAtlas()
+    {
+        return this.animatableGraphicsEntity.getAtlas();
     }
 
     @Override

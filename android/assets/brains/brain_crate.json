@@ -1,0 +1,35 @@
+{
+"skeleton": { "hash": "gavvjURqIMSL7rQNJ9lpA4F8Ejs", "spine": "3.6.53", "width": 453.57, "height": 453.57, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "bone", "parent": "root", "length": 276.9, "rotation": 89.56, "y": 1.14 }
+],
+"slots": [
+	{ "name": "brain_crate", "bone": "bone", "attachment": "brain_crate" }
+],
+"skins": {
+	"default": {
+		"brain_crate": {
+			"brain_crate": { "x": 27.35, "y": -11.3, "rotation": -91.08, "width": 442, "height": 442 }
+		}
+	}
+},
+"animations": {
+	"open": {
+		"bones": {
+			"bone": {
+				"rotate": [
+					{ "time": 0, "angle": 0 },
+					{ "time": 0.1667, "angle": -55.47 },
+					{ "time": 0.3333, "angle": 56.37 },
+					{ "time": 0.4, "angle": 13.68 },
+					{ "time": 0.4667, "angle": -32.27 },
+					{ "time": 0.5333, "angle": 44.96 },
+					{ "time": 0.6, "angle": -49.31 },
+					{ "time": 0.6667, "angle": 35.57 }
+				]
+			}
+		}
+	}
+}
+}

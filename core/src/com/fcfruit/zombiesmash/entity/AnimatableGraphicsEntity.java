@@ -119,26 +119,31 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
         this.timesAnimationCompleted = 0;
     }
 
+    @Override
     public int timesAnimationCompleted()
     {
         return this.timesAnimationCompleted;
     }
 
+    @Override
     public String getCurrentAnimation()
     {
         return this.animation;
     }
 
+    @Override
     public Skeleton getSkeleton()
     {
         return this.skeleton;
     }
 
+    @Override
     public TextureAtlas getAtlas()
     {
         return this.atlas;
     }
 
+    @Override
     public AnimationState getState()
     {
         return this.state;

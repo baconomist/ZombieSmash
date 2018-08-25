@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.brains.Brain;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
@@ -85,6 +86,11 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         }
         // Powerup Crate
         else if(fixtureAData.containsInstanceOf(PowerupCrate.class) || fixtureBData.containsInstanceOf(PowerupCrate.class))
+        {
+            return false;
+        }
+        // Brain
+        else if(fixtureAData.containsInstanceOf(Brain.class) || fixtureBData.containsInstanceOf(Brain.class))
         {
             return false;
         }

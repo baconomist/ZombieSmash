@@ -6,6 +6,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.fcfruit.zombiesmash.brains.BrainPool;
 import com.fcfruit.zombiesmash.effects.BleedableBloodPool;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -86,9 +87,10 @@ public class Environment
 
     public static Physics physics;
 
+    // Pools
     public static BleedableBloodPool bleedableBloodPool;
-
     public static ParticleEntityPool particleEntityPool;
+    public static BrainPool brainPool;
 
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
@@ -124,6 +126,7 @@ public class Environment
         // Pools
         bleedableBloodPool = new BleedableBloodPool();
         particleEntityPool = new ParticleEntityPool();
+        brainPool = new BrainPool();
 
         setupLevel(levelid);
     }
