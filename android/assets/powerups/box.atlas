@@ -1,0 +1,90 @@
+
+box.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+box
+  rotate: false
+  xy: 2, 156
+  size: 346, 353
+  orig: 346, 353
+  offset: 0, 0
+  index: -1
+tear1
+  rotate: false
+  xy: 184, 35
+  size: 81, 119
+  orig: 81, 119
+  offset: 0, 0
+  index: -1
+tear10
+  rotate: false
+  xy: 267, 63
+  size: 80, 91
+  orig: 80, 91
+  offset: 0, 0
+  index: -1
+tear11
+  rotate: false
+  xy: 667, 351
+  size: 164, 158
+  orig: 164, 158
+  offset: 0, 0
+  index: -1
+tear2
+  rotate: false
+  xy: 350, 196
+  size: 110, 98
+  orig: 110, 98
+  offset: 0, 0
+  index: -1
+tear3
+  rotate: false
+  xy: 968, 432
+  size: 45, 77
+  orig: 45, 77
+  offset: 0, 0
+  index: -1
+tear4
+  rotate: false
+  xy: 2, 2
+  size: 180, 152
+  orig: 180, 152
+  offset: 0, 0
+  index: -1
+tear5
+  rotate: false
+  xy: 833, 310
+  size: 133, 199
+  orig: 133, 199
+  offset: 0, 0
+  index: -1
+tear6
+  rotate: false
+  xy: 350, 111
+  size: 77, 83
+  orig: 77, 83
+  offset: 0, 0
+  index: -1
+tear7
+  rotate: false
+  xy: 494, 326
+  size: 171, 183
+  orig: 171, 183
+  offset: 0, 0
+  index: -1
+tear8
+  rotate: false
+  xy: 429, 111
+  size: 68, 83
+  orig: 68, 83
+  offset: 0, 0
+  index: -1
+tear9
+  rotate: false
+  xy: 350, 296
+  size: 142, 213
+  orig: 142, 213
+  offset: 0, 0
+  index: -1
