@@ -157,6 +157,12 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.animationSetup();
         this.constructBody();
         this.interactiveEntitySetup();
+
+        for(DrawableEntityInterface drawableEntityInterface : this.getDrawableEntities().values())
+        {
+            drawableEntityInterface.setPosition(new Vector2(99, 99));
+            drawableEntityInterface.update(Gdx.graphics.getDeltaTime());
+        }
     }
 
     private void calc_anim_scale(RubeScene rubeScene)
