@@ -1019,7 +1019,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             this.updateEntities(delta);
             if(!this.isGettingUp)
-               this.optimizableEntity.enable_optimization();
+                this.enable_optimization();
+
         }
         this.optimizableEntity.update(delta);
 
