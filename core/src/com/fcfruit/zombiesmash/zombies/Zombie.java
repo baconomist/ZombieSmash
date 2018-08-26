@@ -803,6 +803,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     {
         Gdx.app.debug("Zombie", "onDeath()");
 
+        // Enable optimization for torso so it's destroyableEntity can destroy it.
+        ((OptimizableEntityInterface) this.getDrawableEntities().get("torso")).enable_optimization();
+
         // No point in spawning brains outside of level
         if(this.isInLevel())
         {

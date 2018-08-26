@@ -60,8 +60,6 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         this.destroyableEntity = new DestroyableEntity(this.parentContainer, this, this);
 
         this.bleedablePoints = bleedablePoints;
-
-        this.enable_optimization();
     }
 
 
