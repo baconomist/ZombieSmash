@@ -1,7 +1,6 @@
 package com.fcfruit.zombiesmash.powerups;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -22,7 +21,7 @@ import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
+import com.fcfruit.zombiesmash.entity.AnimatablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractiveGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -31,8 +30,6 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
-
-import org.lwjgl.Sys;
 
 
 /**
@@ -44,8 +41,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
     private PowerupInterface powerup;
 
-    private DrawablePhysicsEntity crateDrawable;
-    private AnimatableGraphicsEntity animatableGraphicsEntity;
+    private AnimatablePhysicsEntity animatablePhysicsEntity;
     private Sprite powerupUIDrawable;
     private InteractiveGraphicsEntity interactiveGraphicsEntity;
 
@@ -82,12 +78,9 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         fixtureDef.filter.groupIndex = -1;
 
         Fixture fixture = body.createFixture(fixtureDef);
-        fixture.setUserData(new PhysicsData(this));
 
-        Sprite sprite = new Sprite(new TextureAtlas(Gdx.files.internal("powerups/box.atlas")).findRegion("box"));
-        sprite.setSize(sprite.getWidth()/2, sprite.getHeight()/2);
-        sprite.setOriginCenter();
-        this.crateDrawable = new DrawablePhysicsEntity(sprite, body);
+        body.setUserData(new PhysicsData(this));
+        fixture.setUserData(new PhysicsData(this));
 
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("powerups/box.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
@@ -108,9 +101,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             }
         });
 
-        this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
-        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(0.5f);
-
+        this.animatablePhysicsEntity = new AnimatablePhysicsEntity(skeleton, state, atlas, body);
+        //this.animatablePhysicsEntity.getSkeleton().getRootBone().setScale(0.5f);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;
@@ -121,7 +113,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         Polygon polygon = new Polygon(new float[]{0, 0, size.x, 0, size.x, size.y, 0, size.y});
         polygon.setOrigin(size.x / 2, size.y / 2);
-        this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.crateDrawable, polygon);
+        this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatablePhysicsEntity, polygon);
 
         Environment.powerupManager.addCrate(this);
 
@@ -148,7 +140,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public Body getPhysicsBody()
     {
-        return this.crateDrawable.getPhysicsBody();
+        return this.animatablePhysicsEntity.getPhysicsBody();
     }
 
     @Override
@@ -161,7 +153,6 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         if (this.isTouching() && !this.isOpening && Environment.powerupManager.has_room_for_powerup())
         {
             this.isOpening = true;
-            this.animatableGraphicsEntity.setPosition(this.crateDrawable.getPosition().sub(0, this.getSize().y/2));
             this.setAnimation("open");
         }
     }
@@ -184,15 +175,13 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     {
         if(this.isOpening)
             this.powerupUIDrawable.draw(batch);
-        else
-            this.crateDrawable.draw(batch);
     }
 
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
-        if(this.isOpening && this.timesAnimationCompleted() < 1)
-            this.animatableGraphicsEntity.draw(batch, skeletonRenderer);
+        if(this.timesAnimationCompleted() < 1)
+            this.animatablePhysicsEntity.draw(batch, skeletonRenderer);
     }
 
     @Override
@@ -241,9 +230,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             }
         }
 
-        this.crateDrawable.update(delta);
-
-        this.animatableGraphicsEntity.update(delta);
+        this.animatablePhysicsEntity.update(delta);
 
         if (this.isOpening)
         {
@@ -251,7 +238,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.powerupUIDrawable.getX(), this.powerupUIDrawable.getY(), 0)));
             pos.y = Environment.physicsCamera.position.y*2 - pos.y;
 
-            if (pos.y < this.crateDrawable.getPosition().y + 1)
+            if (pos.y < this.animatablePhysicsEntity.getPosition().y + 1)
             {
                 this.powerupUIDrawable.setPosition(this.powerupUIDrawable.getX(), this.powerupUIDrawable.getY() + 100 * Gdx.graphics.getDeltaTime());
                 this.powerupUIDrawable.setRotation(this.powerupUIDrawable.getRotation() + 1);
@@ -271,37 +258,37 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public Skeleton getSkeleton()
     {
-        return this.animatableGraphicsEntity.getSkeleton();
+        return this.animatablePhysicsEntity.getSkeleton();
     }
 
     @Override
     public AnimationState getState()
     {
-        return this.animatableGraphicsEntity.getState();
+        return this.animatablePhysicsEntity.getState();
     }
 
     @Override
     public TextureAtlas getAtlas()
     {
-        return this.animatableGraphicsEntity.getAtlas();
+        return this.animatablePhysicsEntity.getAtlas();
     }
 
     @Override
     public int timesAnimationCompleted()
     {
-        return this.animatableGraphicsEntity.timesAnimationCompleted();
+        return this.animatablePhysicsEntity.timesAnimationCompleted();
     }
 
     @Override
     public void setAnimation(String animation)
     {
-        this.animatableGraphicsEntity.setAnimation(animation);
+        this.animatablePhysicsEntity.setAnimation(animation);
     }
 
     @Override
     public String getCurrentAnimation()
     {
-        return this.animatableGraphicsEntity.getCurrentAnimation();
+        return this.animatablePhysicsEntity.getCurrentAnimation();
     }
 
     @Override
@@ -313,31 +300,31 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public Vector2 getPosition()
     {
-        return this.crateDrawable.getPosition();
+        return this.animatablePhysicsEntity.getPosition();
     }
 
     @Override
     public void setPosition(Vector2 position)
     {
-        this.crateDrawable.setPosition(position);
+        this.animatablePhysicsEntity.setPosition(position);
     }
 
     @Override
     public float getAngle()
     {
-        return this.crateDrawable.getAngle();
+        return this.animatablePhysicsEntity.getAngle();
     }
 
     @Override
     public void setAngle(float angle)
     {
-        this.crateDrawable.setAngle(angle);
+        this.animatablePhysicsEntity.setAngle(angle);
     }
 
     @Override
     public Vector2 getSize()
     {
-        return this.crateDrawable.getSize();
+        return this.animatablePhysicsEntity.getSize();
     }
 
     @Override
@@ -371,19 +358,19 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     @Override
     public float getAlpha()
     {
-        return this.crateDrawable.getAlpha();
+        return this.animatablePhysicsEntity.getAlpha();
     }
 
     @Override
     public void setAlpha(float alpha)
     {
-        this.crateDrawable.setAlpha(alpha);
+        this.animatablePhysicsEntity.setAlpha(alpha);
     }
 
     @Override
     public void dispose()
     {
-        this.crateDrawable.dispose();
+        this.animatablePhysicsEntity.dispose();
     }
 
 
