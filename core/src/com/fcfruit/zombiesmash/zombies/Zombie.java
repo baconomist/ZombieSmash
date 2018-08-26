@@ -886,9 +886,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.returnEntitiesToOptimizedLocation();
 
         // Make sure zombie doesn't take forever to get back inside level
-        if(!this.isInLevel() && this.getPosition().x < Environment.physicsCamera.position.x)
+        if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
             this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 - 1f, this.getPosition().y));
-        else if(this.getPosition().x > Environment.physicsCamera.position.x)
+        else if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
             this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f, this.getPosition().y));
 
 
