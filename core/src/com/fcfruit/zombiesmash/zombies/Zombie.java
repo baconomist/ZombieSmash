@@ -16,6 +16,7 @@ import com.badlogic.gdx.physics.box2d.joints.MouseJointDef;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Event;
 import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
@@ -412,6 +413,20 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         state.addListener(new AnimationState.AnimationStateAdapter()
         {
             @Override
+            public void interrupt(AnimationState.TrackEntry entry)
+            {
+                onAnimationInterrupt(entry);
+                super.interrupt(entry);
+            }
+
+            @Override
+            public void event(AnimationState.TrackEntry entry, Event event)
+            {
+                onAnimationEvent(entry, event);
+                super.event(entry, event);
+            }
+
+            @Override
             public void complete(AnimationState.TrackEntry entry)
             {
                 onAnimationComplete(entry);
@@ -485,7 +500,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
 
         return isAtObjective && this.isInLevel();*/
-       return Environment.level.objective.polygon.contains(this.getPolygon().getX(), Environment.level.objective.polygon.getY() + Environment.level.objective.polygon.getVertices()[5]/2f);
+
+       // x + half polygon width, objective y + half objective height because we don't care about y axis
+        return Environment.level.objective.polygon.contains(this.getPolygon().getX() + this.getPolygon().getVertices()[3]/2, Environment.level.objective.polygon.getY() + Environment.level.objective.polygon.getVertices()[5]/2f);
+        //return Environment.areQuadrilaterallsColliding(Environment.level.objective.polygon, this.getPolygon());
 
     }
 
@@ -767,13 +785,29 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
         }
         return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
-
     }
 
     /**
      * Events
      **/
-    private void onAnimationComplete(AnimationState.TrackEntry entry)
+
+    private void onAnimationInterrupt(AnimationState.TrackEntry entry)
+    {
+        /* Stop zombie from moving if the animation is changed to
+           something other than move animation( ie attack anim.) */
+        if(!this.getCurrentAnimation().equals(this.moveAnimation) && this.getCurrentAnimation().contains("attack"))
+        {
+            this.clearMoveQueue();
+        }
+    }
+
+    void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
+    {
+        if(event.getData().getName().equals("move"))
+            this.moveBy((this.direction == 0 ? new Vector2(0.5f, 0) : new Vector2(-0.5f, 0)));
+    }
+
+    void onAnimationComplete(AnimationState.TrackEntry entry)
     {
         if (entry.getAnimation().getName().equals("attack1"))
         {
@@ -784,17 +818,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         } else if (entry.getAnimation().getName().equals("crawl_attack"))
         {
             this.onCrawlAttackComplete();
-        }
-
-        if (entry.getAnimation().getName().equals(this.moveAnimation) && !this.isAtObjective())
-        {
-            if (this.direction == 0)
-            {
-                this.moveBy(new Vector2(1f, 0));
-            } else
-            {
-                this.moveBy(new Vector2(-1f, 0));
-            }
         }
 
     }
@@ -819,8 +842,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void onObjectiveOnce()
     {
-
-        float move = new Random().nextFloat() * (int) this.getDistanceToObjective();
+        float move = (float) Math.random() * Environment.level.objective.getWidth();
 
         this.clearMoveQueue();
 
@@ -831,6 +853,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             this.moveBy(new Vector2(-move, 0));
         }
+
         this.changeToGround(2);
 
         this.shouldObjectiveOnce = false;
@@ -911,7 +934,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         if (this.isAtObjective() && this.shouldObjectiveOnce)
         {
             this.onObjectiveOnce();
-        } else if (this.isAtObjective() && !this.isMoving())
+        } else if (this.isAtObjective() && !this.isMoving() && !this.isMovingToNewGround())
         {
             this.onObjective();
         }

@@ -2,6 +2,9 @@ package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
+import com.esotericsoftware.spine.AnimationState;
+
+import java.util.Random;
 
 /**
  * Created by Lucas on 2017-11-06.
@@ -10,7 +13,7 @@ import com.badlogic.gdx.math.Vector2;
 public class PoliceZombie extends Zombie
 {
 
-    private double timeBeforeAttack = 5000;
+    private double timeBeforeAttack = 3500 + new Random().nextInt(2500);
     private double attackTimer = System.currentTimeMillis();
 
     public PoliceZombie(Integer id)
@@ -33,21 +36,23 @@ public class PoliceZombie extends Zombie
     }
 
     @Override
-    public void moveBy(Vector2 moveBy)
+    public void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        if (this.isInLevel() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
+        super.onAnimationComplete(entry);
+        if (this.isInLevel() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
         {
             if (this.getCurrentAnimation().equals("walk"))
             {
                 this.setAnimation("attack1");
-            } else
+            } else if(this.getCurrentAnimation().equals("crawl")) // animation could be 'attack2'
             {
                 this.setAnimation("crawl_attack");
             }
             this.attackTimer = System.currentTimeMillis();
-        } else
+        }
+        else
         {
-            super.moveBy(moveBy);
+            this.setAnimation(this.moveAnimation);
         }
     }
 
