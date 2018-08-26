@@ -4,6 +4,7 @@ import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.brains.BrainPool;
@@ -204,13 +205,14 @@ public class Environment
 
     public static boolean areQuadrilaterallsColliding(Polygon polygon1, Polygon polygon2)
     {
-        return (
+        return Intersector.overlapConvexPolygons(polygon1, polygon2);
+        /*return (
             (polygon2.getX() < (polygon1.getX() + polygon1.getVertices()[2]) && polygon2.getX() > polygon1.getX())
                     && (polygon2.getY() < (polygon1.getY() + polygon1.getVertices()[5]) && polygon2.getY() > polygon1.getY()))
             ||
             ((polygon1.getX() < (polygon2.getX() + polygon1.getVertices()[2]) && polygon1.getX() > polygon2.getX())
                     && (polygon1.getY() < (polygon2.getY() + polygon1.getVertices()[5]) && polygon1.getY() > polygon2.getY())
-            );
+            );*/
     }
 
 }
