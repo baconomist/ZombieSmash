@@ -621,7 +621,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
         int previous_direction = this.direction;
 
-        if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 4)
+        /*if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 4)
         {
             this.direction = 0;
         } else if (this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() / 2)
@@ -636,7 +636,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         } else
         {
             this.direction = 1;
-        }
+        }*/
+
+        if(this.getPosition().x < Environment.level.objective.getPosition().x + Environment.level.objective.getWidth()/2)
+            this.direction = 0;
+        else
+            this.direction = 1;
+
         if (previous_direction != this.direction)
         {
             onDirectionChange();
@@ -776,7 +782,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     // May need to be changed to some more general system in the future(using points in data files or something)
     private float getDistanceToObjective()
     {
-        if (Environment.level.getCurrentCameraPosition().equals("left"))
+        /*if (Environment.level.getCurrentCameraPosition().equals("left"))
         {
             return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
         }
@@ -784,7 +790,12 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 3 / 4) - this.getPosition().x);
         }
-        return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);
+        return Math.abs(Environment.level.objective.getPosition().x + ((Environment.level.objective.getWidth() / 2) * 6 / 4) - this.getPosition().x);*/
+
+        if(this.direction == 0)
+            return Math.abs(Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() - this.getPosition().x);
+        else
+            return Math.abs(Environment.level.objective.getPosition().x - this.getPosition().x);
     }
 
     /**
@@ -803,7 +814,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
     {
-        if(event.getData().getName().equals("move"))
+        if(event.getData().getName().equals("move") && !this.isAtObjective())
             this.moveBy((this.direction == 0 ? new Vector2(0.5f, 0) : new Vector2(-0.5f, 0)));
     }
 
@@ -842,10 +853,17 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private void onObjectiveOnce()
     {
-        float move = (float) Math.random() * Environment.level.objective.getWidth();
-
         this.clearMoveQueue();
+        this.checkDirection();
+        
+        float move = (float) Math.random() * this.getDistanceToObjective();
+        if(move > Environment.level.objective.getWidth() - 0.5f)
+            move = Environment.level.objective.getWidth() - 0.5f;
+        if(move < 1.5f)
+            move = 1.5f;
 
+        this.changeToGround(2); // Change to ground first, looks better
+        // Then move zombie to a spot on the objective
         if (this.direction == 0)
         {
             this.moveBy(new Vector2(move, 0));
@@ -853,8 +871,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             this.moveBy(new Vector2(-move, 0));
         }
-
-        this.changeToGround(2);
 
         this.shouldObjectiveOnce = false;
     }
