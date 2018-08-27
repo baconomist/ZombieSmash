@@ -3,6 +3,7 @@ package com.fcfruit.zombiesmash.zombies;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.spine.AnimationState;
+import com.fcfruit.zombiesmash.Environment;
 
 import java.util.Random;
 
@@ -13,7 +14,7 @@ import java.util.Random;
 public class PoliceZombie extends Zombie
 {
 
-    private double timeBeforeAttack = 3500 + new Random().nextDouble()*2500d;
+    private double timeBeforeAttack = 2500 + new Random().nextDouble()*2500d;
     private double attackTimer = System.currentTimeMillis();
 
     public PoliceZombie(Integer id)
@@ -35,11 +36,17 @@ public class PoliceZombie extends Zombie
 
     }
 
+    private boolean isInShootingRange()
+    {
+        return this.getPosition().x >= Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + 1f
+                && this.getPosition().x <= Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2 - 1f;
+    }
+
     @Override
     public void onAnimationComplete(AnimationState.TrackEntry entry)
     {
         super.onAnimationComplete(entry);
-        if (!this.isAtObjective() && this.isInLevel() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
+        if (!this.isAtObjective() && this.isInLevel() && this.isInShootingRange() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
         {
             if (this.getCurrentAnimation().equals("walk"))
             {
@@ -54,6 +61,9 @@ public class PoliceZombie extends Zombie
         {
             this.setAnimation(this.moveAnimation);
         }
+
+        if(!this.isInShootingRange())
+            this.attackTimer = System.currentTimeMillis();
     }
 
     @Override
