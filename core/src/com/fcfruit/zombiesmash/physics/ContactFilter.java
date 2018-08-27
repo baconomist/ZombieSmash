@@ -11,6 +11,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
 import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
+import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.Random;
@@ -94,10 +95,15 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         {
             return false;
         }
-        // Grenade and Gun
+        // Collision BETWEEN Grenades
         else if(fixtureAData.containsInstanceOf(Grenade.class) && fixtureBData.containsInstanceOf(Grenade.class))
         {
             return true;
+        }
+        // Bomb
+        else if(fixtureAData.containsInstanceOf(Rocket.class) || fixtureBData.containsInstanceOf(Rocket.class))
+        {
+            return false;
         }
         // ParticleEntity
         else if(fixtureAData.containsInstanceOf(ParticleEntity.class) && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody

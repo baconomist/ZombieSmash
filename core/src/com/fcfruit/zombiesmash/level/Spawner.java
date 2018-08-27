@@ -5,11 +5,12 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.effects.Helicopter;
+import com.fcfruit.zombiesmash.effects.helicopter.DeliveryHelicopter;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
+import com.fcfruit.zombiesmash.powerups.rocket.RocketPowerup;
 import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
@@ -30,7 +31,7 @@ public class Spawner
 
     HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
 
-    static HashMap<String, Class> entityType = new HashMap<String, Class>();
+    public static HashMap<String, Class> entityType = new HashMap<String, Class>();
 
     static
     {
@@ -40,13 +41,14 @@ public class Spawner
         entityType.put("big_zombie", BigZombie.class);
         entityType.put("suicide_zombie", SuicideZombie.class);
 
-        entityType.put("helicopter", Helicopter.class);
+        entityType.put("helicopter", DeliveryHelicopter.class);
 
         entityType.put("rifle", RiflePowerup.class);
         entityType.put("rock", RockPowerup.class);
         entityType.put("pistol", PistolPowerup.class);
         entityType.put("grenade", GrenadePowerup.class);
         entityType.put("time", TimePowerup.class);
+        entityType.put("rocket", RocketPowerup.class);
     }
 
     String type;
@@ -154,7 +156,7 @@ public class Spawner
             tempCrate = new com.fcfruit.zombiesmash.powerups.PowerupCrate(tempPowerup);
 
             tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 3));
-            tempCrate.changeToGround(this.data.getInt("depth"));
+            tempCrate.changeToGround(0);
 
             Environment.level.addDrawableEntity(tempCrate);
 
@@ -168,7 +170,7 @@ public class Spawner
 
     private void spawnHelicopter()
     {
-        Helicopter tempHelicopter = new Helicopter(this.data);
+        DeliveryHelicopter tempHelicopter = new DeliveryHelicopter(this.data);
         tempHelicopter.setPosition(new Vector2(40, 8));
         Environment.drawableAddQueue.add(tempHelicopter);
     }

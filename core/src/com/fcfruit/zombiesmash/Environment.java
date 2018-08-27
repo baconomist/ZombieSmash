@@ -19,6 +19,7 @@ import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.powerups.ParticleEntityPool;
 import com.fcfruit.zombiesmash.powerups.PowerupManager;
+import com.fcfruit.zombiesmash.powerups.rocket.RocketPool;
 
 import java.util.ArrayList;
 
@@ -92,6 +93,7 @@ public class Environment
     public static BleedableBloodPool bleedableBloodPool;
     public static ParticleEntityPool particleEntityPool;
     public static BrainPool brainPool;
+    public static RocketPool rocketPool;
 
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
@@ -128,6 +130,7 @@ public class Environment
         bleedableBloodPool = new BleedableBloodPool();
         particleEntityPool = new ParticleEntityPool();
         brainPool = new BrainPool();
+        rocketPool = new RocketPool();
 
         setupLevel(levelid);
     }
