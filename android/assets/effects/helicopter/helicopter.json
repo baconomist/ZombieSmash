@@ -1,8 +1,8 @@
 {
-"skeleton": { "hash": "xi2tF7OXxs88PStK4aAvfDbodMM", "spine": "3.6.53", "width": 1850, "height": 831, "images": "" },
+"skeleton": { "hash": "YPr8e7OiLK9Oy/2zTgkIreS+2Co", "spine": "3.6.53", "width": 1850, "height": 831, "images": "" },
 "bones": [
 	{ "name": "root" },
-	{ "name": "heli", "parent": "root", "length": 1809.61, "rotation": 180, "x": 1790.64, "y": 291.99 }
+	{ "name": "heli", "parent": "root", "length": 1809.61, "rotation": 180, "x": 941.02, "y": 291.99 }
 ],
 "slots": [
 	{ "name": "heli", "bone": "heli", "attachment": "heli2" }
