@@ -184,8 +184,7 @@ public class Spawner
                 this.spawnEntity();
                 this.timer = System.currentTimeMillis();
             }
-
-            if (!initDelayEnabled && System.currentTimeMillis() - timer >= spawn_delay * 1000)
+            else if (!this.initDelayEnabled && System.currentTimeMillis() - timer >= spawn_delay * 1000)
             {
                 this.timer = System.currentTimeMillis();
                 this.spawnEntity();
