@@ -47,17 +47,22 @@ public class TimePowerup implements PowerupInterface
     @Override
     public void activate()
     {
-        Environment.powerupManager.isSlowMotionEnabled = true;
-        Physics.STEP_TIME = Physics.STEP_TIME/TimePowerup.timeFactor; // Slow down physics simulation
-
-        for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+        // Prevent 2x slow motion or 2x speed up
+        if(Environment.powerupManager.isSlowMotionEnabled);
+        else
         {
-            if(drawableEntityInterface instanceof Zombie)
-                ((Zombie) drawableEntityInterface).getState().setTimeScale(((Zombie) drawableEntityInterface).getState().getTimeScale()/TimePowerup.timeFactor); // Slow down zombie animations
-        }
+            Environment.powerupManager.isSlowMotionEnabled = true;
+            Physics.STEP_TIME = Physics.STEP_TIME / TimePowerup.timeFactor; // Slow down physics simulation
 
-        this.destroyTimer = System.currentTimeMillis();
-        this.isActive = true;
+            for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+            {
+                if (drawableEntityInterface instanceof Zombie)
+                    ((Zombie) drawableEntityInterface).getState().setTimeScale(((Zombie) drawableEntityInterface).getState().getTimeScale() / TimePowerup.timeFactor); // Slow down zombie animations
+            }
+
+            this.destroyTimer = System.currentTimeMillis();
+            this.isActive = true;
+        }
     }
 
     @Override
