@@ -3,39 +3,26 @@
     "police_zombie": {
       "quantity": 33,
       "init_delay": 0,
-      "spawn_delay": 0,
-      "position": "right",
+      "spawn_delay": 1,
+      "position": "middle_right",
       "depth": 1
     },
-    "crate": {
-      "type": "rock",
-      "init_delay": 0,
+    "helicopter": {
+      "init_delay": 1,
       "spawn_delay": 0,
-      "depth": 1
-    },
-    "crate": {
-      "type": "grenade",
-      "init_delay": 0,
-      "spawn_delay": 0,
-      "depth": 1
-    },
-    "crate": {
-      "type": "grenade",
-      "init_delay": 0,
-      "spawn_delay": 0,
-      "depth": 1
-    },
-    "crate": {
-      "type": "grenade",
-      "init_delay": 0,
-      "spawn_delay": 0,
-      "depth": 1
-    },
-    "crate": {
-      "type": "rifle",
-      "init_delay": 0,
-      "spawn_delay": 0,
-      "depth": 1
+      "powerup_spawn_delay": 0.3,
+      "powerup_init_delay": 2,
+      "powerups":[
+        "grenade",
+        "time",
+        "rock",
+        "rock",
+        "rock",
+        "rock",
+        "rock",
+        "rock",
+        "grenade"
+      ]
     }
   }
 }

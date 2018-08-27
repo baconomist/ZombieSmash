@@ -1,0 +1,33 @@
+
+helicopter.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+heli1
+  rotate: false
+  xy: 2, 2
+  size: 1850, 769
+  orig: 1850, 769
+  offset: 0, 0
+  index: -1
+heli2
+  rotate: false
+  xy: 2, 773
+  size: 1850, 831
+  orig: 1850, 831
+  offset: 0, 0
+  index: -1
+
+helicopter2.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+heli3
+  rotate: false
+  xy: 2, 2
+  size: 1850, 768
+  orig: 1850, 768
+  offset: 0, 0
+  index: -1

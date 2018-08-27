@@ -5,8 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.effects.Helicopter;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
@@ -31,26 +30,23 @@ public class Spawner
 
     HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
 
-    static HashMap<String, Class> zombieType = new HashMap<String, Class>();
+    static HashMap<String, Class> entityType = new HashMap<String, Class>();
 
     static
     {
-        zombieType.put("reg_zombie", RegularZombie.class);
-        zombieType.put("girl_zombie", GirlZombie.class);
-        zombieType.put("police_zombie", PoliceZombie.class);
-        zombieType.put("big_zombie", BigZombie.class);
-        zombieType.put("suicide_zombie", SuicideZombie.class);
-    }
+        entityType.put("reg_zombie", RegularZombie.class);
+        entityType.put("girl_zombie", GirlZombie.class);
+        entityType.put("police_zombie", PoliceZombie.class);
+        entityType.put("big_zombie", BigZombie.class);
+        entityType.put("suicide_zombie", SuicideZombie.class);
 
-    static HashMap<String, Class> powerupType = new HashMap<String, Class>();
+        entityType.put("helicopter", Helicopter.class);
 
-    static
-    {
-        powerupType.put("rifle", RiflePowerup.class);
-        powerupType.put("rock", RockPowerup.class);
-        powerupType.put("pistol", PistolPowerup.class);
-        powerupType.put("grenade", GrenadePowerup.class);
-        powerupType.put("time", TimePowerup.class);
+        entityType.put("rifle", RiflePowerup.class);
+        entityType.put("rock", RockPowerup.class);
+        entityType.put("pistol", PistolPowerup.class);
+        entityType.put("grenade", GrenadePowerup.class);
+        entityType.put("time", TimePowerup.class);
     }
 
     String type;
@@ -122,7 +118,7 @@ public class Spawner
             }
 
             Zombie tempZombie;
-            tempZombie = (Zombie) zombieType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
+            tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 
@@ -154,7 +150,7 @@ public class Spawner
         {
             com.fcfruit.zombiesmash.powerups.PowerupCrate tempCrate;
             com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface tempPowerup;
-            tempPowerup = (com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface) this.powerupType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
+            tempPowerup = (com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface) entityType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new com.fcfruit.zombiesmash.powerups.PowerupCrate(tempPowerup);
 
             tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 3));
@@ -170,10 +166,19 @@ public class Spawner
         Gdx.app.debug("Spawner", "Added Crate");
     }
 
+    private void spawnHelicopter()
+    {
+        Helicopter tempHelicopter = new Helicopter(this.data);
+        tempHelicopter.setPosition(new Vector2(40, 8));
+        Environment.drawableAddQueue.add(tempHelicopter);
+    }
+
     private void spawnEntity()
     {
         if (this.type.contains("zombie"))
             this.spawnZombie();
+        else if(this.type.contains("heli"))
+            this.spawnHelicopter();
         else
             this.spawnCrate();
 
