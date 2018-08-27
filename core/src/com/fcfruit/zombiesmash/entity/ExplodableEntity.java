@@ -104,6 +104,9 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
             }
         }
 
+        if(this.particles.size < 1)
+            Environment.drawableRemoveQueue.add(this);
+
     }
 
     @Override
