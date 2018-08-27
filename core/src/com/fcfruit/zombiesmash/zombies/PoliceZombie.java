@@ -39,7 +39,7 @@ public class PoliceZombie extends Zombie
     public void onAnimationComplete(AnimationState.TrackEntry entry)
     {
         super.onAnimationComplete(entry);
-        if (this.isInLevel() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
+        if (!this.isAtObjective() && this.isInLevel() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
         {
             if (this.getCurrentAnimation().equals("walk"))
             {
