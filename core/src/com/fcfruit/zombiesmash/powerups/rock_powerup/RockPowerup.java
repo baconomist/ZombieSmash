@@ -51,8 +51,8 @@ public class RockPowerup implements PowerupInterface
         // If rocks haven't been spawned yet spawn rocks with a time delay.
         if (this.rocksSpawned < this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
         {
-            Gdx.app.log(""+this.getRockSpawnPosition(), ""+this.getRockSpawnPosition());
             Rock rock = new Rock();
+            Gdx.app.log("", ""+getRockSpawnPosition());
             rock.setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
             Environment.drawableBackgroundAddQueue.add(rock);
 
@@ -95,14 +95,14 @@ public class RockPowerup implements PowerupInterface
         else
             return Environment.physicsCamera.position.x + new Random().nextInt(4);*/
 
-        float group_distance_increment = 5f;
+        float group_distance_increment = 2.5f;
         float offset = (Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2);
 
         HashMap<Float, Integer> zombie_groups = new HashMap<Float, Integer>();
         HashMap<Float, Float> zombie_positions = new HashMap<Float, Float>();
 
         // <= is important!
-        for(float f = group_distance_increment + offset; f <= Physics.WIDTH + offset; f+=group_distance_increment)
+        for(float f = group_distance_increment; f <= Environment.gameCamera.viewportWidth; f+=group_distance_increment)
         {
             zombie_groups.put(f, 0);
 
@@ -123,12 +123,10 @@ public class RockPowerup implements PowerupInterface
         int max = Collections.max(zombie_groups.values());
         for(float key : zombie_groups.keySet())
         {
-            if(zombie_groups.get(key) == max)
-                return zombie_positions.get(key); // -2.5f to spawn rocks in the middle of "group_distance_increment" zone, not at the edge where there may not be any zombies
+            if(zombie_positions.get(key) != null && zombie_groups.get(key) == max)
+                return zombie_positions.get(key);
         }
-
         return Environment.physicsCamera.position.x + new Random().nextInt(4);
-
     }
 
     @Override
