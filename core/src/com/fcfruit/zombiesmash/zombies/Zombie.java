@@ -666,6 +666,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     private void handleGetup()
     {
         this.isAliveCheck();
+
+        if(this.getPosition().y > this.getSize().y)
+            this.getUpTimer = System.currentTimeMillis();
+
         if (!this.isGettingUp && this.hasRequiredPartsForGetup() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
         {
 

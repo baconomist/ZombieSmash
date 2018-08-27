@@ -4,8 +4,10 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.zombies.Zombie;
 
 public class TimePowerup implements PowerupInterface
 {
@@ -30,6 +32,12 @@ public class TimePowerup implements PowerupInterface
         if(this.isActive() && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy)
         {
             Physics.STEP_TIME = Physics.STEP_TIME*TimePowerup.timeFactor; // Return physics to default time_step
+            for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+            {
+                if(drawableEntityInterface instanceof Zombie)
+                    ((Zombie) drawableEntityInterface).getState().setTimeScale(((Zombie) drawableEntityInterface).getState().getTimeScale()*TimePowerup.timeFactor); // Speed up zombie animations to default speed
+            }
+
             Environment.powerupManager.isSlowMotionEnabled = false;
             Environment.updatableRemoveQueue.add(this);
             this.isActive = false;
@@ -41,6 +49,13 @@ public class TimePowerup implements PowerupInterface
     {
         Environment.powerupManager.isSlowMotionEnabled = true;
         Physics.STEP_TIME = Physics.STEP_TIME/TimePowerup.timeFactor; // Slow down physics simulation
+
+        for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+        {
+            if(drawableEntityInterface instanceof Zombie)
+                ((Zombie) drawableEntityInterface).getState().setTimeScale(((Zombie) drawableEntityInterface).getState().getTimeScale()/TimePowerup.timeFactor); // Slow down zombie animations
+        }
+
         this.destroyTimer = System.currentTimeMillis();
         this.isActive = true;
     }
