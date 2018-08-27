@@ -102,7 +102,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         });
 
         this.animatablePhysicsEntity = new AnimatablePhysicsEntity(skeleton, state, atlas, body);
-        //this.animatablePhysicsEntity.getSkeleton().getRootBone().setScale(0.5f);
+        this.animatablePhysicsEntity.getSkeleton().getRootBone().setScale(0.5f);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;
@@ -198,7 +198,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         {
             this.getPhysicsBody().setLinearVelocity(0, 0);
             this.setAngle(0);
-        } else if (this.isFloatingUp && this.getPosition().y < 2)
+        } else if (this.isFloatingUp && this.getPosition().y < 4)
         {
             this.getPhysicsBody().setGravityScale(0);
             this.getPhysicsBody().setLinearVelocity(0, 0.3f);
