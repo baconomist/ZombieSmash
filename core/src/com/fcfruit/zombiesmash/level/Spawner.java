@@ -29,20 +29,7 @@ import java.util.Random;
 public class Spawner
 {
 
-    static HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
-
-    static
-    {
-        // Not sure if this is ok with static context....
-        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(Environment.level.sprite.getX(), Environment.level.sprite.getY(), 0)));
-
-        // x position relative to the camera
-        // 0.1f on y to keep zombie out of the ground
-        positions.put("left", new Vector2(pos.x + 2f, 0.1f));
-        positions.put("right", new Vector2(pos.x + 38.54f, 0.1f));
-        positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
-        positions.put("middle_right", new Vector2(pos.x + 22f, 0.1f));
-    }
+    HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
 
     static HashMap<String, Class> zombieType = new HashMap<String, Class>();
 
@@ -83,6 +70,8 @@ public class Spawner
     public Spawner(JsonValue data)
     {
 
+        this.create_spawn_positions();
+
         this.data = data;
 
         this.spawnedEntities = 0;
@@ -104,6 +93,18 @@ public class Spawner
 
         this.initDelayEnabled = init_delay != 0;
 
+    }
+
+    private void create_spawn_positions()
+    {
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(Environment.level.sprite.getX(), Environment.level.sprite.getY(), 0)));
+
+        // x position relative to the camera
+        // 0.1f on y to keep zombie out of the ground
+        positions.put("left", new Vector2(pos.x + 2f, 0.1f));
+        positions.put("right", new Vector2(pos.x + 38.54f, 0.1f));
+        positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
+        positions.put("middle_right", new Vector2(pos.x + 32f, 0.1f));
     }
 
     private void spawnZombie()
