@@ -11,6 +11,7 @@ import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
+import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -62,6 +63,7 @@ public class Spawner
         powerupType.put("rock", RockPowerup.class);
         powerupType.put("pistol", PistolPowerup.class);
         powerupType.put("grenade", GrenadePowerup.class);
+        powerupType.put("time", TimePowerup.class);
     }
 
     String type;

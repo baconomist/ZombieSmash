@@ -19,6 +19,8 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
 
     private Array<PowerupCrate> crates;
 
+    public boolean isSlowMotionEnabled = false;
+
     public PowerupManager()
     {
         this.powerups = new Array<PowerupInterface>();
