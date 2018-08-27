@@ -26,7 +26,7 @@ public class RocketPowerup implements PowerupInterface
     @Override
     public void update(float delta)
     {
-        if(!this.helicopter.isMoving())
+        if(this.helicopter.getPosition().x <= -19)
         {
             Environment.drawableRemoveQueue.add(this.helicopter);
             Environment.updatableRemoveQueue.add(this);
@@ -46,7 +46,7 @@ public class RocketPowerup implements PowerupInterface
     @Override
     public boolean hasCompleted()
     {
-        return false;
+        return this.isActive() && this.helicopter.getPosition().x <= -19;
     }
 
     @Override

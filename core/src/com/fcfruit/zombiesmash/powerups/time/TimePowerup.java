@@ -68,7 +68,7 @@ public class TimePowerup implements PowerupInterface
     @Override
     public boolean hasCompleted()
     {
-        return !this.isActive();
+        return this.isActive() && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
     }
 
     @Override

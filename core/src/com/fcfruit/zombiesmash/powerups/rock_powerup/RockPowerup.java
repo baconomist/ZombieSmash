@@ -66,7 +66,6 @@ public class RockPowerup implements PowerupInterface
     @Override
     public void activate()
     {
-        Environment.level.addUpdatableEntity(this);
         this.rockSpawnTimer = System.currentTimeMillis();
 
         this.isActive = true;
