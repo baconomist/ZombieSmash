@@ -13,7 +13,7 @@ import java.util.Random;
 public class PoliceZombie extends Zombie
 {
 
-    private double timeBeforeAttack = 3500 + new Random().nextInt(2500);
+    private double timeBeforeAttack = 3500 + new Random().nextDouble()*2500d;
     private double attackTimer = System.currentTimeMillis();
 
     public PoliceZombie(Integer id)
