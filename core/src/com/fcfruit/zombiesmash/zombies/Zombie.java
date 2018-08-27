@@ -877,6 +877,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     protected void onObjective()
     {
+        this.checkDirection();
         if(this.getCurrentAnimation().contains("crawl"))
         {
             this.setAnimation("crawl_attack");
