@@ -19,6 +19,7 @@ import com.esotericsoftware.spine.Skeleton;
 import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.AnimatablePhysicsEntity;
@@ -120,7 +121,8 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         Environment.powerupManager.addCrate(this);
 
-        //this.open();
+        if(Config.DEBUG_CRATES)
+            Environment.powerupManager.addPowerup(this.powerup);
     }
 
     private void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
