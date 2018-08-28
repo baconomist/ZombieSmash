@@ -3,6 +3,7 @@ package com.fcfruit.zombiesmash.powerups;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Array;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
 
@@ -57,6 +58,7 @@ public class ParticleEntityPool
         {
             Gdx.app.error("ParticlePool", "Deleting particle not from pool originally...");
             particleEntity.disable();
+            Environment.physics.destroyBody(particleEntity.physicsBody);
         }
     }
 }
