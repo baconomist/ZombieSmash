@@ -11,17 +11,12 @@
       "init_delay": 1,
       "spawn_delay": 0,
       "powerup_spawn_delay": 0.3,
-      "powerup_init_delay": 2,
+      "powerup_init_delay": 1,
       "powerups":[
         "grenade",
         "time",
         "rock",
-        "rock",
-        "rock",
-        "rock",
-        "rock",
-        "rock",
-        "grenade"
+        "rocket"
       ]
     }
   }

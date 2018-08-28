@@ -1,0 +1,33 @@
+/*
+  Example level file for newbies.
+  Some items here are for debugging purposes only marked with @debug.
+*/
+
+{
+  "middle": { // 'middle' indicates the camera positions. Camera positions = ( 'left', 'middle', 'right')
+    "police_zombie": { // 'police_zombie' indicates the type of zombie to be spawned, see zombie types in Spawner.java
+      "quantity": 33, // amount of zombies to be spawned by this block
+      "init_delay": 0, // initial delay before starting to spawn zombies
+      "spawn_delay": 1, // delay in between spawning zombies
+      "position": "middle_right", // zombie spawn position. Zombie positions = ('left', 'middle_left', 'middle_right', 'right')
+      "depth": 1 // zombie depth, higher depth == further away. Zombie depths = (0, 1, 2)
+    },
+    "helicopter": { // a helicopter which drops crates
+      "init_delay": 1, // initial spawn delay of helicopter
+      "spawn_delay": 0, // N/A
+      "powerup_spawn_delay": 0.3, // spawn delay between crates
+      "powerup_init_delay": 1, // initial spawn delay for crates
+      "powerups":[ // powerups to be spawned
+        "grenade",
+        "time",
+        "rock",
+        "rocket"
+      ]
+    },
+    "crate": { // @debug spawns a raw crate at (x, y) -> (random x, 8) for debugging purposes only! Do not use in release, use helicopter instead!
+      "init_delay": 1,
+      "spawn_delay": 0,
+      "type": "grenade" // powerup type
+    }
+  }
+}
