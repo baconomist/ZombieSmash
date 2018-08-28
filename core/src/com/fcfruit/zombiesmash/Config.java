@@ -7,6 +7,7 @@ package com.fcfruit.zombiesmash;
 public class Config
 {
     public static boolean DEBUG = true;
+    public static boolean DEBUG_CRATES = false;
     public static boolean DEBUG_PHYSICS = false;
     public static boolean DEBUG_POLYGONS = false;
 }

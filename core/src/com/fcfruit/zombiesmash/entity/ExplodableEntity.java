@@ -23,9 +23,8 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 {
     private static final int NUMRAYS = 10;
 
-    String state;
-
     Body physicsBody;
+    private Vector2 explosion_position;
     float explosionForce;
 
     public boolean exploded;
@@ -40,7 +39,6 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
     public ExplodableEntity(com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface physicsEntityInterface, float explosionForce)
     {
-        this.state = "nominal";
         this.physicsBody = physicsEntityInterface.getPhysicsBody();
         this.explosionForce = explosionForce;
         this.exploded = false;
@@ -97,9 +95,10 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
-            if (Math.abs(particle.physicsBody.getPosition().x - this.physicsBody.getPosition().x) > this.explosionRadiusX
-                    || Math.abs(particle.physicsBody.getPosition().y - this.physicsBody.getPosition().y) > this.explosionRadiusY)
+            if (Math.abs(particle.physicsBody.getPosition().x - explosion_position.x) > this.explosionRadiusX
+                    || Math.abs(particle.physicsBody.getPosition().y - explosion_position.y) > this.explosionRadiusY)
             {
+                Gdx.app.log("exp", ""+explosion_position);
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
@@ -117,6 +116,9 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
             ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, this.explosionForce, 5f);
             this.particles.add(particle); // create the particle
         }
+
+        // New Vector2 so that its a new instance of position not pointer
+        this.explosion_position = new Vector2(physicsBody.getPosition());
 
         this.exploded = true;
         this.isAnimating = true;

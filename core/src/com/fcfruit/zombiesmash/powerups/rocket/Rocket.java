@@ -11,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Shape;
+import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
@@ -55,11 +56,31 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
 
         this.explodableEntity = new ExplodableEntity(this, 60f);
+
+        this.explodableEntity.getState().addListener(new AnimationState.AnimationStateAdapter()
+        {
+            @Override
+            public void complete(AnimationState.TrackEntry entry)
+            {
+                onExplodeableEntityAnimationComplete();
+                super.complete(entry);
+            }
+        });
+    }
+
+    private void onExplodeableEntityAnimationComplete()
+    {
+        Environment.rocketPool.returnRocket(this);
     }
 
     public void enable()
     {
+        this.getPhysicsBody().setTransform(this.getPosition(), this.getPhysicsBody().getAngle());
         this.getPhysicsBody().setActive(true);
+
+        this.explodableEntity.exploded = false;
+        this.explodableEntity.isAnimating = false;
+
         this.enabled = true;
     }
 
@@ -69,7 +90,6 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         this.getPhysicsBody().setActive(false);
         this.getPhysicsBody().setTransform(99, 99, this.getPhysicsBody().getAngle());
 
-        this.explodableEntity.exploded = false;
         this.enabled = false;
     }
 
@@ -91,7 +111,6 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         this.explodableEntity.explode();
         Environment.drawableAddQueue.add(this.explodableEntity);
         Environment.drawableRemoveQueue.add(this);
-        Environment.rocketPool.returnRocket(this);
     }
 
     @Override
