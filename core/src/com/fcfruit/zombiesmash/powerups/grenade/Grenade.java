@@ -43,7 +43,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         this.drawablePhysicsEntity = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(sprite, body);
         this.detachableEntity = new com.fcfruit.zombiesmash.entity.DetachableEntity(joints);
 
-        this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 1f);
+        this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 50f);
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawablePhysicsEntity.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;
@@ -66,7 +66,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 1f);
+        this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 50f);
 
     }
 
@@ -74,6 +74,9 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     public void explode()
     {
         this.explodableEntity.explode();
+
+        this.getPhysicsBody().setActive(false);
+        Environment.physics.destroyBody(this.getPhysicsBody());
         Environment.drawableAddQueue.add(this.explodableEntity);
         Environment.drawableRemoveQueue.add(this);
         this.dispose();

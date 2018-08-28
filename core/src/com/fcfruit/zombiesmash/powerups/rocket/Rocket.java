@@ -54,7 +54,7 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
 
-        this.explodableEntity = new ExplodableEntity(this, 1f);
+        this.explodableEntity = new ExplodableEntity(this, 60f);
     }
 
     public void enable()
@@ -68,6 +68,8 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         this.getPhysicsBody().setLinearVelocity(0, 0);
         this.getPhysicsBody().setActive(false);
         this.getPhysicsBody().setTransform(99, 99, this.getPhysicsBody().getAngle());
+
+        this.explodableEntity.exploded = false;
         this.enabled = false;
     }
 
@@ -89,6 +91,7 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         this.explodableEntity.explode();
         Environment.drawableAddQueue.add(this.explodableEntity);
         Environment.drawableRemoveQueue.add(this);
+        Environment.rocketPool.returnRocket(this);
     }
 
     @Override

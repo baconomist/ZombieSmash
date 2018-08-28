@@ -28,8 +28,8 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
     Body physicsBody;
     float explosionForce;
 
-    private boolean exploded;
-    private boolean isAnimating;
+    public boolean exploded;
+    public boolean isAnimating;
 
     private float explosionRadiusX = 5;
     private float explosionRadiusY = 5;
@@ -77,6 +77,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
     private void onAnimationComplete(AnimationState.TrackEntry entry)
     {
         this.isAnimating = false;
+        Environment.drawableRemoveQueue.add(this);
     }
 
     @Override
@@ -103,10 +104,6 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
                 this.particles.removeValue(particle, true);
             }
         }
-
-        if(this.particles.size < 1)
-            Environment.drawableRemoveQueue.add(this);
-
     }
 
     @Override
@@ -117,8 +114,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         {
             float angle = (float) Math.toRadians((i / (float) numRays) * 360);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, 100f, 10f);
-            particle.blastPower = 10;
+            ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, this.explosionForce, 5f);
             this.particles.add(particle); // create the particle
         }
 

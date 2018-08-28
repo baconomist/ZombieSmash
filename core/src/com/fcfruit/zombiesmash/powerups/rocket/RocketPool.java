@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.powerups.rocket;
 
 import com.badlogic.gdx.Gdx;
+import com.fcfruit.zombiesmash.Environment;
 
 public class RocketPool
 {

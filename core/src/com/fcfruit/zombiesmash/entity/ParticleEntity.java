@@ -110,20 +110,20 @@ public class ParticleEntity
                     ((Zombie) drawableEntity).stopGetUp();
                     ((Zombie) drawableEntity).enable_physics();
 
-                    // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
-                    ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
-
                     for(DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntity).getDetachableEntities().values())
                     {
                         if(detachableEntityInterface.getState().equals("attached") && detachableEntityInterface instanceof InteractiveEntityInterface && ((InteractiveEntityInterface) detachableEntityInterface).getPolygon().contains(pos.x, pos.y))
                         {
+                            // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
+                            // Only apply it if grenade hits a zombie directly on a body part
+                            ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+
                             // Pretty much detach all zombie limbs by setting detach force to nothing
                             detachableEntityInterface.setForceForDetach(0.01f);
                         }
                     }
                 } else if(drawableEntity instanceof Zombie && !((Zombie) drawableEntity).isAlive() && ((Zombie) drawableEntity).getInteractiveEntities().get("torso").getPolygon().contains(pos.x, pos.y)) // Need this for torso to move when zombie is dead
                 {
-                    Gdx.app.log("zomzom", "bombom");
                     ((Zombie) drawableEntity).enable_physics();
                     ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().setActive(true);
                     ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
