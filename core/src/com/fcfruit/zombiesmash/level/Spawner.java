@@ -57,7 +57,7 @@ public class Spawner
 
     private int spawnedEntities;
 
-    private double timer;
+    private double accumilator = 0d;
 
     private boolean initDelayEnabled;
 
@@ -73,7 +73,6 @@ public class Spawner
         this.data = data;
 
         this.spawnedEntities = 0;
-        this.timer = System.currentTimeMillis();
 
         this.type = data.name;
 
@@ -187,19 +186,21 @@ public class Spawner
         this.spawnedEntities += 1;
     }
 
-    public void update()
+    public void update(float delta)
     {
         if (this.quantity > this.spawnedEntities)
         {
-            if (this.initDelayEnabled && System.currentTimeMillis() - this.timer >= this.init_delay * 1000)
+            this.accumilator += delta;
+
+            if (this.initDelayEnabled && this.accumilator*1000 >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
                 this.spawnEntity();
-                this.timer = System.currentTimeMillis();
+                this.accumilator = 0;
             }
-            else if (!this.initDelayEnabled && System.currentTimeMillis() - timer >= spawn_delay * 1000)
+            else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000)
             {
-                this.timer = System.currentTimeMillis();
+                this.accumilator = 0;
                 this.spawnEntity();
             }
         }

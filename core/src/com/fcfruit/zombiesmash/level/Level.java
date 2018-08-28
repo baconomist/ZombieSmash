@@ -182,7 +182,7 @@ public class Level
 
             for (Spawner s : spawners)
             {
-                s.update();
+                s.update(delta);
             }
 
             if (this.isZombiesDead())

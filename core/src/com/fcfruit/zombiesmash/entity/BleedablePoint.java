@@ -39,9 +39,9 @@ public class BleedablePoint implements BleedableEntityInterface
     private boolean isBleeding;
 
     private double bleedTime = 5000;
-    private double bleedTimer;
+    private double bleedAccumilator = 0d;
     private double timeBeforeBlood;
-    private double bloodTimer;
+    private double bloodAccumilator = 0d;
 
     private boolean initUpdate = true;
 
@@ -122,37 +122,40 @@ public class BleedablePoint implements BleedableEntityInterface
             this.complete_physics_pos = this.physicsBody.getPosition();
             this.complete_physics_pos.sub(this.physics_offset);
 
-            this.updateBlood();
+            this.updateBlood(delta);
         } else
         {
-            this.bloodTimer = System.currentTimeMillis();
+            this.bloodAccumilator = 0d;
         }
     }
 
     /**
      * Create blood accordingly
      **/
-    private void updateBlood()
+    private void updateBlood(float delta)
     {
         //this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
         //this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
 
         if (initUpdate)
         {
-            this.bleedTimer = System.currentTimeMillis();
-            this.bloodTimer = System.currentTimeMillis();
+            this.bleedAccumilator = 0d;
+            this.bloodAccumilator = 0d;
             this.initUpdate = false;
         }
 
-        this.timeBeforeBlood = 200 + (System.currentTimeMillis() - this.bleedTimer) * (System.currentTimeMillis() - this.bleedTimer) / 10000;
+        this.bleedAccumilator += delta;
+        this.bloodAccumilator += delta;
 
-        if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
+        this.timeBeforeBlood = 200 + this.bleedAccumilator*this.bleedAccumilator / 10000;
+
+        if (this.bleedAccumilator*1000 < this.bleedTime && this.bloodAccumilator*1000 > this.timeBeforeBlood)
         {
 
             Environment.drawableBackgroundAddQueue.add(Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset));
 
-            this.bloodTimer = System.currentTimeMillis();
-        } else if (System.currentTimeMillis() - this.bleedTimer > this.bleedTime)
+            this.bloodAccumilator = 0d;
+        } else if (this.bleedAccumilator*1000 > this.bleedTime)
             this.isBleeding = false;
     }
 

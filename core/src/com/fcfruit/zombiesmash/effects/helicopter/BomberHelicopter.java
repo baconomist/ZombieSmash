@@ -7,7 +7,7 @@ import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
 public class BomberHelicopter extends Helicopter
 {
 
-    private double bombTimer;
+    private double accumilator = 0d;
     private double timeBeforeBomb = 250;
 
     public BomberHelicopter()
@@ -22,15 +22,16 @@ public class BomberHelicopter extends Helicopter
 
         if(!this.isInLevel())
         {
-            this.bombTimer = System.currentTimeMillis();
+            this.accumilator = 0d;
         }
-        else if(System.currentTimeMillis() - this.bombTimer >= this.timeBeforeBomb)
+        else if(this.accumilator*1000 >= this.timeBeforeBomb)
         {
             Rocket rocket = Environment.rocketPool.getRocket();
             rocket.setPosition(this.getPosition());
             Environment.drawableBackgroundAddQueue.add(rocket);
-
-            bombTimer = System.currentTimeMillis();
+            this.accumilator = 0d;
         }
+
+        this.accumilator += delta;
     }
 }
