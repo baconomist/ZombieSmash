@@ -64,6 +64,7 @@ public class BleedableBloodPool
         {
             Gdx.app.error("BloodPool", "Deleting body not from pool originally...");
             blood.disable();
+            Environment.physics.destroyBody(blood.getPhysicsBody());
         }
     }
 

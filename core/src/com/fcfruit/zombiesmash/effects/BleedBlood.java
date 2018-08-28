@@ -14,6 +14,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.Random;
@@ -22,7 +23,7 @@ import java.util.Random;
  * Created by Lucas on 2018-01-03.
  */
 
-public class BleedBlood implements DrawableEntityInterface
+public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterface
 {
 
     public boolean enabled = false;
@@ -110,6 +111,12 @@ public class BleedBlood implements DrawableEntityInterface
     {
         if(this.enabled)
             this.drawablePhysicsEntity.update(delta);
+    }
+
+    @Override
+    public Body getPhysicsBody()
+    {
+        return this.physicsBody;
     }
 
     @Override
