@@ -155,7 +155,7 @@ public class Spawner
             tempPowerup = (com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface) entityType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new com.fcfruit.zombiesmash.powerups.PowerupCrate(tempPowerup);
 
-            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 3));
+            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 8));
             tempCrate.changeToGround(0);
 
             Environment.level.addDrawableEntity(tempCrate);
