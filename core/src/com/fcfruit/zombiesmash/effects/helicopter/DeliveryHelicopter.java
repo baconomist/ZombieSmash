@@ -37,6 +37,8 @@ public class DeliveryHelicopter extends Helicopter
     private double powerupInitDelayTimer;
     private double powerupSpawnTimer;
 
+    private boolean init_delay_spawned = false;
+
     public DeliveryHelicopter(JsonValue data)
     {
         super();
@@ -59,7 +61,14 @@ public class DeliveryHelicopter extends Helicopter
         }
         else if(System.currentTimeMillis() - this.powerupInitDelayTimer >= this.powerup_init_delay)
         {
-            if(System.currentTimeMillis() - this.powerupSpawnTimer >= this.powerup_spawn_delay && this.spawnedPowerups < this.powerupsToSpawn)
+            if(!this.init_delay_spawned)
+            {
+                this.clearMoveQueue();
+                this.spawnCrate(this.data.get("powerups").get(this.spawnedPowerups).asString());
+                this.powerupSpawnTimer = System.currentTimeMillis();
+                this.init_delay_spawned = true;
+            }
+            else if(System.currentTimeMillis() - this.powerupSpawnTimer >= this.powerup_spawn_delay && this.spawnedPowerups < this.powerupsToSpawn)
             {
                 this.clearMoveQueue();
                 this.spawnCrate(this.data.get("powerups").get(this.spawnedPowerups).asString());
