@@ -32,6 +32,6 @@ public class BomberHelicopter extends Helicopter
             this.accumilator = 0d;
         }
 
-        this.accumilator += delta;
+        this.accumilator += Math.min(delta, 0.25f);
     }
 }

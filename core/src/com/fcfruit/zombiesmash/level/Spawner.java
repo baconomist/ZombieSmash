@@ -190,8 +190,7 @@ public class Spawner
     {
         if (this.quantity > this.spawnedEntities)
         {
-            this.accumilator += delta;
-
+            this.accumilator += Math.min(delta, 0.25f);
             if (this.initDelayEnabled && this.accumilator*1000 >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
