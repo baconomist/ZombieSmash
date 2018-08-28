@@ -57,7 +57,7 @@ public class Brain implements DrawableEntityInterface, InteractiveEntityInterfac
         body.setUserData(new PhysicsData(this));
         fixture.setUserData(new PhysicsData(this));
 
-        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("brains/brain"+this.value+".png")));
+        Sprite sprite = new Sprite(Environment.assets.get("brains/brain"+this.value+".png", Texture.class));
         sprite.setSize(sprite.getWidth()/2, sprite.getHeight()/2);
 
         sprite.setOriginCenter();

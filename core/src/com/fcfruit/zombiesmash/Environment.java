@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -65,6 +66,8 @@ public class Environment
         //assets.load("zombies/reg_zombie/reg_zombie.png", Texture.class);
         //assets.load("zombies/reg_zombie/reg_zombie_rube.json", Json.class);
 
+        assets.load("maps/night_map/night_map.png", Texture.class);
+
         assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
 
@@ -72,6 +75,12 @@ public class Environment
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
         assets.load("effects/blood/ground_blood/ground_blood.atlas", TextureAtlas.class);
 
+        for(int i = 1; i < 4; i++)
+        {
+            assets.load("brains/brain"+i+".png", Texture.class);
+        }
+
+        assets.load("powerups/rocket/rocket.png", Texture.class);
 
     }
 

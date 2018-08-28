@@ -48,7 +48,7 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         body.setUserData(new PhysicsData(this));
         fixture.setUserData(new PhysicsData(this));
 
-        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/rocket/rocket.png")));
+        Sprite sprite = new Sprite(Environment.assets.get("powerups/rocket/rocket.png", Texture.class));
         sprite.setSize(sprite.getWidth()/2, sprite.getHeight()/2);
         sprite.setOriginCenter();
 
