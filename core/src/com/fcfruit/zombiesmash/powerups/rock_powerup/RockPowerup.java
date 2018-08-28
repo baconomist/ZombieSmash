@@ -95,13 +95,13 @@ public class RockPowerup implements PowerupInterface
             return Environment.physicsCamera.position.x + new Random().nextInt(4);*/
 
         float group_distance_increment = 2.5f;
-        float offset = (Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2);
+        float offset = Environment.physicsCamera.position.x -  Environment.physicsCamera.viewportWidth/2;
 
         HashMap<Float, Integer> zombie_groups = new HashMap<Float, Integer>();
         HashMap<Float, Float> zombie_positions = new HashMap<Float, Float>();
 
         // <= is important!
-        for(float f = group_distance_increment; f <= Environment.gameCamera.viewportWidth; f+=group_distance_increment)
+        for(float f = group_distance_increment + 2.5f; f <= Environment.physicsCamera.viewportWidth - 2.5f; f+=group_distance_increment)
         {
             zombie_groups.put(f, 0);
 
@@ -110,7 +110,7 @@ public class RockPowerup implements PowerupInterface
                 if(drawableEntityInterface instanceof Zombie && ((Zombie) drawableEntityInterface).isAlive() && ((Zombie) drawableEntityInterface).isInLevel())
                 {
                     Zombie zombie = (Zombie) drawableEntityInterface;
-                    if(zombie.getPosition().x > f-5f && zombie.getPosition().x < f)
+                    if(zombie.getPosition().x > f+offset-5f && zombie.getPosition().x < f+offset)
                     {
                         zombie_groups.put(f, zombie_groups.get(f)+1);
                         zombie_positions.put(f, zombie.getPosition().x);
