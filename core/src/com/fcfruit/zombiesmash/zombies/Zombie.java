@@ -849,7 +849,18 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             for (int i = 0; i < new Random().nextInt(4) + 1; i++)
             {
-                Environment.drawableAddQueue.add(Environment.brainPool.getBrain(new Random().nextInt(3) + 1, this.getPosition(), new Vector2((float) Math.random() * (new Random().nextBoolean() ? 1 : -1), 2f)));
+                int rand = new Random().nextInt(100) + 1;
+                int value;
+
+                // Most probably to get regular brain, least probable to get "gold" brain.
+                if(rand >= 50)
+                    value = 1;
+                else if(rand >= 20)
+                    value = 2;
+                else
+                    value = 3;
+
+                Environment.drawableAddQueue.add(Environment.brainPool.getBrain(value, this.getPosition(), new Vector2((float) Math.random() * (new Random().nextBoolean() ? 1 : -1), 2f)));
             }
         }
 
@@ -973,9 +984,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     public void enable_physics()
     {
-        // Move animatableEntity and/or interactiveGraphicsEntity polygon out of screen to prevent weirdness
-        this.animatableGraphicsEntity.setPosition(new Vector2(99, 99));
-
         // To prevent zombie moving if multiple calls to enable_physics are made
         if(this.isAnimating())
         {
@@ -986,7 +994,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
             /*
             drawableAddQueue.add(this) needs to be in if statement
-            because otherwise items like Grenades can cause
+            because otherwise items like Grenades -> ParticleEntity can cause
             zombie to add itself to level so many times that the zombie is
             updated more than once per frame and is super fast
             */
