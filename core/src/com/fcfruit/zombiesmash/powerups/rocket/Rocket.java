@@ -55,7 +55,7 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
 
-        this.explodableEntity = new ExplodableEntity(this, 60f);
+        this.explodableEntity = new ExplodableEntity(this, 100f);
 
         this.explodableEntity.getState().addListener(new AnimationState.AnimationStateAdapter()
         {
