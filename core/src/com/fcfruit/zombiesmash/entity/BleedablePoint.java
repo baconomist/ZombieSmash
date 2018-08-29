@@ -147,7 +147,7 @@ public class BleedablePoint implements BleedableEntityInterface
         this.bleedAccumilator += Math.min(delta, 0.25f);
         this.bloodAccumilator += Math.min(delta, 0.25f);
 
-        this.timeBeforeBlood = 200 + this.bleedAccumilator*this.bleedAccumilator / 10000;
+        this.timeBeforeBlood = 500 + this.bleedAccumilator*this.bleedAccumilator / 10000;
 
         if (this.bleedAccumilator*1000 < this.bleedTime && this.bloodAccumilator*1000 > this.timeBeforeBlood)
         {
