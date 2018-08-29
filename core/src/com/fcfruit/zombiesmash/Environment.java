@@ -82,6 +82,8 @@ public class Environment
 
         assets.load("powerups/rocket/rocket.png", Texture.class);
 
+        assets.load("effects/helicopter/helicopter.atlas", TextureAtlas.class);
+
     }
 
     public static Level level;

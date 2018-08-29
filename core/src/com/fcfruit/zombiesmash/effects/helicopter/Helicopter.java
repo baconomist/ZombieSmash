@@ -24,7 +24,7 @@ public class Helicopter implements AnimatableEntityInterface, MovableEntityInter
 
     public Helicopter()
     {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("effects/helicopter/helicopter.atlas"));
+        TextureAtlas atlas = Environment.assets.get("effects/helicopter/helicopter.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("effects/helicopter/helicopter.json"));
