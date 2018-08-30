@@ -37,7 +37,12 @@ public class RockPowerup implements PowerupInterface
         this.timeBetweenRocks = 50;
 
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock_ui.png")));
-        this.rocks = new Rock[new Random().nextInt(6) + 6];
+        this.rocks = new Rock[new Random().nextInt(4) + 4];
+
+        for(int i = 0; i < this.rocks.length; i++)
+        {
+            this.rocks[i] = new Rock();
+        }
 
         this.rocksSpawned = 0;
 
@@ -51,10 +56,9 @@ public class RockPowerup implements PowerupInterface
         // If rocks haven't been spawned yet spawn rocks with a time delay.
         if (this.rocksSpawned < this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
         {
-            Rock rock = new Rock();
-            Gdx.app.log("", ""+getRockSpawnPosition());
-            rock.setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
-            Environment.drawableBackgroundAddQueue.add(rock);
+            this.rocks[rocksSpawned].enable();
+            this.rocks[rocksSpawned].setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
+            Environment.drawableBackgroundAddQueue.add(this.rocks[rocksSpawned]);
 
             this.rockSpawnTimer = System.currentTimeMillis();
 

@@ -105,6 +105,14 @@ public class BleedablePoint implements BleedableEntityInterface
         this.physics_offset = new Vector2(this.physics_h * (float) Math.cos(this.physicsBody.getAngle() - rotOffset), this.physics_h * (float) Math.sin(this.physicsBody.getAngle() - rotOffset));
     }
 
+    private boolean isInLevel()
+    {
+        return physicsBody.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 2f
+                && physicsBody.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 2f
+                && physicsBody.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - 2f
+                && physicsBody.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + 2f;
+    }
+
     @Override
     public void draw(SpriteBatch batch)
     {
@@ -115,12 +123,12 @@ public class BleedablePoint implements BleedableEntityInterface
     @Override
     public void update(float delta)
     {
-        if (this.isBleeding)
+        if (this.isBleeding && this.isInLevel())
         {
             this.calc_phys_pos();
 
             this.complete_physics_pos = this.physicsBody.getPosition();
-            this.complete_physics_pos.sub(this.physics_offset);
+            this.complete_physics_pos.sub(new Vector2(this.physics_offset).scl(2));
 
             this.updateBlood(delta);
         } else
@@ -151,8 +159,9 @@ public class BleedablePoint implements BleedableEntityInterface
 
         if (this.bleedAccumilator*1000 < this.bleedTime && this.bloodAccumilator*1000 > this.timeBeforeBlood)
         {
-
-            Environment.drawableBackgroundAddQueue.add(Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset));
+            BleedBlood bleedBlood = Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset);
+            if(bleedBlood != null)
+                Environment.drawableBackgroundAddQueue.add(bleedBlood);
 
             this.bloodAccumilator = 0d;
         } else if (this.bleedAccumilator*1000 > this.bleedTime)

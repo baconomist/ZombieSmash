@@ -212,14 +212,14 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         if(this.getPosition().y >= 3f && this.isFloatingUp)
         {
-            this.getPhysicsBody().setLinearDamping(7);
+            this.getPhysicsBody().setLinearDamping(17);
             this.getPhysicsBody().setGravityScale(0);
         }
         else if(!this.isFloatingUp)
             this.isFloatingUp = this.getPosition().y <= Environment.physics.getGroundBodies().get(this.currentGround).getPosition().y + 0.5f;
 
 
-        if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire)
+        if(System.currentTimeMillis() - this.expiryTimer > this.timeBeforeExpire && !this.isOpening)
         {
             this.setAlpha(this.getAlpha()-0.25f*Gdx.graphics.getDeltaTime());
         }
@@ -228,6 +228,9 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             this.isOpening = false;
             this.isOpen = true;
             Environment.drawableRemoveQueue.add(this);
+
+            this.getPhysicsBody().setActive(false);
+            Environment.physics.destroyBody(this.getPhysicsBody());
         }
 
         if (this.isOpening)
@@ -244,6 +247,10 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
             {
                 Environment.drawableRemoveQueue.add(this);
                 Environment.powerupManager.addPowerup(this.powerup);
+
+                this.getPhysicsBody().setActive(false);
+                Environment.physics.destroyBody(this.getPhysicsBody());
+
                 this.isOpening = false;
                 this.isOpen = true;
             }

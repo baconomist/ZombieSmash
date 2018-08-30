@@ -11,7 +11,7 @@ public class BrainPool
 
     public BrainPool()
     {
-        this.brains = new Brain[60];
+        this.brains = new Brain[90];
 
         for(int i = 0; i < this.brains.length/3; i++)
         {
@@ -39,7 +39,7 @@ public class BrainPool
         }
 
         Gdx.app.error("BrainPool", "No available brain in pool. Make sure brains are being returned to the pool or" +
-                " Increase max pool brain limit [default is 25]");
+                " Increase max pool brain limit [default is 90]");
 
         // Create new blood if not available in pool
         Brain brain = new Brain(2);

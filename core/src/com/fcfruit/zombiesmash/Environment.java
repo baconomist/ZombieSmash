@@ -81,8 +81,11 @@ public class Environment
         }
 
         assets.load("powerups/rocket/rocket.png", Texture.class);
+        assets.load("powerups/rock/rock.png", Texture.class);
 
         assets.load("effects/helicopter/helicopter.atlas", TextureAtlas.class);
+
+        assets.load("effects/smoke/smoke.atlas", TextureAtlas.class);
 
     }
 

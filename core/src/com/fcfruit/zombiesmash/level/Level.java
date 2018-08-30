@@ -89,6 +89,13 @@ public class Level
         this.createSpawners();
     }
 
+    private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
+    {
+        return drawableEntityInterface.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - drawableEntityInterface.getSize().x
+                && drawableEntityInterface.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + drawableEntityInterface.getSize().x
+                && drawableEntityInterface.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - drawableEntityInterface.getSize().y
+                && drawableEntityInterface.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + drawableEntityInterface.getSize().y;
+    }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
@@ -96,8 +103,11 @@ public class Level
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
-            drawableEntity.draw(batch);
-            drawableEntity.draw(batch, skeletonRenderer);
+            if(this.isDrawableInLevel(drawableEntity))
+            {
+                drawableEntity.draw(batch);
+                drawableEntity.draw(batch, skeletonRenderer);
+            }
         }
     }
 

@@ -98,7 +98,6 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
             if (Math.abs(particle.physicsBody.getPosition().x - explosion_position.x) > this.explosionRadiusX
                     || Math.abs(particle.physicsBody.getPosition().y - explosion_position.y) > this.explosionRadiusY)
             {
-                Gdx.app.log("exp", ""+explosion_position);
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }

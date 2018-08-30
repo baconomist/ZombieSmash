@@ -38,6 +38,8 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.bullet = true;
+        bodyDef.fixedRotation = true;
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.1f);
@@ -90,14 +92,27 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
         this.enabled = false;
     }
 
+    private boolean isInLevel()
+    {
+        DrawableEntityInterface i = this;
+
+        return i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - i.getSize().x
+                && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + i.getSize().x;
+    }
+
     public void draw(SpriteBatch batch)
     {
-        if (this.physicsBody.getPosition().y < 0.1f)
+        if (this.getPosition().y < 0.1f && this.isInLevel())
         {
             this.groundBlood.enable();
             this.groundBlood.setPosition(this.getPosition());
             Environment.drawableBackgroundAddQueue.add(this.groundBlood);
 
+            Environment.bleedableBloodPool.returnBlood(this);
+            Environment.drawableRemoveQueue.add(this);
+        }
+        else if(!this.isInLevel())
+        {
             Environment.bleedableBloodPool.returnBlood(this);
             Environment.drawableRemoveQueue.add(this);
         }

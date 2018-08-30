@@ -116,10 +116,12 @@ public class ParticleEntity
                         {
                             // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
                             // Only apply it if grenade hits a zombie directly on a body part
-                            //((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+                            ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
 
                             // Pretty much detach all zombie limbs by setting detach force to nothing
                             detachableEntityInterface.setForceForDetach(0.01f);
+                            detachableEntityInterface.setState("waiting_for_detach");
+                            Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
                         }
                     }
                 } else if(drawableEntity instanceof Zombie && !((Zombie) drawableEntity).isAlive() && ((Zombie) drawableEntity).getInteractiveEntities().get("torso").getPolygon().contains(pos.x, pos.y)) // Need this for torso to move when zombie is dead
