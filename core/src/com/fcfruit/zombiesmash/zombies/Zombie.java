@@ -988,6 +988,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         if(this.isAnimating())
         {
             this.syncEntitiesToAnimation();
+            this.updateEntities(Gdx.graphics.getDeltaTime());
 
             // Move zombie to front of screen, better for gameplay
             Environment.drawableRemoveQueue.add(this);
