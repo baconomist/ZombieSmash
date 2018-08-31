@@ -160,6 +160,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Need to have separate function here because reflection does not work in constructor
         this.animationSetup();
         this.constructBody();
+        this.animationListenerSetup(); // Has to be done after construct body to stop crashing
         this.interactiveEntitySetup();
 
         this.returnEntitiesToOptimizedLocation();
@@ -282,6 +283,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Update the animation
         this.animatableGraphicsEntity.getSkeleton().setFlipX(flip);
         this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(this.animScale);
+        this.animatableGraphicsEntity.update(Gdx.graphics.getDeltaTime()); // May cause crash @warning, need this for blood to work properly
 
         this.bleedablePoints = this.create_bleedable_points(rubeScene);
         for(String part : bleedablePoints.keySet())
@@ -409,7 +411,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
         //state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
-        state.addListener(new AnimationState.AnimationStateAdapter()
+        this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
+        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
+    }
+
+    private void animationListenerSetup()
+    {
+        this.getState().addListener(new AnimationState.AnimationStateAdapter()
         {
             @Override
             public void interrupt(AnimationState.TrackEntry entry)
@@ -432,9 +440,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 super.complete(entry);
             }
         });
-
-        this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
-        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
     }
 
     /**
@@ -886,6 +891,20 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
+    private float getLeastPopulatedObjectivePosition()
+    {
+        float distance_increment = 0.5f;
+        HashMap<Float, Array<Zombie>> zombies = new HashMap<Float, Array<Zombie>>();
+        for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+        {
+            if(drawableEntityInterface instanceof Zombie && ((Zombie) drawableEntityInterface).isAtObjective())
+            {
+                //drawableEntityInterface.getPosition().x;
+            }
+        }
+        return 0;
+    }
+
     private void onObjectiveOnce()
     {
         this.clearMoveQueue();
@@ -894,8 +913,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         float move = (float) Math.random() * this.getDistanceToObjective();
         if(move > Environment.level.objective.getWidth() - 0.5f)
             move = Environment.level.objective.getWidth() - 0.5f;
-        if(move < 1.5f)
-            move = 1.5f;
+        if(move < 1f)
+            move = 1f;
 
         this.changeToGround(2); // Change to ground first, looks better
         // Then move zombie to a spot on the objective
@@ -1023,9 +1042,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             Environment.drawableAddQueue.add(this);
             /* *********************************************************** */
 
+            this.disable_optimization();
         }
 
-        this.disable_optimization();
         this.isAnimating = false;
     }
 

@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Contact;
 import com.badlogic.gdx.physics.box2d.ContactImpulse;
@@ -19,14 +20,19 @@ import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 public class CollisionListener implements ContactListener
 {
 
+    private PhysicsData fixtureAData;
+    private PhysicsData fixtureBData;
+    private PhysicsData[] fixtureData = new PhysicsData[2];
+
     @Override
     public void beginContact(Contact contact)
     {
 
-        PhysicsData fixtureAData = ((PhysicsData) contact.getFixtureA().getUserData());
-        PhysicsData fixtureBData = ((PhysicsData) contact.getFixtureB().getUserData());
+        fixtureAData = ((PhysicsData) contact.getFixtureA().getUserData());
+        fixtureBData = ((PhysicsData) contact.getFixtureB().getUserData());
 
-        PhysicsData[] fixtureData = {fixtureAData, fixtureBData};
+        fixtureData[0] = fixtureAData;
+        fixtureData[1] = fixtureBData;
 
         /*
         * Probably can't detach parts here because this is in the world timestep
@@ -36,7 +42,6 @@ public class CollisionListener implements ContactListener
         if (contact.getFixtureA().getBody().getType() == BodyDef.BodyType.StaticBody
                 || contact.getFixtureB().getBody().getType() == BodyDef.BodyType.StaticBody)
         {
-
             // Loop through fixtureA and fixtureB to avoid copy-pasting code
             for(PhysicsData physicsData : fixtureData)
             {
@@ -48,6 +53,7 @@ public class CollisionListener implements ContactListener
                     if (!Environment.explodableEntityQueue.contains(explodableEntityInterface) && explodableEntityInterface.shouldExplode())
                     {
                         Environment.explodableEntityQueue.add(explodableEntityInterface);
+                        break;
                     }
                 }
                 // Detachable Entity
@@ -61,13 +67,11 @@ public class CollisionListener implements ContactListener
                         if (!Environment.detachableEntityDetachQueue.contains(detachableEntityInterface))
                         {
                             Environment.detachableEntityDetachQueue.add(detachableEntityInterface);
+                            break;
                         }
                     }
                 }
-
-
             }
-
         }
 
     }

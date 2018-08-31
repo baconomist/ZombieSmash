@@ -25,19 +25,24 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 {
     private Random random = new Random();
 
+    private PhysicsData fixtureAData;
+    private PhysicsData fixtureBData;
+    private PhysicsData[] fixtureData = new PhysicsData[2];
+
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB)
     {
 
-        PhysicsData fixtureAData = ((PhysicsData) fixtureA.getUserData());
-        PhysicsData fixtureBData = ((PhysicsData) fixtureB.getUserData());
+        fixtureAData = ((PhysicsData) fixtureA.getUserData());
+        fixtureBData = ((PhysicsData) fixtureB.getUserData());
 
-        PhysicsData[] fixtureData = {fixtureAData, fixtureBData};
+        fixtureData[0] = fixtureAData;
+        fixtureData[1] = fixtureBData;
 
-        if (fixtureA.getUserData() instanceof Zombie && fixtureB.getUserData() instanceof Zombie)
+        if (fixtureAData.containsInstanceOf(Zombie.class) && fixtureBData.containsInstanceOf(Zombie.class))
         {
 
-            if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id)
+            if (((Zombie) fixtureAData.getClassInstance(Zombie.class)).id == ((Zombie) fixtureBData.getClassInstance(Zombie.class)).id)
             {
 
                 if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)

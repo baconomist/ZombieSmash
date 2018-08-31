@@ -77,9 +77,6 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         this.grenade.setForceForDetach(20f);
 
         fixture.setUserData(new PhysicsData(this.grenade));
-
-        Environment.drawableAddQueue.add(this.grenade);
-        Environment.updatableAddQueue.add(this);
     }
 
     @Override
@@ -115,6 +112,9 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         this.rope.activate();
         this.rope.setPosition(new Vector2(pos.x, pos.y + 1));
         this.rope.attachToTop(Environment.physics.createBody(bodyDef));
+
+        Environment.drawableAddQueue.add(this.grenade);
+        Environment.updatableAddQueue.add(this);
 
         this.isActive = true;
     }
