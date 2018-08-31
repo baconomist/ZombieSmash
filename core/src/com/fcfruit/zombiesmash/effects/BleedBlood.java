@@ -38,7 +38,6 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.bullet = true;
         bodyDef.fixedRotation = true;
 
         CircleShape circleShape = new CircleShape();
