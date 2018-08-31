@@ -57,7 +57,7 @@ public class PoliceZombie extends Zombie
             }
             this.attackTimer = System.currentTimeMillis();
         }
-        else
+        else if(!this.isAtObjective())
         {
             this.setAnimation(this.moveAnimation);
         }
