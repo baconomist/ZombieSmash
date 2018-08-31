@@ -55,7 +55,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
     private boolean isOpening;
     private boolean isOpen;
 
-    private double timeBeforeExpire = 3000;
+    private double timeBeforeExpire = 5000;
     private double expiryTimer = System.currentTimeMillis();
 
     public PowerupCrate(PowerupInterface powerup)
