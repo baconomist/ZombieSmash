@@ -91,10 +91,12 @@ public class Level
 
     private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
     {
-        return drawableEntityInterface.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - drawableEntityInterface.getSize().x
-                && drawableEntityInterface.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + drawableEntityInterface.getSize().x
-                && drawableEntityInterface.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - drawableEntityInterface.getSize().y
-                && drawableEntityInterface.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + drawableEntityInterface.getSize().y;
+        Vector2 position = drawableEntityInterface.getPosition();
+        Vector2 size = drawableEntityInterface.getSize();
+        return position.x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - size.x
+                && position.x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + size.x
+                && position.y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - size.y
+                && position.y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + size.y;
     }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)

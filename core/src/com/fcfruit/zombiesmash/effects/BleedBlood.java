@@ -101,6 +101,13 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
 
     public void draw(SpriteBatch batch)
     {
+        if(this.enabled)
+            this.drawablePhysicsEntity.draw(batch);
+    }
+
+    @Override
+    public void update(float delta)
+    {
         if (this.getPosition().y < 0.1f && this.isInLevel())
         {
             this.groundBlood.enable();
@@ -115,14 +122,7 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
             Environment.bleedableBloodPool.returnBlood(this);
             Environment.drawableRemoveQueue.add(this);
         }
-        else if(this.enabled)
-            this.drawablePhysicsEntity.draw(batch);
 
-    }
-
-    @Override
-    public void update(float delta)
-    {
         if(this.enabled)
             this.drawablePhysicsEntity.update(delta);
     }
