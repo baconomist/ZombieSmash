@@ -89,8 +89,8 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         for (ParticleEntity particle : this.particles)
         {
             particle.update(delta);
-            if (Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
-                    && Math.abs(particle.physicsBody.getLinearVelocity().y) < 5f)
+            if (Math.abs(particle.physicsBody.getLinearVelocity().x) < this.explosionForce/10f
+                    && Math.abs(particle.physicsBody.getLinearVelocity().y) < this.explosionForce/10f)
             {
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
