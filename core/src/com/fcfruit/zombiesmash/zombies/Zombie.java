@@ -512,8 +512,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         return isAtObjective && this.isInLevel();*/
 
        // x + half polygon width, objective y + half objective height because we don't care about y axis
-        return Environment.level.objective.polygon.contains(this.getPolygon().getX() + this.getPolygon().getVertices()[3]/2, Environment.level.objective.polygon.getY() + Environment.level.objective.polygon.getVertices()[5]/2f);
+        //return Environment.level.objective.polygon.contains(this.getPolygon().getX() + this.getPolygon().getVertices()[3]/2, Environment.level.objective.polygon.getY() + Environment.level.objective.polygon.getVertices()[5]/2f);
         //return Environment.areQuadrilaterallsColliding(Environment.level.objective.polygon, this.getPolygon());
+        Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition(), 0)));
+        pos.y = Environment.gameCamera.position.y*2 - pos.y;
+        return Environment.level.objective.polygon.contains(pos.x, Environment.level.objective.polygon.getY() + 100);
 
     }
 
@@ -891,32 +894,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
-    private float getLeastPopulatedObjectivePosition()
-    {
-        float distance_increment = 0.5f;
-        HashMap<Float, Array<Zombie>> zombies = new HashMap<Float, Array<Zombie>>();
-        for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
-        {
-            if(drawableEntityInterface instanceof Zombie && ((Zombie) drawableEntityInterface).isAtObjective())
-            {
-                //drawableEntityInterface.getPosition().x;
-            }
-        }
-        return 0;
-    }
-
     private void onObjectiveOnce()
     {
         this.clearMoveQueue();
         this.checkDirection();
         
-        float move = (float) Math.random() * this.getDistanceToObjective();
-        if(move > Environment.level.objective.getWidth() - 0.5f)
-            move = Environment.level.objective.getWidth() - 0.5f;
-        if(move < 1f)
-            move = 1f;
+        float move = (float) Math.random() * Environment.level.objective.getWidth();
 
-        this.changeToGround(2); // Change to ground first, looks better
         // Then move zombie to a spot on the objective
         if (this.direction == 0)
         {
@@ -925,6 +909,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             this.moveBy(new Vector2(-move, 0));
         }
+        this.changeToGround(2); // Change to ground first, looks better
 
         this.shouldObjectiveOnce = false;
     }
@@ -988,8 +973,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 - 1f - (float)Math.random()*10, y));
         else if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
             this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + (float)Math.random()*10, y));
-
-
 
         // Enable optimization instantly, without optimizationTimer
         this.force_instant_optimize();
