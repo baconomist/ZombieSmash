@@ -847,7 +847,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
     {
         if(event.getData().getName().equals("move") && !this.isAtObjective())
+        {
+            this.checkDirection();
             this.moveBy((this.direction == 0 ? new Vector2(0.5f, 0) : new Vector2(-0.5f, 0)));
+        }
     }
 
     void onAnimationComplete(AnimationState.TrackEntry entry)
