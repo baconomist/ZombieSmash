@@ -48,7 +48,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
     private void animationSetup()
     {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("effects/explosion/explosion.atlas"));
+        TextureAtlas atlas = Environment.assets.get("effects/explosion/explosion.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("effects/explosion/explosion.json"));

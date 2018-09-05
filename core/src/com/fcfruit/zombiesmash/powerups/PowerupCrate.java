@@ -86,7 +86,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         body.setUserData(new PhysicsData(this));
         fixture.setUserData(new PhysicsData(this));
 
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("powerups/box.atlas"));
+        TextureAtlas atlas = Environment.assets.get("powerups/box.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("powerups/box.json"));

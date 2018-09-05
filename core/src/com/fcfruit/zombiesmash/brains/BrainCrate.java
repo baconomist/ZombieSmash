@@ -53,7 +53,7 @@ public class BrainCrate implements AnimatableEntityInterface, InteractiveEntityI
         fixtureDef.shape = circleShape;
 
 
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("brains/brain_crate.atlas"));
+        TextureAtlas atlas = Environment.assets.get("brains/brain_crate.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("brains/brain_crate.json"));
