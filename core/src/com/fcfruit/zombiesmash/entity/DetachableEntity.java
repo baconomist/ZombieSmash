@@ -61,7 +61,6 @@ public class DetachableEntity implements DetachableEntityInterface
         if(this.containerEntity != null)
         {
             this.containerEntity.detach(instance);
-            Environment.level.addDrawableEntity((com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface) instance);
         }
         this.setState("detached");
     }
