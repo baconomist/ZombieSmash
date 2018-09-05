@@ -92,7 +92,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     private HashMap<String, Array<BleedablePoint>> bleedablePoints;
     private boolean shouldObjectiveOnce;
     private int direction;
-    private int speed;
+    private float speed;
     ArrayList detachableEntitiesToStayAlive;
     ArrayList<String> currentParts;
     private float animScale = 0;
@@ -117,7 +117,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
     public Zombie(int id)
     {
-        
+
         // Identifier
         this.id = id;
 
@@ -141,13 +141,13 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.isAlive = true; // Zombie is alive by default :)
         this.isAnimating = true; // Zombie starts in an animating state
         this.isTouching = false;
-        
+
         // Optimize zombie
         this.enable_optimization();
 
         // Set Zombie Speed While Moving/Animating
         this.setSpeed(this.speed);
-        
+
     }
 
     /**
@@ -293,15 +293,15 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 for(BleedablePoint bleedablePoint : bleedablePoints.get(part))
                 {
                     /*
-                    * TODO:
-                    * TODO:
-                    * TODO:
-                    *   - Make this work for parts which may have more than 1 bleed position but are still children
-                    * */
+                     * TODO:
+                     * TODO:
+                     * TODO:
+                     *   - Make this work for parts which may have more than 1 bleed position but are still children
+                     * */
                     if(bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).size > 0)
                         bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
                     //else
-                        //bleedablePoint.enable_body_blood();
+                    //bleedablePoint.enable_body_blood();
                 }
             }
         }
@@ -376,6 +376,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // If child
         if (joints.size() > 0)
         {
+            if(bleedablePoints.size < 1)
+                Gdx.app.error("Zombie Creation", "Add Bleed Points to Animation In The Form Of 'blood_pos' As Attachment Name!");
             Part part = new Part(bodyName, sprite, physicsBody, joints, containerEntity, bleedablePoints.get(0));
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
@@ -447,7 +449,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
     private boolean isGettingUp()
     {
-         return this.isGettingUp;
+        return this.isGettingUp;
     }
 
     private boolean isInPlayableRange()
@@ -511,7 +513,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
         return isAtObjective && this.isInLevel();*/
 
-       // x + half polygon width, objective y + half objective height because we don't care about y axis
+        // x + half polygon width, objective y + half objective height because we don't care about y axis
         //return Environment.level.objective.polygon.contains(this.getPolygon().getX() + this.getPolygon().getVertices()[3]/2, Environment.level.objective.polygon.getY() + Environment.level.objective.polygon.getVertices()[5]/2f);
         //return Environment.areQuadrilaterallsColliding(Environment.level.objective.polygon, this.getPolygon());
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getPosition(), 0)));
@@ -683,6 +685,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         if (this.getPosition().y > this.getSize().y)
             this.getUpTimer = System.currentTimeMillis();
 
+
+
         if(this.isInLevel())
         {
             if (!this.isGettingUp && this.hasRequiredPartsForGetup() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
@@ -767,7 +771,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     /**
      * @expensive operation
      * **/
-    private void syncEntitiesToAnimation()
+    protected void syncEntitiesToAnimation()
     {
         for (String key : this.getDrawableEntities().keySet())
         {
@@ -846,10 +850,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
     {
-        if(event.getData().getName().equals("move") && !this.isAtObjective())
+        if(this.isAnimating() && event.getData().getName().equals("move") && !this.isAtObjective())
         {
             this.checkDirection();
-            this.moveBy((this.direction == 0 ? new Vector2(0.5f, 0) : new Vector2(-0.5f, 0)));
+            this.moveBy((this.direction == 0 ? new Vector2(0.5f*this.speed, 0) : new Vector2(-0.5f*this.speed, 0)));
         }
     }
 
@@ -901,7 +905,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     {
         this.clearMoveQueue();
         this.checkDirection();
-        
+
         float move = (float) Math.random() * Environment.level.objective.getWidth();
 
         // Then move zombie to a spot on the objective
@@ -1369,6 +1373,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     public void setSpeed(float speed)
     {
         this.movableEntity.setSpeed(speed);
+        this.speed = speed;
     }
 
     @Override

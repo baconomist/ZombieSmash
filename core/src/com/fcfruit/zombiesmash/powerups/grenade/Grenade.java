@@ -21,6 +21,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 
 /**
  * Created by Lucas on 2018-01-07.
@@ -75,8 +76,15 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     {
         this.explodableEntity.explode();
 
+        if(!this.getState().equals("detached"))
+        {
+            this.setState("waiting_for_detach");
+            Environment.detachableEntityDetachQueue.add(this);
+        }
+
         this.getPhysicsBody().setActive(false);
-        Environment.physics.destroyBody(this.getPhysicsBody());
+        this.getPhysicsBody().setTransform(99, 99, 0);
+
         Environment.drawableAddQueue.add(this.explodableEntity);
         Environment.drawableRemoveQueue.add(this);
         this.dispose();
@@ -91,6 +99,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     @Override
     public void detach()
     {
+        Gdx.app.log("drawableRemove", "this");
         this.detachableEntity.detach();
     }
 
