@@ -70,6 +70,7 @@ public class Environment
 
         assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/suicide_zombie/suicide_zombie.atlas", TextureAtlas.class);
 
 
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
@@ -79,13 +80,16 @@ public class Environment
         {
             assets.load("brains/brain"+i+".png", Texture.class);
         }
+        assets.load("brains/brain_crate.atlas", TextureAtlas.class);
 
         assets.load("powerups/rocket/rocket.png", Texture.class);
         assets.load("powerups/rock/rock.png", Texture.class);
 
         assets.load("effects/helicopter/helicopter.atlas", TextureAtlas.class);
+        assets.load("powerups/box.atlas", TextureAtlas.class);
 
         assets.load("effects/smoke/smoke.atlas", TextureAtlas.class);
+        assets.load("effects/explosion/explosion.atlas", TextureAtlas.class);
 
     }
 
