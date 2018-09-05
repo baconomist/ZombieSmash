@@ -1,5 +1,11 @@
 {
-"skeleton": { "hash": "RaQvlu+0YxcirhD4iqyeg+PeBjg", "spine": "3.6.52", "width": 0, "height": 0, "images": "./suicide_zombie/images/" },
+"skeleton": {
+	"hash": "6O+QoNFoQcGNjamZb2mm4lfyHHA",
+	"spine": "3.6.53",
+	"width": 505.55,
+	"height": 699.41,
+	"images": "./season_1/zombies/suicide_zombie/images/"
+},
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "grenade", "parent": "root", "length": 174.72, "rotation": -87.4, "x": 364.76, "y": 464.99 },
@@ -56,26 +62,36 @@
 			"physics_pos": { "type": "point", "x": 88.09 }
 		},
 		"head": {
+			"blood_pos": { "type": "point", "rotation": 177.22 },
 			"head": { "x": 127.72, "y": 16.74, "rotation": -4.08, "width": 257, "height": 294 },
 			"physics_pos": { "type": "point", "x": 106.98 }
 		},
 		"left_arm": {
+			"blood_pos": { "type": "point", "rotation": 179.25 },
 			"left_arm": { "x": 151.85, "y": 9.37, "rotation": 6.86, "width": 321, "height": 105 },
 			"physics_pos": { "type": "point", "x": 76.81 }
 		},
 		"left_leg": {
+			"blood_pos": { "type": "point", "rotation": -178.47 },
 			"left_leg": { "x": 106.35, "y": -4.79, "rotation": -173.97, "width": 237, "height": 108 },
 			"physics_pos": { "type": "point", "x": 120.98 }
 		},
 		"right_arm": {
+			"blood_pos": { "type": "point", "rotation": 176.42 },
 			"physics_pos": { "type": "point", "x": 125.1 },
 			"right_arm": { "x": 157.61, "y": -8.62, "rotation": 5.51, "width": 320, "height": 114 }
 		},
 		"right_leg": {
+			"blood_pos": { "type": "point", "rotation": 179.17 },
 			"physics_pos": { "type": "point", "x": 116.5 },
 			"right_leg": { "x": 103.2, "y": -1.22, "rotation": 173.82, "width": 232, "height": 99 }
 		},
 		"torso": {
+			"blood_pos_head": { "type": "point", "x": 187.77, "y": -2.62 },
+			"blood_pos_left_arm": { "type": "point", "x": 153.01, "y": -62.38, "rotation": -66.62 },
+			"blood_pos_left_leg": { "type": "point", "x": -11.98, "y": -20.32, "rotation": 179.78 },
+			"blood_pos_right_arm": { "type": "point", "x": 161.54, "y": 66.78, "rotation": 74.61 },
+			"blood_pos_right_leg": { "type": "point", "x": -10.71, "y": 47.85, "rotation": 171.35 },
 			"physics_pos": { "type": "point", "x": 78.22 },
 			"torso": { "x": 92.68, "y": 1.07, "rotation": 2.85, "width": 249, "height": 202 }
 		}
@@ -83,8 +99,7 @@
 },
 "events": {
 	"attack": {},
-	"crawl": {},
-	"step": {}
+	"move": {}
 },
 "animations": {
 	"attack1": {
@@ -152,7 +167,10 @@
 					{ "time": 1.1667, "angle": 3.92 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 1.1667, "name": "attack" }
+		]
 	},
 	"run": {
 		"bones": {
@@ -232,7 +250,11 @@
 					{ "time": 0.6667, "angle": 2.67 }
 				]
 			}
-		}
+		},
+		"events": [
+			{ "time": 0.0667, "name": "move" },
+			{ "time": 0.4, "name": "move" }
+		]
 	}
 }
 }
