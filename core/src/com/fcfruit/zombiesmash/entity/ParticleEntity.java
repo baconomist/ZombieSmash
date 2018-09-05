@@ -137,6 +137,7 @@ public class ParticleEntity
                 {
                     ((OptimizableEntityInterface) drawableEntity).disable_optimization();
                     ((PhysicsEntityInterface) drawableEntity).getPhysicsBody().applyLinearImpulse(this.rayDir, this.initialPos, true);
+                    ((OptimizableEntityInterface) drawableEntity).enable_optimization();
                 }
             }
         }
