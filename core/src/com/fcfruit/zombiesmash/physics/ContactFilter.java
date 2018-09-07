@@ -55,7 +55,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 
             } else
             {
-                return true;
+                return false;
             }
 
         }
