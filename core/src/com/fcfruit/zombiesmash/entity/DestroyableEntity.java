@@ -129,7 +129,11 @@ public class DestroyableEntity implements DestroyableEntityInterface
             Environment.drawableRemoveQueue.add((DrawableEntityInterface) this.containerEntity);
             for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
-                if (interactiveEntityInterface instanceof PhysicsEntityInterface)
+                if(interactiveEntityInterface instanceof DestroyableEntityInterface && interactiveEntityInterface != this.interactivePhysicsEntity)
+                {
+                    ((DestroyableEntityInterface) interactiveEntityInterface).destroy();
+                }
+                else if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     // Instead of destroying body, move it out of screen
                     // Destroying bodies here causes other zombies to lose limbs
