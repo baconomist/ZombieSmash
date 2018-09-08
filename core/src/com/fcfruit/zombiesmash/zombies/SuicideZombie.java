@@ -25,6 +25,7 @@ public class SuicideZombie extends Zombie
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add("left_arm");
+        this.detachableEntitiesToStayAlive.add("grenade");
         this.detachableEntitiesToStayAlive.add("right_arm");
         this.detachableEntitiesToStayAlive.add("left_leg");
         this.detachableEntitiesToStayAlive.add("right_leg");
