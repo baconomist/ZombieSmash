@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
@@ -10,6 +11,7 @@ import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
+import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -241,6 +243,9 @@ public class Physics
         //Gdx.app.debug("destroyBody", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
         //Gdx.app.debug("body", ""+body);
 
+        if(Config.DEBUG_PHYSICS)
+            Gdx.app.debug("Physics->destroyBody()", "userData of Body: " + body.getUserData() + " Body: " + body);
+
         if (this.get_world_bodies().contains(body, true))
         {
             this.world.destroyBody(body);
@@ -254,6 +259,9 @@ public class Physics
 
         //Gdx.app.debug("destroyJoint", ""+ Arrays.toString(Thread.currentThread().getStackTrace()));
         //Gdx.app.debug("joint", ""+joint);
+
+        if(Config.DEBUG_PHYSICS)
+            Gdx.app.debug("Physics->destroyJoint()", "userData of Joint: " + joint.getUserData() + " Joint: " + joint);
 
         if (this.get_world_joints().contains(joint, true))
             this.world.destroyJoint(joint);
