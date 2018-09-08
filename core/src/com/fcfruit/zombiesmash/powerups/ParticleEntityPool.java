@@ -13,7 +13,7 @@ public class ParticleEntityPool
 
     public ParticleEntityPool()
     {
-        this.particleEntities = new ParticleEntity[100];
+        this.particleEntities = new ParticleEntity[150];
 
         for(int i = 0; i < this.particleEntities.length; i++)
         {

@@ -37,6 +37,8 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
     public AnimatableGraphicsEntity animatableGraphicsEntity;
 
+    private ParticleEntity particle = null;
+
     public ExplodableEntity(com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface physicsEntityInterface, float explosionForce)
     {
         this.physicsBody = physicsEntityInterface.getPhysicsBody();
@@ -75,6 +77,11 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
     private void onAnimationComplete(AnimationState.TrackEntry entry)
     {
         this.isAnimating = false;
+        for (Object particle : this.particles.toArray(ParticleEntity.class))
+        {
+            Environment.particleEntityPool.returnParticle((ParticleEntity)particle);
+            this.particles.removeValue((ParticleEntity) particle, true);
+        }
         Environment.drawableRemoveQueue.add(this);
     }
 
@@ -86,8 +93,10 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
             this.animatableGraphicsEntity.update(delta);
         }
 
-        for (ParticleEntity particle : this.particles)
+        for (Object particleEntity : this.particles.toArray(ParticleEntity.class))
         {
+            particle = (ParticleEntity) particleEntity;
+
             particle.update(delta);
             if (Math.abs(particle.physicsBody.getLinearVelocity().x) < this.explosionForce/10f
                     && Math.abs(particle.physicsBody.getLinearVelocity().y) < this.explosionForce/10f)
@@ -95,7 +104,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
-            if (Math.abs(particle.physicsBody.getPosition().x - explosion_position.x) > this.explosionRadiusX
+            else if (Math.abs(particle.physicsBody.getPosition().x - explosion_position.x) > this.explosionRadiusX
                     || Math.abs(particle.physicsBody.getPosition().y - explosion_position.y) > this.explosionRadiusY)
             {
                 Environment.particleEntityPool.returnParticle(particle);
