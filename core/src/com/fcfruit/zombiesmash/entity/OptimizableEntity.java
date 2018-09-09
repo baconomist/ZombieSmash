@@ -39,6 +39,7 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
         if(this.isTouching())
         {
             this.unoptimize();
+            this.optimizationTimer = System.currentTimeMillis();
         }
         else if (this.isOptimizationEnabled() && this.shouldOptimize() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize)
         {
