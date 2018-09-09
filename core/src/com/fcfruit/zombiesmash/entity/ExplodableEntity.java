@@ -119,7 +119,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         int numRays = ExplodableEntity.NUMRAYS;
         for (int i = 0; i < numRays; i++)
         {
-            float angle = (float) Math.toRadians((i / (float) numRays) * 360);
+            float angle = (float) Math.toRadians((i / (float) numRays) * 180 - 90);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
             ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, this.explosionForce, 5f);
             this.particles.add(particle); // create the particle

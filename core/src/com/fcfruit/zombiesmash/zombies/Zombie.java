@@ -682,13 +682,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     {
         this.isAliveCheck();
 
-        if (this.getPosition().y > this.getSize().y)
-            this.getUpTimer = System.currentTimeMillis();
-
-
-
         if(this.isInLevel())
         {
+            if (this.getPosition().y > this.getSize().y)
+                this.getUpTimer = System.currentTimeMillis();
+
             if (!this.isGettingUp && this.hasRequiredPartsForGetup() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
             {
 
@@ -725,6 +723,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             if (this.isGettingUp() && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
             {
                 this.onGetupEnd();
+            }
+
+            if(this.isGettingUp() && !this.hasRequiredPartsForGetup())
+            {
+                this.stopGetUp();
             }
         }
         else
@@ -1139,6 +1142,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             this.handleGetup();
             this.force_instant_optimize();
+            if(!this.isAlive())
+            {
+                this.returnEntitiesToOptimizedLocation();
+                Environment.drawableRemoveQueue.add(this);
+            }
         }
 
     }

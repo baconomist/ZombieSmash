@@ -7,6 +7,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.brains.Brain;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
 import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
@@ -73,6 +74,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         // Multiground Entity
         else if(fixtureAData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureBData.getData().contains("ground", false) &&
                 ((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody())
+                && !(fixtureA.getBody().getPosition().y < fixtureB.getBody().getPosition().y)
                 && !((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
         {
             return true;
@@ -80,6 +82,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         // Multiground Entity
         else if(fixtureBData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureAData.getData().contains("ground", false) &&
                 ((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
+                && !(fixtureB.getBody().getPosition().y < fixtureA.getBody().getPosition().y)
                 && !((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
         {
             return true;
