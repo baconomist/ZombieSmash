@@ -53,10 +53,9 @@ public class Spawner
         entityType.put("rocket", RocketPowerup.class);
     }
 
-    String type;
-
-    JsonValue data;
-
+    private int index;
+    private String type;
+    private JsonValue data;
     private int spawnedEntities;
 
     private double accumilator = 0d;
@@ -69,6 +68,10 @@ public class Spawner
 
     private Array<DrawableEntityInterface> spawnableEntities;
 
+    public Spawner(JsonValue data, int index)
+    {
+        this.index = index;
+        this.type = data.name;
         this.data = data;
         this.spawnedEntities = 0;
 
@@ -127,7 +130,7 @@ public class Spawner
             }
 
             Zombie tempZombie;
-            tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance(Environment.level.getDrawableEntities().size() + 1);
+            tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1)*(this.index+1));
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 

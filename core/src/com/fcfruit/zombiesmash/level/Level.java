@@ -359,9 +359,11 @@ public class Level
 
     private void createSpawners()
     {
+        int index = 0;
         for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
         {
-            this.spawners.add(new Spawner(jsonValue));
+            this.spawners.add(new Spawner(jsonValue, index));
+            index++;
         }
     }
 
