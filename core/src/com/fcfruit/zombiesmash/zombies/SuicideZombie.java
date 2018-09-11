@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -53,6 +54,7 @@ public class SuicideZombie extends Zombie
             this.resetToInitialGround();
             this.enable_physics(); // Need to sync grenade to zombie pos -> enable_physics()
             Grenade grenade = (Grenade) this.containerEntity.getDrawableEntities().get("grenade");
+            grenade.setPosition(new Vector2(grenade.getPosition().x, this.getPosition().y));
             Environment.explodableEntityQueue.add(grenade);
             grenade.setState("waiting_for_detach");
             Environment.detachableEntityDetachQueue.add(grenade);
