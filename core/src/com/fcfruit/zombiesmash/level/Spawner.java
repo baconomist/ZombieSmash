@@ -3,9 +3,11 @@ package com.fcfruit.zombiesmash.level;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.helicopter.DeliveryHelicopter;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
@@ -59,22 +61,16 @@ public class Spawner
 
     private double accumilator = 0d;
 
-    private boolean initDelayEnabled;
-
     private int quantity;
     private float init_delay;
     private float spawn_delay;
 
-    public Spawner(JsonValue data)
-    {
+    private boolean initDelayEnabled;
 
-        this.create_spawn_positions();
+    private Array<DrawableEntityInterface> spawnableEntities;
 
         this.data = data;
-
         this.spawnedEntities = 0;
-
-        this.type = data.name;
 
         try
         {
@@ -84,12 +80,24 @@ public class Spawner
             this.quantity = 1;
             Gdx.app.debug("Spawner", "Quantity not found. Defaulting to 1");
         }
-
         this.init_delay = data.getFloat("init_delay");
         this.spawn_delay = data.getFloat("spawn_delay");
 
         this.initDelayEnabled = init_delay != 0;
 
+        this.spawnableEntities = new Array<DrawableEntityInterface>();
+
+        this.create_spawn_positions();
+        this.load_all_entities();
+
+    }
+
+    private void load_all_entities()
+    {
+        for(int i = 0; i < this.quantity; i++)
+        {
+            this.spawnableEntities.add(this.loadEntity());
+        }
     }
 
     private void create_spawn_positions()
@@ -104,7 +112,7 @@ public class Spawner
         positions.put("middle_right", new Vector2(pos.x + 32f, 0.1f));
     }
 
-    private void spawnZombie()
+    private Zombie spawnZombie()
     {
 
         try
@@ -134,18 +142,20 @@ public class Spawner
                 tempZombie.setInitialGround(new Random().nextInt(1));
             }
 
-            Environment.level.addDrawableEntity(tempZombie);
-
             Gdx.app.debug("Spawner", "Added Zombie");
+
+            return tempZombie;
 
         } catch (Exception e)
         {
             e.printStackTrace();
         }
 
+        return null;
+
     }
 
-    private void spawnCrate()
+    private DrawableEntityInterface loadCrate()
     {
         try
         {
@@ -157,33 +167,34 @@ public class Spawner
             tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 8));
             tempCrate.changeToGround(0);
 
-            Environment.level.addDrawableEntity(tempCrate);
+            Gdx.app.debug("Spawner", "Added Crate");
+
+            return tempCrate;
 
         } catch (Exception e)
         {
             e.printStackTrace();
         }
 
-        Gdx.app.debug("Spawner", "Added Crate");
+        return null;
     }
 
-    private void spawnHelicopter()
+    private DrawableEntityInterface loadHelicopter()
     {
         DeliveryHelicopter tempHelicopter = new DeliveryHelicopter(this.data);
         tempHelicopter.setPosition(new Vector2(40, 8));
-        Environment.drawableAddQueue.add(tempHelicopter);
+        Gdx.app.debug("Spawner", "Added Helicopter");
+        return tempHelicopter;
     }
 
-    private void spawnEntity()
+    private DrawableEntityInterface loadEntity()
     {
         if (this.type.contains("zombie"))
-            this.spawnZombie();
+            return this.spawnZombie();
         else if(this.type.contains("heli"))
-            this.spawnHelicopter();
+            return this.loadHelicopter();
         else
-            this.spawnCrate();
-
-        this.spawnedEntities += 1;
+            return this.loadCrate();
     }
 
     public void update(float delta)
@@ -194,13 +205,15 @@ public class Spawner
             if (this.initDelayEnabled && this.accumilator*1000 >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
-                this.spawnEntity();
+                Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
+                this.spawnedEntities += 1;
                 this.accumilator = 0;
             }
             else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000)
             {
                 this.accumilator = 0;
-                this.spawnEntity();
+                Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
+                this.spawnedEntities += 1;
             }
         }
     }
