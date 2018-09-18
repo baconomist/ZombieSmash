@@ -115,7 +115,7 @@ public class Spawner
         positions.put("middle_right", new Vector2(pos.x + 32f, 0.1f));
     }
 
-    private Zombie spawnZombie()
+    private Zombie loadZombie()
     {
 
         try
@@ -133,9 +133,6 @@ public class Spawner
             tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1)*(this.index+1));
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
-
-            if(Environment.powerupManager.isSlowMotionEnabled)
-                tempZombie.getState().setTimeScale(tempZombie.getState().getTimeScale()/TimePowerup.timeFactor);
 
             try
             {
@@ -193,11 +190,23 @@ public class Spawner
     private DrawableEntityInterface loadEntity()
     {
         if (this.type.contains("zombie"))
-            return this.spawnZombie();
+            return this.loadZombie();
         else if(this.type.contains("heli"))
             return this.loadHelicopter();
         else
             return this.loadCrate();
+    }
+
+    private void spawnEntity()
+    {
+        DrawableEntityInterface entity = this.spawnableEntities.get(spawnedEntities);
+        if(entity instanceof Zombie)
+        {
+            if(Environment.powerupManager.isSlowMotionEnabled)
+                ((Zombie)this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale()/TimePowerup.timeFactor);
+        }
+        Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
+        this.spawnedEntities += 1;
     }
 
     public void update(float delta)
@@ -208,15 +217,13 @@ public class Spawner
             if (this.initDelayEnabled && this.accumilator*1000 >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
-                Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
-                this.spawnedEntities += 1;
                 this.accumilator = 0;
+                this.spawnEntity();
             }
             else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000)
             {
                 this.accumilator = 0;
-                Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
-                this.spawnedEntities += 1;
+                this.spawnEntity();
             }
         }
     }
