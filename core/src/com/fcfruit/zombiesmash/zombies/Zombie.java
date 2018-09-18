@@ -1034,9 +1034,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             */
             Environment.drawableAddQueue.add(this);
             /* *********************************************************** */
-
-            this.disable_optimization();
         }
+
+        this.disable_optimization();
 
         this.isAnimating = false;
     }
