@@ -14,6 +14,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.Random;
@@ -22,7 +23,7 @@ import java.util.Random;
  * Created by Lucas on 2018-01-03.
  */
 
-public class BleedBlood implements DrawableEntityInterface
+public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterface
 {
 
     public boolean enabled = false;
@@ -37,6 +38,7 @@ public class BleedBlood implements DrawableEntityInterface
     {
         BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.fixedRotation = true;
 
         CircleShape circleShape = new CircleShape();
         circleShape.setRadius(0.1f);
@@ -89,9 +91,24 @@ public class BleedBlood implements DrawableEntityInterface
         this.enabled = false;
     }
 
+    private boolean isInLevel()
+    {
+        DrawableEntityInterface i = this;
+
+        return i.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - i.getSize().x
+                && i.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + i.getSize().x;
+    }
+
     public void draw(SpriteBatch batch)
     {
-        if (this.physicsBody.getPosition().y < 0.1f)
+        if(this.enabled)
+            this.drawablePhysicsEntity.draw(batch);
+    }
+
+    @Override
+    public void update(float delta)
+    {
+        if (this.getPosition().y < 0.1f && this.isInLevel())
         {
             this.groundBlood.enable();
             this.groundBlood.setPosition(this.getPosition());
@@ -100,16 +117,20 @@ public class BleedBlood implements DrawableEntityInterface
             Environment.bleedableBloodPool.returnBlood(this);
             Environment.drawableRemoveQueue.add(this);
         }
-        else if(this.enabled)
-            this.drawablePhysicsEntity.draw(batch);
+        else if(!this.isInLevel())
+        {
+            Environment.bleedableBloodPool.returnBlood(this);
+            Environment.drawableRemoveQueue.add(this);
+        }
 
+        if(this.enabled)
+            this.drawablePhysicsEntity.update(delta);
     }
 
     @Override
-    public void update(float delta)
+    public Body getPhysicsBody()
     {
-        if(this.enabled)
-            this.drawablePhysicsEntity.update(delta);
+        return this.physicsBody;
     }
 
     @Override

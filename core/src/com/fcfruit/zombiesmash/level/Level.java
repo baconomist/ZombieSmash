@@ -8,8 +8,8 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
+import com.fcfruit.zombiesmash.brains.BrainCrate;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
@@ -47,7 +47,7 @@ public class Level
 
     private Array<com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener> levelEventListeners;
 
-    public int starsTouched = 0;
+    public int brainCounter = 0;
 
     boolean levelEnd = false;
 
@@ -89,6 +89,15 @@ public class Level
         this.createSpawners();
     }
 
+    private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
+    {
+        Vector2 position = drawableEntityInterface.getPosition();
+        Vector2 size = drawableEntityInterface.getSize();
+        return position.x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - size.x
+                && position.x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + size.x
+                && position.y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - size.y
+                && position.y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + size.y;
+    }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
@@ -96,8 +105,11 @@ public class Level
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
-            drawableEntity.draw(batch);
-            drawableEntity.draw(batch, skeletonRenderer);
+            if(this.isDrawableInLevel(drawableEntity))
+            {
+                drawableEntity.draw(batch);
+                drawableEntity.draw(batch, skeletonRenderer);
+            }
         }
     }
 
@@ -182,7 +194,7 @@ public class Level
 
             for (Spawner s : spawners)
             {
-                s.update();
+                s.update(delta);
             }
 
             if (this.isZombiesDead())
@@ -347,9 +359,11 @@ public class Level
 
     private void createSpawners()
     {
+        int index = 0;
         for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
         {
-            this.spawners.add(new Spawner(jsonValue));
+            this.spawners.add(new Spawner(jsonValue, index));
+            index++;
         }
     }
 

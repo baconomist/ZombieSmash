@@ -23,13 +23,12 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 {
     private static final int NUMRAYS = 10;
 
-    String state;
-
     Body physicsBody;
+    private Vector2 explosion_position;
     float explosionForce;
 
-    private boolean exploded;
-    private boolean isAnimating;
+    public boolean exploded;
+    public boolean isAnimating;
 
     private float explosionRadiusX = 5;
     private float explosionRadiusY = 5;
@@ -38,9 +37,10 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
     public AnimatableGraphicsEntity animatableGraphicsEntity;
 
+    private ParticleEntity particle = null;
+
     public ExplodableEntity(com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface physicsEntityInterface, float explosionForce)
     {
-        this.state = "nominal";
         this.physicsBody = physicsEntityInterface.getPhysicsBody();
         this.explosionForce = explosionForce;
         this.exploded = false;
@@ -50,7 +50,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
 
     private void animationSetup()
     {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("effects/explosion/explosion.atlas"));
+        TextureAtlas atlas = Environment.assets.get("effects/explosion/explosion.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("effects/explosion/explosion.json"));
@@ -77,6 +77,12 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
     private void onAnimationComplete(AnimationState.TrackEntry entry)
     {
         this.isAnimating = false;
+        for (Object particle : this.particles.toArray(ParticleEntity.class))
+        {
+            Environment.particleEntityPool.returnParticle((ParticleEntity)particle);
+            this.particles.removeValue((ParticleEntity) particle, true);
+        }
+        Environment.drawableRemoveQueue.add(this);
     }
 
     @Override
@@ -87,23 +93,24 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
             this.animatableGraphicsEntity.update(delta);
         }
 
-        for (ParticleEntity particle : this.particles)
+        for (Object particleEntity : this.particles.toArray(ParticleEntity.class))
         {
+            particle = (ParticleEntity) particleEntity;
+
             particle.update(delta);
-            if (Math.abs(particle.physicsBody.getLinearVelocity().x) < 5f
-                    && Math.abs(particle.physicsBody.getLinearVelocity().y) < 5f)
+            if (Math.abs(particle.physicsBody.getLinearVelocity().x) < this.explosionForce/10f
+                    && Math.abs(particle.physicsBody.getLinearVelocity().y) < this.explosionForce/10f)
             {
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
-            if (Math.abs(particle.physicsBody.getPosition().x - this.physicsBody.getPosition().x) > this.explosionRadiusX
-                    || Math.abs(particle.physicsBody.getPosition().y - this.physicsBody.getPosition().y) > this.explosionRadiusY)
+            else if (Math.abs(particle.physicsBody.getPosition().x - explosion_position.x) > this.explosionRadiusX
+                    || Math.abs(particle.physicsBody.getPosition().y - explosion_position.y) > this.explosionRadiusY)
             {
                 Environment.particleEntityPool.returnParticle(particle);
                 this.particles.removeValue(particle, true);
             }
         }
-
     }
 
     @Override
@@ -112,12 +119,14 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         int numRays = ExplodableEntity.NUMRAYS;
         for (int i = 0; i < numRays; i++)
         {
-            float angle = (float) Math.toRadians((i / (float) numRays) * 360);
+            float angle = (float) Math.toRadians((i / (float) numRays) * 180 - 90);
             Vector2 rayDir = new Vector2((float) Math.sin(angle), (float) Math.cos(angle));
-            ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, 100f, 10f);
-            particle.blastPower = 10;
+            ParticleEntity particle = Environment.particleEntityPool.getParticle(this.physicsBody.getPosition(), rayDir, NUMRAYS, this.explosionForce, 5f);
             this.particles.add(particle); // create the particle
         }
+
+        // New Vector2 so that its a new instance of position not pointer
+        this.explosion_position = new Vector2(physicsBody.getPosition());
 
         this.exploded = true;
         this.isAnimating = true;
@@ -137,6 +146,24 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         return this.physicsBody;
     }
 
+
+    @Override
+    public Skeleton getSkeleton()
+    {
+        return this.animatableGraphicsEntity.getSkeleton();
+    }
+
+    @Override
+    public AnimationState getState()
+    {
+        return this.animatableGraphicsEntity.getState();
+    }
+
+    @Override
+    public TextureAtlas getAtlas()
+    {
+        return this.animatableGraphicsEntity.getAtlas();
+    }
 
     @Override
     public int timesAnimationCompleted()

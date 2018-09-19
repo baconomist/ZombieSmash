@@ -19,7 +19,7 @@ public class BleedableBloodPool
     public BleedableBloodPool()
     {
         // create 200 blood particles
-        this.bleedBlood = new BleedBlood[200];
+        this.bleedBlood = new BleedBlood[400];
         // Fill array with bodies
         for(int i = 0; i < this.bleedBlood.length; i++)
         {
@@ -38,12 +38,13 @@ public class BleedableBloodPool
             }
         }
         Gdx.app.error("BloodPool", "No available blood in pool. Make sure blood is being returned to the pool or" +
-                " Increase max pool blood limit [default is 200]");
+                " Increase max pool blood limit [default is 400]");
 
         // Create new blood if not available in pool
-        BleedBlood bleedBlood = new BleedBlood();
+       /*BleedBlood bleedBlood = new BleedBlood();
         bleedBlood.enable(center, direction);
-        return bleedBlood;
+        return bleedBlood;*/
+       return null;
     }
 
     public void returnBlood(BleedBlood blood)
@@ -64,6 +65,7 @@ public class BleedableBloodPool
         {
             Gdx.app.error("BloodPool", "Deleting body not from pool originally...");
             blood.disable();
+            Environment.physics.destroyBody(blood.getPhysicsBody());
         }
     }
 

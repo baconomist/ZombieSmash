@@ -4,12 +4,15 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.brains.Brain;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
 import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
+import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.Random;
@@ -23,19 +26,24 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
 {
     private Random random = new Random();
 
+    private PhysicsData fixtureAData;
+    private PhysicsData fixtureBData;
+    private PhysicsData[] fixtureData = new PhysicsData[2];
+
     @Override
     public boolean shouldCollide(Fixture fixtureA, Fixture fixtureB)
     {
 
-        PhysicsData fixtureAData = ((PhysicsData) fixtureA.getUserData());
-        PhysicsData fixtureBData = ((PhysicsData) fixtureB.getUserData());
+        fixtureAData = ((PhysicsData) fixtureA.getUserData());
+        fixtureBData = ((PhysicsData) fixtureB.getUserData());
 
-        PhysicsData[] fixtureData = {fixtureAData, fixtureBData};
+        fixtureData[0] = fixtureAData;
+        fixtureData[1] = fixtureBData;
 
-        if (fixtureA.getUserData() instanceof Zombie && fixtureB.getUserData() instanceof Zombie)
+        if (fixtureAData.containsInstanceOf(Zombie.class) && fixtureBData.containsInstanceOf(Zombie.class))
         {
 
-            if (((Zombie) fixtureA.getUserData()).id == ((Zombie) fixtureB.getUserData()).id)
+            if (((Zombie) fixtureAData.getClassInstance(Zombie.class)).id == ((Zombie) fixtureBData.getClassInstance(Zombie.class)).id)
             {
 
                 if ((fixtureA.getFilterData().maskBits & fixtureB.getFilterData().categoryBits) != 0 || (fixtureB.getFilterData().maskBits & fixtureA.getFilterData().categoryBits) != 0)
@@ -66,6 +74,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         // Multiground Entity
         else if(fixtureAData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureBData.getData().contains("ground", false) &&
                 ((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureB.getBody())
+                && !(fixtureA.getBody().getPosition().y < fixtureB.getBody().getPosition().y)
                 && !((MultiGroundEntityInterface) fixtureAData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
         {
             return true;
@@ -73,6 +82,7 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         // Multiground Entity
         else if(fixtureBData.containsInstanceOf(MultiGroundEntityInterface.class) && fixtureAData.getData().contains("ground", false) &&
                 ((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).getCurrentGround() == Environment.physics.whichGround(fixtureA.getBody())
+                && !(fixtureB.getBody().getPosition().y < fixtureA.getBody().getPosition().y)
                 && !((MultiGroundEntityInterface) fixtureBData.getClassInstance(MultiGroundEntityInterface.class)).isMovingToNewGround())
         {
             return true;
@@ -88,10 +98,20 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         {
             return false;
         }
-        // Grenade and Gun
+        // Brain
+        else if(fixtureAData.containsInstanceOf(Brain.class) || fixtureBData.containsInstanceOf(Brain.class))
+        {
+            return false;
+        }
+        // Collision BETWEEN Grenades
         else if(fixtureAData.containsInstanceOf(Grenade.class) && fixtureBData.containsInstanceOf(Grenade.class))
         {
             return true;
+        }
+        // Bomb
+        else if(fixtureAData.containsInstanceOf(Rocket.class) || fixtureBData.containsInstanceOf(Rocket.class))
+        {
+            return false;
         }
         // ParticleEntity
         else if(fixtureAData.containsInstanceOf(ParticleEntity.class) && fixtureB.getBody().getType() != BodyDef.BodyType.StaticBody

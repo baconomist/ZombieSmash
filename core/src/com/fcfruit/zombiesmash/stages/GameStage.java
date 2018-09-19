@@ -13,6 +13,7 @@ import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -56,16 +57,20 @@ public class GameStage extends Stage
     public void draw()
     {
         super.draw();
+        
+        float delta = Gdx.graphics.getDeltaTime();
 
+        if(Environment.powerupManager.isSlowMotionEnabled)
+            delta = delta/TimePowerup.timeFactor;
 
-        Environment.level.update(Gdx.graphics.getDeltaTime());
+        Environment.level.update(delta);
         // Viewport.getCamera() != Environment.gameCamera
         this.spriteBatch.setProjectionMatrix(Environment.gameCamera.combined);
         this.spriteBatch.begin();
         Environment.level.draw(spriteBatch, skeletonRenderer);
         this.spriteBatch.end();
 
-        Environment.physics.update(Gdx.graphics.getDeltaTime());
+        Environment.physics.update(delta);
         Environment.physics.draw();
 
         if(Config.DEBUG_POLYGONS)

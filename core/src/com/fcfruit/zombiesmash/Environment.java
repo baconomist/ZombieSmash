@@ -1,11 +1,14 @@
 package com.fcfruit.zombiesmash;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.fcfruit.zombiesmash.brains.BrainPool;
 import com.fcfruit.zombiesmash.effects.BleedableBloodPool;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -17,6 +20,7 @@ import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.powerups.ParticleEntityPool;
 import com.fcfruit.zombiesmash.powerups.PowerupManager;
+import com.fcfruit.zombiesmash.powerups.rocket.RocketPool;
 
 import java.util.ArrayList;
 
@@ -62,13 +66,30 @@ public class Environment
         //assets.load("zombies/reg_zombie/reg_zombie.png", Texture.class);
         //assets.load("zombies/reg_zombie/reg_zombie_rube.json", Json.class);
 
+        assets.load("maps/night_map/night_map.png", Texture.class);
+
         assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/suicide_zombie/suicide_zombie.atlas", TextureAtlas.class);
 
 
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
         assets.load("effects/blood/ground_blood/ground_blood.atlas", TextureAtlas.class);
 
+        for(int i = 1; i < 4; i++)
+        {
+            assets.load("brains/brain"+i+".png", Texture.class);
+        }
+        assets.load("brains/brain_crate.atlas", TextureAtlas.class);
+
+        assets.load("powerups/rocket/rocket.png", Texture.class);
+        assets.load("powerups/rock/rock.png", Texture.class);
+
+        assets.load("effects/helicopter/helicopter.atlas", TextureAtlas.class);
+        assets.load("powerups/box.atlas", TextureAtlas.class);
+
+        assets.load("effects/smoke/smoke.atlas", TextureAtlas.class);
+        assets.load("effects/explosion/explosion.atlas", TextureAtlas.class);
 
     }
 
@@ -86,9 +107,11 @@ public class Environment
 
     public static Physics physics;
 
+    // Pools
     public static BleedableBloodPool bleedableBloodPool;
-
     public static ParticleEntityPool particleEntityPool;
+    public static BrainPool brainPool;
+    public static RocketPool rocketPool;
 
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
@@ -124,6 +147,8 @@ public class Environment
         // Pools
         bleedableBloodPool = new BleedableBloodPool();
         particleEntityPool = new ParticleEntityPool();
+        brainPool = new BrainPool();
+        rocketPool = new RocketPool();
 
         setupLevel(levelid);
     }
@@ -201,13 +226,14 @@ public class Environment
 
     public static boolean areQuadrilaterallsColliding(Polygon polygon1, Polygon polygon2)
     {
-        return (
+        return Intersector.overlapConvexPolygons(polygon1, polygon2);
+        /*return (
             (polygon2.getX() < (polygon1.getX() + polygon1.getVertices()[2]) && polygon2.getX() > polygon1.getX())
                     && (polygon2.getY() < (polygon1.getY() + polygon1.getVertices()[5]) && polygon2.getY() > polygon1.getY()))
             ||
             ((polygon1.getX() < (polygon2.getX() + polygon1.getVertices()[2]) && polygon1.getX() > polygon2.getX())
                     && (polygon1.getY() < (polygon2.getY() + polygon1.getVertices()[5]) && polygon1.getY() > polygon2.getY())
-            );
+            );*/
     }
 
 }

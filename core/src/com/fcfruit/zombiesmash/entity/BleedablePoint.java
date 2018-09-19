@@ -39,9 +39,9 @@ public class BleedablePoint implements BleedableEntityInterface
     private boolean isBleeding;
 
     private double bleedTime = 5000;
-    private double bleedTimer;
+    private double bleedAccumilator = 0d;
     private double timeBeforeBlood;
-    private double bloodTimer;
+    private double bloodAccumilator = 0d;
 
     private boolean initUpdate = true;
 
@@ -105,6 +105,14 @@ public class BleedablePoint implements BleedableEntityInterface
         this.physics_offset = new Vector2(this.physics_h * (float) Math.cos(this.physicsBody.getAngle() - rotOffset), this.physics_h * (float) Math.sin(this.physicsBody.getAngle() - rotOffset));
     }
 
+    private boolean isInLevel()
+    {
+        return physicsBody.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 2f
+                && physicsBody.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 2f
+                && physicsBody.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - 2f
+                && physicsBody.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + 2f;
+    }
+
     @Override
     public void draw(SpriteBatch batch)
     {
@@ -115,44 +123,48 @@ public class BleedablePoint implements BleedableEntityInterface
     @Override
     public void update(float delta)
     {
-        if (this.isBleeding)
+        if (this.isBleeding && this.isInLevel())
         {
             this.calc_phys_pos();
 
             this.complete_physics_pos = this.physicsBody.getPosition();
-            this.complete_physics_pos.sub(this.physics_offset);
+            this.complete_physics_pos.sub(new Vector2(this.physics_offset).scl(2));
 
-            this.updateBlood();
+            this.updateBlood(delta);
         } else
         {
-            this.bloodTimer = System.currentTimeMillis();
+            this.bloodAccumilator = 0d;
         }
     }
 
     /**
      * Create blood accordingly
      **/
-    private void updateBlood()
+    private void updateBlood(float delta)
     {
         //this.bodypartBlood.setPosition(this.complete_physics_pos.sub(this.bodypartBlood.getSize().scl(0.5f)));
         //this.bodypartBlood.setAngle((float) Math.toDegrees(this.physicsBody.getAngle()) + this.blood_pos_rot_offset);
 
         if (initUpdate)
         {
-            this.bleedTimer = System.currentTimeMillis();
-            this.bloodTimer = System.currentTimeMillis();
+            this.bleedAccumilator = 0d;
+            this.bloodAccumilator = 0d;
             this.initUpdate = false;
         }
 
-        this.timeBeforeBlood = 200 + (System.currentTimeMillis() - this.bleedTimer) * (System.currentTimeMillis() - this.bleedTimer) / 10000;
+        this.bleedAccumilator += Math.min(delta, 0.25f);
+        this.bloodAccumilator += Math.min(delta, 0.25f);
 
-        if (System.currentTimeMillis() - this.bleedTimer < this.bleedTime && System.currentTimeMillis() - this.bloodTimer > this.timeBeforeBlood)
+        this.timeBeforeBlood = 500 + this.bleedAccumilator*this.bleedAccumilator / 10000;
+
+        if (this.bleedAccumilator*1000 < this.bleedTime && this.bloodAccumilator*1000 > this.timeBeforeBlood)
         {
+            BleedBlood bleedBlood = Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset);
+            if(bleedBlood != null)
+                Environment.drawableBackgroundAddQueue.add(bleedBlood);
 
-            Environment.drawableBackgroundAddQueue.add(Environment.bleedableBloodPool.getBlood(this.complete_physics_pos, this.physics_offset));
-
-            this.bloodTimer = System.currentTimeMillis();
-        } else if (System.currentTimeMillis() - this.bleedTimer > this.bleedTime)
+            this.bloodAccumilator = 0d;
+        } else if (this.bleedAccumilator*1000 > this.bleedTime)
             this.isBleeding = false;
     }
 

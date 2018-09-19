@@ -104,11 +104,24 @@ public class DestroyableEntity implements DestroyableEntityInterface
         return !this.interactivePhysicsEntity.isTouching() && this.interactivePhysicsEntity.getPhysicsBody().getPosition().y < 1f
                 && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
     }
+    
+    private boolean isInLevel(Body physicsBody)
+    {
+        return physicsBody.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 2f
+                && physicsBody.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 2f
+                && physicsBody.getPosition().y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - 2f
+                && physicsBody.getPosition().y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + 2f;
+    }
 
     @Override
     public void destroy()
     {
-        this.createSmoke();
+        // Only play smoke animation if in level, otherwise its pointless
+        if(interactivePhysicsEntity != null && this.isInLevel(this.interactivePhysicsEntity.getPhysicsBody()))
+            this.createSmoke();
+        else if(this.drawableEntity != null && drawableEntity instanceof PhysicsEntityInterface && this.isInLevel(((PhysicsEntityInterface) drawableEntity).getPhysicsBody()))
+            this.createSmoke();
+
         this.destroying = true;
 
         if (this.containerEntity != null && this.containerEntity instanceof DrawableEntityInterface)
@@ -116,7 +129,11 @@ public class DestroyableEntity implements DestroyableEntityInterface
             Environment.drawableRemoveQueue.add((DrawableEntityInterface) this.containerEntity);
             for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
-                if (interactiveEntityInterface instanceof PhysicsEntityInterface)
+                if(interactiveEntityInterface instanceof DestroyableEntityInterface && interactiveEntityInterface != this.interactivePhysicsEntity)
+                {
+                    ((DestroyableEntityInterface) interactiveEntityInterface).destroy();
+                }
+                else if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     // Instead of destroying body, move it out of screen
                     // Destroying bodies here causes other zombies to lose limbs
@@ -150,7 +167,7 @@ public class DestroyableEntity implements DestroyableEntityInterface
 
     private void createSmoke()
     {
-        TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("effects/smoke/smoke.atlas"));
+        TextureAtlas atlas = Environment.assets.get("effects/smoke/smoke.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("effects/smoke/smoke.json"));

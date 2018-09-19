@@ -1,0 +1,41 @@
+{
+"skeleton": { "hash": "YPr8e7OiLK9Oy/2zTgkIreS+2Co", "spine": "3.6.53", "width": 1850, "height": 831, "images": "" },
+"bones": [
+	{ "name": "root" },
+	{ "name": "heli", "parent": "root", "length": 1809.61, "rotation": 180, "x": 941.02, "y": 291.99 }
+],
+"slots": [
+	{ "name": "heli", "bone": "heli", "attachment": "heli2" }
+],
+"skins": {
+	"default": {
+		"heli": {
+			"heli1": { "x": 853.04, "y": -91.94, "rotation": 180, "width": 1850, "height": 769 },
+			"heli2": { "x": 859.33, "y": -126.51, "rotation": 180, "width": 1850, "height": 831 },
+			"heli3": { "x": 853.04, "y": -91.91, "rotation": 180, "width": 1850, "height": 768 }
+		}
+	}
+},
+"animations": {
+	"default": {
+		"slots": {
+			"heli": {
+				"attachment": [
+					{ "time": 0, "name": "heli1" },
+					{ "time": 0.0333, "name": "heli1" },
+					{ "time": 0.1, "name": "heli2" },
+					{ "time": 0.2, "name": "heli3" },
+					{ "time": 0.3, "name": "heli1" }
+				]
+			}
+		},
+		"bones": {
+			"heli": {
+				"rotate": [
+					{ "time": 0, "angle": -352.88 }
+				]
+			}
+		}
+	}
+}
+}

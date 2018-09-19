@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.zombies.parts;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
@@ -59,7 +60,6 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         this.destroyableEntity = new DestroyableEntity(this.parentContainer, this, this);
 
         this.bleedablePoints = bleedablePoints;
-
     }
 
 

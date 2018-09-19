@@ -9,7 +9,11 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.physics.box2d.BodyDef;
+import com.badlogic.gdx.physics.box2d.CircleShape;
 import com.badlogic.gdx.physics.box2d.Fixture;
+import com.badlogic.gdx.physics.box2d.FixtureDef;
+import com.badlogic.gdx.physics.box2d.Shape;
 import com.badlogic.gdx.utils.Array;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
@@ -46,20 +50,29 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
 
     public Rock()
     {
+        BodyDef bodyDef = new BodyDef();
+        bodyDef.type = BodyDef.BodyType.DynamicBody;
+        bodyDef.active = false;
+        bodyDef.position.x = 99;
+        bodyDef.position.y = 99;
+        bodyDef.gravityScale = 2;
 
-        com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader loader = new com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader(Environment.physics.getWorld());
-        RubeScene scene = loader.loadScene(Gdx.files.internal("powerups/rock/rock_rube.json"));
+        Shape shape = new CircleShape();
+        shape.setRadius(0.3f);
 
-        Body body = scene.getBodies().get(0);
-        body.setGravityScale(2);
+        FixtureDef fixtureDef = new FixtureDef();
+        fixtureDef.shape = shape;
+
+        Body body = Environment.physics.createBody(bodyDef);
+        Fixture fixture = body.createFixture(fixtureDef);
+        shape.dispose();
+
         body.setUserData(new PhysicsData(this));
-        for (Fixture fixture : body.getFixtureList())
-        {
-            fixture.setUserData(new PhysicsData(this));
-        }
+        fixture.setUserData(new PhysicsData(this));
 
-        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock.png")));
-        sprite.setSize(scene.getImages().get(0).width * Physics.PIXELS_PER_METER, scene.getImages().get(0).height * Physics.PIXELS_PER_METER);
+        Sprite sprite = new Sprite(Environment.assets.get("powerups/rock/rock.png", Texture.class));
+        sprite.setScale(0.5f);
+        sprite.setSize(sprite.getWidth(), sprite.getHeight());// Need to manually update size. Stupid sprite class...
         sprite.setOriginCenter();
 
         this.drawablePhysicsEntity = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(sprite, body);
@@ -73,6 +86,17 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
 
         this.destroyableEntity = new DestroyableEntity(this, this);
 
+    }
+
+    public void enable()
+    {
+        this.getPhysicsBody().setActive(true);
+    }
+
+    private boolean isInRange(DrawableEntityInterface drawableEntityInterface)
+    {
+        return drawableEntityInterface.getPosition().x > this.getPosition().x - 1f
+                && drawableEntityInterface.getPosition().x < this.getPosition().x + 1f;
     }
 
     @Override
@@ -97,7 +121,7 @@ public class Rock implements com.fcfruit.zombiesmash.entity.interfaces.DrawableE
 
         for (DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
         {
-            if (this.isFalling && drawableEntityInterface instanceof Zombie)
+            if (this.isFalling && drawableEntityInterface instanceof Zombie && this.isInRange(drawableEntityInterface))
             {
                 if (!this.hitZombies.contains((Zombie) drawableEntityInterface, false) && Environment.areQuadrilaterallsColliding(((Zombie) drawableEntityInterface).getPolygon(), this.polygon))
                 {

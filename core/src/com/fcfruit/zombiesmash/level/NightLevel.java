@@ -22,7 +22,7 @@ public class NightLevel extends Level
         cameraPositions.put("right", new Vector2(22.6f, 0));
         cameraPositions.put("middle", new Vector2(15.9f, 0));
 
-        this.sprite = new Sprite(new Texture(Gdx.files.internal("maps/night_map/night_map.png")));
+        this.sprite = new Sprite(Environment.assets.get("maps/night_map/night_map.png", Texture.class));
         // Move to the left to show only playable map
         this.sprite.setPosition(-956, 0);
 

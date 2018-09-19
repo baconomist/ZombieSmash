@@ -119,26 +119,31 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
         this.timesAnimationCompleted = 0;
     }
 
+    @Override
     public int timesAnimationCompleted()
     {
         return this.timesAnimationCompleted;
     }
 
+    @Override
     public String getCurrentAnimation()
     {
         return this.animation;
     }
 
+    @Override
     public Skeleton getSkeleton()
     {
         return this.skeleton;
     }
 
+    @Override
     public TextureAtlas getAtlas()
     {
         return this.atlas;
     }
 
+    @Override
     public AnimationState getState()
     {
         return this.state;
@@ -153,12 +158,20 @@ public class AnimatableGraphicsEntity implements AnimatableEntityInterface
     @Override
     public Vector2 getSize()
     {
-        /*float[] verticies = ((BoundingBoxAttachment)this.skeleton.findSlot("bounding_box").getAttachment()).getVertices();
-        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3((verticies[2] - verticies[0]) * this.skeleton.getRootBone().getScaleX(),
-                (verticies[5] - verticies[3]) * this.skeleton.getRootBone().getScaleY(), 0)));*/
-        Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getData().getWidth()*this.skeleton.getRootBone().getScaleX(),
-                this.skeleton.getData().getHeight()*this.skeleton.getRootBone().getScaleY(), 0)));
-        size.y = Environment.physicsCamera.position.y*2 - size.y;
+        Vector3 size;
+        if(this.skeleton.findSlot("bounding_box") != null)
+        {
+            float[] verticies = ((BoundingBoxAttachment)this.skeleton.findSlot("bounding_box").getAttachment()).getVertices();
+            size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3((verticies[2] - verticies[0]) * this.skeleton.getRootBone().getScaleX(),
+                    (verticies[5] - verticies[3]) * this.skeleton.getRootBone().getScaleY(), 0)));
+            size.y = Environment.physicsCamera.position.y * 2 - size.y;
+        }
+        else
+        {
+            size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.skeleton.getData().getWidth() * this.skeleton.getRootBone().getScaleX(),
+                    this.skeleton.getData().getHeight() * this.skeleton.getRootBone().getScaleY(), 0)));
+            size.y = Environment.physicsCamera.position.y * 2 - size.y;
+        }
         return new Vector2(size.x, size.y);
     }
 

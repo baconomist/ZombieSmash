@@ -243,6 +243,7 @@ public class BodyRock implements DrawableEntityInterface, OptimizableEntityInter
     public void detach()
     {
         this.detachableEntity.detach();
+        Environment.level.addDrawableEntity(this);
     }
 
     @Override

@@ -37,7 +37,12 @@ public class RockPowerup implements PowerupInterface
         this.timeBetweenRocks = 50;
 
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock_ui.png")));
-        this.rocks = new Rock[new Random().nextInt(6) + 6];
+        this.rocks = new Rock[new Random().nextInt(4) + 4];
+
+        for(int i = 0; i < this.rocks.length; i++)
+        {
+            this.rocks[i] = new Rock();
+        }
 
         this.rocksSpawned = 0;
 
@@ -51,10 +56,9 @@ public class RockPowerup implements PowerupInterface
         // If rocks haven't been spawned yet spawn rocks with a time delay.
         if (this.rocksSpawned < this.rocks.length && System.currentTimeMillis() - this.rockSpawnTimer >= timeBetweenRocks)
         {
-            Gdx.app.log(""+this.getRockSpawnPosition(), ""+this.getRockSpawnPosition());
-            Rock rock = new Rock();
-            rock.setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
-            Environment.drawableBackgroundAddQueue.add(rock);
+            this.rocks[rocksSpawned].enable();
+            this.rocks[rocksSpawned].setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
+            Environment.drawableBackgroundAddQueue.add(this.rocks[rocksSpawned]);
 
             this.rockSpawnTimer = System.currentTimeMillis();
 
@@ -66,7 +70,6 @@ public class RockPowerup implements PowerupInterface
     @Override
     public void activate()
     {
-        Environment.level.addUpdatableEntity(this);
         this.rockSpawnTimer = System.currentTimeMillis();
 
         this.isActive = true;
@@ -95,13 +98,14 @@ public class RockPowerup implements PowerupInterface
         else
             return Environment.physicsCamera.position.x + new Random().nextInt(4);*/
 
-        float group_distance_increment = 5f;
-        float offset = (Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2);
+        float group_distance_increment = 2.5f;
+        float offset = Environment.physicsCamera.position.x -  Environment.physicsCamera.viewportWidth/2;
 
         HashMap<Float, Integer> zombie_groups = new HashMap<Float, Integer>();
+        HashMap<Float, Float> zombie_positions = new HashMap<Float, Float>();
 
         // <= is important!
-        for(float f = group_distance_increment + offset; f <= Physics.WIDTH + offset; f+=group_distance_increment)
+        for(float f = group_distance_increment + 2.5f; f <= Environment.physicsCamera.viewportWidth - 2.5f; f+=group_distance_increment)
         {
             zombie_groups.put(f, 0);
 
@@ -110,9 +114,10 @@ public class RockPowerup implements PowerupInterface
                 if(drawableEntityInterface instanceof Zombie && ((Zombie) drawableEntityInterface).isAlive() && ((Zombie) drawableEntityInterface).isInLevel())
                 {
                     Zombie zombie = (Zombie) drawableEntityInterface;
-                    if(zombie.getPosition().x > f-5f && zombie.getPosition().x < f)
+                    if(zombie.getPosition().x > f+offset-5f && zombie.getPosition().x < f+offset)
                     {
                         zombie_groups.put(f, zombie_groups.get(f)+1);
+                        zombie_positions.put(f, zombie.getPosition().x);
                     }
                 }
             }
@@ -121,12 +126,10 @@ public class RockPowerup implements PowerupInterface
         int max = Collections.max(zombie_groups.values());
         for(float key : zombie_groups.keySet())
         {
-            if(zombie_groups.get(key) == max)
-                return key - 2.5f; // -2.5f to spawn rocks in the middle of "group_distance_increment" zone, not at the edge where there may not be any zombies
+            if(zombie_positions.get(key) != null && zombie_groups.get(key) == max)
+                return zombie_positions.get(key);
         }
-
         return Environment.physicsCamera.position.x + new Random().nextInt(4);
-
     }
 
     @Override
