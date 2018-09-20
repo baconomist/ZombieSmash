@@ -974,15 +974,15 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Switch zombie direction if needed
         this.checkDirection();
 
-        // Position physicsBody out of screen
-        this.returnEntitiesToOptimizedLocation();
-
         float y = Environment.physics.getGroundBodies().get(this.getCurrentGround()).getPosition().y;
         // Make sure zombie doesn't take forever to get back inside level
         if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 - 1f - (float)Math.random()*10, y));
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 1f - (float)Math.random()*10, y));
         else if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
             this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + (float)Math.random()*10, y));
+
+        // Position physicsBody out of screen
+        this.returnEntitiesToOptimizedLocation();
 
         // Enable optimization instantly, without optimizationTimer
         this.force_instant_optimize();
