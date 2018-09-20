@@ -58,6 +58,8 @@ public class RockPowerup implements PowerupInterface
         {
             this.rocks[rocksSpawned].enable();
             this.rocks[rocksSpawned].setPosition(new Vector2(this.getRockSpawnPosition() + (float) new Random().nextInt(2000) / 1000f, (float) new Random().nextInt(10) / 10f + 4.5f));
+            // Prevents graphic glitch at position (0, 0)
+            this.rocks[rocksSpawned].update(Gdx.graphics.getDeltaTime());
             Environment.drawableBackgroundAddQueue.add(this.rocks[rocksSpawned]);
 
             this.rockSpawnTimer = System.currentTimeMillis();

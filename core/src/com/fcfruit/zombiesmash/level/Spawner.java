@@ -134,6 +134,9 @@ public class Spawner
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 
+            // Prevents graphic glitch at position (0, 0)
+            tempZombie.update(Gdx.graphics.getDeltaTime());
+
             try
             {
                 tempZombie.setInitialGround(data.getInt("depth"));
