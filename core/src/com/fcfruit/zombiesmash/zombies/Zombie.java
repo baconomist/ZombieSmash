@@ -1140,7 +1140,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
         else
         {
-            this.handleGetup();
+            if(!this.isAnimating())
+                this.handleGetup();
             this.force_instant_optimize();
             if(!this.isAlive())
             {
