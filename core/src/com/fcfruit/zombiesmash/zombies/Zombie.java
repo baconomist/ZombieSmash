@@ -771,6 +771,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
+    private void returnToPlayableRange()
+    {
+        float x = (float)new Random().nextInt(100)/100;
+        float y = Environment.physics.getGroundBodies().get(this.getCurrentGround()).getPosition().y;
+        if(this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 1f - x, y));
+        else if(this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + x, y));
+    }
+
     /**
      * @expensive operation
      * **/
@@ -974,12 +984,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Switch zombie direction if needed
         this.checkDirection();
 
-        float y = Environment.physics.getGroundBodies().get(this.getCurrentGround()).getPosition().y;
-        // Make sure zombie doesn't take forever to get back inside level
-        if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 1f - (float)Math.random()*10, y));
-        else if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + (float)Math.random()*10, y));
+        if(!this.isInLevel())
+            this.returnToPlayableRange();
 
         // Position physicsBody out of screen
         this.returnEntitiesToOptimizedLocation();
@@ -1148,6 +1154,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 this.returnEntitiesToOptimizedLocation();
                 Environment.drawableRemoveQueue.add(this);
             }
+            this.returnToPlayableRange();
         }
 
     }
