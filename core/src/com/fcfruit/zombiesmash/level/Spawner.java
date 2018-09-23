@@ -18,7 +18,7 @@ import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
-import com.fcfruit.zombiesmash.zombies.RegularZombie;
+import com.fcfruit.zombiesmash.zombies.RegZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
 
 import java.util.HashMap;
@@ -37,7 +37,7 @@ public class Spawner
 
     static
     {
-        entityType.put("reg_zombie", RegularZombie.class);
+        entityType.put("reg_zombie", RegZombie.class);
         entityType.put("girl_zombie", GirlZombie.class);
         entityType.put("police_zombie", PoliceZombie.class);
         entityType.put("big_zombie", BigZombie.class);
