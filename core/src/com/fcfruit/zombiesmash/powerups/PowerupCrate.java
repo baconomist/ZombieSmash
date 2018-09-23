@@ -138,7 +138,7 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
         pos.y = Environment.gameCamera.position.y*2 - pos.y;
 
         this.powerupUIDrawable.setPosition(pos.x, pos.y);
-        
+
         // Prevents graphic glitch at position (0, 0)
         this.isOpening = true;
 

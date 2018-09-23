@@ -26,6 +26,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 
@@ -36,7 +37,7 @@ import java.util.ArrayList;
  */
 
 public class Part implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
-        BleedableEntityInterface, NameableEntityInterface, DestroyableEntityInterface
+        BleedableEntityInterface, NameableEntityInterface, PostLevelDestroyableInterface
 {
     private String name;
 

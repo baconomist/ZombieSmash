@@ -55,7 +55,7 @@ public class Spawner
 
     private int index;
     private String type;
-    private JsonValue data;
+    public JsonValue data;
     private int spawnedEntities;
 
     private double accumilator = 0d;
