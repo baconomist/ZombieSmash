@@ -48,7 +48,7 @@ public class PoliceZombie extends Zombie
         super.onAnimationComplete(entry);
         if (!this.isAtObjective() && this.isInLevel() && this.isInShootingRange() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
         {
-            if (this.getCurrentAnimation().equals("walk"))
+            if (entry.getAnimation().getName().equals("walk"))
             {
                 this.setAnimation("attack1");
             } else if(this.getCurrentAnimation().equals("crawl")) // animation could be 'attack2'

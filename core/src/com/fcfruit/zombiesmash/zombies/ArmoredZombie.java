@@ -5,14 +5,22 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.Event;
+import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.zombies.parts.BodyRock;
 
 import java.util.ArrayList;
+import java.util.Random;
 
 public class ArmoredZombie extends Zombie
 {
+
+    private double timeBeforeAttack = 500 + new Random().nextDouble()*2500d;
+    private double attackTimer = System.currentTimeMillis();
+
     public ArmoredZombie(Integer id)
     {
         super(id);
@@ -36,6 +44,47 @@ public class ArmoredZombie extends Zombie
         this.currentParts.add("left_leg");
         this.currentParts.add("right_leg");
         this.currentParts.add("gun");
+
+        this.setSpeed(3);
+    }
+
+    private boolean isInShootingRange()
+    {
+        return this.getPosition().x >= Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + 1f
+                && this.getPosition().x <= Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth/2 - 1f;
+    }
+
+    @Override
+    public void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
+    {
+        super.onAnimationEvent(entry, event);
+
+        if (!this.isAtObjective() && this.isInLevel() && this.isInShootingRange() && !this.isMovingToNewGround() && System.currentTimeMillis() - this.attackTimer >= this.timeBeforeAttack)
+        {
+            if (entry.getAnimation().getName().equals("run"))
+            {
+                this.setAnimation("attack1");
+            }
+            this.attackTimer = System.currentTimeMillis();
+        }
+        else if(!this.isAtObjective())
+        {
+            this.setAnimation(this.moveAnimation);
+        }
+
+        if(!this.isInShootingRange())
+            this.attackTimer = System.currentTimeMillis();
+    }
+
+    @Override
+    protected void onAttack1Complete()
+    {
+        Environment.level.objective.takeDamage(10f);
+        if (!this.isAtObjective())
+        {
+            this.attackTimer = System.currentTimeMillis();
+            this.setAnimation(this.moveAnimation);
+        }
     }
 
     @Override
@@ -47,7 +96,6 @@ public class ArmoredZombie extends Zombie
     @Override
     protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
-        Gdx.app.log("aaa", ""+bodyName);
         if(bodyName.equals("gun"))
         {
             BodyRock part = new BodyRock(bodyName, sprite, physicsBody, joints, containerEntity);
