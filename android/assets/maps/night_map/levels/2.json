@@ -1,23 +1,67 @@
 {
-  "middle": {
+  "left": {
+    "armored_zombie": {
+      "quantity": 2,
+      "init_delay": 0.3,
+      "spawn_delay": 0.5,
+      "position": "left",
+      "depth": 1
+    },
     "police_zombie": {
-      "quantity": 20,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position": "middle_right",
+      "quantity": 1,
+      "init_delay": 1,
+      "spawn_delay": 0.5,
+      "position": "left",
+      "depth": 1
+    },
+    "reg_zombie": {
+      "quantity": 10,
+      "init_delay": 0.4,
+      "spawn_delay": 0.5,
+      "position": "left",
+      "depth": 1
+    },
+    "suicide_zombie": {
+      "quantity": 1,
+      "init_delay": 0.8,
+      "spawn_delay": 0.5,
+      "position": "left",
       "depth": 1
     },
     "helicopter": {
-      "init_delay": 1,
+      "init_delay": 0,
       "spawn_delay": 0,
-      "powerup_spawn_delay": 0.3,
+      "powerup_spawn_delay": 0.5,
       "powerup_init_delay": 1,
-      "powerups":[
-        "grenade",
+      "powerups": [
         "time",
+        "grenade",
         "rock",
+        "grenade",
         "rocket"
       ]
+    },
+    "helicopter": {
+      "init_delay": 30,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "time",
+        "rock",
+        "rock",
+        "rocket",
+        "rocket"
+      ]
+    }
+  },
+  "left": {
+    "police_zombie": {
+      "quantity": 20,
+      "init_delay": 1,
+      "spawn_delay": 0.5,
+      "position": "middle_left",
+      "depth": 1
     }
   }
 }
