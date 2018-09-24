@@ -14,11 +14,14 @@ import com.esotericsoftware.spine.Event;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
+import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -27,7 +30,8 @@ import java.util.Arrays;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, DetachableEntityInterface, InteractivePhysicsEntityInterface, ExplodableEntityInterface
+public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, DetachableEntityInterface, InteractivePhysicsEntityInterface, ExplodableEntityInterface,
+        PostLevelDestroyableInterface
 {
     private ContainerEntity containerEntity;
 
@@ -35,6 +39,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     private com.fcfruit.zombiesmash.entity.DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
     private com.fcfruit.zombiesmash.entity.ExplodableEntity explodableEntity;
+    private DestroyableEntity destroyableEntity;
 
     public Grenade(Body body, ArrayList<Joint> joints)
     {
@@ -53,6 +58,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         polygon.setOrigin(size.x * 2, size.y * 2);
 
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(body, polygon);
+        this.destroyableEntity = new DestroyableEntity(this, this);
 
     }
 
@@ -68,6 +74,7 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
         this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 20f);
+        this.destroyableEntity = new DestroyableEntity(this, this);
 
     }
 
@@ -87,7 +94,14 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
 
         Environment.drawableAddQueue.add(this.explodableEntity);
         Environment.drawableRemoveQueue.add(this);
+        this.destroy();
         this.dispose();
+    }
+
+    @Override
+    public void destroy()
+    {
+        this.destroyableEntity.destroy();
     }
 
     @Override

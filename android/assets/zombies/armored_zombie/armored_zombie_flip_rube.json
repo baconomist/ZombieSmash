@@ -1,0 +1,1228 @@
+
+{
+	"allowSleep" : true,
+	"autoClearForces" : true,
+	"body" : 
+	[
+		
+		{
+			"angle" : -1.562025904655457,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "head"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 4,
+					"filter-maskBits" : 65533,
+					"friction" : 0.2,
+					"name" : "fixture6",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.2760780453681946,
+								0.1522279828786850,
+								-0.2702679634094238,
+								-0.2658970355987549
+							],
+							"y" : 
+							[
+								-0.09562779217958450,
+								0.2424910068511963,
+								0.109031006693840,
+								-0.136803999543190
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.004180490504950285,
+			"massData-center" : 
+			{
+				"x" : -0.01082802284508944,
+				"y" : 0.02768843248486519
+			},
+			"massData-mass" : 0.1463996469974518,
+			"name" : "body6",
+			"position" : 
+			{
+				"x" : 0.2693901360034943,
+				"y" : 1.181236505508423
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 0.8142743706703186,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "left_arm_front"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture8",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.1639260500669479,
+								-0.1578270196914673,
+								-0.1401870399713516,
+								0.1463620364665985
+							],
+							"y" : 
+							[
+								0.04878751561045647,
+								0.06147217378020287,
+								-0.06525292992591858,
+								-0.06830213218927383
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.0003336389199830592,
+			"massData-center" : 
+			{
+				"x" : 0.001254121889360249,
+				"y" : -0.004601165652275085
+			},
+			"massData-mass" : 0.03707795962691307,
+			"name" : "body8",
+			"position" : 
+			{
+				"x" : -0.07378625869750977,
+				"y" : 0.7444937825202942
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.580796122550964,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "left_leg"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture0",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.2886969745159149,
+								-0.1681379973888397,
+								-0.2295619994401932,
+								0.1968249976634979
+							],
+							"y" : 
+							[
+								0.06071841344237328,
+								0.1379140019416809,
+								-0.07405170798301697,
+								-0.04489720985293388
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.001380514935590327,
+			"massData-center" : 
+			{
+				"x" : -0.0005347279366105795,
+				"y" : 0.02359475381672382
+			},
+			"massData-mass" : 0.07196483016014099,
+			"name" : "body0",
+			"position" : 
+			{
+				"x" : 0.1397087275981903,
+				"y" : 0.2932202816009522
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 2.722627162933350,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "right_arm_front"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture2",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.1537300050258637,
+								0.1341840028762817,
+								-0.1132469996809959,
+								-0.1076029911637306
+							],
+							"y" : 
+							[
+								-0.08214662224054337,
+								0.06437227874994278,
+								0.08731093257665634,
+								-0.07049708068370819
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.0002922480343841016,
+			"massData-center" : 
+			{
+				"x" : 0.01511351950466633,
+				"y" : -0.0008673369302414358
+			},
+			"massData-mass" : 0.03848982602357864,
+			"name" : "body2",
+			"position" : 
+			{
+				"x" : 0.6922323703765869,
+				"y" : 0.7623427510261536
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 1.921319961547852,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "gun"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture5",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.4873889982700348,
+								0.4811919629573822,
+								-0.1895609796047211,
+								-0.4932829737663269
+							],
+							"y" : 
+							[
+								-0.09283607453107834,
+								0.09307909756898880,
+								0.1455730050802231,
+								0.03390223905444145
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.009731814265251160,
+			"massData-center" : 
+			{
+				"x" : 0.08317245543003082,
+				"y" : 0.03788698837161064
+			},
+			"massData-mass" : 0.1361917257308960,
+			"name" : "body5",
+			"position" : 
+			{
+				"x" : 0.5374728441238403,
+				"y" : 0.7838577032089233
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.560546278953552,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "torso"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"friction" : 0.2,
+					"name" : "fixture4",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.2350469827651978,
+								-0.2328769862651825,
+								-0.2427220195531845,
+								0.2216120362281799
+							],
+							"y" : 
+							[
+								0.1031969860196114,
+								0.1368429958820343,
+								-0.1350889950990677,
+								-0.1690620034933090
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.003136852988973260,
+			"massData-center" : 
+			{
+				"x" : -0.004643982276320458,
+				"y" : -0.01586040668189526
+			},
+			"massData-mass" : 0.1272251456975937,
+			"name" : "body4",
+			"position" : 
+			{
+				"x" : 0.2876890599727631,
+				"y" : 0.7497470378875732
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.546456575393677,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "right_leg"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture3",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.2742600440979004,
+								-0.1857690066099167,
+								-0.2916780114173889,
+								0.1829730123281479
+							],
+							"y" : 
+							[
+								0.1015180051326752,
+								0.1096630021929741,
+								-0.04966300725936890,
+								-0.01902570016682148
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.001420473563484848,
+			"massData-center" : 
+			{
+				"x" : -0.01570625975728035,
+				"y" : 0.03568372130393982
+			},
+			"massData-mass" : 0.06428831815719605,
+			"name" : "body3",
+			"position" : 
+			{
+				"x" : 0.3539130389690399,
+				"y" : 0.2886984348297119
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 1.008719563484192,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "left_arm_back"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture7",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.1201410144567490,
+								-0.08722818642854691,
+								-0.1163030266761780,
+								0.08122932910919190
+							],
+							"y" : 
+							[
+								0.03363550081849098,
+								0.1006759926676750,
+								-0.02355330064892769,
+								-0.09986381232738495
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.0001521116646472365,
+			"massData-center" : 
+			{
+				"x" : 0.001081341411918402,
+				"y" : 0.002541569992899895
+			},
+			"massData-mass" : 0.02852516248822212,
+			"name" : "body7",
+			"position" : 
+			{
+				"x" : 0.09545305371284485,
+				"y" : 0.8806928992271423
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 2.478740215301514,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "right_arm_back"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture1",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.08101981133222580,
+								0.04304940998554230,
+								-0.1135750114917755,
+								-0.1047630086541176
+							],
+							"y" : 
+							[
+								-0.06761858612298966,
+								0.1046790182590485,
+								0.03524717316031456,
+								-0.08493631333112717
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.0001248694461537525,
+			"massData-center" : 
+			{
+				"x" : -0.01776056736707687,
+				"y" : -0.003168269991874695
+			},
+			"massData-mass" : 0.02605149894952774,
+			"name" : "body1",
+			"position" : 
+			{
+				"x" : 0.4744296967983246,
+				"y" : 0.8706564307212830
+			},
+			"type" : 2
+		}
+	],
+	"collisionbitplanes" : 
+	{
+		"names" : 
+		[
+			"bitplane1",
+			"bitplane2",
+			"bitplane3",
+			"bitplane4",
+			"bitplane5",
+			"bitplane6",
+			"bitplane7",
+			"bitplane8",
+			"bitplane9",
+			"bitplane10",
+			"bitplane11",
+			"bitplane12",
+			"bitplane13",
+			"bitplane14",
+			"bitplane15",
+			"bitplane16",
+			"bitplane17",
+			"bitplane18",
+			"bitplane19",
+			"bitplane20",
+			"bitplane21",
+			"bitplane22",
+			"bitplane23",
+			"bitplane24",
+			"bitplane25",
+			"bitplane26",
+			"bitplane27",
+			"bitplane28",
+			"bitplane29",
+			"bitplane30",
+			"bitplane31",
+			"bitplane32"
+		]
+	},
+	"continuousPhysics" : true,
+	"gravity" : 
+	{
+		"x" : 0,
+		"y" : -10
+	},
+	"image" : 
+	[
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 7,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.1320699304342270,
+					0.1320699453353882,
+					0.1320699304342270,
+					-0.1320699453353882
+				],
+				"y" : 
+				[
+					-0.09999582171440125,
+					-0.09999579191207886,
+					0.09999582171440125,
+					0.09999579191207886
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/left_arm_back.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.1320699304342270,
+				-0.09999582171440125,
+				0.1320699453353882,
+				-0.09999579191207886,
+				0.1320699304342270,
+				0.09999582171440125,
+				-0.1320699453353882,
+				0.09999579191207886
+			],
+			"name" : "image2",
+			"opacity" : 0.5,
+			"scale" : -0.1999916136264801
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 3,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.1758837550878525,
+					0.1758837699890137,
+					0.1758837550878525,
+					-0.1758837699890137
+				],
+				"y" : 
+				[
+					-0.08747161924839020,
+					-0.08747158944606781,
+					0.08747161924839020,
+					0.08747158944606781
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/right_arm_front.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.1758837550878525,
+				-0.08747161924839020,
+				0.1758837699890137,
+				-0.08747158944606781,
+				0.1758837550878525,
+				0.08747161924839020,
+				-0.1758837699890137,
+				0.08747158944606781
+			],
+			"name" : "image7",
+			"opacity" : 0.5,
+			"scale" : -0.1749432086944580
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 4,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.4940902590751648,
+					0.4940902590751648,
+					0.4940902590751648,
+					-0.4940902590751648
+				],
+				"y" : 
+				[
+					-0.1448692232370377,
+					-0.1448691338300705,
+					0.1448692232370377,
+					0.1448691338300705
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/gun.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.4940902590751648,
+				-0.1448692232370377,
+				0.4940902590751648,
+				-0.1448691338300705,
+				0.4940902590751648,
+				0.1448692232370377,
+				-0.4940902590751648,
+				0.1448691338300705
+			],
+			"name" : "image10",
+			"opacity" : 0.5,
+			"scale" : -0.2897383570671082
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 6,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.2934447526931763,
+					0.2934447824954987,
+					0.2934447526931763,
+					-0.2934447824954987
+				],
+				"y" : 
+				[
+					-0.1089664846658707,
+					-0.1089664399623871,
+					0.1089664846658707,
+					0.1089664399623871
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/right_leg.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.2934447526931763,
+				-0.1089664846658707,
+				0.2934447824954987,
+				-0.1089664399623871,
+				0.2934447526931763,
+				0.1089664846658707,
+				-0.2934447824954987,
+				0.1089664399623871
+			],
+			"name" : "image8",
+			"opacity" : 0.5,
+			"scale" : -0.2179329246282578
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 8,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.1317184865474701,
+					0.1317185163497925,
+					0.1317184865474701,
+					-0.1317185163497925
+				],
+				"y" : 
+				[
+					-0.1047979444265366,
+					-0.1047979146242142,
+					0.1047979444265366,
+					0.1047979146242142
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/right_arm_back.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.1317184865474701,
+				-0.1047979444265366,
+				0.1317185163497925,
+				-0.1047979146242142,
+				0.1317184865474701,
+				0.1047979444265366,
+				-0.1317185163497925,
+				0.1047979146242142
+			],
+			"name" : "image6",
+			"opacity" : 0.5,
+			"scale" : -0.2095958590507507
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 5,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.2494084984064102,
+					0.2494085282087326,
+					0.2494084984064102,
+					-0.2494085282087326
+				],
+				"y" : 
+				[
+					-0.1778800487518311,
+					-0.1778800189495087,
+					0.1778800487518311,
+					0.1778800189495087
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/torso.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.2494084984064102,
+				-0.1778800487518311,
+				0.2494085282087326,
+				-0.1778800189495087,
+				0.2494084984064102,
+				0.1778800487518311,
+				-0.2494085282087326,
+				0.1778800189495087
+			],
+			"name" : "image9",
+			"opacity" : 0.5,
+			"scale" : -0.3557600677013397
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 2,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.2922879755496979,
+					0.2922880053520203,
+					0.2922879755496979,
+					-0.2922880053520203
+				],
+				"y" : 
+				[
+					-0.1373165249824524,
+					-0.1373164653778076,
+					0.1373165249824524,
+					0.1373164653778076
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/left_leg.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.2922879755496979,
+				-0.1373165249824524,
+				0.2922880053520203,
+				-0.1373164653778076,
+				0.2922879755496979,
+				0.1373165249824524,
+				-0.2922880053520203,
+				0.1373164653778076
+			],
+			"name" : "image5",
+			"opacity" : 0.5,
+			"scale" : -0.274632990360260
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 0,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.2817419171333313,
+					0.2817419767379761,
+					0.2817419171333313,
+					-0.2817419767379761
+				],
+				"y" : 
+				[
+					-0.2674507200717926,
+					-0.2674506604671478,
+					0.2674507200717926,
+					0.2674506604671478
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/head.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.2817419171333313,
+				-0.2674507200717926,
+				0.2817419767379761,
+				-0.2674506604671478,
+				0.2817419171333313,
+				0.2674507200717926,
+				-0.2817419767379761,
+				0.2674506604671478
+			],
+			"name" : "image1",
+			"opacity" : 0.5,
+			"scale" : -0.5349013805389404
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 1,
+			"center" : 0,
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.1742587089538574,
+					0.1742587238550186,
+					0.1742587089538574,
+					-0.1742587238550186
+				],
+				"y" : 
+				[
+					-0.07713092118501663,
+					-0.07713089138269424,
+					0.07713092118501663,
+					0.07713089138269424
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/armored_zombie/images/left_arm_front.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.1742587089538574,
+				-0.07713092118501663,
+				0.1742587238550186,
+				-0.07713089138269424,
+				0.1742587089538574,
+				0.07713092118501663,
+				-0.1742587238550186,
+				0.07713089138269424
+			],
+			"name" : "image3",
+			"opacity" : 0.5,
+			"scale" : -0.1542618125677109
+		}
+	],
+	"joint" : 
+	[
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.08629141747951508,
+				"y" : 0.1209340170025826
+			},
+			"anchorB" : 
+			{
+				"x" : 0.09471941739320755,
+				"y" : 0.1035089939832687
+			},
+			"bodyA" : 5,
+			"bodyB" : 4,
+			"dampingRatio" : 0,
+			"frequency" : 0,
+			"name" : "joint4",
+			"refAngle" : -3.141592741012573,
+			"type" : "weld"
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.2275260388851166,
+				"y" : -0.002784199314191937
+			},
+			"anchorB" : 
+			{
+				"x" : 0.2041109949350357,
+				"y" : 0.01139311119914055
+			},
+			"bodyA" : 5,
+			"bodyB" : 0,
+			"enableLimit" : true,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : -0.9910067915916443,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint5",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0.9635423421859741
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.09687428176403046,
+				"y" : -0.03235420957207680
+			},
+			"anchorB" : 
+			{
+				"x" : 0.1412079930305481,
+				"y" : -0.01834402047097683
+			},
+			"bodyA" : 8,
+			"bodyB" : 3,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint7",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.07604818791151047,
+				"y" : 0.03156951442360878
+			},
+			"anchorB" : 
+			{
+				"x" : 0.1344980299472809,
+				"y" : -0.01330849342048168
+			},
+			"bodyA" : 7,
+			"bodyB" : 1,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint6",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : 0.2189840078353882,
+				"y" : 0.06592659652233124
+			},
+			"anchorB" : 
+			{
+				"x" : -0.2426329851150513,
+				"y" : 0.007851106114685535
+			},
+			"bodyA" : 5,
+			"bodyB" : 6,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint1",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.1225800216197968,
+				"y" : 0.1427890211343765
+			},
+			"anchorB" : 
+			{
+				"x" : 0.03756559640169144,
+				"y" : 0.02535860054194927
+			},
+			"bodyA" : 5,
+			"bodyB" : 8,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint3",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.1653070449829102,
+				"y" : -0.1130480170249939
+			},
+			"anchorB" : 
+			{
+				"x" : 0.06938958913087845,
+				"y" : -0.04788591712713242
+			},
+			"bodyA" : 5,
+			"bodyB" : 7,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint2",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : 0.210423007607460,
+				"y" : -0.1012490093708038
+			},
+			"anchorB" : 
+			{
+				"x" : -0.2455530166625977,
+				"y" : 0.04644019901752472
+			},
+			"bodyA" : 5,
+			"bodyB" : 2,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint0",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		}
+	],
+	"positionIterations" : 3,
+	"stepsPerSecond" : 60.0,
+	"subStepping" : false,
+	"velocityIterations" : 8,
+	"warmStarting" : true
+}

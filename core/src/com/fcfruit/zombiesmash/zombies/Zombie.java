@@ -298,8 +298,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                      * TODO:
                      *   - Make this work for parts which may have more than 1 bleed position but are still children
                      * */
-                    if(bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).size > 0)
-                        bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
+                    if(bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")) != null)
+                    {
+                        if (bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).size > 0)
+                            bleedablePoints.get(bleedablePoint.blood_pos_name.replace("blood_pos_", "")).get(0).setParent(bleedablePoint);
+                    }
                     //else
                     //bleedablePoint.enable_body_blood();
                 }
@@ -377,7 +380,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         if (joints.size() > 0)
         {
             if(bleedablePoints.size < 1)
-                Gdx.app.error("Zombie Creation", "Add Bleed Points to Animation In The Form Of 'blood_pos' As Attachment Name!");
+                Gdx.app.error("Zombie Creation", "Add Bleed Points to Animation In The Form Of 'blood_pos' As Attachment Name! Part: " + bodyName);
             Part part = new Part(bodyName, sprite, physicsBody, joints, containerEntity, bleedablePoints.get(0));
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
@@ -771,6 +774,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
+    private void returnToPlayableRange()
+    {
+        float x = (float)new Random().nextInt(100)/100;
+        float y = Environment.physics.getGroundBodies().get(this.getCurrentGround()).getPosition().y;
+        if(this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 1f - x, y));
+        else if(this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + x, y));
+    }
+
     /**
      * @expensive operation
      * **/
@@ -778,7 +791,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     {
         for (String key : this.getDrawableEntities().keySet())
         {
-
             Vector2 vec = ((PointAttachment) this.animatableGraphicsEntity.getSkeleton().getAttachment(key, "physics_pos")).computeWorldPosition(this.animatableGraphicsEntity.getSkeleton().findBone(key), new Vector2(0, 0));
 
             Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(vec.x, vec.y, 0)));
@@ -974,15 +986,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Switch zombie direction if needed
         this.checkDirection();
 
+        if(!this.isInLevel())
+            this.returnToPlayableRange();
+
         // Position physicsBody out of screen
         this.returnEntitiesToOptimizedLocation();
-
-        float y = Environment.physics.getGroundBodies().get(this.getCurrentGround()).getPosition().y;
-        // Make sure zombie doesn't take forever to get back inside level
-        if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 - 1f - (float)Math.random()*10, y));
-        else if(!this.isInLevel() && this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + (float)Math.random()*10, y));
 
         // Enable optimization instantly, without optimizationTimer
         this.force_instant_optimize();
@@ -1034,9 +1042,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             */
             Environment.drawableAddQueue.add(this);
             /* *********************************************************** */
-
-            this.disable_optimization();
         }
+
+        this.disable_optimization();
 
         this.isAnimating = false;
     }
@@ -1140,13 +1148,15 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
         else
         {
-            this.handleGetup();
+            if(!this.isAnimating())
+                this.handleGetup();
             this.force_instant_optimize();
             if(!this.isAlive())
             {
                 this.returnEntitiesToOptimizedLocation();
                 Environment.drawableRemoveQueue.add(this);
             }
+            this.returnToPlayableRange();
         }
 
     }

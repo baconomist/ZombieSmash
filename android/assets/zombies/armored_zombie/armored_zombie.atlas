@@ -1,0 +1,76 @@
+
+armored_zombie.png
+size: 1024,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+gun
+  rotate: false
+  xy: 2, 349
+  size: 515, 151
+  orig: 515, 151
+  offset: 0, 0
+  index: -1
+head
+  rotate: false
+  xy: 2, 85
+  size: 276, 262
+  orig: 276, 262
+  offset: 0, 0
+  index: -1
+left_arm_back
+  rotate: false
+  xy: 280, 50
+  size: 140, 106
+  orig: 140, 106
+  offset: 0, 0
+  index: -1
+left_arm_front
+  rotate: false
+  xy: 2, 2
+  size: 183, 81
+  orig: 183, 81
+  offset: 0, 0
+  index: -1
+left_arm_gun
+  rotate: false
+  xy: 819, 361
+  size: 173, 139
+  orig: 173, 139
+  offset: 0, 0
+  index: -1
+left_leg
+  rotate: false
+  xy: 519, 360
+  size: 298, 140
+  orig: 298, 140
+  offset: 0, 0
+  index: -1
+right_arm_back
+  rotate: false
+  xy: 856, 250
+  size: 137, 109
+  orig: 137, 109
+  offset: 0, 0
+  index: -1
+right_arm_front
+  rotate: false
+  xy: 547, 149
+  size: 187, 93
+  orig: 187, 93
+  offset: 0, 0
+  index: -1
+right_leg
+  rotate: false
+  xy: 547, 244
+  size: 307, 114
+  orig: 307, 114
+  offset: 0, 0
+  index: -1
+torso
+  rotate: false
+  xy: 280, 158
+  size: 265, 189
+  orig: 265, 189
+  offset: 0, 0
+  index: -1

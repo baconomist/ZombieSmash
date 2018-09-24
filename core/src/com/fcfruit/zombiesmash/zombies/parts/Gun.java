@@ -1,13 +1,11 @@
 package com.fcfruit.zombiesmash.zombies.parts;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
@@ -27,38 +25,33 @@ import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterfa
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
-import com.fcfruit.zombiesmash.physics.Physics;
-import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Lucas on 2018-01-07.
  */
 
-public class Part implements DrawableEntityInterface, DetachableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
-        BleedableEntityInterface, NameableEntityInterface, PostLevelDestroyableInterface
+public class Gun implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
+        DetachableEntityInterface, NameableEntityInterface, PostLevelDestroyableInterface
 {
     private String name;
 
-    private ContainerEntityInterface containerEntity;
+    private ContainerEntityInterface parentContainer;
     private OptimizableEntity optimizableEntity;
     private DestroyableEntity destroyableEntity;
     private DrawablePhysicsEntity drawableEntity;
-    private DetachableEntity detachableEntity;
     private InteractivePhysicsEntity interactivePhysicsEntity;
-    private BleedablePoint bleedablePoint;
+    private DetachableEntity detachableEntity;
 
-    public Part(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, BleedablePoint bleedablePoint)
+    public Gun(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface parentContainer)
     {
         this.name = name;
 
-        this.containerEntity = containerEntity;
+        this.parentContainer = parentContainer;
 
         this.drawableEntity = new DrawablePhysicsEntity(sprite, physicsBody);
-
-        this.detachableEntity = new DetachableEntity(joints, containerEntity, this);
-        this.detachableEntity.setForceForDetach(200f*physicsBody.getMass());
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.drawableEntity.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;
@@ -66,38 +59,18 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         polygon.setOrigin(size.x / 2, size.y / 2);
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(physicsBody, polygon);
 
-        this.optimizableEntity = new OptimizableEntity(this, this, null);
+        this.optimizableEntity = new OptimizableEntity(this, null, parentContainer);
         this.destroyableEntity = new DestroyableEntity(this, this, this);
 
-        this.bleedablePoint = bleedablePoint;
-
-        ((PhysicsData) physicsBody.getUserData()).add_data(this);
-        for(Fixture f : physicsBody.getFixtureList())
-        {
-            ((PhysicsData) f.getUserData()).add_data(this);
-        }
+        this.detachableEntity = new DetachableEntity(joints, parentContainer, this);
 
     }
 
-    @Override
-    public void detach()
-    {
-        this.detachableEntity.detach();
-        Environment.level.addDrawableEntity(this);
-
-        this.enable_bleeding();
-        this.enable_optimization();
-
-        /*maybe set joint state to waiting for detach when detaching
-            joint user data probably gets instantly deleted when you call joint.destroy
-            so no checking if joint has been destroyed with userdata*/
-    }
 
     @Override
     public void draw(SpriteBatch batch)
     {
         this.drawableEntity.draw(batch);
-        this.bleedablePoint.draw(batch);
     }
 
     @Override
@@ -105,17 +78,10 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     {
         this.drawableEntity.update(delta);
         this.interactivePhysicsEntity.update(delta);
-        this.bleedablePoint.update(delta);
 
         this.optimizableEntity.update(delta);
         this.destroyableEntity.update(delta);
-    }
-
-
-    @Override
-    public void onTouchDown(float x, float y, int p)
-    {
-        for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
+        for (InteractiveEntityInterface interactiveEntityInterface : this.parentContainer.getInteractiveEntities().values())
         {
             if (interactiveEntityInterface instanceof InteractivePhysicsEntity)
             {
@@ -129,7 +95,12 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
                 }
             }
         }
+    }
 
+
+    @Override
+    public void onTouchDown(float x, float y, int p)
+    {
         this.interactivePhysicsEntity.onTouchDown(x, y, p);
     }
 
@@ -149,18 +120,6 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     public Body getPhysicsBody()
     {
         return this.drawableEntity.getPhysicsBody();
-    }
-
-    @Override
-    public void setState(String state)
-    {
-        this.detachableEntity.setState(state);
-    }
-
-    @Override
-    public String getState()
-    {
-        return this.detachableEntity.getState();
     }
 
     @Override
@@ -206,24 +165,6 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     }
 
     @Override
-    public boolean shouldDetach()
-    {
-        return detachableEntity.shouldDetach();
-    }
-
-    @Override
-    public void setForceForDetach(float force)
-    {
-        this.detachableEntity.setForceForDetach(force);
-    }
-
-    @Override
-    public ContainerEntityInterface getContainer()
-    {
-        return this.containerEntity;
-    }
-
-    @Override
     public void destroy()
     {
         this.destroyableEntity.destroy();
@@ -257,8 +198,6 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
         return this.name;
     }
 
-    public ArrayList<Joint> getJoints(){return this.detachableEntity.getJoints();}
-
     @Override
     public void setUsingPowerfulJoint(boolean usingPowerfulJoint)
     {
@@ -290,15 +229,46 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     }
 
     @Override
-    public void enable_bleeding()
+    public void setState(String state)
     {
-        this.bleedablePoint.enable_bleeding();
+        this.detachableEntity.setState(state);
     }
 
     @Override
-    public void disable_bleeding()
+    public String getState()
     {
-        this.bleedablePoint.disable_bleeding();
+        return this.detachableEntity.getState();
+    }
+
+    @Override
+    public void detach()
+    {
+        this.detachableEntity.detach();
+        Environment.level.addDrawableEntity(this);
+    }
+
+    @Override
+    public boolean shouldDetach()
+    {
+        return this.detachableEntity.shouldDetach();
+    }
+
+    @Override
+    public ContainerEntityInterface getContainer()
+    {
+        return this.parentContainer;
+    }
+
+    @Override
+    public ArrayList<Joint> getJoints()
+    {
+        return this.detachableEntity.getJoints();
+    }
+
+    @Override
+    public void setForceForDetach(float force)
+    {
+        this.detachableEntity.setForceForDetach(force);
     }
 
     @Override

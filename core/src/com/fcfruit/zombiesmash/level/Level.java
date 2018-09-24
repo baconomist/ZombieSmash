@@ -8,17 +8,30 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
-import com.fcfruit.zombiesmash.brains.BrainCrate;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.brains.Brain;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
+import com.fcfruit.zombiesmash.effects.GroundBlood;
+import com.fcfruit.zombiesmash.effects.helicopter.Helicopter;
+import com.fcfruit.zombiesmash.entity.ParticleEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
+import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
+import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.EmptyStackException;
 import java.util.HashMap;
 
 /**
@@ -51,6 +64,7 @@ public class Level
 
     boolean levelEnd = false;
 
+    ArrayList<Spawner> loaded_spawners;
     ArrayList<Spawner> spawners;
 
     String currentCameraPosition;
@@ -59,6 +73,7 @@ public class Level
 
     boolean isCameraMoving = false;
     boolean zombiesDead = false;
+    boolean preCleared = false;
 
     public Level(int level_id)
     {
@@ -71,6 +86,7 @@ public class Level
 
         this.levelEventListeners = new Array<com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener>();
 
+        this.loaded_spawners = new ArrayList<Spawner>();
         this.spawners = new ArrayList<Spawner>();
     }
 
@@ -80,13 +96,43 @@ public class Level
         this.data = json.parse(Gdx.files.internal("maps/" + this.getClass().getSimpleName().replace("Level", "").toLowerCase() + "_map/levels/" + this.level_id + ".json"));
 
 
-        Environment.physicsCamera.position.x = Environment.level.cameraPositions.get(data.get(0).name).x;
+        Environment.physicsCamera.position.x = this.cameraPositions.get(data.get(0).name).x;
         Environment.physicsCamera.update();
         Environment.gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
         Environment.gameCamera.update();
         Environment.physics.constructPhysicsBoundaries();
 
         this.createSpawners();
+        this.manageSpawners();
+    }
+
+    private void createSpawners()
+    {
+        int index = 0;
+        for(JsonValue jsonValue : this.data)
+        {
+            for(JsonValue spawnerValue : jsonValue)
+            {
+                this.loaded_spawners.add(new Spawner(spawnerValue, index));
+                index++;
+            }
+        }
+    }
+
+    private void manageSpawners()
+    {
+        for(JsonValue jsonValue : this.data.get(this.currentJsonItem))
+        {
+            for(Spawner spawner : this.loaded_spawners)
+            {
+                // If spawner is in current section/camera by checking data
+                if(jsonValue.equals(spawner.data))
+                {
+                    this.spawners.add(spawner);
+                    break;
+                }
+            }
+        }
     }
 
     private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
@@ -192,9 +238,10 @@ public class Level
         if (!this.isCameraMoving)
         {
 
-            for (Spawner s : spawners)
+            for (Spawner spawner : spawners)
             {
-                s.update(delta);
+                if(this.data.get(this.currentJsonItem).hasChild(spawner.data.name())) // If spawner is part of our current level section
+                    spawner.update(delta);
             }
 
             if (this.isZombiesDead())
@@ -204,12 +251,8 @@ public class Level
                     this.levelEnd = true;
                 } else
                 {
-                    this.clear();
-
-                    this.currentJsonItem += 1;
-                    this.spawners = new ArrayList<Spawner>();
-
-                    this.createSpawners();
+                    if(!this.preCleared && !this.data.get(this.currentJsonItem + 1).name().equals(this.currentCameraPosition))
+                        this.preClear();
 
                     for (com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener levelEventListener : this.levelEventListeners)
                     {
@@ -219,10 +262,9 @@ public class Level
                     this.isCameraMoving = true;
                 }
             }
-        } else if (Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem).name).x > 0.1f || Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem).name).x < -0.1f)
+        } else if (Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem + 1).name).x > 0.1f || Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem + 1).name).x < -0.1f)
         {
-
-            if (Environment.physicsCamera.position.x < cameraPositions.get(data.get(this.currentJsonItem).name).x)
+            if (Environment.physicsCamera.position.x < cameraPositions.get(data.get(this.currentJsonItem + 1).name).x)
             {
                 Environment.gameCamera.position.x += 5f;
                 Environment.physicsCamera.position.x += 5f / 192f;
@@ -235,7 +277,16 @@ public class Level
             Environment.physicsCamera.update();
         } else
         {
+            this.preCleared = false;
             this.isCameraMoving = false;
+
+            if(!this.data.get(this.currentJsonItem + 1).name().equals(this.currentCameraPosition))
+                this.postClear();
+
+            this.currentJsonItem += 1;
+            this.spawners = new ArrayList<Spawner>();
+            this.manageSpawners();
+
             Environment.physics.constructPhysicsBoundaries();
         }
 
@@ -357,16 +408,6 @@ public class Level
 
     }
 
-    private void createSpawners()
-    {
-        int index = 0;
-        for (JsonValue jsonValue : this.data.get(this.currentJsonItem))
-        {
-            this.spawners.add(new Spawner(jsonValue, index));
-            index++;
-        }
-    }
-
     private boolean isZombiesDead()
     {
 
@@ -438,13 +479,44 @@ public class Level
         return this.currentCameraPosition;
     }
 
-    public void clear()
+    private void preClear()
     {
-        for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : drawableEntities)
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
         {
-            drawableEntity.dispose();
+            if(drawableEntityInterface instanceof PreLevelDestroyableInterface)
+                ((PreLevelDestroyableInterface) drawableEntityInterface).destroy();
         }
-        drawableEntities = new ArrayList<com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface>();
+        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
+        {
+            if(updatableEntityInterface instanceof PreLevelDestroyableInterface)
+                ((PreLevelDestroyableInterface) updatableEntityInterface).destroy();
+        }
+        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
+        {
+            if(inputCaptureEntityInterface instanceof PreLevelDestroyableInterface)
+                ((PreLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
+        }
+
+        this.preCleared = true;
+    }
+
+    private void postClear()
+    {
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            if(drawableEntityInterface instanceof PostLevelDestroyableInterface)
+                ((PostLevelDestroyableInterface) drawableEntityInterface).destroy();
+        }
+        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
+        {
+            if(updatableEntityInterface instanceof PostLevelDestroyableInterface)
+                ((PostLevelDestroyableInterface) updatableEntityInterface).destroy();
+        }
+        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
+        {
+            if(inputCaptureEntityInterface instanceof PostLevelDestroyableInterface)
+                ((PostLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
+        }
     }
 
 }

@@ -14,11 +14,12 @@ import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
 import com.fcfruit.zombiesmash.powerups.rocket.RocketPowerup;
 import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
+import com.fcfruit.zombiesmash.zombies.ArmoredZombie;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
-import com.fcfruit.zombiesmash.zombies.RegularZombie;
+import com.fcfruit.zombiesmash.zombies.RegZombie;
 import com.fcfruit.zombiesmash.zombies.SuicideZombie;
 
 import java.util.HashMap;
@@ -37,11 +38,12 @@ public class Spawner
 
     static
     {
-        entityType.put("reg_zombie", RegularZombie.class);
+        entityType.put("reg_zombie", RegZombie.class);
         entityType.put("girl_zombie", GirlZombie.class);
         entityType.put("police_zombie", PoliceZombie.class);
         entityType.put("big_zombie", BigZombie.class);
         entityType.put("suicide_zombie", SuicideZombie.class);
+        entityType.put("armored_zombie", ArmoredZombie.class);
 
         entityType.put("helicopter", DeliveryHelicopter.class);
 
@@ -55,7 +57,7 @@ public class Spawner
 
     private int index;
     private String type;
-    private JsonValue data;
+    public JsonValue data;
     private int spawnedEntities;
 
     private double accumilator = 0d;
@@ -115,7 +117,7 @@ public class Spawner
         positions.put("middle_right", new Vector2(pos.x + 32f, 0.1f));
     }
 
-    private Zombie spawnZombie()
+    private Zombie loadZombie()
     {
 
         try
@@ -134,8 +136,8 @@ public class Spawner
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 
-            if(Environment.powerupManager.isSlowMotionEnabled)
-                tempZombie.getState().setTimeScale(tempZombie.getState().getTimeScale()/TimePowerup.timeFactor);
+            // Prevents graphic glitch at position (0, 0)
+            tempZombie.update(Gdx.graphics.getDeltaTime());
 
             try
             {
@@ -193,11 +195,23 @@ public class Spawner
     private DrawableEntityInterface loadEntity()
     {
         if (this.type.contains("zombie"))
-            return this.spawnZombie();
+            return this.loadZombie();
         else if(this.type.contains("heli"))
             return this.loadHelicopter();
         else
             return this.loadCrate();
+    }
+
+    private void spawnEntity()
+    {
+        DrawableEntityInterface entity = this.spawnableEntities.get(spawnedEntities);
+        if(entity instanceof Zombie)
+        {
+            if(Environment.powerupManager.isSlowMotionEnabled)
+                ((Zombie)this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale()/TimePowerup.timeFactor);
+        }
+        Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
+        this.spawnedEntities += 1;
     }
 
     public void update(float delta)
@@ -208,15 +222,13 @@ public class Spawner
             if (this.initDelayEnabled && this.accumilator*1000 >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
-                Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
-                this.spawnedEntities += 1;
                 this.accumilator = 0;
+                this.spawnEntity();
             }
             else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000)
             {
                 this.accumilator = 0;
-                Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
-                this.spawnedEntities += 1;
+                this.spawnEntity();
             }
         }
     }

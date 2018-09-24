@@ -12,6 +12,7 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 
 import java.util.ArrayList;
@@ -20,13 +21,13 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-03-22.
  */
 
-public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface
+public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface, PreLevelDestroyableInterface
 {
 
     private Sprite ui_image;
 
-    private Rope rope;
-    private Grenade grenade;
+    public Rope rope;
+    public Grenade grenade;
 
     private double destroyTimer;
     private double timeBeforeDestroy = 2500;
@@ -91,6 +92,13 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         {
             this.rope.destroy();
         }
+    }
+
+    @Override
+    public void destroy()
+    {
+        this.rope.destroy();
+        this.grenade.destroy();
     }
 
     @Override

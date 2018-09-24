@@ -139,6 +139,9 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         this.powerupUIDrawable.setPosition(pos.x, pos.y);
 
+        // Prevents graphic glitch at position (0, 0)
+        this.isOpening = true;
+
         //this.crateDrawable = new DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/crate_open.png"))), this.crateDrawable.getPhysicsBody());
     }
 
@@ -157,7 +160,6 @@ public class PowerupCrate implements DrawableEntityInterface, InteractiveEntityI
 
         if (this.isTouching() && !this.isOpening && Environment.powerupManager.has_room_for_powerup())
         {
-            this.isOpening = true;
             this.setAlpha(1);
             this.setAnimation("open");
         }

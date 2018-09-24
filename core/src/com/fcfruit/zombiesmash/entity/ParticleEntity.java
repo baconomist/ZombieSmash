@@ -94,6 +94,7 @@ public class ParticleEntity
         this.physicsBody.setActive(false);
         this.physicsBody.setLinearVelocity(0, 0);
         this.physicsBody.setTransform(99, 99, 0);
+        this.touchedDrawableEntities = new Array<DrawableEntityInterface>();
 
         this.enabled = false;
     }

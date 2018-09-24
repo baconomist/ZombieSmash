@@ -4,11 +4,10 @@
     "brightness": 100,
     "lightIntensity": 1000
   },
-
-  "audio" : {
-    "enableGameAudio" : false,
-    "musicVolume" : 100,
-    "sfxVolume" : 100
-  }
-
+  "audio": {
+    "enableGameAudio": false,
+    "musicVolume": 100,
+    "sfxVolume": 100
+  },
+  "enableRecentAppsButton": true
 }

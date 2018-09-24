@@ -66,11 +66,14 @@ public class Environment
         //assets.load("zombies/reg_zombie/reg_zombie.png", Texture.class);
         //assets.load("zombies/reg_zombie/reg_zombie_rube.json", Json.class);
 
-        assets.load("maps/night_map/night_map.png", Texture.class);
+        assets.load("maps/night_map/night_map.jpg", Texture.class);
+        assets.load("effects/clouds/clouds.atlas", TextureAtlas.class);
 
         assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/suicide_zombie/suicide_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/reg_zombie/reg_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/armored_zombie/armored_zombie.atlas", TextureAtlas.class);
 
 
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);

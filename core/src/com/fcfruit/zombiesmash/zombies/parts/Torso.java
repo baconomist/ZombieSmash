@@ -23,6 +23,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.NameableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 
 import java.util.ArrayList;
 
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Torso implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntityInterface, DestroyableEntityInterface
+public class Torso implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface, NameableEntityInterface, PostLevelDestroyableInterface
 {
     private String name;
 

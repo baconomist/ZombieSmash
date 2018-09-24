@@ -21,6 +21,8 @@ public class Settings {
     private float musicVolume;
     private float sfxVolume;
 
+    private boolean enableRecentAppsButton;
+
     public Settings(){
         json = new JsonReader();
         data = json.parse(Gdx.files.internal("Settings.json"));
@@ -32,6 +34,8 @@ public class Settings {
         enableGameAudio = data.get("audio").getBoolean("enableGameAudio");
         musicVolume = data.get("audio").getFloat("musicVolume");
         sfxVolume = data.get("audio").getFloat("sfxVolume");
+
+        enableRecentAppsButton = data.getBoolean("enableRecentAppsButton");
 
 
     }
@@ -57,6 +61,8 @@ public class Settings {
     public boolean isEnableLight() {
         return enableLight;
     }
+
+    public boolean isRecentAppsButtonEnabled(){return enableRecentAppsButton;}
 
 
 }

@@ -63,6 +63,8 @@ public class Brain implements DrawableEntityInterface, InteractiveEntityInterfac
         sprite.setOriginCenter();
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
+        this.drawablePhysicsEntity.setPosition(body.getPosition());
+        this.drawablePhysicsEntity.update(Gdx.graphics.getDeltaTime());
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));
         size.y = Environment.gameCamera.position.y*2 - size.y;

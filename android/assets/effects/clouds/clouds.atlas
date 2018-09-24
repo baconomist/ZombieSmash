@@ -1,0 +1,41 @@
+
+clouds.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+cloud1
+  rotate: false
+  xy: 2, 1152
+  size: 1019, 598
+  orig: 1019, 598
+  offset: 0, 0
+  index: -1
+cloud2
+  rotate: false
+  xy: 2, 538
+  size: 953, 612
+  orig: 953, 612
+  offset: 0, 0
+  index: -1
+cloud3
+  rotate: false
+  xy: 1023, 1369
+  size: 773, 381
+  orig: 773, 381
+  offset: 0, 0
+  index: -1
+cloud4
+  rotate: false
+  xy: 2, 2
+  size: 591, 534
+  orig: 591, 534
+  offset: 0, 0
+  index: -1
+cloud5
+  rotate: false
+  xy: 595, 125
+  size: 494, 411
+  orig: 494, 411
+  offset: 0, 0
+  index: -1
