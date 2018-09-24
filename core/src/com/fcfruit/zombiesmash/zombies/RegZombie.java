@@ -14,6 +14,8 @@ public class RegZombie extends Zombie
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add(new String[]{"left_arm", "right_arm"});
+        this.detachableEntitiesToStayAlive.add("left_leg");
+        this.detachableEntitiesToStayAlive.add("right_leg");
 
 
         this.currentParts.add("head");
