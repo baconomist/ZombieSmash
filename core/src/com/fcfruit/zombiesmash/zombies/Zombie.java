@@ -70,6 +70,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      * Animation
      **/
     String moveAnimation;
+    private Array<String> drawOrder;
 
     /**
      * Identifier
@@ -162,6 +163,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.constructBody();
         this.animationListenerSetup(); // Has to be done after construct body to stop crashing
         this.interactiveEntitySetup();
+        this.drawOrderSetup();
 
         this.returnEntitiesToOptimizedLocation();
     }
@@ -445,6 +447,18 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 super.complete(entry);
             }
         });
+    }
+
+    private void drawOrderSetup()
+    {
+        this.drawOrder = new Array<String>();
+        for(Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
+        {
+            if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
+            {
+                this.drawOrder.add(slot.getAttachment().getName());
+            }
+        }
     }
 
     /**
@@ -1096,14 +1110,23 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             }
         } else
         {
-            for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
+            for(String name : this.drawOrder)
+            {
+                try
+                {
+                    this.getDrawableEntities().get(name).draw(batch);
+                    this.getDrawableEntities().get(name).draw(batch, skeletonRenderer);
+                }
+                catch (NullPointerException e){}
+            }
+            /*for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
             {
                 if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
                 {
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch, skeletonRenderer);
                 }
-            }
+            }*/
         }
     }
 
