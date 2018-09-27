@@ -1,0 +1,69 @@
+
+crawling_zombie.png
+size: 1024,256
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 2, 46
+  size: 175, 203
+  orig: 175, 203
+  offset: 0, 0
+  index: -1
+left_arm_back
+  rotate: false
+  xy: 465, 102
+  size: 72, 63
+  orig: 72, 63
+  offset: 0, 0
+  index: -1
+left_arm_front
+  rotate: false
+  xy: 2, 2
+  size: 59, 42
+  orig: 59, 42
+  offset: 0, 0
+  index: -1
+left_leg
+  rotate: false
+  xy: 465, 167
+  size: 89, 82
+  orig: 89, 82
+  offset: 0, 0
+  index: -1
+right_arm_back
+  rotate: false
+  xy: 647, 186
+  size: 69, 63
+  orig: 69, 63
+  offset: 0, 0
+  index: -1
+right_arm_front
+  rotate: false
+  xy: 309, 56
+  size: 57, 42
+  orig: 57, 42
+  offset: 0, 0
+  index: -1
+right_leg
+  rotate: false
+  xy: 556, 167
+  size: 89, 82
+  orig: 89, 82
+  offset: 0, 0
+  index: -1
+torso
+  rotate: false
+  xy: 179, 54
+  size: 128, 195
+  orig: 128, 195
+  offset: 0, 0
+  index: -1
+torso2
+  rotate: false
+  xy: 309, 100
+  size: 154, 149
+  orig: 154, 149
+  offset: 0, 0
+  index: -1

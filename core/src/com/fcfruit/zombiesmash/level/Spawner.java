@@ -16,6 +16,7 @@ import com.fcfruit.zombiesmash.powerups.rocket.RocketPowerup;
 import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
 import com.fcfruit.zombiesmash.zombies.ArmoredZombie;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
+import com.fcfruit.zombiesmash.zombies.CrawlingZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
@@ -44,6 +45,7 @@ public class Spawner
         entityType.put("big_zombie", BigZombie.class);
         entityType.put("suicide_zombie", SuicideZombie.class);
         entityType.put("armored_zombie", ArmoredZombie.class);
+        entityType.put("crawling_zombie", CrawlingZombie.class);
 
         entityType.put("helicopter", DeliveryHelicopter.class);
 

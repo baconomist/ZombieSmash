@@ -74,6 +74,7 @@ public class Environment
         assets.load("zombies/suicide_zombie/suicide_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/reg_zombie/reg_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/armored_zombie/armored_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/crawling_zombie/crawling_zombie.atlas", TextureAtlas.class);
 
 
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
