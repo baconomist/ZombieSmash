@@ -1,7 +1,5 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.math.Vector2;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.Event;
 import com.fcfruit.zombiesmash.Environment;
@@ -59,7 +57,7 @@ public class PoliceZombie extends Zombie
             }
             this.attackTimer = System.currentTimeMillis();
         }
-        else if(!this.isAtObjective())
+        else if(!this.isAtObjective() && this.timesAnimationCompleted() >= 1)
         {
             this.setAnimation(this.moveAnimation);
         }
@@ -69,22 +67,17 @@ public class PoliceZombie extends Zombie
     }
 
     @Override
-    protected void onAttack1Complete()
+    void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        super.onAttack1Complete();
-        if (!this.isAtObjective())
+        super.onAnimationComplete(entry);
+        if(entry.getAnimation().getName().equals("attack1") || entry.getAnimation().getName().equals("crawl_attack"))
         {
-            this.setAnimation(this.moveAnimation);
+            if (!this.isAtObjective())
+            {
+                this.attackTimer = System.currentTimeMillis();
+                this.setAnimation(this.moveAnimation);
+            }
         }
     }
 
-    @Override
-    protected void onCrawlAttackComplete()
-    {
-        super.onCrawlAttackComplete();
-        if (!this.isAtObjective())
-        {
-            this.setAnimation(this.moveAnimation);
-        }
-    }
 }

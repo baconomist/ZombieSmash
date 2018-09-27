@@ -67,7 +67,7 @@ public class ArmoredZombie extends Zombie
             }
             this.attackTimer = System.currentTimeMillis();
         }
-        else if(!this.isAtObjective())
+        else if(!this.isAtObjective() && this.timesAnimationCompleted() >= 1)
         {
             this.setAnimation(this.moveAnimation);
         }
@@ -77,18 +77,27 @@ public class ArmoredZombie extends Zombie
     }
 
     @Override
-    protected void onAttack1Complete()
+    void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        Environment.level.objective.takeDamage(10f);
-        if (!this.isAtObjective())
+        super.onAnimationComplete(entry);
+        if(entry.getAnimation().getName().equals("attack1") || entry.getAnimation().getName().equals("crawl_attack"))
         {
-            this.attackTimer = System.currentTimeMillis();
-            this.setAnimation(this.moveAnimation);
+            if (!this.isAtObjective())
+            {
+                this.attackTimer = System.currentTimeMillis();
+                this.setAnimation(this.moveAnimation);
+            }
         }
     }
 
     @Override
-    protected void onAttack2Complete()
+    protected void onAttack1()
+    {
+        Environment.level.objective.takeDamage(10f);
+    }
+
+    @Override
+    protected void onAttack2()
     {
         Environment.level.objective.takeDamage(20f);
     }

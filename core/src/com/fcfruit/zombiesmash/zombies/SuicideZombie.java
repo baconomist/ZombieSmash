@@ -46,7 +46,7 @@ public class SuicideZombie extends Zombie
     }
 
     @Override
-    protected void onAttack1Complete()
+    protected void onAttack1()
     {
         if(this.containerEntity.getDrawableEntities().get("grenade") != null)
         {

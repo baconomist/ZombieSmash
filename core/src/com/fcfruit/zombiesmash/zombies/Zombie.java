@@ -26,8 +26,6 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.brains.Brain;
-import com.fcfruit.zombiesmash.brains.BrainCrate;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -45,7 +43,6 @@ import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
-import com.fcfruit.zombiesmash.level.Spawner;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -884,20 +881,22 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.checkDirection();
             this.moveBy((this.direction == 0 ? new Vector2(0.5f*this.speed, 0) : new Vector2(-0.5f*this.speed, 0)));
         }
+
+        if (entry.getAnimation().getName().equals("attack1"))
+        {
+            this.onAttack1();
+        } else if (entry.getAnimation().getName().equals("attack2"))
+        {
+            this.onAttack2();
+        } else if (entry.getAnimation().getName().equals("crawl_attack"))
+        {
+            this.onCrawlAttack();
+        }
     }
 
     void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        if (entry.getAnimation().getName().equals("attack1"))
-        {
-            this.onAttack1Complete();
-        } else if (entry.getAnimation().getName().equals("attack2"))
-        {
-            this.onAttack2Complete();
-        } else if (entry.getAnimation().getName().equals("crawl_attack"))
-        {
-            this.onCrawlAttackComplete();
-        }
+
 
     }
 
@@ -1076,17 +1075,17 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.getUpTimer = System.currentTimeMillis();
     }
 
-    protected void onAttack1Complete()
+    protected void onAttack1()
     {
         Environment.level.objective.takeDamage(0.5f);
     }
 
-    protected void onAttack2Complete()
+    protected void onAttack2()
     {
         Environment.level.objective.takeDamage(1f);
     }
 
-    protected  void onCrawlAttackComplete()
+    protected  void onCrawlAttack()
     {
         Environment.level.objective.takeDamage(0.2f);
     }
