@@ -13,6 +13,7 @@ import com.fcfruit.zombiesmash.brains.Brain;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.effects.GroundBlood;
 import com.fcfruit.zombiesmash.effects.helicopter.Helicopter;
+import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -342,7 +343,6 @@ public class Level
         // Reverse to prevent switching of draw order
         Collections.reverse(copy);
 
-        int last_0ground = -1;
         for(DrawableEntityInterface drawableEntityInterface : copy)
         {
             if(drawableEntityInterface instanceof MultiGroundEntityInterface)
@@ -352,7 +352,6 @@ public class Level
                 {
                     this.drawableEntities.remove(drawableEntityInterface);
                     this.drawableEntities.add(0, drawableEntityInterface);
-                    last_0ground += 1;
                 }
             }
         }
@@ -361,19 +360,12 @@ public class Level
         // Reverse to prevent switching of draw order
         Collections.reverse(copy);
 
-        int last_1ground = -1;
         for(DrawableEntityInterface drawableEntityInterface : copy)
         {
             if(drawableEntityInterface instanceof MultiGroundEntityInterface)
             {
                 MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
-                if(multiGroundEntityInterface.getCurrentGround() == 1 && last_0ground != -1)
-                {
-                    this.drawableEntities.remove(drawableEntityInterface);
-                    this.drawableEntities.add(last_0ground, drawableEntityInterface);
-                    last_1ground += 1;
-                }
-                else if(last_0ground == -1)
+                if(multiGroundEntityInterface.getCurrentGround() == 1)
                 {
                     this.drawableEntities.remove(drawableEntityInterface);
                     this.drawableEntities.add(0, drawableEntityInterface);
@@ -390,21 +382,13 @@ public class Level
             if(drawableEntityInterface instanceof MultiGroundEntityInterface)
             {
                 MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
-                if(multiGroundEntityInterface.getCurrentGround() == 2 && last_1ground != -1)
-                {
-                    this.drawableEntities.remove(drawableEntityInterface);
-                    this.drawableEntities.add(last_1ground, drawableEntityInterface);
-                    last_1ground += 1;
-                }
-                else if(last_1ground == -1)
+                if(multiGroundEntityInterface.getCurrentGround() == 2)
                 {
                     this.drawableEntities.remove(drawableEntityInterface);
                     this.drawableEntities.add(0, drawableEntityInterface);
                 }
             }
         }
-
-
 
     }
 
