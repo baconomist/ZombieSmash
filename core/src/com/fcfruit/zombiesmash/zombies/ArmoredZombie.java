@@ -93,13 +93,13 @@ public class ArmoredZombie extends Zombie
     @Override
     protected void onAttack1()
     {
-        Environment.level.objective.takeDamage(10f);
+        Environment.level.objective.takeDamage(2f);
     }
 
     @Override
     protected void onAttack2()
     {
-        Environment.level.objective.takeDamage(20f);
+        Environment.level.objective.takeDamage(3f);
     }
 
     @Override

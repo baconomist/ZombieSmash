@@ -1,5 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.fcfruit.zombiesmash.Environment;
+
 public class CrawlingZombie extends Zombie
 {
     public CrawlingZombie(Integer id) {
@@ -25,7 +27,7 @@ public class CrawlingZombie extends Zombie
         this.currentParts.add("left_leg");
         this.currentParts.add("right_leg");
 
-        this.setSpeed(1);
+        this.setSpeed(2f);
 
     }
 
@@ -33,6 +35,18 @@ public class CrawlingZombie extends Zombie
     public void setup(int direction)
     {
         super.setup(direction);
-        this.getState().setTimeScale(2f);
+        this.getState().setTimeScale(3f);
+    }
+
+    @Override
+    protected void onAttack1()
+    {
+        Environment.level.objective.takeDamage(0.25f);
+    }
+
+    @Override
+    protected void onAttack2()
+    {
+        Environment.level.objective.takeDamage(0.35f);
     }
 }
