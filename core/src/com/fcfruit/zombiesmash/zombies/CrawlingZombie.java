@@ -35,7 +35,7 @@ public class CrawlingZombie extends Zombie
     public void setup(int direction)
     {
         super.setup(direction);
-        this.getState().setTimeScale(3f);
+        this.getState().setTimeScale(2f);
     }
 
     @Override
