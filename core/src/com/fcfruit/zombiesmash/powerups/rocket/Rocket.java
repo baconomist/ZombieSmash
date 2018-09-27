@@ -54,6 +54,8 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         sprite.setOriginCenter();
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
+        this.drawablePhysicsEntity.setPosition(new Vector2(99, 99));
+        this.drawablePhysicsEntity.update(Gdx.graphics.getDeltaTime());
 
         this.explodableEntity = new ExplodableEntity(this, 100f);
 
