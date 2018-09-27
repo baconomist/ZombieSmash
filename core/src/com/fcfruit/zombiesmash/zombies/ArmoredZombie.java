@@ -18,7 +18,7 @@ import java.util.Random;
 public class ArmoredZombie extends Zombie
 {
 
-    private double timeBeforeAttack = 500 + new Random().nextDouble()*2500d;
+    private double timeBeforeAttack = 500 + new Random().nextDouble()*2000d;
     private double attackTimer = System.currentTimeMillis();
 
     public ArmoredZombie(Integer id)
@@ -72,7 +72,7 @@ public class ArmoredZombie extends Zombie
             this.setAnimation(this.moveAnimation);
         }
 
-        if(!this.isInShootingRange())
+        if(!this.isInShootingRange() || this.getCurrentAnimation().equals(this.moveAnimation) && this.timesAnimationCompleted() < 1)
             this.attackTimer = System.currentTimeMillis();
     }
 
@@ -85,6 +85,12 @@ public class ArmoredZombie extends Zombie
             this.attackTimer = System.currentTimeMillis();
             this.setAnimation(this.moveAnimation);
         }
+    }
+
+    @Override
+    protected void onAttack2Complete()
+    {
+        Environment.level.objective.takeDamage(20f);
     }
 
     @Override
