@@ -28,6 +28,7 @@ import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
+import com.fcfruit.zombiesmash.ui.Message;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
@@ -89,6 +90,11 @@ public class Level
 
         this.loaded_spawners = new ArrayList<Spawner>();
         this.spawners = new ArrayList<Spawner>();
+
+        /*Message tempMessage = new Message();
+        tempMessage.setContent("Hey There!\nNew Line!\nAnother Line!\nSo Many New Lines!\n HI\n\n\n\\n\n\n\n\n\n\n\n\n\n\naaaaaassssssssssssssssssssssssssssssssssssa");
+        Environment.drawableAddQueue.add(tempMessage);
+        this.addInputCaptureEntity(tempMessage);*/
     }
 
     public void create()

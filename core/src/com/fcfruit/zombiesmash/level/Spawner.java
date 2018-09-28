@@ -7,6 +7,7 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.helicopter.DeliveryHelicopter;
+import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
@@ -14,6 +15,7 @@ import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
 import com.fcfruit.zombiesmash.powerups.rocket.RocketPowerup;
 import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
+import com.fcfruit.zombiesmash.ui.Message;
 import com.fcfruit.zombiesmash.zombies.ArmoredZombie;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.CrawlingZombie;
@@ -88,7 +90,8 @@ public class Spawner
             Gdx.app.debug("Spawner", "Quantity not found. Defaulting to 1");
         }
         this.init_delay = data.getFloat("init_delay");
-        this.spawn_delay = data.getFloat("spawn_delay");
+        if(!(this.type.equals("message")))
+            this.spawn_delay = data.getFloat("spawn_delay");
 
         this.initDelayEnabled = init_delay != 0;
 
@@ -162,6 +165,14 @@ public class Spawner
 
     }
 
+    private DrawableEntityInterface loadMessage()
+    {
+        Message tempMessage = new Message();
+        tempMessage.setContent(this.data.getString("content"));
+        Gdx.app.debug("Spawner", "Added Message");
+        return tempMessage;
+    }
+
     private DrawableEntityInterface loadCrate()
     {
         try
@@ -200,6 +211,8 @@ public class Spawner
             return this.loadZombie();
         else if(this.type.contains("heli"))
             return this.loadHelicopter();
+        else if(this.type.contains("message"))
+            return this.loadMessage();
         else
             return this.loadCrate();
     }
@@ -211,6 +224,10 @@ public class Spawner
         {
             if(Environment.powerupManager.isSlowMotionEnabled)
                 ((Zombie)this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale()/TimePowerup.timeFactor);
+        }
+        else if(entity instanceof Message)
+        {
+            Environment.level.addInputCaptureEntity((Message) entity);
         }
         Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
         this.spawnedEntities += 1;
