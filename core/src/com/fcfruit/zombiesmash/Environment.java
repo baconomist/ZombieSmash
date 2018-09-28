@@ -37,6 +37,8 @@ public class Environment
 
     public static ZombieSmash game = new ZombieSmash();
 
+    public static boolean isPaused = false;
+
     public static Screens screens;
 
     public static AssetManager assets = new AssetManager();

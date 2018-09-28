@@ -21,7 +21,7 @@ import com.fcfruit.zombiesmash.physics.Physics;
 public class Message implements DrawableEntityInterface, InputCaptureEntityInterface
 {
     private BitmapFont bitmapFont;
-    private DrawableGraphicsEntity box;
+    private Sprite box;
     private String content;
 
     private static float WIDTH = 2.5f;
@@ -32,10 +32,11 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     public Message()
     {
         this.bitmapFont = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
-        this.bitmapFont.getData().setScale(4);
-        this.box = new DrawableGraphicsEntity(new Sprite(new Texture(Gdx.files.internal("gui/game_ui/message_box.png"))));
-        this.box.getSprite().setSize(WIDTH* Physics.PIXELS_PER_METER, HEIGHT*Physics.PIXELS_PER_METER);
-        this.box.getSprite().setOriginCenter();
+        this.bitmapFont.getData().setScale(2);
+
+        this.box = new Sprite(new Texture(Gdx.files.internal("gui/game_ui/message_box.png")));
+        this.box.setSize(WIDTH*Physics.PIXELS_PER_METER, HEIGHT*Physics.PIXELS_PER_METER);
+        this.box.setOriginCenter();
 
         this.layout = new GlyphLayout(); //dont do this every frame! Store it as member
     }
@@ -44,20 +45,21 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     {
         this.content = content;
         this.layout.setText(this.bitmapFont, content);
-        this.box.getSprite().setSize(this.layout.width, this.layout.height);
+        this.box.setSize(this.layout.width, this.layout.height);
+        this.box.setOriginCenter();
     }
 
     public void display()
     {
-        //Environment.game.pause somehow();
+        Environment.isPaused = true;
     }
 
     @Override
     public void draw(SpriteBatch batch)
     {
-        this.box.setPosition(new Vector2(Environment.physicsCamera.position.x-this.box.getSize().x/2, Environment.physicsCamera.position.y-this.box.getSize().y/2));
+        this.box.setPosition(Environment.screens.gamescreen.get_ui_stage().getViewport().getCamera().position.x-this.box.getWidth()/2, Environment.screens.gamescreen.get_ui_stage().getViewport().getCamera().position.y-this.box.getHeight()/2);
         this.box.draw(batch);
-        this.bitmapFont.draw(batch, this.content, Environment.gameCamera.position.x-this.layout.width/2, Environment.gameCamera.position.y + layout.height/2);
+        this.bitmapFont.draw(batch, this.content, Environment.screens.gamescreen.get_ui_stage().getViewport().getCamera().position.x-this.layout.width/2, Environment.screens.gamescreen.get_ui_stage().getViewport().getCamera().position.y + layout.height/2);
     }
 
     @Override
@@ -69,7 +71,7 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     @Override
     public void update(float delta)
     {
-        this.box.update(delta);
+
     }
 
     @Override
@@ -87,40 +89,39 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     @Override
     public void onTouchUp(float screenX, float screenY, int pointer)
     {
-        //Environment.level.resume somehow();
-        Environment.drawableRemoveQueue.add(this);
-        this.box.dispose();
-        this.bitmapFont.dispose();
+        Environment.isPaused = false;
+        Environment.screens.gamescreen.get_ui_stage().removeMessage(this);
+        this.dispose();
     }
 
     @Override
     public Vector2 getPosition()
     {
-        return this.box.getPosition();
+        return new Vector2(this.box.getX(), this.box.getY());
     }
 
     @Override
     public void setPosition(Vector2 position)
     {
-
+        this.box.setPosition(position.x, position.y);
     }
 
     @Override
     public float getAngle()
     {
-        return 0;
+        return this.box.getRotation();
     }
 
     @Override
     public void setAngle(float angle)
     {
-
+        this.box.setRotation(angle);
     }
 
     @Override
     public float getAlpha()
     {
-        return 0;
+        return 1;
     }
 
     @Override
@@ -132,12 +133,14 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     @Override
     public Vector2 getSize()
     {
-        return new Vector2(WIDTH, HEIGHT);
+        return new Vector2(this.box.getWidth(), this.box.getHeight());
     }
 
     @Override
     public void dispose()
     {
-
+        this.box.getTexture().dispose();
+        this.box = null;
+        this.bitmapFont.dispose();
     }
 }

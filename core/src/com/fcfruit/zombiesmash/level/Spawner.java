@@ -220,16 +220,20 @@ public class Spawner
     private void spawnEntity()
     {
         DrawableEntityInterface entity = this.spawnableEntities.get(spawnedEntities);
-        if(entity instanceof Zombie)
+
+        if(entity instanceof Message)
         {
-            if(Environment.powerupManager.isSlowMotionEnabled)
-                ((Zombie)this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale()/TimePowerup.timeFactor);
+            Environment.screens.gamescreen.get_ui_stage().setMessage((Message) entity);
         }
-        else if(entity instanceof Message)
+        else
         {
-            Environment.level.addInputCaptureEntity((Message) entity);
+            if (entity instanceof Zombie)
+            {
+                if (Environment.powerupManager.isSlowMotionEnabled)
+                    ((Zombie) this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale() / TimePowerup.timeFactor);
+            }
+            Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
         }
-        Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
         this.spawnedEntities += 1;
     }
 

@@ -15,6 +15,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
+import com.fcfruit.zombiesmash.ui.Message;
 import com.fcfruit.zombiesmash.ui.Slider;
 
 /**
@@ -41,6 +42,8 @@ public class GameUIStage extends Stage
     BitmapFont brainCount;
 
     PowerupInterface[] powerups;
+
+    private Message message;
 
     public GameUIStage(Viewport v)
     {
@@ -132,6 +135,25 @@ public class GameUIStage extends Stage
         }
     }
 
+    public void setMessage(Message message)
+    {
+        this.message = message;
+        this.message.display();
+    }
+
+    public void removeMessage(Message message)
+    {
+        this.message = null;
+    }
+
+    @Override
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
+        if(this.message != null)
+            this.message.onTouchUp(screenX, screenY, pointer);
+        return super.touchUp(screenX, screenY, pointer, button);
+    }
+
     @Override
     public void draw()
     {
@@ -153,6 +175,11 @@ public class GameUIStage extends Stage
             healthBar.draw(spriteBatch);
             brainCountImage.draw(spriteBatch);
             brainCount.draw(spriteBatch, "" + Environment.level.brainCounter, brainCountImage.getX() + brainCountImage.getWidth(), brainCountImage.getY() + brainCountImage.getHeight() / 2);
+
+            if(this.message != null)
+            {
+                this.message.draw(spriteBatch);
+            }
         }
         spriteBatch.end();
 
