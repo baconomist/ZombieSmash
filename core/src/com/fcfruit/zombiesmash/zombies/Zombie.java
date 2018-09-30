@@ -588,7 +588,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.onDeath();
         }
 
-        this.isAlive = isAlive;
+        this.isAlive = isAlive && this.isAlive;
     }
 
     private boolean isAnimating()
