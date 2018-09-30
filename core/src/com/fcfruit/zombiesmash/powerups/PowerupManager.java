@@ -61,7 +61,6 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
                 opening_crates++;
             }
         }
-        Gdx.app.debug("aaaa", ""+non_active_powerups + " "+opening_crates);
         return non_active_powerups < 4 && opening_crates < 4 - non_active_powerups;
     }
 
