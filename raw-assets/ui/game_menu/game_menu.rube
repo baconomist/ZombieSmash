@@ -1,0 +1,152 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 0.4915438592433929,
+          "y" : 1.535868048667908
+        },
+        "file" : "example.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 1,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 1
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 0.4732466936111450,
+          "y" : 1.542947769165039
+        },
+        "file" : "images/options.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 4,
+        "name" : "image3",
+        "opacity" : 0.5,
+        "scale" : 0.2566320002079010
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 0.4917686879634857,
+          "y" : 1.537499427795410
+        },
+        "file" : "images/underlay.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 5,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "scale" : 1.002348780632019
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 0.4974141120910645,
+          "y" : 1.280931234359741
+        },
+        "file" : "images/mainmenu.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 0.1969677805900574
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 0.4947068095207214,
+          "y" : 1.776381731033325
+        },
+        "file" : "images/resume.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 7,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "scale" : 0.1965694725513458
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}
