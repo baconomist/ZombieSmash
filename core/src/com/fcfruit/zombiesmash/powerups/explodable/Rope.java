@@ -53,7 +53,7 @@ public class Rope
             this.segments[i] = Environment.physics.createBody(bodyDef);
             this.segments[i].createFixture(shape, 2).setUserData(new PhysicsData(this));
 
-            this.drawablePhysicsEntities[i] = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/explodable/chain/chain" + new Random().nextInt(4) + 1))+ ".png"), this.segments[i]);
+            this.drawablePhysicsEntities[i] = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/explodable/chain/chain"+(new Random().nextInt(4)+1)+".png"))), this.segments[i]);
             Environment.drawableAddQueue.add(this.drawablePhysicsEntities[i]);
         }
 
