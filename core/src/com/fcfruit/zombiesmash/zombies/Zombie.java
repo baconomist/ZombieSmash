@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,6 +27,7 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.BodyFire;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -34,6 +36,7 @@ import com.fcfruit.zombiesmash.entity.MovableEntity;
 import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.BurnableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -60,7 +63,8 @@ import java.util.Random;
 
 public class Zombie implements DrawableEntityInterface, InteractiveEntityInterface,
         ContainerEntityInterface, OptimizableEntityInterface,
-        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface
+        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface,
+        BurnableEntityInterface
 {
 
     /**
@@ -83,6 +87,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     private MovableEntity movableEntity;
     private MultiGroundEntity multiGroundEntity;
     public ContainerEntity containerEntity;
+    private BodyFire bodyFire;
 
     /**
      * Zombie Specific Fields
@@ -864,6 +869,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      * Events
      **/
 
+
+    @Override
+    public void onBurned()
+    {
+        this.bodyFire = null;
+        this.enable_physics();
+        this.isAlive = false;
+        this.onDeath();
+    }
+
     private void onAnimationInterrupt(AnimationState.TrackEntry entry)
     {
         /* Stop zombie from moving if the animation is changed to
@@ -1127,6 +1142,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 }
             }*/
         }
+        if(this.bodyFire != null)
+            this.bodyFire.draw(batch, skeletonRenderer);
     }
 
     @Override
@@ -1167,6 +1184,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     this.handleGetup();
                 }
             }
+
+            if(this.bodyFire != null)
+                this.bodyFire.update(delta);
+
         }
         else
         {
@@ -1508,6 +1529,18 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             drawableEntityInterface.setAlpha(alpha);
         }
+    }
+
+    @Override
+    public void attach_fire(BodyFire fire)
+    {
+        this.bodyFire = fire;
+    }
+
+    @Override
+    public BodyFire getBodyFire()
+    {
+        return this.bodyFire;
     }
 
     @Override

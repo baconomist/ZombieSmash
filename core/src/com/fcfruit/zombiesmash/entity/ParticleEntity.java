@@ -109,7 +109,7 @@ public class ParticleEntity
                 Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.physicsBody.getPosition(), 0)));
                 pos.y = Environment.gameCamera.position.y*2 - pos.y;
 
-                if (drawableEntity instanceof Zombie && ((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, pos.y)) // Boom! And all the zombies are gone from a grenade!
+                if (drawableEntity instanceof Zombie && ((InteractiveEntityInterface) drawableEntity).getPolygon().contains(pos.x, pos.y)) // Boom! And all the zombies are gone from a explodable!
                 {
                     ((Zombie) drawableEntity).stopGetUp();
                     ((Zombie) drawableEntity).enable_physics();
@@ -117,7 +117,7 @@ public class ParticleEntity
                     if(((Zombie) drawableEntity).getInteractiveEntities().get("torso").getPolygon().contains(pos.x, pos.y))
                     {
                         // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
-                        // Only apply it if grenade hits a zombie directly on a body part
+                        // Only apply it if explodable hits a zombie directly on a body part
                         ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir.scl(1, 0f), this.initialPos, true);
                     }
 

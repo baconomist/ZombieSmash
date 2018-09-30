@@ -18,6 +18,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
+import com.fcfruit.zombiesmash.powerups.FirePool;
 import com.fcfruit.zombiesmash.powerups.ParticleEntityPool;
 import com.fcfruit.zombiesmash.powerups.PowerupManager;
 import com.fcfruit.zombiesmash.powerups.rocket.RocketPool;
@@ -96,6 +97,7 @@ public class Environment
 
         assets.load("effects/smoke/smoke.atlas", TextureAtlas.class);
         assets.load("effects/explosion/explosion.atlas", TextureAtlas.class);
+        assets.load("effects/fire/fire.atlas", TextureAtlas.class);
 
     }
 
@@ -114,6 +116,7 @@ public class Environment
     public static Physics physics;
 
     // Pools
+    public static FirePool firePool;
     public static BleedableBloodPool bleedableBloodPool;
     public static ParticleEntityPool particleEntityPool;
     public static BrainPool brainPool;
@@ -151,6 +154,7 @@ public class Environment
         powerupManager = new PowerupManager();
 
         // Pools
+        firePool = new FirePool();
         bleedableBloodPool = new BleedableBloodPool();
         particleEntityPool = new ParticleEntityPool();
         brainPool = new BrainPool();

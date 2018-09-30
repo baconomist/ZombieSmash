@@ -1,4 +1,4 @@
-package com.fcfruit.zombiesmash.powerups.grenade;
+package com.fcfruit.zombiesmash.powerups.explodable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -21,13 +21,13 @@ import java.util.ArrayList;
  * Created by Lucas on 2018-03-22.
  */
 
-public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface, PreLevelDestroyableInterface
+public class ExplodablePowerup implements com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface, PreLevelDestroyableInterface
 {
 
     private Sprite ui_image;
 
     public Rope rope;
-    public Grenade grenade;
+    public Explodable explodable;
 
     private double destroyTimer;
     private double timeBeforeDestroy = 2500;
@@ -36,9 +36,9 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
 
     private boolean isGrenadeDetached;
 
-    public GrenadePowerup()
+    public ExplodablePowerup(String uiImagePath)
     {
-        this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade_ui.png")));
+        this.ui_image = new Sprite(new Texture(Gdx.files.internal(uiImagePath)));
 
         this.isActive = false;
         this.isGrenadeDetached = false;
@@ -47,44 +47,16 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
 
     }
 
-    private void create()
+    protected void create()
     {
-        BodyDef bodyDef = new BodyDef();
-        bodyDef.type = BodyDef.BodyType.DynamicBody;
-        bodyDef.fixedRotation = true;
 
-        CircleShape shape = new CircleShape();
-        shape.setRadius(0.2f);
-
-        FixtureDef fixtureDef = new FixtureDef();
-        fixtureDef.shape = shape;
-        fixtureDef.density = 0.1f;
-        fixtureDef.restitution = 0f;
-
-        Body body = Environment.physics.createBody(bodyDef);
-        Fixture fixture = body.createFixture(fixtureDef);
-
-        // Make rope swing
-        this.rope = new Rope(5, new Vector2(99, 99));
-
-        ArrayList<Joint> joints = new ArrayList<Joint>();
-        joints.add(this.rope.attachToBottom(body));
-
-        this.grenade = new Grenade(body, joints);
-        this.grenade.getPhysicsBody().setActive(false);
-        this.grenade.setPosition(new Vector2(99, 99));
-
-        // Make grenade easy to detach from rope
-        this.grenade.setForceForDetach(20f);
-
-        fixture.setUserData(new PhysicsData(this.grenade));
     }
 
     @Override
     public void update(float delta)
     {
-        if(grenade.shouldDetach()){
-            grenade.detach();
+        if(explodable.shouldDetach()){
+            explodable.detach();
             this.isGrenadeDetached = true;
             this.destroyTimer = System.currentTimeMillis();
         }
@@ -98,7 +70,7 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
     public void destroy()
     {
         this.rope.destroy();
-        this.grenade.destroy();
+        this.explodable.destroy();
     }
 
     @Override
@@ -109,8 +81,8 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getWidth(), this.getUIDrawable().getHeight(), 0)));
         size.y = Environment.physicsCamera.position.y*2 - size.y;
 
-        this.grenade.setPosition(new Vector2(pos.x, pos.y));
-        this.grenade.getPhysicsBody().setActive(true);
+        this.explodable.setPosition(new Vector2(pos.x, pos.y));
+        this.explodable.getPhysicsBody().setActive(true);
 
         // Stick rope to top
         BodyDef bodyDef = new BodyDef();
@@ -121,7 +93,7 @@ public class GrenadePowerup implements com.fcfruit.zombiesmash.entity.interfaces
         this.rope.setPosition(new Vector2(pos.x, pos.y + 1));
         this.rope.attachToTop(Environment.physics.createBody(bodyDef));
 
-        Environment.drawableAddQueue.add(this.grenade);
+        Environment.drawableAddQueue.add(this.explodable);
         Environment.updatableAddQueue.add(this);
 
         this.isActive = true;

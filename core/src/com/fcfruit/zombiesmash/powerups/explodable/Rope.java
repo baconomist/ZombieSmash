@@ -1,4 +1,4 @@
-package com.fcfruit.zombiesmash.powerups.grenade;
+package com.fcfruit.zombiesmash.powerups.explodable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -13,6 +13,8 @@ import com.badlogic.gdx.physics.box2d.joints.RopeJoint;
 import com.badlogic.gdx.physics.box2d.joints.RopeJointDef;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
+
+import java.util.Random;
 
 /**
  * Created by Lucas on 2018-03-22.
@@ -51,7 +53,7 @@ public class Rope
             this.segments[i] = Environment.physics.createBody(bodyDef);
             this.segments[i].createFixture(shape, 2).setUserData(new PhysicsData(this));
 
-            this.drawablePhysicsEntities[i] = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/grenade/rope_segment.png"))), this.segments[i]);
+            this.drawablePhysicsEntities[i] = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(new Sprite(new Texture(Gdx.files.internal("powerups/explodable/chain/chain" + new Random().nextInt(4) + 1))+ ".png"), this.segments[i]);
             Environment.drawableAddQueue.add(this.drawablePhysicsEntities[i]);
         }
 

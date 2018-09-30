@@ -7,9 +7,10 @@ import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.helicopter.DeliveryHelicopter;
-import com.fcfruit.zombiesmash.entity.DrawableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
+import com.fcfruit.zombiesmash.powerups.explodable.ExplodablePowerup;
+import com.fcfruit.zombiesmash.powerups.explodable.GrenadePowerup;
+import com.fcfruit.zombiesmash.powerups.explodable.MolotovPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
@@ -55,6 +56,7 @@ public class Spawner
         entityType.put("rock", RockPowerup.class);
         entityType.put("pistol", PistolPowerup.class);
         entityType.put("grenade", GrenadePowerup.class);
+        entityType.put("molotov", MolotovPowerup.class);
         entityType.put("time", TimePowerup.class);
         entityType.put("rocket", RocketPowerup.class);
     }

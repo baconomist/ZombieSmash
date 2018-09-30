@@ -1,29 +1,10 @@
 package com.fcfruit.zombiesmash.effects.helicopter;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.JsonValue;
-import com.esotericsoftware.spine.AnimationState;
-import com.esotericsoftware.spine.AnimationStateData;
-import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonData;
-import com.esotericsoftware.spine.SkeletonJson;
-import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.MovableEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.level.Spawner;
-import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
-import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
-import com.fcfruit.zombiesmash.powerups.gun_powerup.RiflePowerup;
-import com.fcfruit.zombiesmash.powerups.rock_powerup.RockPowerup;
-import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
-
-import java.util.HashMap;
 
 public class DeliveryHelicopter extends Helicopter
 {

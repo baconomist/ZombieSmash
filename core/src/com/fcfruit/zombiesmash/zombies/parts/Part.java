@@ -11,6 +11,8 @@ import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.BodyFire;
+import com.fcfruit.zombiesmash.effects.Fire;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.DetachableEntity;
@@ -18,6 +20,7 @@ import com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.BleedableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.BurnableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -311,7 +314,7 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
-
     }
+
 }
 

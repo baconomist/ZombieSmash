@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -10,9 +9,8 @@ import com.badlogic.gdx.utils.Array;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
-import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
+import com.fcfruit.zombiesmash.powerups.explodable.Grenade;
 
 import java.util.ArrayList;
 
@@ -27,7 +25,7 @@ public class SuicideZombie extends Zombie
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add("left_arm");
-        this.detachableEntitiesToStayAlive.add("grenade");
+        this.detachableEntitiesToStayAlive.add("explodable");
         this.detachableEntitiesToStayAlive.add("right_arm");
         this.detachableEntitiesToStayAlive.add("left_leg");
         this.detachableEntitiesToStayAlive.add("right_leg");
@@ -39,7 +37,7 @@ public class SuicideZombie extends Zombie
         this.currentParts.add("right_arm");
         this.currentParts.add("left_leg");
         this.currentParts.add("right_leg");
-        this.currentParts.add("grenade");
+        this.currentParts.add("explodable");
 
         this.setSpeed(4);
 
@@ -48,12 +46,12 @@ public class SuicideZombie extends Zombie
     @Override
     protected void onAttack1()
     {
-        if(this.containerEntity.getDrawableEntities().get("grenade") != null)
+        if(this.containerEntity.getDrawableEntities().get("explodable") != null)
         {
             Environment.level.objective.takeDamage(3f);
             this.resetToInitialGround();
-            this.enable_physics(); // Need to sync grenade to zombie pos -> enable_physics()
-            Grenade grenade = (Grenade) this.containerEntity.getDrawableEntities().get("grenade");
+            this.enable_physics(); // Need to sync explodable to zombie pos -> enable_physics()
+            Grenade grenade = (Grenade) this.containerEntity.getDrawableEntities().get("explodable");
             grenade.setPosition(new Vector2(grenade.getPosition().x, this.getPosition().y));
             Environment.explodableEntityQueue.add(grenade);
             grenade.setState("waiting_for_detach");
@@ -73,7 +71,7 @@ public class SuicideZombie extends Zombie
     @Override
     protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
-        if (bodyName.equals("grenade"))
+        if (bodyName.equals("explodable"))
         {
             Grenade grenade = new Grenade(sprite, physicsBody, joints, containerEntity);
 
@@ -85,9 +83,9 @@ public class SuicideZombie extends Zombie
                 fixture.setUserData(physicsData);
             }
 
-            this.getDrawableEntities().put("grenade", grenade);
-            this.getInteractiveEntities().put("grenade", grenade);
-            this.getDetachableEntities().put("grenade", grenade);
+            this.getDrawableEntities().put("explodable", grenade);
+            this.getInteractiveEntities().put("explodable", grenade);
+            this.getDetachableEntities().put("explodable", grenade);
         }
         else
         {

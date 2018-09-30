@@ -9,31 +9,17 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.brains.Brain;
-import com.fcfruit.zombiesmash.effects.BleedBlood;
-import com.fcfruit.zombiesmash.effects.GroundBlood;
-import com.fcfruit.zombiesmash.effects.helicopter.Helicopter;
-import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
-import com.fcfruit.zombiesmash.entity.ParticleEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
-import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
-import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
-import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
-import com.fcfruit.zombiesmash.ui.Message;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 
 /**

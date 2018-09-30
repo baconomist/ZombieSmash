@@ -80,7 +80,7 @@ public class OptimizableEntity implements com.fcfruit.zombiesmash.entity.interfa
                 if(interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
-                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < 1f))
+                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < 2f))
                     {
                         return false;
                     }

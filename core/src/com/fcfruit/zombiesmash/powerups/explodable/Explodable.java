@@ -1,4 +1,4 @@
-package com.fcfruit.zombiesmash.powerups.grenade;
+package com.fcfruit.zombiesmash.powerups.explodable;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
@@ -9,28 +9,24 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.esotericsoftware.spine.AnimationState;
-import com.esotericsoftware.spine.Event;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.DestroyableEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractivePhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 /**
  * Created by Lucas on 2018-01-07.
  */
 
-public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, DetachableEntityInterface, InteractivePhysicsEntityInterface, ExplodableEntityInterface,
+public class Explodable implements com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface, DetachableEntityInterface, InteractivePhysicsEntityInterface, ExplodableEntityInterface,
         PostLevelDestroyableInterface
 {
     private ContainerEntity containerEntity;
@@ -41,10 +37,11 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
     private com.fcfruit.zombiesmash.entity.ExplodableEntity explodableEntity;
     private DestroyableEntity destroyableEntity;
 
-    public Grenade(Body body, ArrayList<Joint> joints)
+    public Explodable(Body body, ArrayList<Joint> joints)
     {
 
-        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/grenade/grenade.png")));
+        String simpleName = this.getClass().getSimpleName().toLowerCase();
+        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("powerups/explodable/"+simpleName+"/"+simpleName+".png")));
 
         this.drawablePhysicsEntity = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(sprite, body);
         this.detachableEntity = new com.fcfruit.zombiesmash.entity.DetachableEntity(joints);
@@ -60,9 +57,11 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
         this.interactivePhysicsEntity = new InteractivePhysicsEntity(body, polygon);
         this.destroyableEntity = new DestroyableEntity(this, this);
 
+        this.drawablePhysicsEntity.setAngle(-25);
+
     }
 
-    public Grenade(Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
+    public Explodable(Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface containerEntity)
     {
         this.drawablePhysicsEntity = new com.fcfruit.zombiesmash.entity.DrawablePhysicsEntity(sprite, physicsBody);
         this.detachableEntity = new com.fcfruit.zombiesmash.entity.DetachableEntity(joints, containerEntity, this);
@@ -75,6 +74,8 @@ public class Grenade implements com.fcfruit.zombiesmash.entity.interfaces.Drawab
 
         this.explodableEntity = new com.fcfruit.zombiesmash.entity.ExplodableEntity(this, 20f);
         this.destroyableEntity = new DestroyableEntity(this, this);
+
+        this.drawablePhysicsEntity.setAngle(-25);
 
     }
 
