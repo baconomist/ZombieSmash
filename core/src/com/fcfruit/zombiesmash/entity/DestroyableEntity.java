@@ -87,7 +87,7 @@ public class DestroyableEntity implements DestroyableEntityInterface
             for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
                 Body b = ((PhysicsEntityInterface)interactiveEntity).getPhysicsBody();
-                if(!(!interactiveEntity.isTouching() && b.getPosition().y < 1f
+                if(!(!interactiveEntity.isTouching() && b.getPosition().y < 2f
                         && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy))
                 {
                     return false;

@@ -7,7 +7,7 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener;
-import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
+import com.fcfruit.zombiesmash.powerups.explodable.ExplodablePowerup;
 
 /**
  * Created by Lucas on 2018-03-31.
@@ -97,7 +97,7 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
         this.powerups.clear();
     }
 
-    public Vector3 getGrenadeSpawnPosition(GrenadePowerup grenadePowerup)
+    public Vector3 getGrenadeSpawnPosition(ExplodablePowerup grenadePowerup)
     {
         if (grenadePosition == null)
         {

@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.ai.GdxAI;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -26,8 +27,7 @@ import com.esotericsoftware.spine.attachments.Attachment;
 import com.esotericsoftware.spine.attachments.PointAttachment;
 import com.esotericsoftware.spine.attachments.RegionAttachment;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.brains.Brain;
-import com.fcfruit.zombiesmash.brains.BrainCrate;
+import com.fcfruit.zombiesmash.effects.BodyFire;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
@@ -36,6 +36,7 @@ import com.fcfruit.zombiesmash.entity.MovableEntity;
 import com.fcfruit.zombiesmash.entity.MultiGroundEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.AnimatableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.BurnableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -45,7 +46,6 @@ import com.fcfruit.zombiesmash.entity.interfaces.MovableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
-import com.fcfruit.zombiesmash.level.Spawner;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
@@ -63,13 +63,15 @@ import java.util.Random;
 
 public class Zombie implements DrawableEntityInterface, InteractiveEntityInterface,
         ContainerEntityInterface, OptimizableEntityInterface,
-        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface
+        AnimatableEntityInterface, MovableEntityInterface, MultiGroundEntityInterface,
+        BurnableEntityInterface
 {
 
     /**
      * Animation
      **/
     String moveAnimation;
+    private Array<String> drawOrder;
 
     /**
      * Identifier
@@ -85,6 +87,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     private MovableEntity movableEntity;
     private MultiGroundEntity multiGroundEntity;
     public ContainerEntity containerEntity;
+    private BodyFire bodyFire;
 
     /**
      * Zombie Specific Fields
@@ -162,6 +165,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.constructBody();
         this.animationListenerSetup(); // Has to be done after construct body to stop crashing
         this.interactiveEntitySetup();
+        this.drawOrderSetup();
 
         this.returnEntitiesToOptimizedLocation();
     }
@@ -445,6 +449,18 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 super.complete(entry);
             }
         });
+    }
+
+    private void drawOrderSetup()
+    {
+        this.drawOrder = new Array<String>();
+        for(Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
+        {
+            if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
+            {
+                this.drawOrder.add(slot.getAttachment().getName());
+            }
+        }
     }
 
     /**
@@ -853,6 +869,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      * Events
      **/
 
+
+    @Override
+    public void onBurned()
+    {
+        this.bodyFire = null;
+        this.enable_physics();
+        this.isAlive = false;
+        this.onDeath();
+    }
+
     private void onAnimationInterrupt(AnimationState.TrackEntry entry)
     {
         /* Stop zombie from moving if the animation is changed to
@@ -870,20 +896,22 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             this.checkDirection();
             this.moveBy((this.direction == 0 ? new Vector2(0.5f*this.speed, 0) : new Vector2(-0.5f*this.speed, 0)));
         }
+
+        if (entry.getAnimation().getName().equals("attack1"))
+        {
+            this.onAttack1();
+        } else if (entry.getAnimation().getName().equals("attack2"))
+        {
+            this.onAttack2();
+        } else if (entry.getAnimation().getName().equals("crawl_attack"))
+        {
+            this.onCrawlAttack();
+        }
     }
 
     void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        if (entry.getAnimation().getName().equals("attack1"))
-        {
-            this.onAttack1Complete();
-        } else if (entry.getAnimation().getName().equals("attack2"))
-        {
-            this.onAttack2Complete();
-        } else if (entry.getAnimation().getName().equals("crawl_attack"))
-        {
-            this.onCrawlAttackComplete();
-        }
+
 
     }
 
@@ -1062,17 +1090,17 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.getUpTimer = System.currentTimeMillis();
     }
 
-    protected void onAttack1Complete()
+    protected void onAttack1()
     {
         Environment.level.objective.takeDamage(0.5f);
     }
 
-    protected void onAttack2Complete()
+    protected void onAttack2()
     {
         Environment.level.objective.takeDamage(1f);
     }
 
-    protected  void onCrawlAttackComplete()
+    protected  void onCrawlAttack()
     {
         Environment.level.objective.takeDamage(0.2f);
     }
@@ -1096,15 +1124,26 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             }
         } else
         {
-            for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
+            for(String name : this.drawOrder)
+            {
+                try
+                {
+                    this.getDrawableEntities().get(name).draw(batch);
+                    this.getDrawableEntities().get(name).draw(batch, skeletonRenderer);
+                }
+                catch (NullPointerException e){}
+            }
+            /*for (Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
             {
                 if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
                 {
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch);
                     this.getDrawableEntities().get(slot.getAttachment().getName()).draw(batch, skeletonRenderer);
                 }
-            }
+            }*/
         }
+        if(this.bodyFire != null)
+            this.bodyFire.draw(batch, skeletonRenderer);
     }
 
     @Override
@@ -1145,6 +1184,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                     this.handleGetup();
                 }
             }
+
+            if(this.bodyFire != null)
+                this.bodyFire.update(delta);
+
         }
         else
         {
@@ -1486,6 +1529,18 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         {
             drawableEntityInterface.setAlpha(alpha);
         }
+    }
+
+    @Override
+    public void attach_fire(BodyFire fire)
+    {
+        this.bodyFire = fire;
+    }
+
+    @Override
+    public BodyFire getBodyFire()
+    {
+        return this.bodyFire;
     }
 
     @Override

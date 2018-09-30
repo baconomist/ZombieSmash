@@ -1,16 +1,16 @@
 package com.fcfruit.zombiesmash.physics;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.brains.Brain;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.entity.ParticleEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.powerups.PowerupCrate;
-import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
+import com.fcfruit.zombiesmash.powerups.explodable.Explodable;
+import com.fcfruit.zombiesmash.powerups.explodable.Grenade;
+import com.fcfruit.zombiesmash.powerups.explodable.Molotov;
 import com.fcfruit.zombiesmash.powerups.rock_powerup.Rock;
 import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -103,8 +103,8 @@ public class ContactFilter implements com.badlogic.gdx.physics.box2d.ContactFilt
         {
             return false;
         }
-        // Collision BETWEEN Grenades
-        else if(fixtureAData.containsInstanceOf(Grenade.class) && fixtureBData.containsInstanceOf(Grenade.class))
+        // Collision BETWEEN Grenades + Molotovs
+        else if(fixtureAData.containsInstanceOf(Explodable.class) && fixtureBData.containsInstanceOf(Explodable.class))
         {
             return true;
         }

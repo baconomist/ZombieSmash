@@ -63,14 +63,16 @@ public class GameStage extends Stage
         if(Environment.powerupManager.isSlowMotionEnabled)
             delta = delta/TimePowerup.timeFactor;
 
-        Environment.level.update(delta);
+        if(!Environment.isPaused)
+            Environment.level.update(delta);
         // Viewport.getCamera() != Environment.gameCamera
         this.spriteBatch.setProjectionMatrix(Environment.gameCamera.combined);
         this.spriteBatch.begin();
         Environment.level.draw(spriteBatch, skeletonRenderer);
         this.spriteBatch.end();
 
-        Environment.physics.update(delta);
+        if(!Environment.isPaused)
+            Environment.physics.update(delta);
         Environment.physics.draw();
 
         if(Config.DEBUG_POLYGONS)

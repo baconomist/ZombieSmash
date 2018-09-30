@@ -54,6 +54,8 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         sprite.setOriginCenter();
 
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, body);
+        this.drawablePhysicsEntity.setPosition(new Vector2(99, 99));
+        this.drawablePhysicsEntity.update(Gdx.graphics.getDeltaTime());
 
         this.explodableEntity = new ExplodableEntity(this, 100f);
 
@@ -89,6 +91,8 @@ public class Rocket implements DrawableEntityInterface, ExplodableEntityInterfac
         this.getPhysicsBody().setLinearVelocity(0, 0);
         this.getPhysicsBody().setActive(false);
         this.getPhysicsBody().setTransform(99, 99, this.getPhysicsBody().getAngle());
+        this.drawablePhysicsEntity.setPosition(new Vector2(99, 99));
+        this.drawablePhysicsEntity.update(Gdx.graphics.getDeltaTime());
 
         this.enabled = false;
     }

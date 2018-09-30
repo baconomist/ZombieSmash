@@ -18,7 +18,7 @@ import java.util.Random;
 public class ArmoredZombie extends Zombie
 {
 
-    private double timeBeforeAttack = 500 + new Random().nextDouble()*2500d;
+    private double timeBeforeAttack = 500 + new Random().nextDouble()*2000d;
     private double attackTimer = System.currentTimeMillis();
 
     public ArmoredZombie(Integer id)
@@ -67,24 +67,39 @@ public class ArmoredZombie extends Zombie
             }
             this.attackTimer = System.currentTimeMillis();
         }
-        else if(!this.isAtObjective())
+        else if(!this.isAtObjective() && this.timesAnimationCompleted() >= 1)
         {
             this.setAnimation(this.moveAnimation);
         }
 
-        if(!this.isInShootingRange())
+        if(!this.isInShootingRange() || this.getCurrentAnimation().equals(this.moveAnimation) && this.timesAnimationCompleted() < 1)
             this.attackTimer = System.currentTimeMillis();
     }
 
     @Override
-    protected void onAttack1Complete()
+    void onAnimationComplete(AnimationState.TrackEntry entry)
     {
-        Environment.level.objective.takeDamage(10f);
-        if (!this.isAtObjective())
+        super.onAnimationComplete(entry);
+        if(entry.getAnimation().getName().equals("attack1") || entry.getAnimation().getName().equals("crawl_attack"))
         {
-            this.attackTimer = System.currentTimeMillis();
-            this.setAnimation(this.moveAnimation);
+            if (!this.isAtObjective())
+            {
+                this.attackTimer = System.currentTimeMillis();
+                this.setAnimation(this.moveAnimation);
+            }
         }
+    }
+
+    @Override
+    protected void onAttack1()
+    {
+        Environment.level.objective.takeDamage(2f);
+    }
+
+    @Override
+    protected void onAttack2()
+    {
+        Environment.level.objective.takeDamage(3f);
     }
 
     @Override

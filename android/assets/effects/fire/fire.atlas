@@ -1,0 +1,76 @@
+
+fire.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+f1
+  rotate: false
+  xy: 1127, 104
+  size: 162, 278
+  orig: 162, 278
+  offset: 0, 0
+  index: -1
+f10
+  rotate: false
+  xy: 701, 12
+  size: 134, 370
+  orig: 134, 370
+  offset: 0, 0
+  index: -1
+f2
+  rotate: false
+  xy: 1291, 125
+  size: 146, 257
+  orig: 146, 257
+  offset: 0, 0
+  index: -1
+f3
+  rotate: false
+  xy: 1439, 119
+  size: 138, 263
+  orig: 138, 263
+  offset: 0, 0
+  index: -1
+f4
+  rotate: false
+  xy: 965, 69
+  size: 160, 313
+  orig: 160, 313
+  offset: 0, 0
+  index: -1
+f5
+  rotate: false
+  xy: 202, 32
+  size: 188, 350
+  orig: 188, 350
+  offset: 0, 0
+  index: -1
+f6
+  rotate: false
+  xy: 392, 45
+  size: 168, 337
+  orig: 168, 337
+  offset: 0, 0
+  index: -1
+f7
+  rotate: false
+  xy: 2, 33
+  size: 198, 349
+  orig: 198, 349
+  offset: 0, 0
+  index: -1
+f8
+  rotate: false
+  xy: 562, 13
+  size: 137, 369
+  orig: 137, 369
+  offset: 0, 0
+  index: -1
+f9
+  rotate: false
+  xy: 837, 2
+  size: 126, 380
+  orig: 126, 380
+  offset: 0, 0
+  index: -1

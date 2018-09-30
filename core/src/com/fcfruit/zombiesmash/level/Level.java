@@ -9,29 +9,17 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.brains.Brain;
-import com.fcfruit.zombiesmash.effects.BleedBlood;
-import com.fcfruit.zombiesmash.effects.GroundBlood;
-import com.fcfruit.zombiesmash.effects.helicopter.Helicopter;
-import com.fcfruit.zombiesmash.entity.ParticleEntity;
-import com.fcfruit.zombiesmash.entity.interfaces.DestroyableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
-import com.fcfruit.zombiesmash.entity.interfaces.PhysicsEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.zombiesmash.physics.Physics;
-import com.fcfruit.zombiesmash.powerups.grenade.Grenade;
-import com.fcfruit.zombiesmash.powerups.grenade.GrenadePowerup;
-import com.fcfruit.zombiesmash.powerups.rocket.Rocket;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.EmptyStackException;
 import java.util.HashMap;
 
 /**
@@ -88,6 +76,11 @@ public class Level
 
         this.loaded_spawners = new ArrayList<Spawner>();
         this.spawners = new ArrayList<Spawner>();
+
+        /*Message tempMessage = new Message();
+        tempMessage.setContent("Hey There!\nNew Line!\nAnother Line!\nSo Many New Lines!\n HI\n\n\n\\n\n\n\n\n\n\n\n\n\n\naaaaaassssssssssssssssssssssssssssssssssssa");
+        Environment.drawableAddQueue.add(tempMessage);
+        this.addInputCaptureEntity(tempMessage);*/
     }
 
     public void create()
@@ -342,7 +335,6 @@ public class Level
         // Reverse to prevent switching of draw order
         Collections.reverse(copy);
 
-        int last_0ground = -1;
         for(DrawableEntityInterface drawableEntityInterface : copy)
         {
             if(drawableEntityInterface instanceof MultiGroundEntityInterface)
@@ -352,7 +344,6 @@ public class Level
                 {
                     this.drawableEntities.remove(drawableEntityInterface);
                     this.drawableEntities.add(0, drawableEntityInterface);
-                    last_0ground += 1;
                 }
             }
         }
@@ -361,19 +352,12 @@ public class Level
         // Reverse to prevent switching of draw order
         Collections.reverse(copy);
 
-        int last_1ground = -1;
         for(DrawableEntityInterface drawableEntityInterface : copy)
         {
             if(drawableEntityInterface instanceof MultiGroundEntityInterface)
             {
                 MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
-                if(multiGroundEntityInterface.getCurrentGround() == 1 && last_0ground != -1)
-                {
-                    this.drawableEntities.remove(drawableEntityInterface);
-                    this.drawableEntities.add(last_0ground, drawableEntityInterface);
-                    last_1ground += 1;
-                }
-                else if(last_0ground == -1)
+                if(multiGroundEntityInterface.getCurrentGround() == 1)
                 {
                     this.drawableEntities.remove(drawableEntityInterface);
                     this.drawableEntities.add(0, drawableEntityInterface);
@@ -390,21 +374,13 @@ public class Level
             if(drawableEntityInterface instanceof MultiGroundEntityInterface)
             {
                 MultiGroundEntityInterface multiGroundEntityInterface = (MultiGroundEntityInterface) drawableEntityInterface;
-                if(multiGroundEntityInterface.getCurrentGround() == 2 && last_1ground != -1)
-                {
-                    this.drawableEntities.remove(drawableEntityInterface);
-                    this.drawableEntities.add(last_1ground, drawableEntityInterface);
-                    last_1ground += 1;
-                }
-                else if(last_1ground == -1)
+                if(multiGroundEntityInterface.getCurrentGround() == 2)
                 {
                     this.drawableEntities.remove(drawableEntityInterface);
                     this.drawableEntities.add(0, drawableEntityInterface);
                 }
             }
         }
-
-
 
     }
 
