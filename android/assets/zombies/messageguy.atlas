@@ -1,0 +1,62 @@
+
+messageguy.png
+size: 2048,1024
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+head
+  rotate: false
+  xy: 2, 222
+  size: 648, 775
+  orig: 648, 775
+  offset: 0, 0
+  index: -1
+head2
+  rotate: false
+  xy: 652, 222
+  size: 648, 775
+  orig: 648, 775
+  offset: 0, 0
+  index: -1
+mouth1
+  rotate: false
+  xy: 2, 2
+  size: 195, 63
+  orig: 195, 63
+  offset: 0, 0
+  index: -1
+mouth2
+  rotate: false
+  xy: 1302, 848
+  size: 248, 149
+  orig: 248, 149
+  offset: 0, 0
+  index: -1
+mouth3
+  rotate: false
+  xy: 1552, 901
+  size: 96, 96
+  orig: 96, 96
+  offset: 0, 0
+  index: -1
+mouth4
+  rotate: false
+  xy: 1302, 757
+  size: 166, 89
+  orig: 166, 89
+  offset: 0, 0
+  index: -1
+mouth5
+  rotate: false
+  xy: 2, 67
+  size: 245, 153
+  orig: 245, 153
+  offset: 0, 0
+  index: -1
+mouth6
+  rotate: false
+  xy: 249, 67
+  size: 203, 153
+  orig: 203, 153
+  offset: 0, 0
+  index: -1
