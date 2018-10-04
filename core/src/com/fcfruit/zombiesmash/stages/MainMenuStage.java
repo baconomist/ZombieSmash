@@ -1,159 +1,169 @@
 package com.fcfruit.zombiesmash.stages;
 
+
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
-import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.badlogic.gdx.physics.box2d.Body;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
+import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
-import com.badlogic.gdx.utils.JsonReader;
-import com.badlogic.gdx.utils.JsonValue;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.esotericsoftware.spine.AnimationState;
+import com.esotericsoftware.spine.AnimationStateData;
+import com.esotericsoftware.spine.Skeleton;
+import com.esotericsoftware.spine.SkeletonData;
+import com.esotericsoftware.spine.SkeletonJson;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.screens.MainMenu;
+import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
+import com.fcfruit.zombiesmash.entity.OptimizableEntity;
+import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.zombiesmash.physics.PhysicsData;
+import com.fcfruit.zombiesmash.zombies.MenuRegZombie;
+import com.fcfruit.zombiesmash.zombies.RegZombie;
+
+import org.apache.tools.ant.taskdefs.Java;
+
 
 /**
  * Created by Lucas on 2017-12-14.
  */
 
-public class MainMenuStage extends Stage {
+public class MainMenuStage extends RubeStage
+{
 
-    MainMenu mainMenu;
+    private MenuRegZombie regZombie;
+    private SpriteBatch spriteBatch;
+    private SkeletonRenderer skeletonRenderer;
 
-    Sprite background;
+    private Array<DrawableEntityInterface> drawableEntities;
 
-    SpriteBatch spriteBatch;
+    public MainMenuStage(Viewport viewport, String rubeSceneFilePath, String rootPath, boolean physics)
+    {
+        super(viewport, rubeSceneFilePath, rootPath, physics);
 
-    //Json json = new Json();
+        this.regZombie = new MenuRegZombie();
+        this.regZombie.setup();
+        this.regZombie.setAnimation("idle");
 
-    boolean touching = false;
+        String name;
+        for(Body body : this.getRubeScene().getBodies())
+        {
+            name = (String) this.getRubeScene().getCustom(body, "name");
+            if(name.equals("zombie_pos"))
+                this.regZombie.setPosition(body.getPosition());
+            else if(name.equals("zombie_ground"))
+                body.setUserData(new PhysicsData("ground"));
+        }
 
-    Vector2 pos = new Vector2();
+        this.spriteBatch = new SpriteBatch();
+        this.skeletonRenderer = new SkeletonRenderer();
 
-    ImageButton ui = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/mute_button.png")))));
+        this.drawableEntities = new Array<DrawableEntityInterface>();
 
-    ImageButton play_button;
-    ImageButton settings_button;
-    ImageButton mute_button;
-    ImageButton rate_button;
-
-    public boolean mute = false;
-
-    private JsonReader json;
-    private JsonValue data;
-
-    public MainMenuStage(Viewport v, MainMenu m){
-        super(v);
-
-        mainMenu = m;
-
-        background = new Sprite(new Texture(Gdx.files.internal("gui/main_menu/background.png")));
-        background.setSize(1920, 1080);
-
-        spriteBatch = new SpriteBatch();
-
-        json = new JsonReader();
-        data = json.parse(Gdx.files.internal("gui/main_menu/main_menu.json"));
-
-        play_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/play_button.png")))));
-        play_button.setPosition(data.get("play_button").getFloat("x"), data.get("play_button").getFloat("y"));
-        play_button.addListener(new ClickListener(){
+        this.findActor("play_button").addListener(new ClickListener(){
             @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                Environment.game.setScreen(new com.fcfruit.zombiesmash.screens.LevelSelect());
-                return super.touchDown(event, x, y, pointer, button);
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                Environment.setupGame(2);
+                Environment.game.setScreen(Environment.screens.gamescreen);
+                System.gc();
+                super.touchUp(event, x, y, pointer, button);
             }
         });
-
-        settings_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/settings_button.png")))));
-        settings_button.setPosition(data.get("settings_button").getFloat("x"), data.get("settings_button").getFloat("y"));
-        settings_button.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                mainMenu.show_settings_stage = true;
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-
-        mute_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/mute_button.png")))), null, new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/mute.png")))));
-        mute_button.setPosition(data.get("mute_button").getFloat("x"), data.get("mute_button").getFloat("y"));
-        mute_button.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                mute = !mute;
-                if(mute){
-                    mute_button.setChecked(false);
-                }
-                else{
-                    mute_button.setChecked(true);
-                }
-
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-
-        rate_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/main_menu/rate_button.png")))));
-        rate_button.setPosition(data.get("rate_button").getFloat("x"), data.get("rate_button").getFloat("y"));
-        rate_button.addListener(new ClickListener(){
-            @Override
-            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button) {
-                return super.touchDown(event, x, y, pointer, button);
-            }
-        });
-
-
-
-        //addActor(screens);
-        addActor(play_button);
-        addActor(settings_button);
-        addActor(mute_button);
-        addActor(rate_button);
-
     }
 
-
-
     @Override
-    public void draw() {
-
-        spriteBatch.setProjectionMatrix(getViewport().getCamera().combined);
-        spriteBatch.begin();
-        background.draw(spriteBatch);
-        spriteBatch.end();
-
-       /* pos.x = screens.getX();
-        pos.y = screens.getY();*/
-
+    public void draw()
+    {
         super.draw();
+        spriteBatch.setProjectionMatrix(this.getViewport().getCamera().combined);
+        spriteBatch.begin();
+            this.regZombie.draw(spriteBatch, skeletonRenderer);
+            for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+            {
+                drawableEntityInterface.draw(spriteBatch);
+                drawableEntityInterface.draw(spriteBatch, skeletonRenderer);
+            }
+        spriteBatch.end();
     }
 
     @Override
-    public boolean keyDown(int keyCode) {
-        /*json.setOutputType(JsonWriter.OutputType.json);
-        Gdx.files.local("gui/main_menu/main_menu.json").writeString(json.prettyPrint(pos), true);
-        Gdx.app.debug("write", ""+pos.x + " " + pos.y);*/
-        return super.keyDown(keyCode);
+    public void act(float delta)
+    {
+        super.act(delta);
+        this.regZombie.update(delta);
+
+        for(DrawableEntityInterface drawableEntityInterface : Environment.drawableBackgroundAddQueue)
+        {
+            this.drawableEntities.add(drawableEntityInterface);
+        }
+        Environment.drawableBackgroundAddQueue.clear();
+
+        for(DrawableEntityInterface drawableEntityInterface : Environment.drawableAddQueue)
+        {
+            this.drawableEntities.add(drawableEntityInterface);
+        }
+        Environment.drawableAddQueue.clear();
+
+        for(DrawableEntityInterface drawableEntityInterface : Environment.drawableRemoveQueue)
+        {
+            this.drawableEntities.removeValue(drawableEntityInterface, true);
+        }
+        Environment.drawableRemoveQueue.clear();
+
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            drawableEntityInterface.update(delta);
+            if(drawableEntityInterface instanceof OptimizableEntityInterface)
+                // Disable optimization for parts to prevent destroyableEntity from destroying detached zombie parts
+                ((OptimizableEntityInterface) drawableEntityInterface).disable_optimization();
+        }
     }
 
     @Override
-    public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        //screens.setPosition(screenX, getViewport().getScreenHeight() - screenY);
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
+        Environment.touchedDownItems.clear();
+
+        this.regZombie.onTouchDown(screenX, screenY, pointer);
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            if(drawableEntityInterface instanceof InteractiveEntityInterface)
+                ((InteractiveEntityInterface) drawableEntityInterface).onTouchDown(screenX, screenY, pointer);
+        }
         return super.touchDown(screenX, screenY, pointer, button);
     }
 
     @Override
-    public boolean touchDragged(int screenX, int screenY, int pointer) {
-        //screens.setPosition(screenX, getViewport().getScreenHeight() - screenY);
+    public boolean touchDragged(int screenX, int screenY, int pointer)
+    {
+        this.regZombie.onTouchDragged(screenX, screenY, pointer);
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            if(drawableEntityInterface instanceof InteractiveEntityInterface)
+                ((InteractiveEntityInterface) drawableEntityInterface).onTouchDragged(screenX, screenY, pointer);
+        }
         return super.touchDragged(screenX, screenY, pointer);
     }
 
     @Override
-    public boolean touchUp(int screenX, int screenY, int pointer, int button) {
+    public boolean touchUp(int screenX, int screenY, int pointer, int button)
+    {
+        this.regZombie.onTouchUp(screenX, screenY, pointer);
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            if(drawableEntityInterface instanceof InteractiveEntityInterface)
+                ((InteractiveEntityInterface) drawableEntityInterface).onTouchUp(screenX, screenY, pointer);
+        }
         return super.touchUp(screenX, screenY, pointer, button);
     }
 }

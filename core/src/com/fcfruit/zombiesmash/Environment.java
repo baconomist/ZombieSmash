@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -83,9 +84,9 @@ public class Environment
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
         assets.load("effects/blood/ground_blood/ground_blood.atlas", TextureAtlas.class);
 
-        for(int i = 1; i < 4; i++)
+        for (int i = 1; i < 4; i++)
         {
-            assets.load("brains/brain"+i+".png", Texture.class);
+            assets.load("brains/brain" + i + ".png", Texture.class);
         }
         assets.load("brains/brain_crate.atlas", TextureAtlas.class);
 
@@ -99,6 +100,7 @@ public class Environment
         assets.load("effects/explosion/explosion.atlas", TextureAtlas.class);
         assets.load("effects/fire/fire.atlas", TextureAtlas.class);
 
+        assets.load("ui/game_ui/message_box/message_guy/message_guy.atlas", TextureAtlas.class);
     }
 
     public static Level level;
@@ -142,7 +144,8 @@ public class Environment
     public static ArrayList<UpdatableEntityInterface> updatableAddQueue = new ArrayList<UpdatableEntityInterface>();
     public static ArrayList<UpdatableEntityInterface> updatableRemoveQueue = new ArrayList<UpdatableEntityInterface>();
 
-    public static void setupGame(int levelid){
+    public static void setupGame(int levelid)
+    {
 
         load_assets();
 
@@ -163,10 +166,23 @@ public class Environment
         setupLevel(levelid);
     }
 
+    public static void setupGame(OrthographicCamera gameCam, OrthographicCamera physicsCam)
+    {
+        load_assets();
+
+        gameCamera = gameCam;
+        physicsCamera = physicsCam;
+
+        physics = new Physics();
+
+        // Pools
+        bleedableBloodPool = new BleedableBloodPool();
+    }
+
     private static void setupGameCamera()
     {
         gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
-        gameCamera.position.set(Environment.gameCamera.viewportWidth/2, Environment.gameCamera.viewportHeight/2, 0);
+        gameCamera.position.set(Environment.gameCamera.viewportWidth / 2, Environment.gameCamera.viewportHeight / 2, 0);
 
         gameCamera.update();
 
@@ -180,7 +196,7 @@ public class Environment
         // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
         // Also cam.project(worldpos) is x and y from bottom left corner
         // But cam.unproject(screenpos) is x and y from top left corner
-        physicsCamera.position.set(Environment.physicsCamera.viewportWidth/2, Environment.physicsCamera.viewportHeight/2, 0);
+        physicsCamera.position.set(Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight / 2, 0);
 
         physicsCamera.update();
 
@@ -201,10 +217,10 @@ public class Environment
             gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
             gameCamera.update();
             physics.constructPhysicsBoundaries();
+        } catch (Exception e)
+        {
         }
-        catch (Exception e){}
     }
-
 
 
     public static void create()

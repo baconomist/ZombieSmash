@@ -86,7 +86,7 @@ public class Part implements DrawableEntityInterface, DetachableEntityInterface,
     public void detach()
     {
         this.detachableEntity.detach();
-        Environment.level.addDrawableEntity(this);
+        Environment.drawableAddQueue.add(this);
 
         this.enable_bleeding();
         this.enable_optimization();

@@ -48,8 +48,6 @@ public class Physics
     //private Body wall_1;
     //private Body wall_2;
 
-    public RubeScene scene;
-
     public Physics()
     {
 

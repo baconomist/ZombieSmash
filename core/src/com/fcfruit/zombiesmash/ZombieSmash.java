@@ -43,10 +43,10 @@ public class ZombieSmash extends Game
 
         Environment.create();
 
-        //this.setScreen(Environment.screens.mainmenu);
+        this.setScreen(Environment.screens.mainmenu);
 
-        Environment.setupGame(2);
-        this.setScreen(Environment.screens.gamescreen);
+        //Environment.setupGame(2);
+        //this.setScreen(Environment.screens.gamescreen);
 
     }
 

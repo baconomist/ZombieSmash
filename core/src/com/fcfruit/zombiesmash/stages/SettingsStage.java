@@ -46,12 +46,12 @@ public class SettingsStage extends Stage {
         mainMenu = m;
 
         json = new JsonReader();
-        data = json.parse(Gdx.files.internal("gui/settings/settings.json"));
+        data = json.parse(Gdx.files.internal("ui/settings/settings.json"));
 
-        background = new Sprite(new Texture(Gdx.files.internal("gui/settings/background.png")));
+        background = new Sprite(new Texture(Gdx.files.internal("ui/settings/background.png")));
 
 
-        gore_on = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/settings/gore_on.png")))));
+        gore_on = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/settings/gore_on.png")))));
         gore_on.setPosition(data.get("gore_on").getFloat("x"), data.get("gore_on").getFloat("y"));
         gore_on.addListener(new ClickListener(){
 
@@ -62,7 +62,7 @@ public class SettingsStage extends Stage {
             }
         });
 
-        gore_off = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/settings/gore_off.png")))));
+        gore_off = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/settings/gore_off.png")))));
         gore_off.setPosition(data.get("gore_off").getFloat("x"), data.get("gore_off").getFloat("y"));
         gore_off.addListener(new ClickListener(){
 
@@ -73,10 +73,10 @@ public class SettingsStage extends Stage {
             }
         });
 
-        selector = new Sprite(new Texture(Gdx.files.internal("gui/settings/selector.png")));
+        selector = new Sprite(new Texture(Gdx.files.internal("ui/settings/selector.png")));
         selector.setPosition(gore_on.getX() + gore_on.getWidth()/2 - selector.getWidth()/2, gore_on.getY() + gore_on.getHeight());
 
-        backButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/settings/back_button.png")))));
+        backButton = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/settings/back_button.png")))));
         backButton.setPosition(data.get("back_button").getFloat("x"), data.get("back_button").getFloat("y"));
         backButton.addListener(new ClickListener(){
             @Override
@@ -86,7 +86,7 @@ public class SettingsStage extends Stage {
             }
         });
 
-        volume_slider = new com.fcfruit.zombiesmash.ui.Slider(new Sprite(new Texture(Gdx.files.internal("gui/settings/volume.png"))), new Sprite(new Texture(Gdx.files.internal("gui/settings/volume.png"))));
+        volume_slider = new com.fcfruit.zombiesmash.ui.Slider(new Sprite(new Texture(Gdx.files.internal("ui/settings/volume.png"))), new Sprite(new Texture(Gdx.files.internal("ui/settings/volume.png"))));
         volume_slider.setPosition(data.get("volume_slider").getFloat("x"), data.get("volume_slider").getFloat("y"));
 
         spriteBatch = new SpriteBatch();
