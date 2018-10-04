@@ -28,6 +28,8 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
 
     public boolean enabled = false;
 
+    public Sprite sprite;
+
     private DrawablePhysicsEntity drawablePhysicsEntity;
     private Body physicsBody;
     private Fixture fixture;
@@ -54,7 +56,7 @@ public class BleedBlood implements DrawableEntityInterface, PhysicsEntityInterfa
         fixture = this.physicsBody.createFixture(fixtureDef);
         fixture.setUserData(new PhysicsData(this));
 
-        Sprite sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class).findRegion(""+(new Random().nextInt(13)+1)));
+        sprite = new Sprite(Environment.assets.get("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class).findRegion(""+(new Random().nextInt(13)+1)));
         sprite.setScale(0.5f);
         this.drawablePhysicsEntity = new DrawablePhysicsEntity(sprite, this.physicsBody);
 
