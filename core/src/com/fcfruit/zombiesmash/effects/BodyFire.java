@@ -39,7 +39,7 @@ public class BodyFire implements DrawableEntityInterface
         AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
 
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
-        this.animatableGraphicsEntity.setAnimation("single_flame");
+        this.animatableGraphicsEntity.setAnimation("fire");
     }
 
     public void enable(BurnableEntityInterface burnableEntityInterface)

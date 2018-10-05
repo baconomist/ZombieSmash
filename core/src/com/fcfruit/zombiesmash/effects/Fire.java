@@ -72,7 +72,7 @@ public class Fire implements DrawableEntityInterface, PhysicsEntityInterface, In
         AnimationState state = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
 
         this.animatablePhysicsEntity = new AnimatablePhysicsEntity(skeleton, state, atlas, this.physicsBody);
-        this.animatablePhysicsEntity.setAnimation("single_flame");
+        this.animatablePhysicsEntity.setAnimation("fire");
 
 
         Vector3 size = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(this.getSize(), 0)));

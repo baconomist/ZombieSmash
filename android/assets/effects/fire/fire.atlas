@@ -1,76 +1,76 @@
 
 fire.png
-size: 2048,512
+size: 1024,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-f1
+flame1
   rotate: false
-  xy: 1127, 104
-  size: 162, 278
-  orig: 162, 278
+  xy: 538, 350
+  size: 185, 233
+  orig: 185, 233
   offset: 0, 0
   index: -1
-f10
+flame10
   rotate: false
-  xy: 701, 12
-  size: 134, 370
-  orig: 134, 370
+  xy: 419, 31
+  size: 147, 284
+  orig: 147, 284
   offset: 0, 0
   index: -1
-f2
+flame2
   rotate: false
-  xy: 1291, 125
-  size: 146, 257
-  orig: 146, 257
+  xy: 298, 317
+  size: 238, 248
+  orig: 238, 248
   offset: 0, 0
   index: -1
-f3
+flame3
   rotate: false
-  xy: 1439, 119
-  size: 138, 263
-  orig: 138, 263
+  xy: 2, 297
+  size: 294, 268
+  orig: 294, 268
   offset: 0, 0
   index: -1
-f4
+flame4
   rotate: false
-  xy: 965, 69
-  size: 160, 313
-  orig: 160, 313
+  xy: 631, 590
+  size: 316, 284
+  orig: 316, 284
   offset: 0, 0
   index: -1
-f5
+flame5
   rotate: false
-  xy: 202, 32
-  size: 188, 350
-  orig: 188, 350
+  xy: 2, 567
+  size: 306, 307
+  orig: 306, 307
   offset: 0, 0
   index: -1
-f6
+flame6
   rotate: false
-  xy: 392, 45
-  size: 168, 337
-  orig: 168, 337
+  xy: 310, 585
+  size: 319, 289
+  orig: 319, 289
   offset: 0, 0
   index: -1
-f7
+flame7
   rotate: false
-  xy: 2, 33
-  size: 198, 349
-  orig: 198, 349
+  xy: 2, 5
+  size: 210, 290
+  orig: 210, 290
   offset: 0, 0
   index: -1
-f8
+flame8
   rotate: false
-  xy: 562, 13
-  size: 137, 369
-  orig: 137, 369
+  xy: 214, 2
+  size: 203, 293
+  orig: 203, 293
   offset: 0, 0
   index: -1
-f9
+flame9
   rotate: false
-  xy: 837, 2
-  size: 126, 380
-  orig: 126, 380
+  xy: 568, 65
+  size: 171, 283
+  orig: 171, 283
   offset: 0, 0
   index: -1
