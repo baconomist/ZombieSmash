@@ -1,0 +1,858 @@
+
+{
+	"allowSleep" : true,
+	"autoClearForces" : true,
+	"body" : 
+	[
+		
+		{
+			"angle" : 0.2280140072107315,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "left_arm"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture4",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.8494533896446228,
+								-0.7677621245384216,
+								-0.6264054775238037,
+								0.6589117050170898
+							],
+							"y" : 
+							[
+								0.03187859803438187,
+								0.3063085377216339,
+								-0.06285643577575684,
+								-0.2765737771987915
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.09615945816040039,
+			"massData-center" : 
+			{
+				"x" : 0.02729268930852413,
+				"y" : 0.006443320773541927
+			},
+			"massData-mass" : 0.4977040290832520,
+			"name" : "body4",
+			"position" : 
+			{
+				"x" : 0.2819859981536865,
+				"y" : 2.651760101318359
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.624940037727356,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "left_leg"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture2",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.8425013422966003,
+								-0.8451495170593262,
+								-0.8902711272239685,
+								0.5777634978294373
+							],
+							"y" : 
+							[
+								0.2431633621454239,
+								0.4749366044998169,
+								-0.006633833050727844,
+								-0.06495714932680130
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.1735773831605911,
+			"massData-center" : 
+			{
+				"x" : -0.1257773339748383,
+				"y" : 0.1719458699226379
+			},
+			"massData-mass" : 0.6454763412475586,
+			"name" : "body2",
+			"position" : 
+			{
+				"x" : 0.5708160400390625,
+				"y" : 0.8960879445075989
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.562260031700134,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "torso"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"friction" : 0.2,
+					"name" : "fixture1",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.7050485610961914,
+								0.5333399176597595,
+								-0.7761505842208862,
+								-0.7142264246940613
+							],
+							"y" : 
+							[
+								-0.5873378515243530,
+								0.5622407197952271,
+								0.4061644971370697,
+								-0.5419186949729919
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.3627755343914032,
+			"massData-center" : 
+			{
+				"x" : -0.04015139862895012,
+				"y" : -0.04488155990839005
+			},
+			"massData-mass" : 1.437469959259033,
+			"name" : "body1",
+			"position" : 
+			{
+				"x" : 1.168730497360230,
+				"y" : 2.247542858123779
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 3.027309894561768,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "right_arm"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture0",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.8207341432571411,
+								0.6793856024742127,
+								-0.8145061135292053,
+								-0.5102475285530090
+							],
+							"y" : 
+							[
+								-0.05522076413035393,
+								0.2837655246257782,
+								0.07536666095256805,
+								-0.284741610288620
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.1007268950343132,
+			"massData-center" : 
+			{
+				"x" : 0.02784154564142227,
+				"y" : 0.005394160747528076
+			},
+			"massData-mass" : 0.5424984097480774,
+			"name" : "body0",
+			"position" : 
+			{
+				"x" : 2.176818370819092,
+				"y" : 2.695902109146118
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.494590044021606,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "right_leg"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 2,
+					"filter-maskBits" : 65529,
+					"friction" : 0.2,
+					"name" : "fixture3",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.9025399088859558,
+								0.8893762230873108,
+								-0.7917224764823914,
+								-0.8715303540229797
+							],
+							"y" : 
+							[
+								-0.2641626596450806,
+								0.2869801819324493,
+								0.3927604854106903,
+								-0.1053148061037064
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.2556925117969513,
+			"massData-center" : 
+			{
+				"x" : 0.04455962032079697,
+				"y" : 0.07417857646942139
+			},
+			"massData-mass" : 0.9107154607772827,
+			"name" : "body3",
+			"position" : 
+			{
+				"x" : 1.393126249313355,
+				"y" : 0.8888880014419556
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : -1.335780024528503,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "head"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "isPart"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 1,
+					"filter-categoryBits" : 4,
+					"filter-maskBits" : 65533,
+					"friction" : 0.2,
+					"name" : "fixture5",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								0.6364058256149292,
+								-0.1016076654195786,
+								-0.7542660832405090,
+								-0.4824817776679993
+							],
+							"y" : 
+							[
+								-0.4569441080093384,
+								0.7139986753463745,
+								0.004807098768651485,
+								-0.6186500191688538
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.1997459679841995,
+			"massData-center" : 
+			{
+				"x" : -0.1195512861013413,
+				"y" : -0.07504636794328690
+			},
+			"massData-mass" : 1.014573097229004,
+			"name" : "body5",
+			"position" : 
+			{
+				"x" : 1.034318685531616,
+				"y" : 3.560720920562744
+			},
+			"type" : 2
+		}
+	],
+	"collisionbitplanes" : 
+	{
+		"names" : 
+		[
+			"bitplane1",
+			"bitplane2",
+			"bitplane3",
+			"bitplane4",
+			"bitplane5",
+			"bitplane6",
+			"bitplane7",
+			"bitplane8",
+			"bitplane9",
+			"bitplane10",
+			"bitplane11",
+			"bitplane12",
+			"bitplane13",
+			"bitplane14",
+			"bitplane15",
+			"bitplane16",
+			"bitplane17",
+			"bitplane18",
+			"bitplane19",
+			"bitplane20",
+			"bitplane21",
+			"bitplane22",
+			"bitplane23",
+			"bitplane24",
+			"bitplane25",
+			"bitplane26",
+			"bitplane27",
+			"bitplane28",
+			"bitplane29",
+			"bitplane30",
+			"bitplane31",
+			"bitplane32"
+		]
+	},
+	"continuousPhysics" : true,
+	"gravity" : 
+	{
+		"x" : 0,
+		"y" : -10
+	},
+	"image" : 
+	[
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 5,
+			"center" : 
+			{
+				"x" : 4.247619074249087e-007,
+				"y" : 4.983612811315652e-008
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.7581740021705627,
+					0.7581750154495239,
+					0.7581748366355896,
+					-0.7581741213798523
+				],
+				"y" : 
+				[
+					-0.7126840353012085,
+					-0.7126839160919190,
+					0.7126841545104981,
+					0.7126840353012085
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/reg_zombie/images/head.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.7581740021705627,
+				-0.7126840353012085,
+				0.7581750154495239,
+				-0.7126839160919190,
+				0.7581748366355896,
+				0.7126841545104981,
+				-0.7581741213798523,
+				0.7126840353012085
+			],
+			"name" : "image1",
+			"opacity" : 0.5,
+			"scale" : -1.425368070602417
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 3,
+			"center" : 
+			{
+				"x" : 2.583977121162207e-008,
+				"y" : 1.600592867134765e-007
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.8617762923240662,
+					0.8617764115333557,
+					0.8617763519287109,
+					-0.8617763519287109
+				],
+				"y" : 
+				[
+					-0.2852141559123993,
+					-0.2852140069007874,
+					0.2852144837379456,
+					0.2852143347263336
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/reg_zombie/images/right_arm.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.8617762923240662,
+				-0.2852141559123993,
+				0.8617764115333557,
+				-0.2852140069007874,
+				0.8617763519287109,
+				0.2852144837379456,
+				-0.8617763519287109,
+				0.2852143347263336
+			],
+			"name" : "image4",
+			"opacity" : 0.5,
+			"scale" : -0.5704284906387329
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 2,
+			"center" : 
+			{
+				"x" : -1.566995564417084e-007,
+				"y" : 2.175869440179667e-007
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.9029874801635742,
+					0.9029872417449951,
+					0.9029871225357056,
+					-0.9029875397682190
+				],
+				"y" : 
+				[
+					-0.6092070937156677,
+					-0.6092069149017334,
+					0.6092075109481812,
+					0.6092073321342468
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/reg_zombie/images/torso.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.9029874801635742,
+				-0.6092070937156677,
+				0.9029872417449951,
+				-0.6092069149017334,
+				0.9029871225357056,
+				0.6092075109481812,
+				-0.9029875397682190,
+				0.6092073321342468
+			],
+			"name" : "image6",
+			"opacity" : 0.5,
+			"scale" : -1.218414425849915
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 1,
+			"center" : 
+			{
+				"x" : 1.148829564812104e-008,
+				"y" : 5.138215897204645e-008
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.8978458642959595,
+					0.8978459835052490,
+					0.8978458642959595,
+					-0.8978459239006043
+				],
+				"y" : 
+				[
+					-0.4731890857219696,
+					-0.4731889367103577,
+					0.4731891751289368,
+					0.4731890261173248
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/reg_zombie/images/left_leg.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.8978458642959595,
+				-0.4731890857219696,
+				0.8978459835052490,
+				-0.4731889367103577,
+				0.8978458642959595,
+				0.4731891751289368,
+				-0.8978459239006043,
+				0.4731890261173248
+			],
+			"name" : "image3",
+			"opacity" : 0.5,
+			"scale" : -0.9463781118392944
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 4,
+			"center" : 
+			{
+				"x" : 7.713932603792273e-008,
+				"y" : 1.359819634672022e-007
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.9067831039428711,
+					0.9067832827568054,
+					0.9067832231521606,
+					-0.9067831635475159
+				],
+				"y" : 
+				[
+					-0.3907518982887268,
+					-0.3907517492771149,
+					0.3907521665096283,
+					0.3907520174980164
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/reg_zombie/images/right_leg.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.9067831039428711,
+				-0.3907518982887268,
+				0.9067832827568054,
+				-0.3907517492771149,
+				0.9067832231521606,
+				0.3907521665096283,
+				-0.9067831635475159,
+				0.3907520174980164
+			],
+			"name" : "image5",
+			"opacity" : 0.5,
+			"scale" : -0.7815039157867432
+		},
+		
+		{
+			"angle" : 3.141592741012573,
+			"aspectScale" : 1,
+			"body" : 0,
+			"center" : 
+			{
+				"x" : 2.607127385090280e-007,
+				"y" : -1.935404014830056e-007
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.8493865132331848,
+					0.8493871092796326,
+					0.8493870496749878,
+					-0.8493865728378296
+				],
+				"y" : 
+				[
+					-0.3088681995868683,
+					-0.3088680505752564,
+					0.3088678121566773,
+					0.3088676631450653
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/reg_zombie/images/left_arm.png",
+			"filter" : 1,
+			"flip" : true,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 1, 0.0, 0.0, 0.0, 0.0, 1, 1, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.8493865132331848,
+				-0.3088681995868683,
+				0.8493871092796326,
+				-0.3088680505752564,
+				0.8493870496749878,
+				0.3088678121566773,
+				-0.8493865728378296,
+				0.3088676631450653
+			],
+			"name" : "image2",
+			"opacity" : 0.5,
+			"scale" : -0.6177358627319336
+		}
+	],
+	"joint" : 
+	[
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.4182035923004150,
+				"y" : -0.3830930590629578
+			},
+			"anchorB" : 
+			{
+				"x" : 0.4895699918270111,
+				"y" : -0.1026191785931587
+			},
+			"bodyA" : 2,
+			"bodyB" : 0,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint3",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : 0.6283914446830750,
+				"y" : -0.3233315348625183
+			},
+			"anchorB" : 
+			{
+				"x" : -0.7344246506690979,
+				"y" : 0.2405627369880676
+			},
+			"bodyA" : 2,
+			"bodyB" : 1,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint0",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.4430463314056397,
+				"y" : 0.3833087980747223
+			},
+			"anchorB" : 
+			{
+				"x" : 0.6242393255233765,
+				"y" : 0.07372282445430756
+			},
+			"bodyA" : 2,
+			"bodyB" : 3,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint2",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : 0.5343839526176453,
+				"y" : 0.3062732517719269
+			},
+			"anchorB" : 
+			{
+				"x" : -0.8179222345352173,
+				"y" : 0.1491320878267288
+			},
+			"bodyA" : 2,
+			"bodyB" : 4,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint1",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.7028341293334961,
+				"y" : -0.02663248404860497
+			},
+			"anchorB" : 
+			{
+				"x" : 0.6175177097320557,
+				"y" : -0.04319955408573151
+			},
+			"bodyA" : 2,
+			"bodyB" : 5,
+			"enableLimit" : true,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : -1.120800018310547,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint4",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0.9592260122299194
+		}
+	],
+	"positionIterations" : 3,
+	"stepsPerSecond" : 60.0,
+	"subStepping" : false,
+	"velocityIterations" : 8,
+	"warmStarting" : true
+}

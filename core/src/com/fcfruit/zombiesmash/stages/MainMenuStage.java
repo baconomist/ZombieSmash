@@ -21,6 +21,8 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
+import com.fcfruit.zombiesmash.effects.BleedBlood;
+import com.fcfruit.zombiesmash.effects.GroundBlood;
 import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
 import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
@@ -105,12 +107,14 @@ public class MainMenuStage extends RubeStage
         for(DrawableEntityInterface drawableEntityInterface : Environment.drawableBackgroundAddQueue)
         {
             this.drawableEntities.add(drawableEntityInterface);
+            this.onDrawableAdd(drawableEntityInterface);
         }
         Environment.drawableBackgroundAddQueue.clear();
 
         for(DrawableEntityInterface drawableEntityInterface : Environment.drawableAddQueue)
         {
             this.drawableEntities.add(drawableEntityInterface);
+            this.onDrawableAdd(drawableEntityInterface);
         }
         Environment.drawableAddQueue.clear();
 
@@ -127,6 +131,14 @@ public class MainMenuStage extends RubeStage
                 // Disable optimization for parts to prevent destroyableEntity from destroying detached zombie parts
                 ((OptimizableEntityInterface) drawableEntityInterface).disable_optimization();
         }
+    }
+
+    private void onDrawableAdd(DrawableEntityInterface drawableEntityInterface)
+    {
+        if(drawableEntityInterface instanceof BleedBlood)
+            ((BleedBlood) drawableEntityInterface).sprite.setScale(3);
+        else if(drawableEntityInterface instanceof GroundBlood)
+            ((GroundBlood) drawableEntityInterface).getSprite().setScale(3);
     }
 
     @Override

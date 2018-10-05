@@ -233,7 +233,7 @@ public class MenuRegZombie implements DrawableEntityInterface, AnimatableEntityI
 
         com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader loader = new com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader(world);
         RubeScene rubeScene;
-        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/reg_zombie_flip_rube.json"));
+        rubeScene = loader.loadScene(Gdx.files.internal("zombies/reg_zombie/menu_reg_zombie_flip_rube.json"));
         // Remove old entities from world
         if (this.getDrawableEntities() != null)
         {
