@@ -13,6 +13,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
+import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.zombiesmash.ui.Message;
@@ -37,6 +38,7 @@ public class GameUIStage extends Stage
     ImageButton pause_button;
 
     SpriteBatch spriteBatch;
+    SkeletonRenderer skeletonRenderer;
 
     Sprite brainCountImage;
     BitmapFont brainCount;
@@ -49,16 +51,16 @@ public class GameUIStage extends Stage
     {
         super(v);
 
-        pow_btn_1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
+        pow_btn_1 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/game_ui/power_up_box.png")))));
         pow_btn_1.setPosition(0, getHeight() - pow_btn_1.getHeight());
 
-        pow_btn_2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
+        pow_btn_2 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/game_ui/power_up_box.png")))));
         pow_btn_2.setPosition(pow_btn_1.getWidth(), getHeight() - pow_btn_2.getHeight());
 
-        pow_btn_3 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
+        pow_btn_3 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/game_ui/power_up_box.png")))));
         pow_btn_3.setPosition(pow_btn_1.getWidth() * 2, getHeight() - pow_btn_3.getHeight());
 
-        pow_btn_4 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/power_up_box.png")))));
+        pow_btn_4 = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/game_ui/power_up_box.png")))));
         pow_btn_4.setPosition(pow_btn_1.getWidth() * 3, getHeight() - pow_btn_4.getHeight());
 
         addActor(pow_btn_1);
@@ -68,22 +70,23 @@ public class GameUIStage extends Stage
 
         this.powerUpButtons = new ImageButton[]{pow_btn_1, pow_btn_2, pow_btn_3, pow_btn_4};
 
-        pause_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("gui/game_ui/pause_button.png")))));
+        pause_button = new ImageButton(new TextureRegionDrawable(new TextureRegion(new Texture(Gdx.files.internal("ui/game_ui/pause_button.png")))));
         pause_button.setPosition(getWidth() - pause_button.getWidth(), getHeight() - pause_button.getHeight());
 
         addActor(pause_button);
 
-        healthBar = new Slider(new Sprite(new Texture(Gdx.files.internal("gui/game_ui/health_box.png"))),
-                new Sprite(new Texture(Gdx.files.internal("gui/game_ui/health_overlay.png"))));
+        healthBar = new Slider(new Sprite(new Texture(Gdx.files.internal("ui/game_ui/health_box.png"))),
+                new Sprite(new Texture(Gdx.files.internal("ui/game_ui/health_overlay.png"))));
         healthBar.setPosition(getWidth() - healthBar.getWidth() - pause_button.getWidth(), getHeight() - healthBar.getHeight());
 
         spriteBatch = new SpriteBatch();
+        skeletonRenderer = new SkeletonRenderer();
 
         brainCountImage = new Sprite(new Texture("brains/brain1.png"));
         brainCountImage.setSize(70, 70);
         brainCountImage.setPosition(getWidth() - brainCountImage.getWidth() * 3, getHeight() - pause_button.getHeight() - brainCountImage.getHeight());
 
-        brainCount = new BitmapFont(Gdx.files.internal("gui/defaultSkin/default.fnt"));
+        brainCount = new BitmapFont(Gdx.files.internal("ui/defaultSkin/default.fnt"));
         brainCount.getData().setScale(2);
 
         this.powerups = new PowerupInterface[4];
@@ -178,7 +181,8 @@ public class GameUIStage extends Stage
 
             if(this.message != null)
             {
-                this.message.draw(spriteBatch);
+                this.message.update(Gdx.graphics.getDeltaTime());
+                this.message.draw(spriteBatch, skeletonRenderer);
             }
         }
         spriteBatch.end();
