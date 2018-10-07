@@ -73,7 +73,6 @@ public class GameStage extends Stage
 
         if(!Environment.isPaused)
             Environment.physics.update(delta);
-        Environment.physics.draw();
 
         if(Config.DEBUG_POLYGONS)
         {

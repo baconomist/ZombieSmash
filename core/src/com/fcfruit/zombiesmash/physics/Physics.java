@@ -18,6 +18,8 @@ import com.fcfruit.zombiesmash.rube.RubeScene;
 
 import java.util.ArrayList;
 
+import javafx.scene.effect.Lighting;
+
 /**
  * Created by Lucas on 2017-07-21.
  */
@@ -36,8 +38,6 @@ public class Physics
     public static float STEP_TIME = 1f / 30f; // Needs to be changed for slow motion
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
-
-    private Lighting lighting;
 
     private World world;
 
@@ -58,14 +58,6 @@ public class Physics
 
         this.constructPhysicsBoundaries();
 
-        this.lighting = new Lighting(world);
-
-    }
-
-
-    public void draw()
-    {
-        this.lighting.draw();
     }
 
     public void update(float delta)
@@ -92,8 +84,6 @@ public class Physics
             this.destroyJoint(joint);
         }
         Environment.jointDestroyQueue.clear();
-
-        this.lighting.update();
 
         this.stepWorld(delta);
 

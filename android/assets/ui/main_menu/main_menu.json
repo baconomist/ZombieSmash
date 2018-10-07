@@ -167,6 +167,28 @@
 				
 				{
 					"name" : "name",
+					"string" : "zombie_pos"
+				}
+			],
+			"linearVelocity" : 0,
+			"name" : "body12",
+			"position" : 
+			{
+				"x" : 15.87880039215088,
+				"y" : 0.9116989970207214
+			},
+			"type" : 0
+		},
+		
+		{
+			"angle" : 0,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
 					"string" : "roof"
 				}
 			],
@@ -205,28 +227,6 @@
 			{
 				"x" : 9.93786621093750,
 				"y" : 11.68680572509766
-			},
-			"type" : 0
-		},
-		
-		{
-			"angle" : 0,
-			"angularVelocity" : 0,
-			"awake" : true,
-			"customProperties" : 
-			[
-				
-				{
-					"name" : "name",
-					"string" : "zombie_pos"
-				}
-			],
-			"linearVelocity" : 0,
-			"name" : "body12",
-			"position" : 
-			{
-				"x" : 15.87880039215088,
-				"y" : 0.9116989970207214
 			},
 			"type" : 0
 		},
@@ -298,7 +298,7 @@
 			[
 				
 				{
-					"density" : 0.02596215531229973,
+					"density" : 0.03817963972687721,
 					"friction" : 0.2,
 					"name" : "fixture10",
 					"polygon" : 
@@ -324,13 +324,13 @@
 				}
 			],
 			"linearVelocity" : 0,
-			"massData-I" : 1.256980061531067,
+			"massData-I" : 1.848500013351440,
 			"massData-center" : 
 			{
 				"x" : 2.414324853816652e-006,
 				"y" : 3.528262459440157e-005
 			},
-			"massData-mass" : 0.34,
+			"massData-mass" : 0.5,
 			"name" : "body10",
 			"position" : 
 			{
@@ -1269,7 +1269,7 @@
 					"string" : "play_button"
 				}
 			],
-			"file" : "../../../../raw-assets/ui/main_menu/images/play.png",
+			"file" : "../../../../raw-assets/ui/main_menu/images/play_button.png",
 			"filter" : 1,
 			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
 			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
@@ -1431,7 +1431,7 @@
 					"string" : "options_button"
 				}
 			],
-			"file" : "../../../../raw-assets/ui/main_menu/images/options.png",
+			"file" : "../../../../raw-assets/ui/main_menu/images/options_button.png",
 			"filter" : 1,
 			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
 			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
@@ -1589,7 +1589,7 @@
 					"string" : "store_button"
 				}
 			],
-			"file" : "../../../../raw-assets/ui/main_menu/images/store.png",
+			"file" : "../../../../raw-assets/ui/main_menu/images/store_button.png",
 			"filter" : 1,
 			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
 			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
@@ -1612,6 +1612,24 @@
 	],
 	"joint" : 
 	[
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.02028697729110718,
+				"y" : 0.1420087814331055
+			},
+			"anchorB" : 
+			{
+				"x" : -0.03226262331008911,
+				"y" : -0.1653299331665039
+			},
+			"bodyA" : 13,
+			"bodyB" : 15,
+			"maxLength" : 0.2,
+			"name" : "joint1",
+			"type" : "rope"
+		},
 		
 		{
 			"anchorA" : 0,
@@ -1742,42 +1760,6 @@
 		{
 			"anchorA" : 
 			{
-				"x" : 0.004093647003173828,
-				"y" : 0.2207117080688477
-			},
-			"anchorB" : 
-			{
-				"x" : 3.053769826889038,
-				"y" : -0.9021568298339844
-			},
-			"bodyA" : 10,
-			"bodyB" : 6,
-			"maxLength" : 0.06,
-			"name" : "joint6",
-			"type" : "rope"
-		},
-		
-		{
-			"anchorA" : 
-			{
-				"x" : -0.01475274562835693,
-				"y" : 0.1770334243774414
-			},
-			"anchorB" : 
-			{
-				"x" : -2.854969978332520,
-				"y" : -0.8138580322265625
-			},
-			"bodyA" : 12,
-			"bodyB" : 6,
-			"maxLength" : 0.06,
-			"name" : "joint7",
-			"type" : "rope"
-		},
-		
-		{
-			"anchorA" : 
-			{
 				"x" : -0.1059021949768066,
 				"y" : -0.2171039581298828
 			},
@@ -1818,6 +1800,42 @@
 		{
 			"anchorA" : 
 			{
+				"x" : 0.004093647003173828,
+				"y" : 0.2207117080688477
+			},
+			"anchorB" : 
+			{
+				"x" : 3.053769826889038,
+				"y" : -0.9021568298339844
+			},
+			"bodyA" : 10,
+			"bodyB" : 6,
+			"maxLength" : 0.06,
+			"name" : "joint6",
+			"type" : "rope"
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.01475274562835693,
+				"y" : 0.1770334243774414
+			},
+			"anchorB" : 
+			{
+				"x" : -2.854969978332520,
+				"y" : -0.8138580322265625
+			},
+			"bodyA" : 12,
+			"bodyB" : 6,
+			"maxLength" : 0.06,
+			"name" : "joint7",
+			"type" : "rope"
+		},
+		
+		{
+			"anchorA" : 
+			{
 				"x" : -0.01390171051025391,
 				"y" : 0.1588735580444336
 			},
@@ -1848,24 +1866,6 @@
 			"bodyB" : 7,
 			"maxLength" : 0.1,
 			"name" : "joint10",
-			"type" : "rope"
-		},
-		
-		{
-			"anchorA" : 
-			{
-				"x" : -0.02028697729110718,
-				"y" : 0.1420087814331055
-			},
-			"anchorB" : 
-			{
-				"x" : -0.03226262331008911,
-				"y" : -0.1653299331665039
-			},
-			"bodyA" : 13,
-			"bodyB" : 15,
-			"maxLength" : 0.2,
-			"name" : "joint1",
 			"type" : "rope"
 		}
 	],

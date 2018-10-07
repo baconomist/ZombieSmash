@@ -2,7 +2,7 @@ May need adjustment:
         Tomas either needs to make images to proportion/scale so he doesnt scale
         things in spine, or I write a png exporter from the running spine code
         for each limb so I can then use those pngs in rube to make accurate
-        physics bodies.
+        physicsEnabled bodies.
 
         You access the scale of spine image using
         ((RegionAttachment)skeleton.findSlot(bodyName).getAttachment()).getScaleX()
@@ -11,17 +11,17 @@ Issues:
 		
 
 		Medium:
-			Animation is a tiny bit smaller than physics bodies, need solution above
+			Animation is a tiny bit smaller than physicsEnabled bodies, need solution above
 			which is about he adjusting etc...
 
 			Currently, I have an offset to make spine animations a tiny bit bigger
-			so the difference between physics and animation body size is small, but
-			noticeable. But I cannot make spine animation size of physics bodies with
+			so the difference between physicsEnabled and animation body size is small, but
+			noticeable. But I cannot make spine animation size of physicsEnabled bodies with
 			scale because tomas did not scale proportionally. So even if I scale
-			the animation, the torso will be a bit wider on the physics side.
+			the animation, the torso will be a bit wider on the physicsEnabled side.
 			
 		Minor:
-			There is a rare glitch that happens whene you quickly grab a physics part, 
+			There is a rare glitch that happens whene you quickly grab a physicsEnabled part,
 			quickly release it while tapping on the screen with another finger.(Has to be done really really fast, hard to do)
 			It causes the mousejoitn to teleport to the other finger and thus the body too.
 		

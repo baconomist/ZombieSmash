@@ -158,7 +158,8 @@ public class Environment
 
         // Pools
         firePool = new FirePool();
-        bleedableBloodPool = new BleedableBloodPool();
+        if(Environment.settings.isGoreEnabled())
+            bleedableBloodPool = new BleedableBloodPool();
         particleEntityPool = new ParticleEntityPool();
         brainPool = new BrainPool();
         rocketPool = new RocketPool();

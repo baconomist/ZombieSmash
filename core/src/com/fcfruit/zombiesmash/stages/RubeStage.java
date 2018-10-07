@@ -1,9 +1,7 @@
 package com.fcfruit.zombiesmash.stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Batch;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -11,7 +9,6 @@ import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -20,28 +17,31 @@ import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
 import com.fcfruit.zombiesmash.rube.loader.serializers.utils.RubeImage;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
+import com.fcfruit.zombiesmash.ui.CheckBox;
 import com.fcfruit.zombiesmash.ui.ImageButton;
+import com.fcfruit.zombiesmash.ui.MultiImageSlider;
 import com.fcfruit.zombiesmash.ui.UIPhysicsEntity;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 public class RubeStage extends Stage
 {
     private String rootPath;
+    private boolean physicsEnabled;
 
     private RubeSceneLoader rubeSceneLoader;
     private RubeScene rubeScene;
 
     private ArrayList<Actor> drawOrder;
 
-    public RubeStage(Viewport viewport, String rubeSceneFilePath, String rootPath, boolean physics)
+    public RubeStage(Viewport viewport, String rubeSceneFilePath, String rootPath, boolean physicsEnabled)
     {
         super(viewport);
 
         this.rootPath = rootPath;
+        this.physicsEnabled = physicsEnabled;
 
-        if(physics)
+        if(physicsEnabled)
             this.rubeSceneLoader = new RubeSceneLoader(Environment.physics.getWorld());
         else
             this.rubeSceneLoader = new RubeSceneLoader();
@@ -64,6 +64,10 @@ public class RubeStage extends Stage
             {
                 if (name.contains("button"))
                     actor = this.createImageButton(image);
+                else if (name.contains("checkbox"))
+                    actor = this.createCheckBox(image);
+                else if(name.contains("multi_image_slider"))
+                    actor = this.createMultiImageSlider(image);
                 else
                     actor = this.createImage(image);
 
@@ -74,16 +78,24 @@ public class RubeStage extends Stage
                 drawOrder.add(image.renderOrder, actor);
             }
             else
-                Gdx.app.error("RubeStage", "Null Image Name");
+            {
+                Gdx.app.error("RubeStage", "Null Image Name, Creating Image...");
+                actor = this.createImage(image);
+                actor.setName(image.file.split("/")[image.file.split("/").length - 1]);
+                drawOrder.add(image.renderOrder, actor);
+            }
         }
 
-        for(Body body : this.rubeScene.getBodies())
+        if(this.physicsEnabled)
         {
-            if(body.getUserData() == null)
-                body.setUserData(new PhysicsData(this));
-            for(Fixture fixture : body.getFixtureList())
-                if(fixture.getUserData() == null)
-                    fixture.setUserData(new PhysicsData(this));
+            for (Body body : this.rubeScene.getBodies())
+            {
+                if (body.getUserData() == null)
+                    body.setUserData(new PhysicsData(this));
+                for (Fixture fixture : body.getFixtureList())
+                    if (fixture.getUserData() == null)
+                        fixture.setUserData(new PhysicsData(this));
+            }
         }
 
         this.manageDrawOrder();
@@ -98,23 +110,58 @@ public class RubeStage extends Stage
         }
     }
 
+    private MultiImageSlider createMultiImageSlider(RubeImage image)
+    {
+        String filename = image.file.split("/")[image.file.split("/").length - 1];
+
+        MultiImageSlider multiImageSlider = new MultiImageSlider(new Sprite(new Texture(this.rootPath + filename)),
+                new Sprite(new Texture(this.rootPath + rubeScene.getCustom(image, "slider_image"))));
+
+        multiImageSlider.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
+
+        Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
+        pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
+        multiImageSlider.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
+
+        return  multiImageSlider;
+    }
+
     private Image createImage(RubeImage image)
     {
-        Image img = new Image(new Texture(Gdx.files.internal(this.rootPath + ((String) this.rubeScene.getCustom(image, "name")) + ".png")));
+        String filename = image.file.split("/")[image.file.split("/").length - 1];
+
+        Image img = new Image(new Texture(Gdx.files.internal(this.rootPath + filename)));
         img.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
         pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-
         img.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
 
         return img;
     }
 
+    private CheckBox createCheckBox(RubeImage image)
+    {
+        String filename = image.file.split("/")[image.file.split("/").length - 1];
+        String checked_image_filename = (String) this.rubeScene.getCustom(image, "checked_image");
+
+        CheckBox checkBox = new CheckBox(new Sprite(new Texture(Gdx.files.internal(this.rootPath + filename))),
+                new Sprite(new Texture(Gdx.files.internal(this.rootPath + checked_image_filename))));
+
+        checkBox.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
+
+        Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
+        pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
+        checkBox.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
+
+        return checkBox;
+    }
+
     private ImageButton createImageButton(RubeImage image)
     {
-        String name = (String) this.rubeScene.getCustom(image, "name");
-        ImageButton imageButton = new ImageButton(new Sprite(new Texture(Gdx.files.internal(this.rootPath + name + ".png"))));
+        String filename = image.file.split("/")[image.file.split("/").length - 1];
+
+        ImageButton imageButton = new ImageButton(new Sprite(new Texture(Gdx.files.internal(this.rootPath + filename))));
         imageButton.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
 
         Vector2 img_pos;

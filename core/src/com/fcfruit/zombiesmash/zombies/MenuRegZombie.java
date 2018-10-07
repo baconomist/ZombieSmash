@@ -363,7 +363,6 @@ public class MenuRegZombie implements DrawableEntityInterface, AnimatableEntityI
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
             this.getDetachableEntities().put(bodyName, part);
-            Gdx.app.log("aaa", "ssss");
         }
         // If parent
         else if (bodyName.equals("torso"))
@@ -808,7 +807,6 @@ public class MenuRegZombie implements DrawableEntityInterface, AnimatableEntityI
         if (this.interactiveGraphicsEntity.isTouching() && !touching && this.isAlive())
         {
             this.enable_physics();
-            Gdx.app.log("aaa", ""+this.getDrawableEntities().values());
             ((InteractivePhysicsEntityInterface) this.getInteractiveEntities().get("torso")).overrideTouching(true, screenX, screenY, p);
         }
 
