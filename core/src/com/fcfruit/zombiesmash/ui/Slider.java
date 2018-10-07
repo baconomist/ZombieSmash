@@ -17,13 +17,15 @@ public class Slider
     {
         background = bak;
         slider = sld;
+
+        this.setPercent(100);
     }
 
     public void setPercent(float percent)
     {
         if (percent > -1 && percent < 101)
         {
-            slider.setSize(slider.getTexture().getWidth() * (percent / 100), slider.getHeight());
+            slider.setSize(background.getWidth() * (percent / 100), background.getHeight() - 30);
         } else if (percent <= 0)
         {
             slider.setSize(0, slider.getHeight());
@@ -39,12 +41,18 @@ public class Slider
     public void setPosition(float x, float y)
     {
         background.setPosition(x, y);
-        slider.setPosition(x + 16, y + 16);
+        slider.setPosition(x + 18, y + 18);
     }
 
     public boolean contains(float x, float y)
     {
         return background.getBoundingRectangle().contains(x, y) || slider.getBoundingRectangle().contains(x, y);
+    }
+
+    public void setSize(float width, float height)
+    {
+        this.background.setSize(width, height);
+        this.slider.setSize(width, this.slider.getHeight());
     }
 
     public float getX()

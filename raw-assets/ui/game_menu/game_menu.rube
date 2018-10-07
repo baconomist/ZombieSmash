@@ -38,6 +38,16 @@
       "bitplane32"
     ]
   },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "image",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
   "metaworld" : 
   {
     "allowSleep" : true,
@@ -67,80 +77,72 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 0.4915438592433929,
-          "y" : 1.535868048667908
+          "x" : 9.829545021057129,
+          "y" : 5.707317829132080
         },
-        "file" : "example.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 1,
-        "name" : "image0",
-        "opacity" : 0.5,
-        "scale" : 1
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 0.4732466936111450,
-          "y" : 1.542947769165039
-        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "options_button"
+          }
+        ],
         "file" : "images/options.png",
         "filter" : 1,
         "flip" : false,
         "id" : 4,
         "name" : "image3",
         "opacity" : 0.5,
-        "scale" : 0.2566320002079010
+        "scale" : 2.866143465042114
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 0.4917686879634857,
-          "y" : 1.537499427795410
+          "x" : 10.09945392608643,
+          "y" : 2.781038284301758
         },
-        "file" : "images/underlay.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 5,
-        "name" : "image4",
-        "opacity" : 0.5,
-        "scale" : 1.002348780632019
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 0.4974141120910645,
-          "y" : 1.280931234359741
-        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "main_menu_button"
+          }
+        ],
         "file" : "images/mainmenu.png",
         "filter" : 1,
         "flip" : false,
         "id" : 6,
         "name" : "image1",
         "opacity" : 0.5,
-        "scale" : 0.1969677805900574
+        "scale" : 2.199795484542847
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 0.4947068095207214,
-          "y" : 1.776381731033325
+          "x" : 10.06921768188477,
+          "y" : 8.314378738403320
         },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "resume_button"
+          }
+        ],
         "file" : "images/resume.png",
         "filter" : 1,
         "flip" : false,
         "id" : 7,
         "name" : "image2",
         "opacity" : 0.5,
-        "scale" : 0.1965694725513458
+        "scale" : 2.195347070693970
       }
     ],
     "positionIterations" : 3,

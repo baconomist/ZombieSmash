@@ -117,11 +117,13 @@ public class RubeStage extends Stage
         MultiImageSlider multiImageSlider = new MultiImageSlider(new Sprite(new Texture(this.rootPath + filename)),
                 new Sprite(new Texture(this.rootPath + rubeScene.getCustom(image, "slider_image"))));
 
-        multiImageSlider.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
+        Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
+        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        multiImageSlider.setSize(size.x, size.y);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
         pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        multiImageSlider.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
+        multiImageSlider.setPosition(pos.x-size.x/2, pos.y-size.y/2);
 
         return  multiImageSlider;
     }
@@ -131,11 +133,14 @@ public class RubeStage extends Stage
         String filename = image.file.split("/")[image.file.split("/").length - 1];
 
         Image img = new Image(new Texture(Gdx.files.internal(this.rootPath + filename)));
-        img.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
+
+        Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
+        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        img.setSize(size.x, size.y);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
         pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        img.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
+        img.setPosition(pos.x-size.x/2, pos.y-size.y/2);
 
         return img;
     }
@@ -148,11 +153,13 @@ public class RubeStage extends Stage
         CheckBox checkBox = new CheckBox(new Sprite(new Texture(Gdx.files.internal(this.rootPath + filename))),
                 new Sprite(new Texture(Gdx.files.internal(this.rootPath + checked_image_filename))));
 
-        checkBox.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
+        Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
+        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        checkBox.setSize(size.x, size.y);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
         pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        checkBox.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
+        checkBox.setPosition(pos.x-size.x/2, pos.y-size.y/2);
 
         return checkBox;
     }
@@ -162,7 +169,10 @@ public class RubeStage extends Stage
         String filename = image.file.split("/")[image.file.split("/").length - 1];
 
         ImageButton imageButton = new ImageButton(new Sprite(new Texture(Gdx.files.internal(this.rootPath + filename))));
-        imageButton.setSize(image.width*Physics.PIXELS_PER_METER, image.height*Physics.PIXELS_PER_METER);
+
+        Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
+        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        imageButton.setSize(size.x, size.y);
 
         Vector2 img_pos;
         if(image.body != null)
@@ -172,7 +182,7 @@ public class RubeStage extends Stage
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(img_pos, 0)));
         pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        imageButton.setPosition(pos.x-image.width*Physics.PIXELS_PER_METER/2, pos.y-image.height*Physics.PIXELS_PER_METER/2);
+        imageButton.setPosition(pos.x-size.x/2, pos.y-size.y/2);
 
         return imageButton;
     }

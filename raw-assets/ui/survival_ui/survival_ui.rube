@@ -38,6 +38,16 @@
       "bitplane32"
     ]
   },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "image",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
   "metaworld" : 
   {
     "allowSleep" : true,
@@ -67,112 +77,144 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 3.514314651489258,
-          "y" : 2.046024084091187
+          "x" : 1.051712870597839,
+          "y" : 10.18711757659912
         },
-        "file" : "example.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 1,
-        "name" : "image0",
-        "opacity" : 0.5,
-        "scale" : 3.927225351333618
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 0.3833624124526978,
-          "y" : 3.642396688461304
-        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_1"
+          }
+        ],
         "file" : "images/box.png",
         "filter" : 1,
         "flip" : false,
         "id" : 3,
         "name" : "image2",
         "opacity" : 0.5,
-        "scale" : 0.6192989945411682
+        "scale" : 1.768819332122803
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 4.592880249023438,
-          "y" : 3.807736158370972
+          "x" : 13.07478523254395,
+          "y" : 10.65935325622559
         },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "health_bar"
+          }
+        ],
         "file" : "images/health.png",
         "filter" : 1,
         "flip" : false,
         "id" : 4,
         "name" : "image3",
         "opacity" : 0.5,
-        "scale" : 0.2710787057876587
+        "scale" : 0.7742451429367065
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 6.657460689544678,
-          "y" : 3.600335121154785
+          "x" : 18.97156524658203,
+          "y" : 10.06698322296143
         },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "pause_button"
+          }
+        ],
         "file" : "images/pause.png",
         "filter" : 1,
         "flip" : false,
         "id" : 5,
         "name" : "image4",
         "opacity" : 0.5,
-        "scale" : 0.620910644531250
+        "scale" : 1.773422479629517
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 1.100020170211792,
-          "y" : 3.642537355422974
+          "x" : 3.098604917526245,
+          "y" : 10.18751907348633
         },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_2"
+          }
+        ],
         "file" : "images/box.png",
         "filter" : 1,
         "flip" : false,
         "id" : 6,
         "name" : "image1",
         "opacity" : 0.5,
-        "scale" : 0.6199031472206116
+        "scale" : 1.770544886589050
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 1.814563035964966,
-          "y" : 3.642124176025391
+          "x" : 5.139456272125244,
+          "y" : 10.18633937835693
         },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_3"
+          }
+        ],
         "file" : "images/box.png",
         "filter" : 1,
         "flip" : false,
         "id" : 7,
         "name" : "image5",
         "opacity" : 0.5,
-        "scale" : 0.6199031472206116
+        "scale" : 1.770544886589050
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 2.529155492782593,
-          "y" : 3.641506671905518
+          "x" : 7.180449485778809,
+          "y" : 10.18457603454590
         },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_4"
+          }
+        ],
         "file" : "images/box.png",
         "filter" : 1,
         "flip" : false,
         "id" : 8,
         "name" : "image6",
         "opacity" : 0.5,
-        "scale" : 0.6199031472206116
+        "scale" : 1.770544886589050
       }
     ],
     "positionIterations" : 3,

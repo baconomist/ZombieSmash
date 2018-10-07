@@ -8,18 +8,18 @@ import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ui.CheckBox;
 import com.fcfruit.zombiesmash.ui.MultiImageSlider;
 
-public class OptionsStage extends RubeStage
+public abstract class OptionsStage extends RubeStage
 {
-    public OptionsStage(Viewport viewport, String rubeSceneFilePath, String rootPath, boolean physics)
+    public OptionsStage(Viewport viewport)
     {
-        super(viewport, rubeSceneFilePath, rootPath, physics);
+        super(viewport, "ui/options_menu/options_menu.json", "ui/options_menu/", false);
 
         ((CheckBox) this.findActor("gore_checkbox")).setChecked(Environment.settings.isGoreEnabled());
         ((CheckBox) this.findActor("vibrations_checkbox")).setChecked(Environment.settings.isVibrationsEnabled());
         ((CheckBox) this.findActor("music_volume_checkbox")).setChecked(Environment.settings.isMusicEnabled());
-        ((MultiImageSlider) this.findActor("music_volume_multi_image_slider")).setPercent(Environment.settings.getMusicVolume()*100);
+        ((MultiImageSlider) this.findActor("music_volume_multi_image_slider")).setPercent(Environment.settings.getMusicVolume() * 100);
         ((CheckBox) this.findActor("sfx_volume_checkbox")).setChecked(Environment.settings.isSfxEnabled());
-        ((MultiImageSlider) this.findActor("sfx_volume_multi_image_slider")).setPercent(Environment.settings.getSfxVolume()*100);
+        ((MultiImageSlider) this.findActor("sfx_volume_multi_image_slider")).setPercent(Environment.settings.getSfxVolume() * 100);
 
 
         this.findActor("back_button").addListener(new ClickListener()
@@ -27,21 +27,21 @@ public class OptionsStage extends RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                Environment.screens.mainmenu.hideOptionsStage();
+                onBackButton();
                 super.touchUp(event, x, y, pointer, button);
             }
         });
 
         this.findActor("music_volume_checkbox").addListener(new ClickListener()
-    {
-        @Override
-        public void touchUp(InputEvent event, float x, float y, int pointer, int button)
         {
-            CheckBox volumeCheckBox = (CheckBox) event.getListenerActor();
-            Environment.settings.setMusicEnabled(volumeCheckBox.isChecked());
-            super.touchUp(event, x, y, pointer, button);
-        }
-    });
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                CheckBox volumeCheckBox = (CheckBox) event.getListenerActor();
+                Environment.settings.setMusicEnabled(volumeCheckBox.isChecked());
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
 
         this.findActor("music_volume_multi_image_slider").addListener(new ClickListener()
         {
@@ -92,7 +92,8 @@ public class OptionsStage extends RubeStage
             }
         });
 
-        this.findActor("gore_checkbox").addListener(new ClickListener(){
+        this.findActor("gore_checkbox").addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -102,4 +103,6 @@ public class OptionsStage extends RubeStage
             }
         });
     }
+
+    public abstract void onBackButton();
 }

@@ -63,7 +63,14 @@ public class MainMenu implements Screen
 
         music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
 
-        options = new OptionsStage(viewport, "ui/options_menu/options_menu.json", "ui/options_menu/", false);
+        options = new OptionsStage(viewport)
+        {
+            @Override
+            public void onBackButton()
+            {
+                hideOptionsStage();
+            }
+        };
 
     }
 

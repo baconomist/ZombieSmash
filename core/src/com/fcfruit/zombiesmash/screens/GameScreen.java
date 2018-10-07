@@ -152,6 +152,11 @@ public class GameScreen implements Screen{
 
     public com.fcfruit.zombiesmash.stages.GameUIStage get_ui_stage(){return this.ui_stage;}
 
+    public InputMultiplexer getInputMultiplexer()
+    {
+        return this.inputMultiplexer;
+    }
+
     @Override
     public void resize(int width, int height) {
         // Resize viewport to screen size.
