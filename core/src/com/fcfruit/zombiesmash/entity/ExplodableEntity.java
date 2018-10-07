@@ -134,7 +134,7 @@ public class ExplodableEntity implements ExplodableEntityInterface, com.fcfruit.
         this.animatableGraphicsEntity.setPosition(new Vector2(this.physicsBody.getPosition().x, 0f));
 
         if(Environment.settings.isVibrationsEnabled())
-            Gdx.input.vibrate(500);
+            Gdx.input.vibrate(250);
     }
 
     @Override
