@@ -5,11 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
-import com.badlogic.gdx.physics.box2d.Contact;
-import com.badlogic.gdx.physics.box2d.ContactImpulse;
-import com.badlogic.gdx.physics.box2d.ContactListener;
 import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.Manifold;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -17,11 +13,11 @@ import com.fcfruit.zombiesmash.Config;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
-import com.fcfruit.zombiesmash.physics.CollisionListener;
 import com.fcfruit.zombiesmash.physics.ContactFilter;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
-import com.fcfruit.zombiesmash.stages.SettingsStage;
+import com.fcfruit.zombiesmash.stages.MainMenuStage;
+import com.fcfruit.zombiesmash.stages.OptionsStage;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
 /**
@@ -30,42 +26,51 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
 
 //compile "com.underwaterapps.overlap2druntime:overlap2d-runtime-libgdx:0.1.0"
 
-public class MainMenu implements Screen{
+public class MainMenu implements Screen
+{
 
-    com.fcfruit.zombiesmash.stages.MainMenuStage stage;
+    MainMenuStage stage;
 
     Viewport viewport;
     OrthographicCamera tempGameCamera;
     OrthographicCamera tempPhysicsCamera;
 
-    Music music;
+    private Music music;
 
-    public boolean show_settings_stage = false;
+    private boolean show_options_stage = false;
 
-    Stage settings;
+    Stage options;
 
     private Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
 
 
-    public MainMenu(){
+    public MainMenu()
+    {
         viewport = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
 
         tempGameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
-        tempGameCamera.position.set(tempGameCamera.viewportWidth/2, tempGameCamera.viewportHeight/2, 0);
+        tempGameCamera.position.set(tempGameCamera.viewportWidth / 2, tempGameCamera.viewportHeight / 2, 0);
         tempGameCamera.update();
 
         tempPhysicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
-        tempPhysicsCamera.position.set(tempPhysicsCamera.viewportWidth/2, tempPhysicsCamera.viewportHeight/2, 0);
+        tempPhysicsCamera.position.set(tempPhysicsCamera.viewportWidth / 2, tempPhysicsCamera.viewportHeight / 2, 0);
         tempPhysicsCamera.update();
         Environment.setupGame(tempGameCamera, tempPhysicsCamera);
 
         this.tempPhysicsContactFitlerSetup();
 
-        stage = new com.fcfruit.zombiesmash.stages.MainMenuStage(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
+        stage = new MainMenuStage(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
 
-        settings = new SettingsStage(new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT), this);
+        options = new OptionsStage(viewport)
+        {
+            @Override
+            public void onBackButton()
+            {
+                hideOptionsStage();
+            }
+        };
 
     }
 
@@ -108,7 +113,7 @@ public class MainMenu implements Screen{
 
                 }
                 // Blood
-                if(fixtureAData.containsInstanceOf(BleedBlood.class) || fixtureBData.containsInstanceOf(BleedBlood.class))
+                if (fixtureAData.containsInstanceOf(BleedBlood.class) || fixtureBData.containsInstanceOf(BleedBlood.class))
                 {
                     return false;
                 }
@@ -117,8 +122,7 @@ public class MainMenu implements Screen{
                         || fixtureBData.getData().contains("ground", false))
                 {
                     return true;
-                }
-                else
+                } else
                 {
                     return true;
                 }
@@ -127,65 +131,85 @@ public class MainMenu implements Screen{
     }
 
     @Override
-    public void show() {
+    public void show()
+    {
         Gdx.input.setInputProcessor(stage);
     }
 
     @Override
-    public void render(float delta) {
-        /*if(!stage.mute) {
-            //music.play();
-        }
-        else{
+    public void render(float delta)
+    {
+        if (Environment.settings.isMusicEnabled())
+        {
+            music.play();
+            music.setVolume(Environment.settings.getMusicVolume());
+        } else if(music.isPlaying())
+        {
             music.stop();
-        }*/
+        }
 
-        Gdx.input.setInputProcessor(stage);
         stage.getViewport().apply();
         stage.act();
         stage.draw();
 
-        if(show_settings_stage){
-            Gdx.input.setInputProcessor(settings);
-            settings.getViewport().apply();
-            settings.act();
-            settings.draw();
+        if (show_options_stage)
+        {
+            options.getViewport().apply();
+            options.act();
+            options.draw();
         }
 
         tempGameCamera.update();
         tempPhysicsCamera.update();
         Environment.physics.update(delta);
 
-        if(Config.DEBUG_PHYSICS)
+        if (Config.DEBUG_PHYSICS)
             this.box2DDebugRenderer.render(Environment.physics.getWorld(), Environment.physicsCamera.combined);
     }
 
+    public void showOptionsStage()
+    {
+        this.show_options_stage = true;
+        Gdx.input.setInputProcessor(options);
+    }
+
+    public void hideOptionsStage()
+    {
+        this.show_options_stage = false;
+        Gdx.input.setInputProcessor(stage);
+    }
+
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         // use true here to center the camera
         // that's what you probably want in case of Screens
         viewport.update(width, height, true);
         stage.getViewport().update(width, height, true);
-        settings.getViewport().update(width, height, true);
+        options.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void dispose() {
+    public void hide()
+    {
+
+    }
+
+    @Override
+    public void dispose()
+    {
 
     }
 

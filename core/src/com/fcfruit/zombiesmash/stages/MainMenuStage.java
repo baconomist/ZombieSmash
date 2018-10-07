@@ -81,6 +81,17 @@ public class MainMenuStage extends RubeStage
                 super.touchUp(event, x, y, pointer, button);
             }
         });
+
+        this.findActor("options_button").addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                Environment.screens.mainmenu.showOptionsStage();
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+
     }
 
     @Override

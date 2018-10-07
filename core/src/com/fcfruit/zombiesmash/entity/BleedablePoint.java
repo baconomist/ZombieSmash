@@ -123,7 +123,7 @@ public class BleedablePoint implements BleedableEntityInterface
     @Override
     public void update(float delta)
     {
-        if (this.isBleeding && this.isInLevel())
+        if (this.isBleeding && this.isInLevel() && Environment.settings.isGoreEnabled())
         {
             this.calc_phys_pos();
 
