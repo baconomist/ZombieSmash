@@ -43,6 +43,34 @@
     
     {
       "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "vertical_slider",
+      "name" : "vertical_slider",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "checkbox",
+      "name" : "checkbox",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "horizontal_slider",
+      "name" : "horizontal_slider",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
@@ -93,6 +121,11 @@
           {
             "name" : "name",
             "string" : "back_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/back.png",
@@ -154,6 +187,11 @@
           {
             "name" : "name",
             "string" : "gore_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",
@@ -183,6 +221,11 @@
           {
             "name" : "name",
             "string" : "vibrations_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",
@@ -206,12 +249,17 @@
           
           {
             "name" : "name",
-            "string" : "music_volume_multi_image_slider"
+            "string" : "music_volume_slider"
           },
           
           {
             "name" : "slider_image",
             "string" : "volume1.png"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "vertical_slider"
           }
         ],
         "file" : "images/volume.png",
@@ -251,12 +299,17 @@
           
           {
             "name" : "name",
-            "string" : "sfx_volume_multi_image_slider"
+            "string" : "sfx_volume_slider"
           },
           
           {
             "name" : "slider_image",
             "string" : "volume1.png"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "vertical_slider"
           }
         ],
         "file" : "images/volume.png",
@@ -333,7 +386,12 @@
           
           {
             "name" : "name",
-            "string" : "music_volume_checkbox"
+            "string" : "music_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",
@@ -362,7 +420,12 @@
           
           {
             "name" : "name",
-            "string" : "sfx_volume_checkbox"
+            "string" : "sfx_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",

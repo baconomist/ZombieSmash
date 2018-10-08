@@ -14,14 +14,18 @@ import com.fcfruit.zombiesmash.Environment;
 
 public class MultiImageSlider extends Actor
 {
+    private boolean horizontal;
+
     private Sprite background;
     private Sprite image;
 
     private float percent;
 
-    public MultiImageSlider(Sprite slider_background, Sprite slider_image)
+    public MultiImageSlider(Sprite slider_background, Sprite slider_image, boolean horizontal)
     {
         super();
+
+        this.horizontal = horizontal;
 
         this.background = slider_background;
         this.image = slider_image;
@@ -54,11 +58,23 @@ public class MultiImageSlider extends Actor
         this.percent = percent;
         percent = percent / 100;
 
-        TextureRegion textureRegion = new TextureRegion(this.image.getTexture());
-        textureRegion.setRegionHeight((int) (this.background.getHeight() * percent));
-        textureRegion.flip(false, true);
+        TextureRegion textureRegion;
+        if(!this.horizontal)
+        {
+            textureRegion = new TextureRegion(this.image.getTexture());
+            textureRegion.setRegionHeight((int) (this.background.getHeight() * percent));
+            textureRegion.flip(false, true);
 
-        this.image.setSize(this.background.getWidth(), this.background.getHeight() * percent);
+            this.image.setSize(this.background.getWidth(), this.background.getHeight() * percent);
+        }
+        else
+        {
+            textureRegion = new TextureRegion(this.image.getTexture());
+            textureRegion.setRegionWidth((int) (this.background.getWidth() * percent));
+            textureRegion.flip(false, true);
+
+            this.image.setSize(this.background.getWidth() * percent, this.background.getHeight());
+        }
         this.image.setRegion(textureRegion);
     }
 

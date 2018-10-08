@@ -46,6 +46,13 @@
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     }
   ],
   "metaworld" : 
@@ -86,6 +93,11 @@
           {
             "name" : "name",
             "string" : "options_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/options.png",
@@ -110,6 +122,11 @@
           {
             "name" : "name",
             "string" : "main_menu_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/mainmenu.png",
@@ -134,6 +151,11 @@
           {
             "name" : "name",
             "string" : "resume_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/resume.png",

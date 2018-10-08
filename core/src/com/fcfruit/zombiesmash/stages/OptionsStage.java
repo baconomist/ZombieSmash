@@ -16,10 +16,10 @@ public abstract class OptionsStage extends RubeStage
 
         ((CheckBox) this.findActor("gore_checkbox")).setChecked(Environment.settings.isGoreEnabled());
         ((CheckBox) this.findActor("vibrations_checkbox")).setChecked(Environment.settings.isVibrationsEnabled());
-        ((CheckBox) this.findActor("music_volume_checkbox")).setChecked(Environment.settings.isMusicEnabled());
-        ((MultiImageSlider) this.findActor("music_volume_multi_image_slider")).setPercent(Environment.settings.getMusicVolume() * 100);
-        ((CheckBox) this.findActor("sfx_volume_checkbox")).setChecked(Environment.settings.isSfxEnabled());
-        ((MultiImageSlider) this.findActor("sfx_volume_multi_image_slider")).setPercent(Environment.settings.getSfxVolume() * 100);
+        ((CheckBox) this.findActor("music_checkbox")).setChecked(Environment.settings.isMusicEnabled());
+        ((MultiImageSlider) this.findActor("music_volume_slider")).setPercent(Environment.settings.getMusicVolume() * 100);
+        ((CheckBox) this.findActor("sfx_checkbox")).setChecked(Environment.settings.isSfxEnabled());
+        ((MultiImageSlider) this.findActor("sfx_volume_slider")).setPercent(Environment.settings.getSfxVolume() * 100);
 
 
         this.findActor("back_button").addListener(new ClickListener()
@@ -32,7 +32,7 @@ public abstract class OptionsStage extends RubeStage
             }
         });
 
-        this.findActor("music_volume_checkbox").addListener(new ClickListener()
+        this.findActor("music_checkbox").addListener(new ClickListener()
         {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
@@ -43,7 +43,7 @@ public abstract class OptionsStage extends RubeStage
             }
         });
 
-        this.findActor("music_volume_multi_image_slider").addListener(new ClickListener()
+        this.findActor("music_volume_slider").addListener(new ClickListener()
         {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer)
@@ -53,7 +53,7 @@ public abstract class OptionsStage extends RubeStage
             }
         });
 
-        this.findActor("sfx_volume_checkbox").addListener(new ClickListener()
+        this.findActor("sfx_checkbox").addListener(new ClickListener()
         {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
@@ -64,7 +64,7 @@ public abstract class OptionsStage extends RubeStage
             }
         });
 
-        this.findActor("sfx_volume_multi_image_slider").addListener(new ClickListener()
+        this.findActor("sfx_volume_slider").addListener(new ClickListener()
         {
             @Override
             public void touchDragged(InputEvent event, float x, float y, int pointer)
