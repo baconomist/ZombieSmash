@@ -6,18 +6,15 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
-import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
+import com.fcfruit.zombiesmash.ui.HealthOverlay;
 import com.fcfruit.zombiesmash.ui.ImageButton;
 import com.fcfruit.zombiesmash.ui.Message;
-import com.fcfruit.zombiesmash.ui.Slider;
 
 /**
  * Created by Lucas on 2017-12-17.
@@ -36,13 +33,14 @@ public class GameUIStage extends RubeStage
 
     private ImageButton[] powerUpButtons;
 
-    private Slider healthBar;
+    private HealthOverlay healthBar;
 
     private ImageButton pause_button;
 
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
 
+    private Sprite brainCountbackground;
     private Sprite brainCountImage;
     private BitmapFont brainCount;
 
@@ -80,32 +78,24 @@ public class GameUIStage extends RubeStage
 
         addActor(pause_button);
 
-        /*
-        * Do this for now.... not good... add "horizontal" and "vertical" slider(s) to rubeStage
-        * scrap the slider class, it's not meant for rubestage dynamic loading
-        * */
-        Sprite overlay = new Sprite(new Texture(Gdx.files.internal("ui/game_ui/survival/health_overlay.png")));
-        healthBar = new Slider(new Sprite(new Texture(Gdx.files.internal("ui/game_ui/survival/health.png"))),
-                overlay);
-        healthBar.setPosition(this.findActor("health_bar").getX(), this.findActor("health_bar").getY());
-        healthBar.setSize(this.findActor("health_bar").getWidth(), this.findActor("health_bar").getHeight());
-        overlay.setSize(healthBar.getWidth() - 50, healthBar.getHeight() - 50);
-
-        this.findActor("health_bar").remove();
-        /*
-         * Do this for now.... not good... add "horizontal" and "vertical" slider(s) to rubeStage
-         * scrap the slider class, it's not meant for rubestage dynamic loading
-         * */
+        Sprite sprite = new Sprite(new Texture(Gdx.files.internal("ui/game_ui/survival/health_overlay.png")));
+        sprite.setSize(this.findActor("health_overlay").getWidth(), this.findActor("health_overlay").getHeight());
+        healthBar = new HealthOverlay(sprite);
+        healthBar.setPosition(this.findActor("health_overlay").getX(), this.findActor("health_overlay").getY());
+        this.findActor("health_overlay").remove(); // Remove old health_overlay image
 
         spriteBatch = new SpriteBatch();
         skeletonRenderer = new SkeletonRenderer();
 
+        brainCountbackground = new Sprite(new Texture("ui/game_ui/survival/retro_box.png"));
+        brainCountbackground.setSize(this.findActor("pause_button").getWidth(), 90);
+        brainCountbackground.setPosition(this.findActor("pause_button").getX(), this.findActor("pause_button").getY() - brainCountbackground.getHeight());
+
         brainCountImage = new Sprite(new Texture("brains/brain1.png"));
         brainCountImage.setSize(70, 70);
-        brainCountImage.setPosition(getWidth() - brainCountImage.getWidth() * 3, getHeight() - pause_button.getHeight() - brainCountImage.getHeight());
+        brainCountImage.setPosition(brainCountbackground.getX() + 10, brainCountbackground.getY() + 10);
 
-        brainCount = new BitmapFont(Gdx.files.internal("ui/defaultSkin/default.fnt"));
-        brainCount.getData().setScale(2);
+        brainCount = new BitmapFont(Gdx.files.internal("ui/font/font.fnt"));
 
         this.powerups = new PowerupInterface[4];
 
@@ -208,8 +198,10 @@ public class GameUIStage extends RubeStage
                 }
             }
             healthBar.draw(spriteBatch);
+
+            brainCountbackground.draw(spriteBatch);
             brainCountImage.draw(spriteBatch);
-            brainCount.draw(spriteBatch, "" + Environment.level.brainCounter, brainCountImage.getX() + brainCountImage.getWidth(), brainCountImage.getY() + brainCountImage.getHeight() / 2);
+            brainCount.draw(spriteBatch, "" + Environment.level.brainCounter, brainCountImage.getX() + brainCountImage.getWidth() + 10, brainCountImage.getY() + brainCountImage.getHeight() / 2 + 20);
 
             if(this.message != null)
             {
