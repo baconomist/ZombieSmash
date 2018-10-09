@@ -6,6 +6,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
+import com.fcfruit.zombiesmash.screens.SplashScreen;
 
 
 public class ZombieSmash extends Game
@@ -41,9 +42,12 @@ public class ZombieSmash extends Game
             Gdx.input.setCatchBackKey(true);
         }
 
+
         Environment.create();
 
-        this.setScreen(Environment.screens.mainmenu);
+        this.setScreen(new SplashScreen());
+
+        //this.setScreen(Environment.screens.mainmenu);
 
         //Environment.setupGame(2);
         //this.setScreen(Environment.screens.gamescreen);
