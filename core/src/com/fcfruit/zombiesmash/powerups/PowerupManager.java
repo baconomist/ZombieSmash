@@ -27,6 +27,7 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
         this.crates = new Array<PowerupCrate>();
 
         Environment.updatableAddQueue.add(this);
+        Environment.levelEventListenerAddQueue.add(this);
     }
 
     private Vector3 grenadePosition;
@@ -94,6 +95,7 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
     public void onCameraMoved()
     {
         this.powerups.clear();
+        this.grenadePosition = null;
     }
 
     public Vector3 getGrenadeSpawnPosition(ExplodablePowerup grenadePowerup)

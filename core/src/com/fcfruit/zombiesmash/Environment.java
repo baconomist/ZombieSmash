@@ -16,6 +16,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener;
 import com.fcfruit.zombiesmash.level.Level;
 import com.fcfruit.zombiesmash.level.NightLevel;
 import com.fcfruit.zombiesmash.physics.Physics;
@@ -143,6 +144,9 @@ public class Environment
 
     public static ArrayList<UpdatableEntityInterface> updatableAddQueue = new ArrayList<UpdatableEntityInterface>();
     public static ArrayList<UpdatableEntityInterface> updatableRemoveQueue = new ArrayList<UpdatableEntityInterface>();
+
+    public static ArrayList<LevelEventListener> levelEventListenerAddQueue = new ArrayList<LevelEventListener>();
+    public static ArrayList<LevelEventListener> levelEventListenerRemoveQueue = new ArrayList<LevelEventListener>();
 
     public static void setupGame(int levelid)
     {
