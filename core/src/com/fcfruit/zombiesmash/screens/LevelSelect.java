@@ -20,7 +20,7 @@ public class LevelSelect implements Screen{
 
     public LevelSelect(){
         viewport = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
-        stage = new LevelSelectStage(viewport);
+//        stage = new LevelSelectStage(viewport);
 
         Gdx.input.setInputProcessor(stage);
     }

@@ -7,7 +7,6 @@ import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.ui.CustomImageButton;
 
 import java.util.ArrayList;
 
@@ -18,7 +17,7 @@ import java.util.ArrayList;
 public class LevelSelectStage extends Stage
 {
 
-    ArrayList<CustomImageButton> buttons = new ArrayList<CustomImageButton>();
+   /* ArrayList<CustomImageButton> buttons = new ArrayList<CustomImageButton>();
 
     SpriteBatch spriteBatch = new SpriteBatch();
 
@@ -89,6 +88,6 @@ public class LevelSelectStage extends Stage
     {
         Environment.setupGame(levelid);
         Environment.game.setScreen(Environment.screens.gamescreen);
-    }
+    }*/
 
 }
