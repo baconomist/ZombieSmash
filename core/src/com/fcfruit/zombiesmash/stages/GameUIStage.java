@@ -12,6 +12,7 @@ import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface;
+import com.fcfruit.zombiesmash.powerups.explodable.ExplodablePowerup;
 import com.fcfruit.zombiesmash.ui.HealthOverlay;
 import com.fcfruit.zombiesmash.ui.ImageButton;
 import com.fcfruit.zombiesmash.ui.Message;
@@ -104,14 +105,27 @@ public class GameUIStage extends RubeStage
             final int finalI = i;
             this.powerUpButtons[i].addListener(new ClickListener()
             {
+
                 @Override
                 public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
                 {
                     if (powerups[finalI] != null)
                     {
-                        powerups[finalI].activate();
-                        Environment.level.addUpdatableEntity((powerups[finalI]));
-                        remove_powerup(powerups[finalI]);
+                        if(!Environment.level.isCameraMoving() || !(powerups[finalI] instanceof ExplodablePowerup))
+                        {
+                            powerups[finalI].activate();
+                            Environment.level.addUpdatableEntity((powerups[finalI]));
+                            remove_powerup(powerups[finalI]);
+                        }
+                        else
+                        {
+                            Message message = new Message();
+                            message.setContent("You can't activate this type\n" +
+                                    "of power-up while during" +
+                                    "\nthis time." +
+                                    "\n\tPlease wait...");
+                            setMessage(message);
+                        }
                     }
                     return super.touchDown(event, x, y, pointer, button);
                 }
@@ -148,6 +162,8 @@ public class GameUIStage extends RubeStage
 
     public void setMessage(Message message)
     {
+        if(this.message != null)
+            this.message.dispose();
         this.message = message;
         this.message.display();
     }
@@ -169,6 +185,14 @@ public class GameUIStage extends RubeStage
         Gdx.input.setInputProcessor(Environment.screens.gamescreen.getInputMultiplexer());
         this.show_game_menu = false;
         Environment.isPaused = false;
+    }
+
+    @Override
+    public boolean touchDown(int screenX, int screenY, int pointer, int button)
+    {
+        if(this.message != null)
+            this.message.onTouchDown(screenX, screenY, pointer);
+        return super.touchDown(screenX, screenY, pointer, button);
     }
 
     @Override

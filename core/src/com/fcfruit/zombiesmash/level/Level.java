@@ -473,6 +473,11 @@ public class Level
         return this.currentCameraPosition;
     }
 
+    public boolean isCameraMoving()
+    {
+        return this.isCameraMoving;
+    }
+
     private void preClear()
     {
         for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
