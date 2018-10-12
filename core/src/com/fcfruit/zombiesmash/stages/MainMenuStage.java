@@ -75,9 +75,10 @@ public class MainMenuStage extends RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                Environment.setupGame(2);
+                Environment.game.setScreen(Environment.screens.levelselect);
+                /*Environment.setupGame(2);
                 Environment.game.setScreen(Environment.screens.gamescreen);
-                System.gc();
+                System.gc();*/
                 super.touchUp(event, x, y, pointer, button);
             }
         });

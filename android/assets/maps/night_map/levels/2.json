@@ -1,39 +1,10 @@
 {
   "left": {
-    "armored_zombie": {
-      "quantity": 2,
+    "reg_zombie": {
+      "quantity": 1,
       "init_delay": 0,
       "spawn_delay": 0.15,
       "position": "left"
-    },
-    "reg_zombie": {
-      "quantity": 10,
-      "init_delay": 0,
-      "spawn_delay": 0.15,
-      "position": "left",
-      "depth": 1
-    },
-    "police_zombie": {
-      "quantity": 10,
-      "init_delay": 3,
-      "spawn_delay": 1,
-      "position": "left",
-      "depth": 1
-    },
-    "crawling_zombie": {
-      "quantity": 10,
-      "init_delay": 0,
-      "spawn_delay": 0.15,
-      "position": "left",
-      "depth": 1
-    },
-    "message": {
-      "content": "HI H h a A abc ABC\nhow long can this be?\n lets see\n bar\n ...",
-      "init_delay": 1
-    },
-    "message": {
-      "content": "Kill those zombies!",
-      "init_delay": 3
     },
     "helicopter": {
       "init_delay": 0,
@@ -47,6 +18,11 @@
         "molotov",
         "rocket"
       ]
+    },
+    "message":
+    {
+      "content": "hi",
+      "init_delay": 0
     },
     "helicopter": {
       "init_delay": 30,
