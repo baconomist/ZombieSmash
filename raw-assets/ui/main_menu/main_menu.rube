@@ -53,6 +53,13 @@
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     }
   ],
   "metaworld" : 
@@ -1155,6 +1162,11 @@
           {
             "name" : "name",
             "string" : "store_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/store_button.png",
@@ -1285,6 +1297,11 @@
           {
             "name" : "name",
             "string" : "options_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/options_button.png",
@@ -1311,6 +1328,11 @@
           {
             "name" : "name",
             "string" : "play_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/play_button.png",

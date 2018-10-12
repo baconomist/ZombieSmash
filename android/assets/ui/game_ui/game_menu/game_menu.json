@@ -80,6 +80,11 @@
 				{
 					"name" : "name",
 					"string" : "resume_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
 				}
 			],
 			"file" : "../../../../../raw-assets/ui/game_menu/images/resume.png",
@@ -133,6 +138,11 @@
 				{
 					"name" : "name",
 					"string" : "options_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
 				}
 			],
 			"file" : "../../../../../raw-assets/ui/game_menu/images/options.png",
@@ -186,6 +196,11 @@
 				{
 					"name" : "name",
 					"string" : "main_menu_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
 				}
 			],
 			"file" : "../../../../../raw-assets/ui/game_menu/images/mainmenu.png",

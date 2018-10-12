@@ -11,7 +11,6 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.rube.RubeScene;
 import com.fcfruit.zombiesmash.rube.loader.RubeSceneLoader;
@@ -54,20 +53,29 @@ public class RubeStage extends Stage
     private void loadScene(String filePath)
     {
         String name;
-        Actor actor = null;
+        Actor actor;
+        boolean button;
+        boolean checkbox;
+        boolean vertical_slider;
+        boolean horizontal_slider;
 
         this.rubeScene = this.rubeSceneLoader.loadScene(Gdx.files.internal(filePath));
         for(RubeImage image : this.rubeScene.getImages())
         {
             name = (String) rubeScene.getCustom(image, "name");
+            button = (rubeScene.getCustom(image, "button") != null ? (Boolean) rubeScene.getCustom(image, "button") : false);
+            checkbox = (rubeScene.getCustom(image, "checkbox") != null ? (Boolean) rubeScene.getCustom(image, "checkbox") : false);
+            vertical_slider = (rubeScene.getCustom(image, "vertical_slider") != null ? (Boolean) rubeScene.getCustom(image, "vertical_slider") : false);
+            horizontal_slider = (rubeScene.getCustom(image, "horizontal_slider") != null ? (Boolean) rubeScene.getCustom(image, "horizontal_slider") : false);
+
             if(name != null)
             {
-                if (name.contains("button"))
+                if (button)
                     actor = this.createImageButton(image);
-                else if (name.contains("checkbox"))
+                else if (checkbox)
                     actor = this.createCheckBox(image);
-                else if(name.contains("multi_image_slider"))
-                    actor = this.createMultiImageSlider(image);
+                else if(vertical_slider || horizontal_slider)
+                    actor = this.createMultiImageSlider(image, horizontal_slider);
                 else
                     actor = this.createImage(image);
 
@@ -110,12 +118,12 @@ public class RubeStage extends Stage
         }
     }
 
-    private MultiImageSlider createMultiImageSlider(RubeImage image)
+    private MultiImageSlider createMultiImageSlider(RubeImage image, boolean horizontal)
     {
         String filename = image.file.split("/")[image.file.split("/").length - 1];
 
         MultiImageSlider multiImageSlider = new MultiImageSlider(new Sprite(new Texture(this.rootPath + filename)),
-                new Sprite(new Texture(this.rootPath + rubeScene.getCustom(image, "slider_image"))));
+                new Sprite(new Texture(this.rootPath + rubeScene.getCustom(image, "slider_image"))), horizontal);
 
         Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
         size.y = this.getViewport().getCamera().position.y*2 - size.y;

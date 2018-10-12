@@ -43,22 +43,43 @@
     
     {
       "class" : "image",
-      "displayName" : "checked_image",
-      "name" : "checked_image",
-      "type" : "string"
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     },
     
     {
       "class" : "image",
-      "displayName" : "slider_image",
-      "name" : "slider_image",
-      "type" : "string"
+      "displayName" : "vertical_slider",
+      "name" : "vertical_slider",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "checkbox",
+      "name" : "checkbox",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "horizontal_slider",
+      "name" : "horizontal_slider",
+      "type" : "bool"
     },
     
     {
       "class" : "image",
       "displayName" : "name",
       "name" : "name",
+      "type" : "string"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "checked_image",
+      "name" : "checked_image",
       "type" : "string"
     }
   ],
@@ -100,12 +121,17 @@
           {
             "name" : "name",
             "string" : "back_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
           }
         ],
         "file" : "images/back.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 3,
+        "id" : 2,
         "name" : "image2",
         "opacity" : 0.5,
         "scale" : 1.806580305099487
@@ -121,26 +147,10 @@
         "file" : "images/gore.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 4,
+        "id" : 3,
         "name" : "image3",
         "opacity" : 0.5,
         "scale" : 2.484852313995361
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 10.01189994812012,
-          "y" : 3.232539892196655
-        },
-        "file" : "images/off.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 6,
-        "name" : "image30",
-        "opacity" : 0.5,
-        "scale" : 2.295080184936523
       },
       
       {
@@ -153,7 +163,7 @@
         "file" : "images/vibrations.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 11,
+        "id" : 4,
         "name" : "image10",
         "opacity" : 0.5,
         "scale" : 2.418215513229370
@@ -177,12 +187,17 @@
           {
             "name" : "name",
             "string" : "gore_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 13,
+        "id" : 5,
         "name" : "image30",
         "opacity" : 0.5,
         "scale" : 2.295080184936523
@@ -206,12 +221,17 @@
           {
             "name" : "name",
             "string" : "vibrations_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 15,
+        "id" : 6,
         "name" : "image30",
         "opacity" : 0.5,
         "scale" : 2.295080184936523
@@ -229,37 +249,26 @@
           
           {
             "name" : "name",
-            "string" : "music_volume_multi_image_slider"
+            "string" : "music_volume_slider"
           },
           
           {
             "name" : "slider_image",
             "string" : "volume1.png"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "vertical_slider"
           }
         ],
         "file" : "images/volume.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 17,
+        "id" : 7,
         "name" : "image16",
         "opacity" : 0.5,
         "scale" : 4.976710319519043
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 15.86981010437012,
-          "y" : 3.228116512298584
-        },
-        "file" : "images/off.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 24,
-        "name" : "image30",
-        "opacity" : 0.5,
-        "scale" : 2.295080184936523
       },
       
       {
@@ -272,7 +281,7 @@
         "file" : "images/volumebox.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 25,
+        "id" : 9,
         "name" : "image24",
         "opacity" : 0.5,
         "scale" : 1.223047256469727
@@ -290,50 +299,26 @@
           
           {
             "name" : "name",
-            "string" : "sfx_volume_multi_image_slider"
+            "string" : "sfx_volume_slider"
           },
           
           {
             "name" : "slider_image",
             "string" : "volume1.png"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "vertical_slider"
           }
         ],
         "file" : "images/volume.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 26,
+        "id" : 10,
         "name" : "image16",
         "opacity" : 0.5,
         "scale" : 4.976710319519043
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 15.86981010437012,
-          "y" : 3.228116512298584
-        },
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "checked_image",
-            "string" : "on.png"
-          },
-          
-          {
-            "name" : "name",
-            "string" : "sfx_volume_checkbox"
-          }
-        ],
-        "file" : "images/off.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 27,
-        "name" : "image30",
-        "opacity" : 0.5,
-        "scale" : 2.295082330703735
       },
       
       {
@@ -346,7 +331,7 @@
         "file" : "images/sfx.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 28,
+        "id" : 12,
         "name" : "image0",
         "opacity" : 0.5,
         "scale" : 1
@@ -362,7 +347,7 @@
         "file" : "images/music.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 29,
+        "id" : 13,
         "name" : "image1",
         "opacity" : 0.5,
         "scale" : 1
@@ -378,7 +363,7 @@
         "file" : "images/volumebox.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 30,
+        "id" : 14,
         "name" : "image24",
         "opacity" : 0.5,
         "scale" : 1.223047256469727
@@ -388,8 +373,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 10.01189994812012,
-          "y" : 3.232539892196655
+          "x" : 9.893150329589844,
+          "y" : 3.04239034652710
         },
         "customProperties" : 
         [
@@ -401,16 +386,55 @@
           
           {
             "name" : "name",
-            "string" : "music_volume_checkbox"
+            "string" : "music_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
           }
         ],
         "file" : "images/off.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 33,
+        "id" : 16,
         "name" : "image30",
         "opacity" : 0.5,
-        "scale" : 2.295082330703735
+        "scale" : 2.295080184936523
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 15.75801658630371,
+          "y" : 2.954742908477783
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "checked_image",
+            "string" : "on.png"
+          },
+          
+          {
+            "name" : "name",
+            "string" : "sfx_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
+          }
+        ],
+        "file" : "images/off.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 17,
+        "name" : "image30",
+        "opacity" : 0.5,
+        "scale" : 2.295080184936523
       }
     ],
     "positionIterations" : 3,

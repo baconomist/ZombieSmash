@@ -1267,6 +1267,11 @@
 				{
 					"name" : "name",
 					"string" : "play_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
 				}
 			],
 			"file" : "../../../../raw-assets/ui/main_menu/images/play_button.png",
@@ -1429,6 +1434,11 @@
 				{
 					"name" : "name",
 					"string" : "options_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
 				}
 			],
 			"file" : "../../../../raw-assets/ui/main_menu/images/options_button.png",
@@ -1587,6 +1597,11 @@
 				{
 					"name" : "name",
 					"string" : "store_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
 				}
 			],
 			"file" : "../../../../raw-assets/ui/main_menu/images/store_button.png",

@@ -43,16 +43,16 @@
     
     {
       "class" : "image",
-      "displayName" : "name",
-      "name" : "name",
-      "type" : "string"
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     },
     
     {
       "class" : "image",
-      "displayName" : "button",
-      "name" : "button",
-      "type" : "bool"
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
     }
   ],
   "metaworld" : 
@@ -84,39 +84,31 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 13.07821846008301,
-          "y" : 10.66148376464844
+          "x" : 10.10742759704590,
+          "y" : 5.642549037933350
         },
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "health_overlay"
-          }
-        ],
-        "file" : "../../../android/assets/ui/game_ui/survival/health_overlay.png",
+        "file" : "images/background.jpg",
         "filter" : 1,
         "flip" : false,
-        "id" : 2,
+        "id" : 1,
         "name" : "image0",
         "opacity" : 0.5,
-        "scale" : 0.4098990857601166
+        "scale" : 11.38354969024658
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 1.051712870597839,
-          "y" : 10.18711757659912
+          "x" : 5.974588871002197,
+          "y" : 8.326349258422852
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "powerup_button_1"
+            "string" : "sandbox_button"
           },
           
           {
@@ -124,110 +116,60 @@
             "name" : "button"
           }
         ],
-        "file" : "images/box.png",
+        "file" : "images/sandbox.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 2,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 2.507956266403198
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 5.966289043426514,
+          "y" : 5.248739719390869
+        },
+        "file" : "images/sandbox_desc.png",
         "filter" : 1,
         "flip" : false,
         "id" : 3,
         "name" : "image2",
         "opacity" : 0.5,
-        "scale" : 1.768819332122803
+        "scale" : 3.131940841674805
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 13.07478523254395,
-          "y" : 10.65935325622559
+          "x" : 13.99712562561035,
+          "y" : 5.091255187988281
         },
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "health_bar"
-          }
-        ],
-        "file" : "images/health.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 4,
-        "name" : "image3",
-        "opacity" : 0.5,
-        "scale" : 0.7742451429367065
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 18.97156524658203,
-          "y" : 10.06698322296143
-        },
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "pause_button"
-          },
-          
-          {
-            "bool" : true,
-            "name" : "button"
-          }
-        ],
-        "file" : "images/pause.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 5,
-        "name" : "image4",
-        "opacity" : 0.5,
-        "scale" : 1.773422479629517
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 3.098604917526245,
-          "y" : 10.18751907348633
-        },
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "powerup_button_2"
-          },
-          
-          {
-            "bool" : true,
-            "name" : "button"
-          }
-        ],
-        "file" : "images/box.png",
+        "file" : "images/survival_desc.png",
         "filter" : 1,
         "flip" : false,
         "id" : 6,
-        "name" : "image1",
+        "name" : "image4",
         "opacity" : 0.5,
-        "scale" : 1.770544886589050
+        "scale" : 3.131940841674805
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 5.139456272125244,
-          "y" : 10.18633937835693
+          "x" : 14.03575515747070,
+          "y" : 8.271375656127930
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "powerup_button_3"
+            "string" : "survival_button"
           },
           
           {
@@ -235,28 +177,28 @@
             "name" : "button"
           }
         ],
-        "file" : "images/box.png",
+        "file" : "images/survival.png",
         "filter" : 1,
         "flip" : false,
         "id" : 7,
-        "name" : "image5",
+        "name" : "image3",
         "opacity" : 0.5,
-        "scale" : 1.770544886589050
+        "scale" : 2.507956266403198
       },
       
       {
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 7.180449485778809,
-          "y" : 10.18457603454590
+          "x" : 14.03575515747070,
+          "y" : 8.271375656127930
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "powerup_button_4"
+            "string" : "survival_button"
           },
           
           {
@@ -264,13 +206,74 @@
             "name" : "button"
           }
         ],
-        "file" : "images/box.png",
+        "file" : "images/survival.png",
         "filter" : 1,
         "flip" : false,
         "id" : 8,
-        "name" : "image6",
+        "name" : "image3",
         "opacity" : 0.5,
-        "scale" : 1.770544886589050
+        "scale" : 2.507956266403198
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.99712562561035,
+          "y" : 5.091255187988281
+        },
+        "file" : "images/survival_desc.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 9,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "scale" : 3.131940841674805
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 14.03575515747070,
+          "y" : 8.271375656127930
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "survival_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/survival.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 10,
+        "name" : "image3",
+        "opacity" : 0.5,
+        "scale" : 2.507956266403198
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.99712562561035,
+          "y" : 5.091255187988281
+        },
+        "file" : "images/survival_desc.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 11,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "scale" : 3.131940841674805
       }
     ],
     "positionIterations" : 3,

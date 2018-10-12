@@ -41,6 +41,8 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     private GlyphLayout layout;
     private GlyphLayout continueLayout;
 
+    private int pointer = -1;
+
     public Message()
     {
 
@@ -82,10 +84,8 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     {
         this.content = content;
         this.layout.setText(this.bitmapFont, content);
-        this.box.setSize(this.layout.width + TEXT_OFFSET*2,
-                this.layout.height + TEXT_OFFSET*2 + (this.animatableGraphicsEntity.getSize().y*Physics.PIXELS_PER_METER));
-        this.box.setSize(this.box.getWidth() + TEXT_OFFSET + ((this.continueLayout.width + (this.animatableGraphicsEntity.getSize().x*Physics.PIXELS_PER_METER)) - this.box.getWidth()),
-                this.box.getHeight()); // Update size to accommodate for CONTINUE_TEXT
+        this.box.setSize(Math.max(this.layout.width, this.continueLayout.width  + (this.animatableGraphicsEntity.getSize().x*Physics.PIXELS_PER_METER)) + TEXT_OFFSET*2,
+                this.layout.height + TEXT_OFFSET*2 + (this.animatableGraphicsEntity.getSize().y*Physics.PIXELS_PER_METER)); // Update size to accommodate for CONTINUE_TEXT
         this.box.setOriginCenter();
     }
 
@@ -128,7 +128,7 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     @Override
     public void onTouchDown(float screenX, float screenY, int pointer)
     {
-
+        this.pointer = pointer;
     }
 
     @Override
@@ -140,9 +140,12 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
     @Override
     public void onTouchUp(float screenX, float screenY, int pointer)
     {
-        Environment.isPaused = false;
-        Environment.screens.gamescreen.get_ui_stage().removeMessage(this);
-        this.dispose();
+        if(this.pointer == pointer)
+        {
+            Environment.isPaused = false;
+            Environment.screens.gamescreen.get_ui_stage().removeMessage(this);
+            this.dispose();
+        }
     }
 
     @Override

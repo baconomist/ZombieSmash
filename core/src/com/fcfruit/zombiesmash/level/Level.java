@@ -15,6 +15,7 @@ import com.fcfruit.zombiesmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.event.LevelEventListener;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 
@@ -298,6 +299,20 @@ public class Level
         }
         Environment.updatableRemoveQueue.clear();
 
+        // Remove levelEventListeners from level
+        for(LevelEventListener levelEventListener : Environment.levelEventListenerRemoveQueue)
+        {
+            this.levelEventListeners.removeValue(levelEventListener, true);
+        }
+        Environment.levelEventListenerRemoveQueue.clear();
+
+        // Add levelEventListeners to level
+        for(LevelEventListener levelEventListener : Environment.levelEventListenerAddQueue)
+        {
+            this.levelEventListeners.add(levelEventListener);
+        }
+        Environment.levelEventListenerAddQueue.clear();
+
         // Add updatableEntities to level
         for (com.fcfruit.zombiesmash.entity.interfaces.UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
         {
@@ -413,8 +428,11 @@ public class Level
         int zombiesToSpawn = 0;
         for (Spawner spawner : this.spawners)
         {
-            zombiesSpawned += spawner.spawnedEntities();
-            zombiesToSpawn += spawner.entitiesToSpawn();
+            if(spawner.data.name().contains("zombie"))
+            {
+                zombiesSpawned += spawner.spawnedEntities();
+                zombiesToSpawn += spawner.entitiesToSpawn();
+            }
         }
         return zombiesSpawned == zombiesToSpawn;
     }
@@ -453,6 +471,11 @@ public class Level
     public String getCurrentCameraPosition()
     {
         return this.currentCameraPosition;
+    }
+
+    public boolean isCameraMoving()
+    {
+        return this.isCameraMoving;
     }
 
     private void preClear()

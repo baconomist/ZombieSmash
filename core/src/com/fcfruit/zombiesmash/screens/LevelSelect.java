@@ -2,65 +2,83 @@ package com.fcfruit.zombiesmash.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.ZombieSmash;
-import com.fcfruit.zombiesmash.stages.LevelSelectStage;
+import com.fcfruit.zombiesmash.stages.level_select.Page1;
 
 
 /**
  * Created by Lucas on 2017-07-22.
  */
 
-public class LevelSelect implements Screen{
+public class LevelSelect implements Screen
+{
 
-    LevelSelectStage stage;
+    private Viewport viewport;
 
-    Viewport viewport;
+    private Stage currentStage;
+    private Page1 page1;
 
-    public LevelSelect(){
-        viewport = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
-        stage = new LevelSelectStage(viewport);
+    public LevelSelect()
+    {
+        this.viewport = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
+        this.page1 = new Page1(this.viewport);
 
-        Gdx.input.setInputProcessor(stage);
+        this.currentStage = this.page1;
+
+        Gdx.input.setInputProcessor(this.currentStage);
+    }
+
+    public void showPage2()
+    {
+
     }
 
     @Override
-    public void show() {
-        Gdx.input.setInputProcessor(stage);
+    public void show()
+    {
+        Gdx.input.setInputProcessor(this.currentStage);
     }
 
     @Override
-    public void render(float delta){
-        stage.act();
-        stage.draw();
+    public void render(float delta)
+    {
+        Gdx.input.setInputProcessor(this.currentStage);
+        this.currentStage.act();
+        this.currentStage.draw();
     }
 
     @Override
-    public void resize(int width, int height) {
+    public void resize(int width, int height)
+    {
         // use true here to center the camera
         // that's what you probably want in case of Screens
         viewport.update(width, height, true);
-        stage.getViewport().update(width, height, true);
     }
 
     @Override
-    public void pause() {
-
-    }
-
-    @Override
-    public void resume() {
+    public void pause()
+    {
 
     }
 
     @Override
-    public void hide() {
+    public void resume()
+    {
 
     }
 
     @Override
-    public void dispose() {
+    public void hide()
+    {
+
+    }
+
+    @Override
+    public void dispose()
+    {
 
     }
 

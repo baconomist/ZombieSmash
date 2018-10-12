@@ -18,8 +18,6 @@ import com.fcfruit.zombiesmash.rube.RubeScene;
 
 import java.util.ArrayList;
 
-import javafx.scene.effect.Lighting;
-
 /**
  * Created by Lucas on 2017-07-21.
  */
