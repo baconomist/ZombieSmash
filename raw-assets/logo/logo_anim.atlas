@@ -1,0 +1,952 @@
+
+logo_anim.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Background (40ms)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 10 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 100 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 102 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 101 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 103 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 99 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 104 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 98 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 105 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 97 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 106 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 56 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 96 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 107 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 54 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 58 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 95 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 108 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 94 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 109 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 61 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 93 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 11 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+
+logo_anim2.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame 110 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 62 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 92 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 111 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 64 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 91 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 112 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 51 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 90 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 113 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 67 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 89 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 114 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 50 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 88 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 115 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 70 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 87 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 116 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 49 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 71 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 86 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 117 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 73 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 85 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 118 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 48 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 74 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 84 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 119 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 47 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 76 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 83 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 12 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 120 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 77 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 78 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 82 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+
+logo_anim3.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame 121 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 122 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 46 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 79 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 80 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 81 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 123 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 45 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 124 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 125 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 44 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 126 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 127 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 43 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 128 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 42 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 129 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 130 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 13 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 14 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 15 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 16 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+
+logo_anim4.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame 17 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 18 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 19 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 2 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 20 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 21 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 22 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 23 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 24 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 25 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 26 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 27 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+
+logo_anim5.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame 28 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 29 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 3 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 30 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 31 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 32 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 33 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 34 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 35 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 36 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 37 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 38 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+
+logo_anim6.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame 39 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 4 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 40 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 41 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 5 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 52 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 63 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 53 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 55 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 57 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 59 (40ms) (combine)
+  rotate: false
+  xy: 534, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 6 (40ms) (combine)
+  rotate: false
+  xy: 1066, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 60 (40ms) (combine)
+  rotate: false
+  xy: 1066, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+
+logo_anim7.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+Frame 65 (40ms) (combine)
+  rotate: false
+  xy: 2, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 66 (40ms) (combine)
+  rotate: false
+  xy: 2, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 68 (40ms) (combine)
+  rotate: false
+  xy: 534, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 69 (40ms) (combine)
+  rotate: false
+  xy: 2, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 7 (40ms) (combine)
+  rotate: false
+  xy: 534, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 72 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1517
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 75 (40ms) (combine)
+  rotate: false
+  xy: 2, 2
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 8 (40ms) (combine)
+  rotate: false
+  xy: 534, 507
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
+Frame 9 (40ms) (combine)
+  rotate: false
+  xy: 1066, 1012
+  size: 530, 503
+  orig: 530, 503
+  offset: 0, 0
+  index: -1
