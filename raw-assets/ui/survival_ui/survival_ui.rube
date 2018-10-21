@@ -43,16 +43,16 @@
     
     {
       "class" : "image",
-      "displayName" : "name",
-      "name" : "name",
-      "type" : "string"
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     },
     
     {
       "class" : "image",
-      "displayName" : "button",
-      "name" : "button",
-      "type" : "bool"
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
     }
   ],
   "metaworld" : 
@@ -81,11 +81,11 @@
     [
       
       {
-        "aspectScale" : 1,
+        "aspectScale" : 1.002083301544190,
         "center" : 
         {
-          "x" : 13.07821846008301,
-          "y" : 10.66148376464844
+          "x" : 13.07994079589844,
+          "y" : 10.65605735778809
         },
         "customProperties" : 
         [
@@ -101,7 +101,7 @@
         "id" : 2,
         "name" : "image0",
         "opacity" : 0.5,
-        "scale" : 0.4098990857601166
+        "scale" : 0.4104898571968079
       },
       
       {
