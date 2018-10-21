@@ -42,13 +42,13 @@ public class ZombieSmash extends Game
             Gdx.input.setCatchBackKey(true);
         }
 
-        this.setScreen(new SplashScreen());
+        //this.setScreen(new SplashScreen());
 
         //this.setScreen(Environment.screens.mainmenu);
 
-        /*Environment.create();
+        Environment.create();
         Environment.setupGame(2);
-        this.setScreen(Environment.screens.gamescreen);*/
+        this.setScreen(Environment.screens.gamescreen);
 
         /*Environment.create();
         Environment.load_assets();

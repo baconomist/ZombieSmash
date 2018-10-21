@@ -1,0 +1,33 @@
+
+night_map.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+night_map
+  rotate: false
+  xy: 2, 2
+  size: 2000, 2000
+  orig: 2000, 2000
+  offset: 0, 0
+  index: -1
+
+night_map2.png
+size: 2048,2048
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+house
+  rotate: false
+  xy: 2, 438
+  size: 1190, 901
+  orig: 1190, 901
+  offset: 0, 0
+  index: -1
+rubble
+  rotate: false
+  xy: 2, 2
+  size: 1183, 434
+  orig: 1183, 434
+  offset: 0, 0
+  index: -1

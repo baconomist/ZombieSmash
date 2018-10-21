@@ -1,5 +1,8 @@
 package com.fcfruit.zombiesmash.level;
 
+import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
@@ -11,12 +14,25 @@ import com.fcfruit.zombiesmash.Environment;
 
 public class Objective {
 
+    private Sprite sprite;
     public Polygon polygon;
 
-    float health = 100;
+    private float health = 100.0f;
 
     float width;
     float height;
+
+    public Objective()
+    {
+        this.sprite = new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("house"));
+        this.sprite.setPosition(2496, 90f);
+        this.takeDamage(99f);
+    }
+
+    public void draw(SpriteBatch batch)
+    {
+        this.sprite.draw(batch);
+    }
 
     public void setPosition(float x, float y){
         Vector3 pos = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(x, y, 0)));
@@ -32,6 +48,12 @@ public class Objective {
 
     public void takeDamage(float damage){
         health -= damage;
+        if(this.health <= 0)
+        {
+            this.sprite.setRegion(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("rubble"));
+            this.sprite.setSize(this.sprite.getRegionWidth(), this.sprite.getRegionHeight());
+            this.sprite.setPosition(this.sprite.getX(), 30f);
+        }
     }
 
     public float getHealth(){return health;}

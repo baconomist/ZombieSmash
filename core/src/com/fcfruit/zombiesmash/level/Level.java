@@ -142,6 +142,7 @@ public class Level
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
         this.sprite.draw(batch);
+        this.objective.draw(batch);
 
         for (com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
