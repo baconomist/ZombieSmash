@@ -22,6 +22,9 @@ import com.fcfruit.zombiesmash.ui.MultiImageSlider;
 import com.fcfruit.zombiesmash.ui.UIPhysicsEntity;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.HashMap;
 
 public class RubeStage extends Stage
 {
@@ -31,7 +34,9 @@ public class RubeStage extends Stage
     private RubeSceneLoader rubeSceneLoader;
     private RubeScene rubeScene;
 
-    private ArrayList<Actor> drawOrder;
+    // Need to do <Actor, Integer> or else actors with the same draw order will replace
+    // one another.
+    private HashMap<Actor, Integer> drawOrder;
 
     public RubeStage(Viewport viewport, String rubeSceneFilePath, String rootPath, boolean physicsEnabled)
     {
@@ -40,12 +45,12 @@ public class RubeStage extends Stage
         this.rootPath = rootPath;
         this.physicsEnabled = physicsEnabled;
 
-        if(physicsEnabled)
+        if (physicsEnabled)
             this.rubeSceneLoader = new RubeSceneLoader(Environment.physics.getWorld());
         else
             this.rubeSceneLoader = new RubeSceneLoader();
 
-        this.drawOrder = new ArrayList<Actor>();
+        this.drawOrder = new HashMap<Actor, Integer>();
 
         this.loadScene(rubeSceneFilePath);
     }
@@ -60,7 +65,7 @@ public class RubeStage extends Stage
         boolean horizontal_slider;
 
         this.rubeScene = this.rubeSceneLoader.loadScene(Gdx.files.internal(filePath));
-        for(RubeImage image : this.rubeScene.getImages())
+        for (RubeImage image : this.rubeScene.getImages())
         {
             name = (String) rubeScene.getCustom(image, "name");
             button = (rubeScene.getCustom(image, "button") != null ? (Boolean) rubeScene.getCustom(image, "button") : false);
@@ -68,33 +73,32 @@ public class RubeStage extends Stage
             vertical_slider = (rubeScene.getCustom(image, "vertical_slider") != null ? (Boolean) rubeScene.getCustom(image, "vertical_slider") : false);
             horizontal_slider = (rubeScene.getCustom(image, "horizontal_slider") != null ? (Boolean) rubeScene.getCustom(image, "horizontal_slider") : false);
 
-            if(name != null)
+            if (name != null)
             {
                 if (button)
                     actor = this.createImageButton(image);
                 else if (checkbox)
                     actor = this.createCheckBox(image);
-                else if(vertical_slider || horizontal_slider)
+                else if (vertical_slider || horizontal_slider)
                     actor = this.createMultiImageSlider(image, horizontal_slider);
                 else
                     actor = this.createImage(image);
 
-                if(image.body != null)
+                if (image.body != null)
                     actor = this.createUIPhysicsEntity(actor, image.body);
 
                 actor.setName((String) this.rubeScene.getCustom(image, "name"));
-                drawOrder.add(image.renderOrder, actor);
-            }
-            else
+                this.drawOrder.put(actor, image.renderOrder);
+            } else
             {
                 Gdx.app.error("RubeStage", "Null Image Name, Creating Image...");
                 actor = this.createImage(image);
                 actor.setName(image.file.split("/")[image.file.split("/").length - 1]);
-                drawOrder.add(image.renderOrder, actor);
+                this.drawOrder.put(actor, image.renderOrder);
             }
         }
 
-        if(this.physicsEnabled)
+        if (this.physicsEnabled)
         {
             for (Body body : this.rubeScene.getBodies())
             {
@@ -107,15 +111,35 @@ public class RubeStage extends Stage
         }
 
         this.manageDrawOrder();
-
     }
 
     private void manageDrawOrder()
     {
-        for(Actor actor : this.drawOrder)
+        Actor[] drawOrderActorsSorted = new Actor[this.drawOrder.keySet().size()];
+        this.drawOrder.keySet().toArray(drawOrderActorsSorted);
+
+        // Sort keys
+        Actor temp;
+
+        // Modified Algorithm from https://study.com/academy/lesson/how-to-sort-an-array-in-java.html
+        for (int i = 1; i < drawOrderActorsSorted.length; i++)
+        {
+            for (int x = i; x > 0; x--)
+            {
+                if (this.drawOrder.get(drawOrderActorsSorted[x]) < this.drawOrder.get(drawOrderActorsSorted[x - 1]))
+                {
+                    temp = drawOrderActorsSorted[x];
+                    drawOrderActorsSorted[x] = drawOrderActorsSorted[x - 1];
+                    drawOrderActorsSorted[x - 1] = temp;
+                }
+            }
+        }
+
+        for(Actor actor : drawOrderActorsSorted)
         {
             this.addActor(actor);
         }
+
     }
 
     private MultiImageSlider createMultiImageSlider(RubeImage image, boolean horizontal)
@@ -126,14 +150,14 @@ public class RubeStage extends Stage
                 new Sprite(new Texture(this.rootPath + rubeScene.getCustom(image, "slider_image"))), horizontal);
 
         Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
-        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        size.y = this.getViewport().getCamera().position.y * 2 - size.y;
         multiImageSlider.setSize(size.x, size.y);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
-        pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        multiImageSlider.setPosition(pos.x-size.x/2, pos.y-size.y/2);
+        pos.y = this.getViewport().getCamera().position.y * 2 - pos.y;
+        multiImageSlider.setPosition(pos.x - size.x / 2, pos.y - size.y / 2);
 
-        return  multiImageSlider;
+        return multiImageSlider;
     }
 
     private Image createImage(RubeImage image)
@@ -143,12 +167,12 @@ public class RubeStage extends Stage
         Image img = new Image(new Texture(Gdx.files.internal(this.rootPath + filename)));
 
         Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
-        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        size.y = this.getViewport().getCamera().position.y * 2 - size.y;
         img.setSize(size.x, size.y);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
-        pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        img.setPosition(pos.x-size.x/2, pos.y-size.y/2);
+        pos.y = this.getViewport().getCamera().position.y * 2 - pos.y;
+        img.setPosition(pos.x - size.x / 2, pos.y - size.y / 2);
 
         return img;
     }
@@ -162,12 +186,12 @@ public class RubeStage extends Stage
                 new Sprite(new Texture(Gdx.files.internal(this.rootPath + checked_image_filename))));
 
         Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
-        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        size.y = this.getViewport().getCamera().position.y * 2 - size.y;
         checkBox.setSize(size.x, size.y);
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.center, 0)));
-        pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        checkBox.setPosition(pos.x-size.x/2, pos.y-size.y/2);
+        pos.y = this.getViewport().getCamera().position.y * 2 - pos.y;
+        checkBox.setPosition(pos.x - size.x / 2, pos.y - size.y / 2);
 
         return checkBox;
     }
@@ -179,18 +203,18 @@ public class RubeStage extends Stage
         ImageButton imageButton = new ImageButton(new Sprite(new Texture(Gdx.files.internal(this.rootPath + filename))));
 
         Vector3 size = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(image.width, image.height, 0)));
-        size.y = this.getViewport().getCamera().position.y*2 - size.y;
+        size.y = this.getViewport().getCamera().position.y * 2 - size.y;
         imageButton.setSize(size.x, size.y);
 
         Vector2 img_pos;
-        if(image.body != null)
+        if (image.body != null)
             img_pos = image.body.getPosition();
         else
             img_pos = image.center;
 
         Vector3 pos = this.getViewport().getCamera().unproject(Environment.physicsCamera.project(new Vector3(img_pos, 0)));
-        pos.y = this.getViewport().getCamera().position.y*2 - pos.y;
-        imageButton.setPosition(pos.x-size.x/2, pos.y-size.y/2);
+        pos.y = this.getViewport().getCamera().position.y * 2 - pos.y;
+        imageButton.setPosition(pos.x - size.x / 2, pos.y - size.y / 2);
 
         return imageButton;
     }
@@ -198,7 +222,7 @@ public class RubeStage extends Stage
     private UIPhysicsEntity createUIPhysicsEntity(Actor actor, Body body)
     {
         body.setUserData(new PhysicsData(actor));
-        for(Fixture fixture : body.getFixtureList())
+        for (Fixture fixture : body.getFixtureList())
         {
             fixture.setUserData(new PhysicsData(actor));
         }
@@ -208,9 +232,9 @@ public class RubeStage extends Stage
 
     public Actor findActor(String name)
     {
-        for(Actor actor : this.getActors())
+        for (Actor actor : this.getActors())
         {
-            if(actor.getName().equals(name))
+            if (actor.getName().equals(name))
                 return actor;
         }
         return null;
