@@ -1,0 +1,164 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "image",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 9.994483947753906,
+          "y" : 5.622149467468262
+        },
+        "file" : "season_select.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 3,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 11.24174594879150
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 16.00560188293457,
+          "y" : 6.495482444763184
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "play_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/empty.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 4,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "renderOrder" : 1,
+        "scale" : 4.490062713623047
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 2.030213117599487,
+          "y" : 10.32720279693604
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "back_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/back.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "scale" : 1.420861124992371
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}

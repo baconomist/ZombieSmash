@@ -43,15 +43,15 @@
     
     {
       "class" : "image",
-      "displayName" : "button",
-      "name" : "button",
+      "displayName" : "vertical_slider",
+      "name" : "vertical_slider",
       "type" : "bool"
     },
     
     {
       "class" : "image",
-      "displayName" : "vertical_slider",
-      "name" : "vertical_slider",
+      "displayName" : "button",
+      "name" : "button",
       "type" : "bool"
     },
     

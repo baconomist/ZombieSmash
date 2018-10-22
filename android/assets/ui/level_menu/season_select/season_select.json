@@ -1,0 +1,161 @@
+
+{
+	"allowSleep" : true,
+	"autoClearForces" : true,
+	"collisionbitplanes" : 
+	{
+		"names" : 
+		[
+			"bitplane1",
+			"bitplane2",
+			"bitplane3",
+			"bitplane4",
+			"bitplane5",
+			"bitplane6",
+			"bitplane7",
+			"bitplane8",
+			"bitplane9",
+			"bitplane10",
+			"bitplane11",
+			"bitplane12",
+			"bitplane13",
+			"bitplane14",
+			"bitplane15",
+			"bitplane16",
+			"bitplane17",
+			"bitplane18",
+			"bitplane19",
+			"bitplane20",
+			"bitplane21",
+			"bitplane22",
+			"bitplane23",
+			"bitplane24",
+			"bitplane25",
+			"bitplane26",
+			"bitplane27",
+			"bitplane28",
+			"bitplane29",
+			"bitplane30",
+			"bitplane31",
+			"bitplane32"
+		]
+	},
+	"continuousPhysics" : true,
+	"gravity" : 
+	{
+		"x" : 0,
+		"y" : -10
+	},
+	"image" : 
+	[
+		
+		{
+			"aspectScale" : 1,
+			"body" : -1,
+			"center" : 
+			{
+				"x" : 9.994483947753906,
+				"y" : 5.622149467468262
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					0.001820807694457471,
+					19.98714637756348,
+					19.98714637756348,
+					0.001820807694457471
+				],
+				"y" : 
+				[
+					0.001276493072509766,
+					0.001276493072509766,
+					11.24302291870117,
+					11.24302291870117
+				]
+			},
+			"file" : "../../../../../raw-assets/ui/level_menu/season_select/season_select.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				0.001820807694457471,
+				0.001276493072509766,
+				19.98714637756348,
+				0.001276493072509766,
+				19.98714637756348,
+				11.24302291870117,
+				0.001820807694457471,
+				11.24302291870117
+			],
+			"name" : "image0",
+			"opacity" : 0.5,
+			"scale" : 11.24174594879150
+		},
+		
+		{
+			"aspectScale" : 1,
+			"body" : -1,
+			"center" : 
+			{
+				"x" : 16.00560188293457,
+				"y" : 6.495482444763184
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					13.41593837738037,
+					18.59526443481445,
+					18.59526443481445,
+					13.41593837738037
+				],
+				"y" : 
+				[
+					4.250451087951660,
+					4.250451087951660,
+					8.740513801574707,
+					8.740513801574707
+				]
+			},
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "play_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
+				}
+			],
+			"file" : "../../../../../raw-assets/ui/level_menu/season_select/images/empty.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				13.41593837738037,
+				4.250451087951660,
+				18.59526443481445,
+				4.250451087951660,
+				18.59526443481445,
+				8.740513801574707,
+				13.41593837738037,
+				8.740513801574707
+			],
+			"name" : "image1",
+			"opacity" : 0.5,
+			"renderOrder" : 1,
+			"scale" : 4.490062713623047
+		}
+	],
+	"positionIterations" : 3,
+	"stepsPerSecond" : 60.0,
+	"subStepping" : false,
+	"velocityIterations" : 8,
+	"warmStarting" : true
+}

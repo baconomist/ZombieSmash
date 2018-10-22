@@ -1,0 +1,262 @@
+
+{
+	"allowSleep" : true,
+	"autoClearForces" : true,
+	"collisionbitplanes" : 
+	{
+		"names" : 
+		[
+			"bitplane1",
+			"bitplane2",
+			"bitplane3",
+			"bitplane4",
+			"bitplane5",
+			"bitplane6",
+			"bitplane7",
+			"bitplane8",
+			"bitplane9",
+			"bitplane10",
+			"bitplane11",
+			"bitplane12",
+			"bitplane13",
+			"bitplane14",
+			"bitplane15",
+			"bitplane16",
+			"bitplane17",
+			"bitplane18",
+			"bitplane19",
+			"bitplane20",
+			"bitplane21",
+			"bitplane22",
+			"bitplane23",
+			"bitplane24",
+			"bitplane25",
+			"bitplane26",
+			"bitplane27",
+			"bitplane28",
+			"bitplane29",
+			"bitplane30",
+			"bitplane31",
+			"bitplane32"
+		]
+	},
+	"continuousPhysics" : true,
+	"gravity" : 
+	{
+		"x" : 0,
+		"y" : -10
+	},
+	"image" : 
+	[
+		
+		{
+			"aspectScale" : 1.404682159423828,
+			"body" : -1,
+			"center" : 
+			{
+				"x" : 10.83077049255371,
+				"y" : 4.896129131317139
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					4.887632369995117,
+					16.77390861511231,
+					16.77390861511231,
+					4.887632369995117
+				],
+				"y" : 
+				[
+					1.228234529495239,
+					1.228234529495239,
+					8.564023971557617,
+					8.564023971557617
+				]
+			},
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "level_list_bounds"
+				}
+			],
+			"file" : "../../../../../raw-assets/ui/level_menu/level_select/images/empty.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				4.887632369995117,
+				1.228234529495239,
+				16.77390861511231,
+				1.228234529495239,
+				16.77390861511231,
+				8.564023971557617,
+				4.887632369995117,
+				8.564023971557617
+			],
+			"name" : "image5",
+			"opacity" : 0.5,
+			"renderOrder" : 1,
+			"scale" : 7.335789203643799
+		},
+		
+		{
+			"aspectScale" : 1,
+			"body" : -1,
+			"center" : 
+			{
+				"x" : 10.81197929382324,
+				"y" : 4.861755847930908
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					4.376939773559570,
+					17.24701881408691,
+					17.24701881408691,
+					4.376939773559570
+				],
+				"y" : 
+				[
+					0.6298995018005371,
+					0.6298995018005371,
+					9.093612670898438,
+					9.093612670898438
+				]
+			},
+			"file" : "../../../../../raw-assets/ui/level_menu/level_select/images/box.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				4.376939773559570,
+				0.6298995018005371,
+				17.24701881408691,
+				0.6298995018005371,
+				17.24701881408691,
+				9.093612670898438,
+				4.376939773559570,
+				9.093612670898438
+			],
+			"name" : "image2",
+			"opacity" : 0.5,
+			"renderOrder" : 1,
+			"scale" : 8.463712692260742
+		},
+		
+		{
+			"aspectScale" : 1,
+			"body" : -1,
+			"center" : 
+			{
+				"x" : 2.544725179672241,
+				"y" : 10.17547798156738
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					0.9562228918075562,
+					4.133227348327637,
+					4.133227348327637,
+					0.9562228918075562
+				],
+				"y" : 
+				[
+					9.477136611938477,
+					9.477136611938477,
+					10.87381935119629,
+					10.87381935119629
+				]
+			},
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "back_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
+				}
+			],
+			"file" : "../../../../../raw-assets/ui/level_menu/level_select/images/back.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				0.9562228918075562,
+				9.477136611938477,
+				4.133227348327637,
+				9.477136611938477,
+				4.133227348327637,
+				10.87381935119629,
+				0.9562228918075562,
+				10.87381935119629
+			],
+			"name" : "image1",
+			"opacity" : 0.5,
+			"renderOrder" : 1,
+			"scale" : 1.396683096885681
+		},
+		
+		{
+			"aspectScale" : 1,
+			"body" : -1,
+			"center" : 
+			{
+				"x" : 10.8922586441040,
+				"y" : 9.950826644897461
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					6.301832675933838,
+					15.48268413543701,
+					15.48268413543701,
+					6.301832675933838
+				],
+				"y" : 
+				[
+					9.179385185241699,
+					9.179385185241699,
+					10.72226810455322,
+					10.72226810455322
+				]
+			},
+			"file" : "../../../../../raw-assets/ui/level_menu/level_select/images/level_select_label.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				6.301832675933838,
+				9.179385185241699,
+				15.48268413543701,
+				9.179385185241699,
+				15.48268413543701,
+				10.72226810455322,
+				6.301832675933838,
+				10.72226810455322
+			],
+			"name" : "image4",
+			"opacity" : 0.5,
+			"renderOrder" : 1,
+			"scale" : 1.542883515357971
+		}
+	],
+	"positionIterations" : 3,
+	"stepsPerSecond" : 60.0,
+	"subStepping" : false,
+	"velocityIterations" : 8,
+	"warmStarting" : true
+}

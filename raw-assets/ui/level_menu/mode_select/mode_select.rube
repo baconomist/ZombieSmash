@@ -1,0 +1,286 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 10.10739994049072,
+          "y" : 5.642549991607666
+        },
+        "file" : "images/background.jpg",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 1,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 11.38354969024658
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 5.966289043426514,
+          "y" : 5.248739719390869
+        },
+        "file" : "images/sandbox_desc.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 3,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "renderOrder" : 3,
+        "scale" : 3.131940841674805
+      },
+      
+      {
+        "aspectScale" : 0.6538462638854981,
+        "center" : 
+        {
+          "x" : 8.470280647277832,
+          "y" : 6.388966083526611
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "lock_bounds"
+          }
+        ],
+        "file" : "images/empty.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 5,
+        "name" : "image6",
+        "opacity" : 0.5,
+        "renderOrder" : 4,
+        "scale" : 2.747324466705322
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.99712562561035,
+          "y" : 5.091255187988281
+        },
+        "file" : "images/survival_desc.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "renderOrder" : 2,
+        "scale" : 3.131940841674805
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.98823356628418,
+          "y" : 8.160010337829590
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "survival_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/survival.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 7,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 2.118983983993530
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 6.220901489257813,
+          "y" : 8.155333518981934
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "sandbox_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/sandbox.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 8,
+        "name" : "image3",
+        "opacity" : 0.5,
+        "scale" : 2.187121152877808
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.99712562561035,
+          "y" : 5.091255187988281
+        },
+        "file" : "images/survival_desc.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 9,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "renderOrder" : 2,
+        "scale" : 3.131940841674805
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.99712562561035,
+          "y" : 5.091255187988281
+        },
+        "file" : "images/survival_desc.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 11,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "renderOrder" : 2,
+        "scale" : 3.131940841674805
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 1.624595284461975,
+          "y" : 10.40630722045898
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "back_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/back.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 12,
+        "name" : "image5",
+        "opacity" : 0.5,
+        "renderOrder" : 6,
+        "scale" : 1.234908819198608
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}

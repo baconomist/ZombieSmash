@@ -1,0 +1,34 @@
+{
+"skeleton": { "hash": "Vr+RJYDSqz0EFJE300qrDxWPcSY", "spine": "3.6.53", "width": 1397, "height": 416, "images": "./images/" },
+"bones": [
+	{ "name": "root" }
+],
+"slots": [
+	{ "name": "storesignoff", "bone": "root", "attachment": "store" }
+],
+"skins": {
+	"default": {
+		"storesignoff": {
+			"store": { "y": 3.47, "width": 1397, "height": 416 },
+			"storesignoff": { "y": 9.62, "width": 1397, "height": 403 }
+		}
+	}
+},
+"animations": {
+	"animation": {
+		"slots": {
+			"storesignoff": {
+				"attachment": [
+					{ "time": 0, "name": "store" },
+					{ "time": 2, "name": "storesignoff" },
+					{ "time": 2.1333, "name": "store" },
+					{ "time": 3.1667, "name": "storesignoff" },
+					{ "time": 3.5, "name": "store" },
+					{ "time": 4.6, "name": "storesignoff" },
+					{ "time": 4.8667, "name": "store" }
+				]
+			}
+		}
+	}
+}
+}
