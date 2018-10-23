@@ -43,16 +43,16 @@
     
     {
       "class" : "image",
-      "displayName" : "name",
-      "name" : "name",
-      "type" : "string"
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     },
     
     {
       "class" : "image",
-      "displayName" : "button",
-      "name" : "button",
-      "type" : "bool"
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
     }
   ],
   "metaworld" : 
@@ -152,6 +152,7 @@
         "id" : 6,
         "name" : "image2",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 1.420861124992371
       }
     ],

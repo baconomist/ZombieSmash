@@ -6,7 +6,9 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.zombiesmash.ZombieSmash;
+import com.fcfruit.zombiesmash.stages.level_menu.LevelSelectStage;
 import com.fcfruit.zombiesmash.stages.level_menu.ModeSelectStage;
+import com.fcfruit.zombiesmash.stages.level_menu.SeasonSelectStage;
 
 
 /**
@@ -20,16 +22,36 @@ public class LevelMenu implements Screen
 
     private Stage currentStage;
     private ModeSelectStage modeSelectStage;
+    private SeasonSelectStage seasonSelectStage;
+    private LevelSelectStage levelSelectStage;
 
     public LevelMenu()
     {
         this.viewport = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
+
         this.modeSelectStage = new ModeSelectStage(this.viewport);
+        this.seasonSelectStage = new SeasonSelectStage(this.viewport);
+        this.levelSelectStage = new LevelSelectStage(this.viewport);
 
         this.setCurrentStage(this.modeSelectStage);
     }
 
-    public void setCurrentStage(Stage stage)
+    public void showModeSelect()
+    {
+        this.setCurrentStage(this.modeSelectStage);
+    }
+
+    public void showSeasonSelect()
+    {
+        this.setCurrentStage(this.seasonSelectStage);
+    }
+
+    public void showLevelSelect()
+    {
+        this.setCurrentStage(this.levelSelectStage);
+    }
+
+    private void setCurrentStage(Stage stage)
     {
         this.currentStage = stage;
         Gdx.input.setInputProcessor(this.currentStage);
