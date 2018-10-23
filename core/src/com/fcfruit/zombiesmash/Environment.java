@@ -105,6 +105,7 @@ public class Environment
         assets.load("ui/game_ui/message_box/message_guy/message_guy.atlas", TextureAtlas.class);
     }
 
+    public static String currentDifficulty = "normal";
     public static HashMap<String, Float> difficulty_multipliers;
     static
     {

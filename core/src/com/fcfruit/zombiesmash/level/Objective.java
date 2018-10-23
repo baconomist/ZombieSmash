@@ -46,7 +46,7 @@ public class Objective {
     }
 
     public void takeDamage(float damage){
-        health -= damage;
+        health -= damage*Environment.difficulty_multipliers.get(Environment.currentDifficulty);
         if(this.health <= 0)
         {
             this.sprite.setRegion(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("rubble"));

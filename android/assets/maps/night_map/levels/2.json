@@ -1,7 +1,7 @@
 {
   "left": {
     "crawling_zombie": {
-      "quantity": 1,
+      "quantity": 100,
       "init_delay": 0,
       "spawn_delay": 0.15,
       "position": "left"
