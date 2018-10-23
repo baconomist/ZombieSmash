@@ -26,7 +26,6 @@ public class Objective {
     {
         this.sprite = new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("house"));
         this.sprite.setPosition(2496, 90f);
-        this.takeDamage(99f);
     }
 
     public void draw(SpriteBatch batch)
