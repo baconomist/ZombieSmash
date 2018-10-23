@@ -26,6 +26,7 @@ import com.fcfruit.zombiesmash.powerups.PowerupManager;
 import com.fcfruit.zombiesmash.powerups.rocket.RocketPool;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Created by Lucas on 2017-09-18.
@@ -102,6 +103,15 @@ public class Environment
         assets.load("effects/fire/fire.atlas", TextureAtlas.class);
 
         assets.load("ui/game_ui/message_box/message_guy/message_guy.atlas", TextureAtlas.class);
+    }
+
+    public static HashMap<String, Float> difficulty_multipliers;
+    static
+    {
+        difficulty_multipliers = new HashMap<String, Float>();
+        difficulty_multipliers.put("easy", 0.75f);
+        difficulty_multipliers.put("normal", 1f);
+        difficulty_multipliers.put("hard", 1.5f);
     }
 
     public static Level level;

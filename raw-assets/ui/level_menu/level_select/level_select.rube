@@ -43,8 +43,22 @@
     
     {
       "class" : "image",
+      "displayName" : "checked_image",
+      "name" : "checked_image",
+      "type" : "string"
+    },
+    
+    {
+      "class" : "image",
       "displayName" : "button",
       "name" : "button",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "checkbox",
+      "name" : "checkbox",
       "type" : "bool"
     },
     
@@ -186,6 +200,41 @@
       },
       
       {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 17.13320732116699,
+          "y" : 5.074552536010742
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "checked_image",
+            "string" : "on.png"
+          },
+          
+          {
+            "name" : "name",
+            "string" : "hard_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
+          }
+        ],
+        "file" : "../../settings_menu/images/off.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image6",
+        "opacity" : 0.5,
+        "renderOrder" : 2,
+        "scale" : 0.8387937545776367
+      },
+      
+      {
         "aspectScale" : 1.328583359718323,
         "center" : 
         {
@@ -211,11 +260,11 @@
       },
       
       {
-        "aspectScale" : 0.3439698517322540,
+        "aspectScale" : 0.8686994314193726,
         "center" : 
         {
           "x" : 18.18699073791504,
-          "y" : 4.885615825653076
+          "y" : 7.152824401855469
         },
         "customProperties" : 
         [
@@ -232,7 +281,7 @@
         "name" : "image5",
         "opacity" : 0.5,
         "renderOrder" : 1,
-        "scale" : 7.465073108673096
+        "scale" : 2.955867052078247
       },
       
       {
@@ -263,6 +312,151 @@
         "opacity" : 0.5,
         "renderOrder" : 2,
         "scale" : 0.8304560780525208
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 17.13320732116699,
+          "y" : 4.024498939514160
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "checked_image",
+            "string" : "on.png"
+          },
+          
+          {
+            "name" : "name",
+            "string" : "normal_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
+          }
+        ],
+        "file" : "../../settings_menu/images/off.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 10,
+        "name" : "image6",
+        "opacity" : 0.5,
+        "renderOrder" : 2,
+        "scale" : 0.8387937545776367
+      },
+      
+      {
+        "aspectScale" : 1.571385502815247,
+        "center" : 
+        {
+          "x" : 18.57130241394043,
+          "y" : 2.943305730819702
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "easy_label"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 11,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "renderOrder" : 1,
+        "scale" : 0.8629882335662842
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 17.14195632934570,
+          "y" : 2.964819908142090
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "checked_image",
+            "string" : "on.png"
+          },
+          
+          {
+            "name" : "name",
+            "string" : "easy_checkbox"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "checkbox"
+          }
+        ],
+        "file" : "../../settings_menu/images/off.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 12,
+        "name" : "image6",
+        "opacity" : 0.5,
+        "renderOrder" : 2,
+        "scale" : 0.8387937545776367
+      },
+      
+      {
+        "aspectScale" : 1.571385502815247,
+        "center" : 
+        {
+          "x" : 18.58869934082031,
+          "y" : 4.013546466827393
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "normal_label"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 13,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "renderOrder" : 1,
+        "scale" : 0.8629882335662842
+      },
+      
+      {
+        "aspectScale" : 1.571385502815247,
+        "center" : 
+        {
+          "x" : 18.59630966186523,
+          "y" : 5.095240592956543
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "hard_label"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 14,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "renderOrder" : 1,
+        "scale" : 0.8629882335662842
       }
     ],
     "positionIterations" : 3,
