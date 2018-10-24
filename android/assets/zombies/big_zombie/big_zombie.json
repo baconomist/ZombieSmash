@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "j0DnL84ndayjzDtoaIfXKCtQqiE", "spine": "3.6.53", "width": 835.2, "height": 1291.31, "images": "./images/" },
+"skeleton": { "hash": "Bvmp5pgy5zSU1ctvaH7hkwv1pFE", "spine": "3.6.53", "width": 835.2, "height": 1291.31, "images": "./images/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "bike", "parent": "root", "length": 605.96, "rotation": 64.18, "x": -157.99, "y": 428.38 },
@@ -25,7 +25,8 @@
 	{ "name": "head", "bone": "head", "attachment": "head" },
 	{ "name": "right_armback", "bone": "right_armback", "attachment": "right_armback" },
 	{ "name": "right_armfront", "bone": "right_armfront", "attachment": "biker1/right_armfront" },
-	{ "name": "right_legfront", "bone": "right_legfront", "attachment": "biker1/right_legfront" }
+	{ "name": "right_legfront", "bone": "right_legfront", "attachment": "biker1/right_legfront" },
+	{ "name": "bounding_box", "bone": "root", "attachment": "bounding_box" }
 ],
 "skins": {
 	"default": {
@@ -34,6 +35,13 @@
 			"biker1/destroyed_bike1": { "x": 357.78, "y": 69.95, "rotation": -5.79, "width": 704, "height": 446 },
 			"biker1/destroyed_bike2": { "x": 318.16, "y": 72.81, "rotation": -5.79, "width": 619, "height": 464 },
 			"physics_pos": { "type": "point", "x": 309.28, "y": 4.94 }
+		},
+		"bounding_box": {
+			"bounding_box": {
+				"type": "boundingbox",
+				"vertexCount": 4,
+				"vertices": [ -259.52, -1.79, 476.95, -3.46, 478.62, 1118.78, -234.47, 1117.11 ]
+			}
 		},
 		"head": {
 			"blood_pos": { "type": "point", "x": 3.34, "rotation": 168.29 },
@@ -45,7 +53,7 @@
 			"physics_pos": { "type": "point", "x": 94.41, "y": 7.65 }
 		},
 		"left_armfront": {
-			"biker1/left_armfront": { "x": 137.33, "y": -2.51, "rotation": 5.13, "width": 292, "height": 140 },
+			"biker1/left_armfront": { "x": 137.33, "y": -2.51, "rotation": -1.17, "width": 292, "height": 140 },
 			"biker1/left_armfront2": { "x": 144.08, "y": -13.14, "rotation": 86.03, "width": 304, "height": 140 },
 			"blood_pos": { "type": "point", "rotation": -179.84 },
 			"physics_pos": { "type": "point", "x": 86.75, "y": 10.78 }
@@ -67,7 +75,7 @@
 			"physics_pos": { "type": "point", "x": 93.03, "y": -13.57 }
 		},
 		"right_armfront": {
-			"biker1/right_armfront": { "x": 136.6, "y": 13.13, "rotation": 5.22, "width": 300, "height": 146 },
+			"biker1/right_armfront": { "x": 136.6, "y": 13.13, "rotation": 5.58, "width": 300, "height": 146 },
 			"biker1/right_armfront2": { "x": 123.12, "y": 6.23, "rotation": 92, "width": 304, "height": 134 },
 			"blood_pos": { "type": "point", "rotation": -177.9 },
 			"physics_pos": { "type": "point", "x": 95.22, "y": -2.24 }
@@ -108,30 +116,30 @@
 	},
 	"biker2": {
 		"head": {
-			"head": { "name": "biker2/headblue", "x": -22.29, "y": 8.92, "rotation": -90, "width": 449, "height": 233 }
+			"head": { "name": "biker2/headblue", "x": -22.29, "y": 8.92, "rotation": -0.92, "width": 449, "height": 233 }
 		},
 		"left_armback": {
-			"left_armback": { "name": "biker2/left_armbackblue", "x": 130.63, "y": 12.09, "rotation": 85.5, "width": 309, "height": 150 }
+			"left_armback": { "name": "biker2/left_armbackblue", "x": 130.63, "y": 12.09, "rotation": 2.14, "width": 309, "height": 150 }
 		},
 		"right_armback": {
-			"right_armback": { "name": "biker2/right_armbackblue", "x": 146.52, "y": -7.59, "rotation": 94.01, "width": 326, "height": 159 }
+			"right_armback": { "name": "biker2/right_armbackblue", "x": 146.52, "y": -7.59, "rotation": -3.93, "width": 326, "height": 159 }
 		},
 		"torso": {
-			"torso": { "name": "biker2/torsoblue", "x": 181.21, "y": 9.27, "rotation": -89.42, "width": 548, "height": 421 }
+			"torso": { "name": "biker2/torsoblue", "x": 181.21, "y": 9.27, "rotation": -8.65, "width": 548, "height": 421 }
 		}
 	},
 	"biker3": {
 		"head": {
-			"head": { "name": "biker3/headgreen", "x": 22.29, "y": 4.46, "rotation": -90, "width": 348, "height": 233 }
+			"head": { "name": "biker3/headgreen", "x": 22.29, "y": 4.46, "rotation": -4.46, "width": 348, "height": 233 }
 		},
 		"left_armback": {
-			"left_armback": { "name": "biker3/left_armbackgreen", "x": 127.67, "y": 12.32, "rotation": 85.5, "width": 309, "height": 150 }
+			"left_armback": { "name": "biker3/left_armbackgreen", "x": 127.67, "y": 12.32, "rotation": 1.64, "width": 309, "height": 150 }
 		},
 		"right_armback": {
-			"right_armback": { "name": "biker3/right_armbackgreen", "x": 133.07, "y": -7.05, "rotation": 94.01, "width": 326, "height": 159 }
+			"right_armback": { "name": "biker3/right_armbackgreen", "x": 133.07, "y": -7.05, "rotation": -2.88, "width": 326, "height": 159 }
 		},
 		"torso": {
-			"torso": { "name": "biker3/torsogreen", "x": 196.02, "y": 13.88, "rotation": -89.42, "width": 548, "height": 421 }
+			"torso": { "name": "biker3/torsogreen", "x": 196.02, "y": 13.88, "rotation": -8.77, "width": 548, "height": 421 }
 		}
 	}
 },

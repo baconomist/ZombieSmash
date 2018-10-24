@@ -27,7 +27,6 @@ public class BigZombie extends Zombie
         this.moveAnimation = "walk";
 
         this.detachableEntitiesToStayAlive.add("head");
-        this.detachableEntitiesToStayAlive.add("torso");
         this.detachableEntitiesToStayAlive.add("left_armback");
         this.detachableEntitiesToStayAlive.add("left_armfront");
         this.detachableEntitiesToStayAlive.add("right_armback");

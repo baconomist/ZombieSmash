@@ -456,9 +456,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.drawOrder = new Array<String>();
         for(Slot slot : this.animatableGraphicsEntity.getSkeleton().getDrawOrder())
         {
-            if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.getAttachment().getName()) != null)
+            if (slot.getAttachment() != null && this.getDrawableEntities().get(slot.toString()) != null)
             {
-                this.drawOrder.add(slot.getAttachment().getName());
+                this.drawOrder.add(slot.toString());
             }
         }
     }
