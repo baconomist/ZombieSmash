@@ -14,10 +14,10 @@ import java.util.ArrayList;
  * Created by Lucas on 2017-11-21.
  */
 
-public class BigZombie extends Zombie
+public class GrandmaZombie extends Zombie
 {
 
-    public BigZombie(Integer id)
+    public GrandmaZombie(Integer id)
     {
         super(id);
 
@@ -32,7 +32,7 @@ public class BigZombie extends Zombie
         this.detachableEntitiesToStayAlive.add("left_legfront");
         this.detachableEntitiesToStayAlive.add("right_legback");
         this.detachableEntitiesToStayAlive.add("right_legfront");
-        this.detachableEntitiesToStayAlive.add("bike");
+        this.detachableEntitiesToStayAlive.add("rollingpin");
 
         this.currentParts.add("head");
         this.currentParts.add("torso");
@@ -44,21 +44,20 @@ public class BigZombie extends Zombie
         this.currentParts.add("left_legfront");
         this.currentParts.add("right_legback");
         this.currentParts.add("right_legfront");
-        this.currentParts.add("bike");
+        this.currentParts.add("rollingpin");
 
     }
 
     @Override
-    protected void animationSetup()
+    public void setup(int direction)
     {
-        super.animationSetup();
-        this.getSkeleton().setSkin("biker1");
+        super.setup(direction);
     }
 
     @Override
     protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
-        if(bodyName.equals("bike"))
+        if(bodyName.equals("rollingpin"))
         {
             SpecialPart part = new SpecialPart(bodyName, sprite, physicsBody, joints, containerEntity);
             this.getDrawableEntities().put(bodyName, part);

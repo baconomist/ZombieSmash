@@ -33,7 +33,7 @@ import java.util.HashMap;
  * Created by Lucas on 2018-01-07.
  */
 
-public class Bike implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
+public class SpecialPart implements DrawableEntityInterface, OptimizableEntityInterface, InteractivePhysicsEntityInterface,
         DetachableEntityInterface, NameableEntityInterface, PostLevelDestroyableInterface
 {
     private String name;
@@ -45,7 +45,7 @@ public class Bike implements DrawableEntityInterface, OptimizableEntityInterface
     private InteractivePhysicsEntity interactivePhysicsEntity;
     private DetachableEntity detachableEntity;
 
-    public Bike(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface parentContainer)
+    public SpecialPart(String name, Sprite sprite, Body physicsBody, ArrayList<Joint> joints, ContainerEntityInterface parentContainer)
     {
         this.name = name;
 
