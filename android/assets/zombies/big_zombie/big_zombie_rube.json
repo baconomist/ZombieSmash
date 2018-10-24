@@ -209,7 +209,7 @@
 				
 				{
 					"name" : "name",
-					"string" : "left_armfront"
+					"string" : "left_armback"
 				},
 				
 				{
@@ -274,7 +274,7 @@
 				
 				{
 					"name" : "name",
-					"string" : "right_armfront"
+					"string" : "right_armback"
 				},
 				
 				{
@@ -404,7 +404,7 @@
 				
 				{
 					"name" : "name",
-					"string" : "left_armback"
+					"string" : "left_armfront"
 				},
 				
 				{
@@ -469,7 +469,7 @@
 				
 				{
 					"name" : "name",
-					"string" : "right_armback"
+					"string" : "right_armfront"
 				},
 				
 				{
@@ -812,51 +812,6 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 1,
-			"center" : 
-			{
-				"x" : -1.043983580140129e-010,
-				"y" : -1.958953710357037e-008
-			},
-			"corners" : 
-			{
-				"x" : 
-				[
-					-0.2141447663307190,
-					0.2141447514295578,
-					0.2141447514295578,
-					-0.2141447663307190
-				],
-				"y" : 
-				[
-					-0.1749914437532425,
-					-0.1749914437532425,
-					0.1749914139509201,
-					0.1749914139509201
-				]
-			},
-			"file" : "../../../../raw-assets/season_1/zombies/big_zombie/images/biker1/left_legback.png",
-			"filter" : 1,
-			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
-			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
-			"glVertexPointer" : 
-			[
-				-0.2141447663307190,
-				-0.1749914437532425,
-				0.2141447514295578,
-				-0.1749914437532425,
-				0.2141447514295578,
-				0.1749914139509201,
-				-0.2141447663307190,
-				0.1749914139509201
-			],
-			"name" : "image0",
-			"opacity" : 0.5,
-			"scale" : 0.3499828577041626
-		},
-		
-		{
-			"aspectScale" : 1,
 			"body" : 8,
 			"center" : 
 			{
@@ -943,6 +898,51 @@
 			"name" : "image7",
 			"opacity" : 0.5,
 			"scale" : 0.3319826722145081
+		},
+		
+		{
+			"aspectScale" : 1,
+			"body" : 1,
+			"center" : 
+			{
+				"x" : -1.043983580140129e-010,
+				"y" : -1.958953710357037e-008
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-0.2141447663307190,
+					0.2141447514295578,
+					0.2141447514295578,
+					-0.2141447663307190
+				],
+				"y" : 
+				[
+					-0.1749914437532425,
+					-0.1749914437532425,
+					0.1749914139509201,
+					0.1749914139509201
+				]
+			},
+			"file" : "../../../../raw-assets/season_1/zombies/big_zombie/images/biker1/left_legback.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				-0.2141447663307190,
+				-0.1749914437532425,
+				0.2141447514295578,
+				-0.1749914437532425,
+				0.2141447514295578,
+				0.1749914139509201,
+				-0.2141447663307190,
+				0.1749914139509201
+			],
+			"name" : "image0",
+			"opacity" : 0.5,
+			"scale" : 0.3499828577041626
 		},
 		
 		{
@@ -1270,6 +1270,56 @@
 		{
 			"anchorA" : 
 			{
+				"x" : -0.4262299239635468,
+				"y" : 0.1199378669261932
+			},
+			"anchorB" : 
+			{
+				"x" : 0.1216913908720017,
+				"y" : 0.003146595787256956
+			},
+			"bodyA" : 10,
+			"bodyB" : 9,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint3",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -0.3932531476020813,
+				"y" : -0.2157825082540512
+			},
+			"anchorB" : 
+			{
+				"x" : 0.1240990161895752,
+				"y" : 0.04260157421231270
+			},
+			"bodyA" : 10,
+			"bodyB" : 1,
+			"enableLimit" : false,
+			"enableMotor" : false,
+			"jointSpeed" : 0,
+			"lowerLimit" : 0,
+			"maxMotorTorque" : 0,
+			"motorSpeed" : 0,
+			"name" : "joint4",
+			"refAngle" : 0,
+			"type" : "revolute",
+			"upperLimit" : 0
+		},
+		
+		{
+			"anchorA" : 
+			{
 				"x" : 0.2871089279651642,
 				"y" : -0.3274451196193695
 			},
@@ -1365,56 +1415,6 @@
 			"refAngle" : 0,
 			"type" : "revolute",
 			"upperLimit" : 0.8397378921508789
-		},
-		
-		{
-			"anchorA" : 
-			{
-				"x" : -0.4262299239635468,
-				"y" : 0.1199378669261932
-			},
-			"anchorB" : 
-			{
-				"x" : 0.1216913908720017,
-				"y" : 0.003146595787256956
-			},
-			"bodyA" : 10,
-			"bodyB" : 9,
-			"enableLimit" : false,
-			"enableMotor" : false,
-			"jointSpeed" : 0,
-			"lowerLimit" : 0,
-			"maxMotorTorque" : 0,
-			"motorSpeed" : 0,
-			"name" : "joint3",
-			"refAngle" : 0,
-			"type" : "revolute",
-			"upperLimit" : 0
-		},
-		
-		{
-			"anchorA" : 
-			{
-				"x" : -0.3932531476020813,
-				"y" : -0.2157825082540512
-			},
-			"anchorB" : 
-			{
-				"x" : 0.1240990161895752,
-				"y" : 0.04260157421231270
-			},
-			"bodyA" : 10,
-			"bodyB" : 1,
-			"enableLimit" : false,
-			"enableMotor" : false,
-			"jointSpeed" : 0,
-			"lowerLimit" : 0,
-			"maxMotorTorque" : 0,
-			"motorSpeed" : 0,
-			"name" : "joint4",
-			"refAngle" : 0,
-			"type" : "revolute",
-			"upperLimit" : 0
 		},
 		
 		{

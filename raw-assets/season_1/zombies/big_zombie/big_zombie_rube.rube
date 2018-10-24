@@ -300,7 +300,7 @@
           
           {
             "name" : "name",
-            "string" : "right_armback"
+            "string" : "right_armfront"
           },
           
           {
@@ -371,7 +371,7 @@
           
           {
             "name" : "name",
-            "string" : "left_armback"
+            "string" : "left_armfront"
           },
           
           {
@@ -513,7 +513,7 @@
           
           {
             "name" : "name",
-            "string" : "right_armfront"
+            "string" : "right_armback"
           },
           
           {
@@ -584,7 +584,7 @@
           
           {
             "name" : "name",
-            "string" : "left_armfront"
+            "string" : "left_armback"
           },
           
           {
