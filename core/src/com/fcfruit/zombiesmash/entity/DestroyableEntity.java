@@ -87,13 +87,13 @@ public class DestroyableEntity implements DestroyableEntityInterface
             for (com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
                 Body b = ((PhysicsEntityInterface)interactiveEntity).getPhysicsBody();
-                if(!(!interactiveEntity.isTouching() && b.getPosition().y < 2f
-                        && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy))
+                if(!(!interactiveEntity.isTouching() && b.getPosition().y < 2f))
                 {
                     return false;
                 }
             }
-            return true;
+            if(System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy)
+                return true;
         }
         else if(this.detachableEntity != null)
         {
@@ -121,6 +121,17 @@ public class DestroyableEntity implements DestroyableEntityInterface
             this.createSmoke();
         else if(this.drawableEntity != null && drawableEntity instanceof PhysicsEntityInterface && this.isInLevel(((PhysicsEntityInterface) drawableEntity).getPhysicsBody()))
             this.createSmoke();
+        else if(this.containerEntity != null)
+        {
+            for(InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
+            {
+                if(interactiveEntityInterface instanceof PhysicsEntityInterface && this.isInLevel(((PhysicsEntityInterface)interactiveEntityInterface).getPhysicsBody()))
+                {
+                    this.createSmoke();
+                    break;
+                }
+            }
+        }
 
         this.destroying = true;
 
@@ -192,8 +203,11 @@ public class DestroyableEntity implements DestroyableEntityInterface
 
         if(this.drawableEntity != null)
             this.animatableGraphicsEntity.setPosition(this.physicsEntity.getPhysicsBody().getPosition());
-        else
+        else if(this.interactivePhysicsEntity != null)
             this.animatableGraphicsEntity.setPosition(this.interactivePhysicsEntity.getPhysicsBody().getPosition());
+        else if(this.containerEntity != null)
+            this.animatableGraphicsEntity.setPosition(((DrawableEntityInterface) this.containerEntity.getDrawableEntities().values().toArray()[0]).getPosition()); // Pick one item out of the container to spawn the smoke on
+
 
         Environment.drawableBackgroundAddQueue.add(this.animatableGraphicsEntity);
     }
