@@ -67,10 +67,12 @@ public class Spawner
     private int spawnedEntities;
 
     private double accumilator = 0d;
+    private double random_delay = 0d;
 
     private int quantity;
     private float init_delay;
     private float spawn_delay;
+    private boolean random_spawn_delay;
 
     private boolean initDelayEnabled;
 
@@ -91,6 +93,16 @@ public class Spawner
             this.quantity = 1;
             Gdx.app.debug("Spawner", "Quantity not found. Defaulting to 1");
         }
+
+        try
+        {
+            this.random_spawn_delay = data.getBoolean("random_spawn_delay");
+        } catch (Exception e)
+        {
+            this.random_spawn_delay = false;
+            Gdx.app.debug("Spawner", "Random Spawn Delay not set. Defaulting to false.");
+        }
+
         this.init_delay = data.getFloat("init_delay");
         if(!(this.type.equals("message")))
             this.spawn_delay = data.getFloat("spawn_delay");
@@ -241,6 +253,9 @@ public class Spawner
 
     public void update(float delta)
     {
+        if(this.random_spawn_delay)
+            random_delay = Math.random()*2;
+
         if (this.quantity > this.spawnedEntities)
         {
             this.accumilator += Math.min(delta, 0.25f);
@@ -250,7 +265,7 @@ public class Spawner
                 this.accumilator = 0;
                 this.spawnEntity();
             }
-            else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000)
+            else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000 + random_delay * 1000)
             {
                 this.accumilator = 0;
                 this.spawnEntity();
