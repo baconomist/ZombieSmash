@@ -253,7 +253,7 @@ public class Spawner
     public void update(float delta)
     {
         if (this.random_spawn_delay)
-            random_delay = Math.random() * 2;
+            random_delay = Math.random() * 2.5f + 0.1f; // Random * 2.5 seconds with 0.1 seconds as lowest delay
 
         if (this.quantity > this.spawnedEntities)
         {
