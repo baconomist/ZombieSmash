@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "Bvmp5pgy5zSU1ctvaH7hkwv1pFE", "spine": "3.6.53", "width": 835.2, "height": 1291.31, "images": "./images/" },
+"skeleton": { "hash": "4Iiivk7/QkL7fzjPJckp+jZoupY", "spine": "3.6.53", "width": 835.2, "height": 1291.31, "images": "./images/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "bike", "parent": "root", "length": 605.96, "rotation": 64.18, "x": -157.99, "y": 428.38 },
@@ -93,10 +93,10 @@
 		},
 		"torso": {
 			"blood_pos_head": { "type": "point", "x": 417.55, "y": -2.45 },
-			"blood_pos_left_arm": { "type": "point", "x": 386.98, "y": -118, "rotation": -47.53 },
-			"blood_pos_left_leg": { "type": "point", "x": 27.63, "y": -89.91, "rotation": -169.39 },
-			"blood_pos_right_arm": { "type": "point", "x": 415.92, "y": 157.86, "rotation": 57.92 },
-			"blood_pos_right_leg": { "type": "point", "x": 25.81, "y": 90.45, "rotation": 173.89 },
+			"blood_pos_left_armback": { "type": "point", "x": 386.98, "y": -118, "rotation": -47.53 },
+			"blood_pos_left_legback": { "type": "point", "x": 27.63, "y": -89.91, "rotation": -169.39 },
+			"blood_pos_right_armback": { "type": "point", "x": 415.92, "y": 157.86, "rotation": 57.92 },
+			"blood_pos_right_legback": { "type": "point", "x": 25.81, "y": 90.45, "rotation": 173.89 },
 			"physics_pos": { "type": "point", "x": 220.44, "y": 0.56 }
 		}
 	},
