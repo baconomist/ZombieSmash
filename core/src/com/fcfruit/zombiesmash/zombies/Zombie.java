@@ -601,8 +601,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private boolean hasRequiredPartsForGetup()
     {
-        return this.getDrawableEntities().get("head") != null && this.getDrawableEntities().get("left_leg") != null
-                && this.getDrawableEntities().get("right_leg") != null;
+        return this.getDrawableEntities().get("head") != null
+                && ((this.getDrawableEntities().get("left_leg") != null && this.getDrawableEntities().get("right_leg") != null)
+                || (this.getDrawableEntities().get("left_legfront") != null && this.getDrawableEntities().get("right_legfront") != null));
     }
 
     /**
