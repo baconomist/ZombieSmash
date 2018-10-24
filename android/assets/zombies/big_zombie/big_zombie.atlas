@@ -1,55 +1,167 @@
 
 big_zombie.png
-size: 2048,512
+size: 2048,2048
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
-head
+biker1/bike
   rotate: false
-  xy: 1489, 100
-  size: 363, 372
-  orig: 363, 372
+  xy: 2, 1574
+  size: 799, 425
+  orig: 799, 425
   offset: 0, 0
   index: -1
-left_arm
+biker1/destroyed_bike1
   rotate: false
-  xy: 988, 50
-  size: 411, 139
-  orig: 411, 139
+  xy: 2, 1126
+  size: 704, 446
+  orig: 704, 446
   offset: 0, 0
   index: -1
-right_arm
+biker1/destroyed_bike2
   rotate: false
-  xy: 988, 50
-  size: 411, 139
-  orig: 411, 139
+  xy: 2, 660
+  size: 619, 464
+  orig: 619, 464
   offset: 0, 0
   index: -1
-left_leg
+biker1/head
   rotate: false
-  xy: 988, 191
-  size: 499, 281
-  orig: 499, 281
+  xy: 1353, 1358
+  size: 387, 224
+  orig: 387, 224
   offset: 0, 0
   index: -1
-right_leg
+biker1/left_armback
   rotate: false
-  xy: 988, 191
-  size: 499, 281
-  orig: 499, 281
+  xy: 1269, 1054
+  size: 308, 150
+  orig: 308, 150
   offset: 0, 0
   index: -1
-rock
+biker1/left_armfront
   rotate: false
-  xy: 2, 89
-  size: 543, 383
-  orig: 543, 383
+  xy: 903, 812
+  size: 292, 140
+  orig: 292, 140
   offset: 0, 0
   index: -1
-torso
+biker1/left_armfront2
   rotate: false
-  xy: 547, 2
-  size: 439, 470
-  orig: 439, 470
+  xy: 1742, 1442
+  size: 304, 140
+  orig: 304, 140
+  offset: 0, 0
+  index: -1
+biker1/left_legback
+  rotate: false
+  xy: 623, 649
+  size: 268, 219
+  orig: 268, 219
+  offset: 0, 0
+  index: -1
+biker1/left_legfront
+  rotate: false
+  xy: 623, 870
+  size: 278, 230
+  orig: 278, 230
+  offset: 0, 0
+  index: -1
+biker1/right_armback
+  rotate: false
+  xy: 552, 173
+  size: 311, 152
+  orig: 311, 152
+  offset: 0, 0
+  index: -1
+biker1/right_armfront
+  rotate: false
+  xy: 903, 954
+  size: 300, 146
+  orig: 300, 146
+  offset: 0, 0
+  index: -1
+biker1/right_armfront2
+  rotate: false
+  xy: 1742, 1306
+  size: 304, 134
+  orig: 304, 134
+  offset: 0, 0
+  index: -1
+biker1/right_legback
+  rotate: false
+  xy: 1009, 1138
+  size: 258, 203
+  orig: 258, 203
+  offset: 0, 0
+  index: -1
+biker1/right_legfront
+  rotate: false
+  xy: 708, 1102
+  size: 299, 239
+  orig: 299, 239
+  offset: 0, 0
+  index: -1
+biker1/torso
+  rotate: false
+  xy: 1353, 1584
+  size: 541, 415
+  orig: 541, 415
+  offset: 0, 0
+  index: -1
+biker2/headblue
+  rotate: false
+  xy: 2, 2
+  size: 449, 233
+  orig: 449, 233
+  offset: 0, 0
+  index: -1
+biker2/left_armbackblue
+  rotate: false
+  xy: 453, 21
+  size: 309, 150
+  orig: 309, 150
+  offset: 0, 0
+  index: -1
+biker2/right_armbackblue
+  rotate: false
+  xy: 552, 488
+  size: 326, 159
+  orig: 326, 159
+  offset: 0, 0
+  index: -1
+biker2/torsoblue
+  rotate: false
+  xy: 803, 1578
+  size: 548, 421
+  orig: 548, 421
+  offset: 0, 0
+  index: -1
+biker3/headgreen
+  rotate: false
+  xy: 803, 1343
+  size: 348, 233
+  orig: 348, 233
+  offset: 0, 0
+  index: -1
+biker3/left_armbackgreen
+  rotate: false
+  xy: 1269, 1206
+  size: 309, 150
+  orig: 309, 150
+  offset: 0, 0
+  index: -1
+biker3/right_armbackgreen
+  rotate: false
+  xy: 552, 327
+  size: 326, 159
+  orig: 326, 159
+  offset: 0, 0
+  index: -1
+biker3/torsogreen
+  rotate: false
+  xy: 2, 237
+  size: 548, 421
+  orig: 548, 421
   offset: 0, 0
   index: -1

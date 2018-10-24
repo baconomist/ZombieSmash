@@ -1,6 +1,5 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
@@ -10,7 +9,7 @@ import com.esotericsoftware.spine.Event;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.zombies.parts.BodyRock;
+import com.fcfruit.zombiesmash.zombies.parts.Bike;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -113,7 +112,7 @@ public class ArmoredZombie extends Zombie
     {
         if(bodyName.equals("gun"))
         {
-            BodyRock part = new BodyRock(bodyName, sprite, physicsBody, joints, containerEntity);
+            Bike part = new Bike(bodyName, sprite, physicsBody, joints, containerEntity);
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
             this.getDetachableEntities().put(bodyName, part);

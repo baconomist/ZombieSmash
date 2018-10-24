@@ -324,7 +324,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
             if ((Boolean) rubeScene.getCustom(body, "isPart") && this.currentParts.contains((String) rubeScene.getCustom(body, "name")))
             {
                 String bodyName = (String) rubeScene.getCustom(body, "name");
-                Sprite sprite = new Sprite(this.animatableGraphicsEntity.getAtlas().findRegion(bodyName));
+                Sprite sprite = new Sprite(((RegionAttachment)this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getAttachment()).getRegion());
 
                 for (RubeImage i : rubeScene.getImages())
                 {
@@ -408,7 +408,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.interactiveGraphicsEntity = new InteractiveGraphicsEntity(this.animatableGraphicsEntity, polygon);
     }
 
-    private void animationSetup()
+    protected void animationSetup()
     {
         TextureAtlas atlas = Environment.assets.get("zombies/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie/" + this.getClass().getSimpleName().replace("Zombie", "").toLowerCase() + "_zombie.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.

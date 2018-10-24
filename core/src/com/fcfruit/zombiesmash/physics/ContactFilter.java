@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.physics;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.fcfruit.zombiesmash.Environment;
