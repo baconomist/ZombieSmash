@@ -88,24 +88,22 @@ public class Spawner
         try
         {
             this.quantity = data.getInt("quantity");
-        }
-        catch (Exception e){
+        } catch (Exception e)
+        {
             this.quantity = 1;
             Gdx.app.debug("Spawner", "Quantity not found. Defaulting to 1");
         }
 
         try
         {
-            this.random_spawn_delay = data.getBoolean("random_spawn_delay");
+            this.spawn_delay = data.getFloat("spawn_delay");
         } catch (Exception e)
         {
-            this.random_spawn_delay = false;
-            Gdx.app.debug("Spawner", "Random Spawn Delay not set. Defaulting to false.");
+            this.random_spawn_delay = true;
+            Gdx.app.debug("Spawner", "Spawn Delay not set. Defaulting to random spawn delay.");
         }
 
         this.init_delay = data.getFloat("init_delay");
-        if(!(this.type.equals("message")))
-            this.spawn_delay = data.getFloat("spawn_delay");
 
         this.initDelayEnabled = init_delay != 0;
 
@@ -118,7 +116,7 @@ public class Spawner
 
     private void load_all_entities()
     {
-        for(int i = 0; i < this.quantity; i++)
+        for (int i = 0; i < this.quantity; i++)
         {
             this.spawnableEntities.add(this.loadEntity());
         }
@@ -151,7 +149,7 @@ public class Spawner
             }
 
             Zombie tempZombie;
-            tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1)*(this.index+1));
+            tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1) * (this.index + 1));
             tempZombie.setup(direction);
             tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
 
@@ -163,7 +161,7 @@ public class Spawner
                 tempZombie.setInitialGround(data.getInt("depth"));
             } catch (Exception e)
             {
-                tempZombie.setInitialGround(new Random().nextInt(1));
+                tempZombie.setInitialGround(Math.round(new Random().nextFloat()));
             }
 
             Gdx.app.debug("Spawner", "Added Zombie");
@@ -196,7 +194,7 @@ public class Spawner
             tempPowerup = (com.fcfruit.zombiesmash.entity.interfaces.PowerupInterface) entityType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new com.fcfruit.zombiesmash.powerups.PowerupCrate(tempPowerup);
 
-            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2 + (float)new Random().nextInt(40)/10f + 2f, 8));
+            tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 + (float) new Random().nextInt(40) / 10f + 2f, 8));
             tempCrate.changeToGround(0);
 
             Gdx.app.debug("Spawner", "Added Crate");
@@ -223,9 +221,9 @@ public class Spawner
     {
         if (this.type.contains("zombie"))
             return this.loadZombie();
-        else if(this.type.contains("heli"))
+        else if (this.type.contains("heli"))
             return this.loadHelicopter();
-        else if(this.type.contains("message"))
+        else if (this.type.contains("message"))
             return this.loadMessage();
         else
             return this.loadCrate();
@@ -235,11 +233,10 @@ public class Spawner
     {
         DrawableEntityInterface entity = this.spawnableEntities.get(spawnedEntities);
 
-        if(entity instanceof Message)
+        if (entity instanceof Message)
         {
             Environment.screens.gamescreen.get_ui_stage().setMessage((Message) entity);
-        }
-        else
+        } else
         {
             if (entity instanceof Zombie)
             {
@@ -253,19 +250,18 @@ public class Spawner
 
     public void update(float delta)
     {
-        if(this.random_spawn_delay)
-            random_delay = Math.random()*2;
+        if (this.random_spawn_delay)
+            random_delay = Math.random() * 2;
 
         if (this.quantity > this.spawnedEntities)
         {
             this.accumilator += Math.min(delta, 0.25f);
-            if (this.initDelayEnabled && this.accumilator*1000 >= this.init_delay * 1000)
+            if (this.initDelayEnabled && this.accumilator * 1000 >= this.init_delay * 1000)
             {
                 this.initDelayEnabled = false;
                 this.accumilator = 0;
                 this.spawnEntity();
-            }
-            else if (!this.initDelayEnabled && this.accumilator*1000 >= spawn_delay * 1000 + random_delay * 1000)
+            } else if (!this.initDelayEnabled && this.accumilator * 1000 >= spawn_delay * 1000 + random_delay * 1000)
             {
                 this.accumilator = 0;
                 this.spawnEntity();
