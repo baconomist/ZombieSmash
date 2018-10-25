@@ -601,8 +601,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private boolean hasRequiredPartsForGetup()
     {
-        return this.getDrawableEntities().get("head") != null && this.getDrawableEntities().get("left_leg") != null
-                && this.getDrawableEntities().get("right_leg") != null;
+        return this.getDrawableEntities().get("head") != null
+                && ((this.getDrawableEntities().get("left_leg") != null && this.getDrawableEntities().get("right_leg") != null)
+                || (this.getDrawableEntities().get("left_legfront") != null && this.getDrawableEntities().get("right_legfront") != null));
     }
 
     /**
@@ -940,7 +941,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 else
                     value = 3;
 
-                Environment.drawableAddQueue.add(Environment.brainPool.getBrain(value, this.getPosition(), new Vector2((float) Math.random() * (new Random().nextBoolean() ? 1 : -1), 2f)));
+                if(Environment.brainPool.hasAvailableBrain(value))
+                    Environment.drawableAddQueue.add(Environment.brainPool.getBrain(value, this.getPosition(), new Vector2((float) Math.random() * (new Random().nextBoolean() ? 1 : -1), 2f)));
             }
         }
 

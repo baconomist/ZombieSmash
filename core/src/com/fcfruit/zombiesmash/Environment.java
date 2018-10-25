@@ -75,6 +75,7 @@ public class Environment
         assets.load("maps/night_map/night_map.atlas", TextureAtlas.class);
         assets.load("effects/clouds/clouds.atlas", TextureAtlas.class);
 
+        assets.load("zombies/grandma_zombie/grandma_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/big_zombie/big_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/police_zombie/police_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/suicide_zombie/suicide_zombie.atlas", TextureAtlas.class);

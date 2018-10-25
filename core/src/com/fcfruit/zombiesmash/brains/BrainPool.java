@@ -27,6 +27,14 @@ public class BrainPool
         }
     }
 
+    public boolean hasAvailableBrain(int value)
+    {
+        for(Brain brain : this.brains)
+            if(!brain.enabled && brain.value == value)
+                return true;
+        return false;
+    }
+
     public Brain getBrain(int value, Vector2 position, Vector2 velocity)
     {
         for(Brain brain : this.brains)

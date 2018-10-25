@@ -118,7 +118,7 @@ public class ParticleEntity
                     {
                         // Apply impulse to torso to make the entire zombie fly! (also torso is not a detachableEntity so the loop below does not cover it)
                         // Only apply it if explodable hits a zombie directly on a body part
-                        ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir.scl(1, 0f), this.initialPos, true);
+                        ((PhysicsEntityInterface) ((Zombie) drawableEntity).getDrawableEntities().get("torso")).getPhysicsBody().applyLinearImpulse(this.rayDir.scl(0, 1f), this.initialPos, true);
                     }
 
                     for(DetachableEntityInterface detachableEntityInterface : ((Zombie) drawableEntity).getDetachableEntities().values())

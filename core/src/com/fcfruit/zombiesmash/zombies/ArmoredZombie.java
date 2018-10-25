@@ -9,7 +9,7 @@ import com.esotericsoftware.spine.Event;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
-import com.fcfruit.zombiesmash.zombies.parts.Bike;
+import com.fcfruit.zombiesmash.zombies.parts.SpecialPart;
 
 import java.util.ArrayList;
 import java.util.Random;
@@ -112,7 +112,7 @@ public class ArmoredZombie extends Zombie
     {
         if(bodyName.equals("gun"))
         {
-            Bike part = new Bike(bodyName, sprite, physicsBody, joints, containerEntity);
+            SpecialPart part = new SpecialPart(bodyName, sprite, physicsBody, joints, containerEntity);
             this.getDrawableEntities().put(bodyName, part);
             this.getInteractiveEntities().put(bodyName, part);
             this.getDetachableEntities().put(bodyName, part);

@@ -21,6 +21,7 @@ import com.fcfruit.zombiesmash.zombies.ArmoredZombie;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
 import com.fcfruit.zombiesmash.zombies.CrawlingZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
+import com.fcfruit.zombiesmash.zombies.GrandmaZombie;
 import com.fcfruit.zombiesmash.zombies.Zombie;
 import com.fcfruit.zombiesmash.zombies.PoliceZombie;
 import com.fcfruit.zombiesmash.zombies.RegZombie;
@@ -49,6 +50,7 @@ public class Spawner
         entityType.put("suicide_zombie", SuicideZombie.class);
         entityType.put("armored_zombie", ArmoredZombie.class);
         entityType.put("crawling_zombie", CrawlingZombie.class);
+        entityType.put("grandma_zombie", GrandmaZombie.class);
 
         entityType.put("helicopter", DeliveryHelicopter.class);
 
@@ -251,7 +253,7 @@ public class Spawner
     public void update(float delta)
     {
         if (this.random_spawn_delay)
-            random_delay = Math.random() * 2;
+            random_delay = Math.random() * 2.5f + 0.1f; // Random * 2.5 seconds with 0.1 seconds as lowest delay
 
         if (this.quantity > this.spawnedEntities)
         {
