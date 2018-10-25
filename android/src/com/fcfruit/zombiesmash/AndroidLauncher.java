@@ -18,17 +18,21 @@ public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onPause() {
 		super.onPause();
-		// Disable recent apps button
-		if(!Environment.settings.isRecentAppsButtonEnabled())
+		// Might crash as Environment.settings might not yet be initialized
+		try
 		{
-			ActivityManager activityManager = (ActivityManager) getApplicationContext()
-					.getSystemService(Context.ACTIVITY_SERVICE);
-			// If apk version matches required for this function call
-			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+			// Disable recent apps button
+			if (!Environment.settings.isRecentAppsButtonEnabled())
 			{
-				activityManager.moveTaskToFront(getTaskId(), 0);
+				ActivityManager activityManager = (ActivityManager) getApplicationContext()
+						.getSystemService(Context.ACTIVITY_SERVICE);
+				// If apk version matches required for this function call
+				if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB)
+				{
+					activityManager.moveTaskToFront(getTaskId(), 0);
+				}
 			}
-		}
+		} catch (NullPointerException e){e.printStackTrace();}
 	}
 
 }
