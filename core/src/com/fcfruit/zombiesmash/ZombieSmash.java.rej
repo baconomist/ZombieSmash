@@ -1,0 +1,11 @@
+--- ZombieSmash.java
++++ ZombieSmash.java
+@@ -42,7 +42,7 @@
+             Gdx.input.setCatchBackKey(true);
+         }
+ 
+-        this.setScreen(new SplashScreen());
++        //this.setScreen(new SplashScreen());
+ 
+         //this.setScreen(Environment.screens.mainmenu);
+ 
