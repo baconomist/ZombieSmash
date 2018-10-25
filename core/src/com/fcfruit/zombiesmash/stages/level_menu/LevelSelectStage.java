@@ -105,7 +105,6 @@ public class LevelSelectStage extends RubeStage
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 Environment.currentDifficulty = selected_difficulty;
-                Environment.create();
                 Environment.setupGame(selected_level);
                 Environment.game.setScreen(Environment.screens.gamescreen);
                 super.touchUp(event, x, y, pointer, button);
