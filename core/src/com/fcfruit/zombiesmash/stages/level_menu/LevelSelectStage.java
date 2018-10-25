@@ -55,6 +55,18 @@ public class LevelSelectStage extends RubeStage
         this.playButton = this.findActor("play_button");
         this.playButton.remove();
 
+        this.playButton.addListener(new ClickListener()
+        {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                Environment.currentDifficulty = selected_difficulty;
+                Environment.setupGame(selected_level);
+                Environment.game.setScreen(Environment.screens.gamescreen);
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
         this.difficultyLabelFont = new BitmapFont(Gdx.files.internal("ui/font/font.fnt"));
         this.difficultyLabelFont.getData().setScale(1.5f);
 
@@ -68,7 +80,7 @@ public class LevelSelectStage extends RubeStage
             {
                 fontActor = new FontActor(this.difficultyLabelFont);
                 fontActor.setText(actor.getName().replace("_label", "").toUpperCase());
-                fontActor.setPosition(actor.getX() + 40, actor.getY() + actor.getHeight()/2 + 40);
+                fontActor.setPosition(actor.getX() + 40, actor.getY() + actor.getHeight() / 2 + 40);
                 fontActor.setName(actor.getName() + "_font");
 
                 this.difficulty_labels[i] = (Image) actor;
@@ -98,18 +110,6 @@ public class LevelSelectStage extends RubeStage
                 i++;
             }
         }
-
-        this.playButton.addListener(new ClickListener()
-        {
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
-            {
-                Environment.currentDifficulty = selected_difficulty;
-                Environment.setupGame(selected_level);
-                Environment.game.setScreen(Environment.screens.gamescreen);
-                super.touchUp(event, x, y, pointer, button);
-            }
-        });
 
         this.levelButtonBitmapFont = new BitmapFont(Gdx.files.internal("ui/font/font.fnt"));
         this.levelButtonBitmapFont.getData().setScale(2);
@@ -210,6 +210,14 @@ public class LevelSelectStage extends RubeStage
         this.descriptionActor.remove();
         this.playButton.remove();
         this.descriptionText.remove();
+
+        for (Actor actor : this.difficulty_labels)
+            actor.remove();
+        for (Actor actor : this.difficulty_fonts)
+            actor.remove();
+        for (Actor actor : this.difficulty_checkboxes)
+            actor.remove();
+
         this.hideDescription = true;
     }
 
@@ -222,7 +230,7 @@ public class LevelSelectStage extends RubeStage
 
             for (Actor actor : this.difficulty_labels)
                 this.addActor(actor);
-            for(Actor actor : this.difficulty_fonts)
+            for (Actor actor : this.difficulty_fonts)
                 this.addActor(actor);
             for (Actor actor : this.difficulty_checkboxes)
                 this.addActor(actor);
