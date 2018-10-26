@@ -9,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.Config;
+import com.fcfruit.zombiesmash.ZombieSmash;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.stages.GameStage;
 import com.fcfruit.zombiesmash.stages.GameUIStage;
@@ -46,7 +47,7 @@ public class GameScreen implements Screen{
 
         game_stage = new GameStage(game_view);
 
-        ui_view = new StretchViewport(1920, 1080);
+        ui_view = new StretchViewport(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
         ui_view.apply();
         ui_stage = new GameUIStage(ui_view);
 
