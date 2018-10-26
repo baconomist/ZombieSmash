@@ -7,4 +7,5 @@ package com.fcfruit.zombiesmash.entity.interfaces.event;
 public interface LevelEventListener
 {
     void onCameraMoved();
+    void onLevelEnd();
 }

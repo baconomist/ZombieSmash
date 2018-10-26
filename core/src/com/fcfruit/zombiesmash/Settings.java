@@ -14,7 +14,6 @@ public class Settings
 
     private Preferences data;
 
-
     public Settings()
     {
         this.data = Gdx.app.getPreferences("settings");

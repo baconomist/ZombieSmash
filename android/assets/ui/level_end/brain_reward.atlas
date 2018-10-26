@@ -1,0 +1,62 @@
+
+brain_reward.png
+size: 2048,512
+format: RGBA8888
+filter: Linear,Linear
+repeat: none
+0.75
+  rotate: false
+  xy: 550, 2
+  size: 271, 160
+  orig: 271, 160
+  offset: 0, 0
+  index: -1
+1
+  rotate: false
+  xy: 823, 2
+  size: 121, 160
+  orig: 121, 160
+  offset: 0, 0
+  index: -1
+1.5
+  rotate: false
+  xy: 1835, 295
+  size: 198, 160
+  orig: 198, 160
+  offset: 0, 0
+  index: -1
+brain1
+  rotate: false
+  xy: 1555, 231
+  size: 278, 224
+  orig: 278, 224
+  offset: 0, 0
+  index: -1
+brain2
+  rotate: false
+  xy: 957, 209
+  size: 297, 246
+  orig: 297, 246
+  offset: 0, 0
+  index: -1
+brain3
+  rotate: false
+  xy: 1256, 209
+  size: 297, 246
+  orig: 297, 246
+  offset: 0, 0
+  index: -1
+sparkles1
+  rotate: false
+  xy: 550, 164
+  size: 405, 291
+  orig: 405, 291
+  offset: 0, 0
+  index: -1
+sparkles2
+  rotate: false
+  xy: 2, 51
+  size: 546, 404
+  orig: 546, 404
+  offset: 0, 0
+  index: -1

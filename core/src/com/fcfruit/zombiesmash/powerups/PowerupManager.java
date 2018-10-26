@@ -98,6 +98,12 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
         this.grenadePosition = null;
     }
 
+    @Override
+    public void onLevelEnd()
+    {
+
+    }
+
     public Vector3 getGrenadeSpawnPosition(ExplodablePowerup grenadePowerup)
     {
         if (grenadePosition == null)
