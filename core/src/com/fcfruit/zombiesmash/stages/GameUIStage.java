@@ -92,8 +92,8 @@ public class GameUIStage extends RubeStage
         skeletonRenderer = new SkeletonRenderer();
 
         brainCountbackground = new Sprite(new Texture("ui/game_ui/survival/retro_box.png"));
-        brainCountbackground.setSize(this.findActor("pause_button").getWidth(), 180);
-        brainCountbackground.setPosition(this.findActor("pause_button").getX(), this.findActor("pause_button").getY() - brainCountbackground.getHeight());
+        brainCountbackground.setSize(pause_button.getWidth()*1.25f, 180);
+        brainCountbackground.setPosition(pause_button.getX() - (brainCountbackground.getWidth() - pause_button.getWidth()), this.findActor("pause_button").getY() - brainCountbackground.getHeight());
 
         brainCountImage = new Sprite(new Texture("brains/brain1.png"));
         brainCountImage.setSize(140, 140);
