@@ -43,13 +43,6 @@
     
     {
       "class" : "image",
-      "displayName" : "vertical_slider",
-      "name" : "vertical_slider",
-      "type" : "bool"
-    },
-    
-    {
-      "class" : "image",
       "displayName" : "button",
       "name" : "button",
       "type" : "bool"
@@ -57,8 +50,8 @@
     
     {
       "class" : "image",
-      "displayName" : "checkbox",
-      "name" : "checkbox",
+      "displayName" : "vertical_slider",
+      "name" : "vertical_slider",
       "type" : "bool"
     },
     
@@ -66,6 +59,13 @@
       "class" : "image",
       "displayName" : "horizontal_slider",
       "name" : "horizontal_slider",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "checkbox",
+      "name" : "checkbox",
       "type" : "bool"
     },
     
@@ -112,6 +112,22 @@
         "aspectScale" : 1,
         "center" : 
         {
+          "x" : 10.00507068634033,
+          "y" : 5.632710456848145
+        },
+        "file" : "images/settings_back.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 1,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "scale" : 11.25838470458984
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
           "x" : 2.094639778137207,
           "y" : 9.911768913269043
         },
@@ -134,6 +150,7 @@
         "id" : 2,
         "name" : "image2",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 1.806580305099487
       },
       
@@ -150,6 +167,7 @@
         "id" : 3,
         "name" : "image3",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 2.484852313995361
       },
       
@@ -166,6 +184,7 @@
         "id" : 4,
         "name" : "image10",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 2.418215513229370
       },
       
@@ -200,6 +219,7 @@
         "id" : 5,
         "name" : "image30",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 2.295080184936523
       },
       
@@ -234,6 +254,7 @@
         "id" : 6,
         "name" : "image30",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 2.295080184936523
       },
       
@@ -268,6 +289,7 @@
         "id" : 7,
         "name" : "image16",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 4.976710319519043
       },
       
@@ -284,6 +306,7 @@
         "id" : 9,
         "name" : "image24",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 1.223047256469727
       },
       
@@ -318,6 +341,7 @@
         "id" : 10,
         "name" : "image16",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 4.976710319519043
       },
       
@@ -334,6 +358,7 @@
         "id" : 12,
         "name" : "image0",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 1
       },
       
@@ -350,6 +375,7 @@
         "id" : 13,
         "name" : "image1",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 1
       },
       
@@ -366,6 +392,7 @@
         "id" : 14,
         "name" : "image24",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 1.223047256469727
       },
       
@@ -400,6 +427,7 @@
         "id" : 16,
         "name" : "image30",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 2.295080184936523
       },
       
@@ -434,6 +462,7 @@
         "id" : 17,
         "name" : "image30",
         "opacity" : 0.5,
+        "renderOrder" : 1,
         "scale" : 2.295080184936523
       }
     ],
