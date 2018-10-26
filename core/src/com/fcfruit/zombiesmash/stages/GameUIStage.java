@@ -26,6 +26,8 @@ public class GameUIStage extends RubeStage
 
     private GameMenuStage gameMenuStage;
     private boolean show_game_menu = false;
+    private LevelEndStage levelEndStage;
+    private boolean show_level_end = false;
 
     private ImageButton pow_btn_1;
     private ImageButton pow_btn_2;
@@ -54,6 +56,7 @@ public class GameUIStage extends RubeStage
         super(v, "ui/game_ui/survival/survival_ui.json", "ui/game_ui/survival/", false);
 
         this.gameMenuStage = new GameMenuStage(v);
+        this.levelEndStage = new LevelEndStage(v);
 
         pow_btn_1 = (ImageButton) this.findActor("powerup_button_1");
         pow_btn_2 = (ImageButton) this.findActor("powerup_button_2");
@@ -89,14 +92,15 @@ public class GameUIStage extends RubeStage
         skeletonRenderer = new SkeletonRenderer();
 
         brainCountbackground = new Sprite(new Texture("ui/game_ui/survival/retro_box.png"));
-        brainCountbackground.setSize(this.findActor("pause_button").getWidth(), 90);
+        brainCountbackground.setSize(this.findActor("pause_button").getWidth(), 180);
         brainCountbackground.setPosition(this.findActor("pause_button").getX(), this.findActor("pause_button").getY() - brainCountbackground.getHeight());
 
         brainCountImage = new Sprite(new Texture("brains/brain1.png"));
-        brainCountImage.setSize(70, 70);
-        brainCountImage.setPosition(brainCountbackground.getX() + 10, brainCountbackground.getY() + 10);
+        brainCountImage.setSize(140, 140);
+        brainCountImage.setPosition(brainCountbackground.getX() + 20, brainCountbackground.getY() + 20);
 
         brainCount = new BitmapFont(Gdx.files.internal("ui/font/font.fnt"));
+        brainCount.getData().setScale(2);
 
         this.powerups = new PowerupInterface[4];
 
@@ -187,6 +191,13 @@ public class GameUIStage extends RubeStage
         Environment.isPaused = false;
     }
 
+    public void onLevelEnd()
+    {
+        this.levelEndStage.onLevelEnd();
+        Gdx.input.setInputProcessor(this.levelEndStage);
+        this.show_level_end = true;
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
@@ -241,6 +252,12 @@ public class GameUIStage extends RubeStage
         {
             this.gameMenuStage.draw();
             this.gameMenuStage.act();
+        }
+
+        if(show_level_end)
+        {
+            this.levelEndStage.draw();
+            this.levelEndStage.act();
         }
     }
 }

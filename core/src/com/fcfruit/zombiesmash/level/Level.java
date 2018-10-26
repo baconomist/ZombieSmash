@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.level;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Vector2;
@@ -33,6 +34,7 @@ public class Level
     public HashMap<String, Vector2> cameraPositions = new HashMap<String, Vector2>();
 
     public int level_id;
+    public boolean level_ended;
 
     JsonReader json;
     JsonValue data;
@@ -67,6 +69,7 @@ public class Level
     public Level(int level_id)
     {
         this.level_id = level_id;
+        this.level_ended = false;
         this.currentJsonItem = 0;
 
         this.drawableEntities = new ArrayList<com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface>();
@@ -212,6 +215,12 @@ public class Level
 
     public void update(float delta)
     {
+        if(Environment.level.objective.getHealth() <= 0 || (this.data.size - 1 == this.currentJsonItem && this.isZombiesDead()))
+        {
+            for (LevelEventListener levelEventListener : this.levelEventListeners)
+                levelEventListener.onLevelEnd();
+            this.onLevelEnd();
+        }
 
         // Can't be put in draw bcuz it takes too long
         // When it takes too long in a spritebatch call,
@@ -477,6 +486,15 @@ public class Level
     public boolean isCameraMoving()
     {
         return this.isCameraMoving;
+    }
+
+    private void onLevelEnd()
+    {
+        if(!this.level_ended)
+        {
+            Environment.screens.gamescreen.get_ui_stage().onLevelEnd();
+        }
+        this.level_ended = true;
     }
 
     private void preClear()

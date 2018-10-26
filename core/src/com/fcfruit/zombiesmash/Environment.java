@@ -162,6 +162,7 @@ public class Environment
 
     public static void setupGame(int levelid)
     {
+        Environment.isPaused = false;
 
         load_assets();
 
@@ -202,7 +203,6 @@ public class Environment
         gameCamera.position.set(Environment.gameCamera.viewportWidth / 2, Environment.gameCamera.viewportHeight / 2, 0);
 
         gameCamera.update();
-
     }
 
     private static void setupPhysicsCamera()
@@ -216,7 +216,6 @@ public class Environment
         physicsCamera.position.set(Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight / 2, 0);
 
         physicsCamera.update();
-
     }
 
     private static void setupLevel(int levelid)
