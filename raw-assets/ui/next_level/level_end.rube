@@ -237,11 +237,11 @@
       },
       
       {
-        "aspectScale" : 7.861410140991211,
+        "aspectScale" : 2.778134346008301,
         "center" : 
         {
-          "x" : 9.992460250854492,
-          "y" : 5.402450084686279
+          "x" : 5.868936061859131,
+          "y" : 5.364798545837402
         },
         "customProperties" : 
         [
@@ -264,6 +264,36 @@
         "opacity" : 0.5,
         "renderOrder" : 1,
         "scale" : 1.359249949455261
+      },
+      
+      {
+        "aspectScale" : 3.227695941925049,
+        "center" : 
+        {
+          "x" : 14.23940372467041,
+          "y" : 5.352851867675781
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "brain_counter_bounds"
+          },
+          
+          {
+            "bool" : false,
+            "name" : "button"
+          }
+        ],
+        "file" : "using/empty.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 9,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "renderOrder" : 1,
+        "scale" : 1.295796394348145
       }
     ],
     "positionIterations" : 3,
