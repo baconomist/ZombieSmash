@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.zombies;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -32,7 +33,7 @@ public class Bone_BossZombie extends Zombie
 
         this.moveAnimation = "walk";
         this.setSpeed(1);
-        this.setMoveDistance(3f);
+        this.setMoveDistance(11f);
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add("torso_bottom");
@@ -83,6 +84,17 @@ public class Bone_BossZombie extends Zombie
     public boolean isAlive()
     {
         return super.isAlive() && this.isAlive;
+    }
+
+    @Override
+    protected void onObjectiveOnce()
+    {
+        this.clearMoveQueue();
+        if(this.getDirection() == 0)
+            this.moveTo(new Vector2(Environment.level.objective.getPosition().x + 0.1f, Environment.level.objective.getPosition().y));
+        else
+            this.moveTo(new Vector2(Environment.level.objective.getPosition().x + Environment.level.objective.getWidth() - 0.1f, Environment.level.objective.getPosition().y));
+        this.shouldObjectiveOnce = false;
     }
 
     @Override

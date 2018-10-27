@@ -93,7 +93,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      * Zombie Specific Fields
      **/
     private HashMap<String, Array<BleedablePoint>> bleedablePoints;
-    private boolean shouldObjectiveOnce;
+    protected boolean shouldObjectiveOnce;
     private int direction;
     private float speed;
     private float moveDistance;
@@ -949,7 +949,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
-    private void onObjectiveOnce()
+    protected void onObjectiveOnce()
     {
         this.clearMoveQueue();
         this.checkDirection();
