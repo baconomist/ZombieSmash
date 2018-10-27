@@ -163,7 +163,7 @@ public class MainMenu implements Screen
             options.act();
             options.draw();
         }
-        
+
         if(show_in_app_purchases_stage)
         {
             inAppPurchasesStage.getViewport().apply();
