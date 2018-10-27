@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.pay.PurchaseManager;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.brains.BrainPool;
 import com.fcfruit.zombiesmash.effects.BleedableBloodPool;
@@ -40,6 +41,8 @@ public class Environment
     // Or else if new instance creation goes wrong it crashes
 
     public static ZombieSmash game = new ZombieSmash();
+
+    public static PurchaseManager purchaseManager;
 
     public static boolean isPaused = false;
 

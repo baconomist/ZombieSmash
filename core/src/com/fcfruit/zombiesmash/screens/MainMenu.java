@@ -16,6 +16,7 @@ import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.physics.ContactFilter;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
+import com.fcfruit.zombiesmash.stages.InAppPurchasesStage;
 import com.fcfruit.zombiesmash.stages.MainMenuStage;
 import com.fcfruit.zombiesmash.stages.OptionsStage;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -29,17 +30,19 @@ import com.fcfruit.zombiesmash.zombies.Zombie;
 public class MainMenu implements Screen
 {
 
-    MainMenuStage stage;
+    private MainMenuStage stage;
 
-    Viewport viewport;
-    OrthographicCamera tempGameCamera;
-    OrthographicCamera tempPhysicsCamera;
+    private Viewport viewport;
+    private OrthographicCamera tempGameCamera;
+    private OrthographicCamera tempPhysicsCamera;
 
     private Music music;
 
+    private Stage options;
     private boolean show_options_stage = false;
 
-    Stage options;
+    private InAppPurchasesStage inAppPurchasesStage;
+    private boolean show_in_app_purchases_stage = false;
 
     private Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();
 
@@ -71,6 +74,8 @@ public class MainMenu implements Screen
                 hideOptionsStage();
             }
         };
+
+        inAppPurchasesStage = new InAppPurchasesStage(viewport);
 
     }
 
@@ -158,6 +163,13 @@ public class MainMenu implements Screen
             options.act();
             options.draw();
         }
+        
+        if(show_in_app_purchases_stage)
+        {
+            inAppPurchasesStage.getViewport().apply();
+            inAppPurchasesStage.act();
+            inAppPurchasesStage.draw();
+        }
 
         tempGameCamera.update();
         tempPhysicsCamera.update();
@@ -176,6 +188,18 @@ public class MainMenu implements Screen
     public void hideOptionsStage()
     {
         this.show_options_stage = false;
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    public void showInAppPurchasesStage()
+    {
+        this.show_in_app_purchases_stage = true;
+        Gdx.input.setInputProcessor(inAppPurchasesStage);
+    }
+
+    public void hideInAppPurchasesStage()
+    {
+        this.show_in_app_purchases_stage = false;
         Gdx.input.setInputProcessor(stage);
     }
 
