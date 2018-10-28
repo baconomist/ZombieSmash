@@ -23,6 +23,7 @@ public class Settings
     {
         this.data.putFloat("musicVolume", volume);
         this.data.flush();
+        Environment.musicManager.setVolume(volume);
     }
 
     public float getMusicVolume()
@@ -45,6 +46,10 @@ public class Settings
     {
         this.data.putBoolean("musicEnabled", audioEnabled);
         this.data.flush();
+        if(audioEnabled)
+            Environment.musicManager.resumeMusic();
+        else
+            Environment.musicManager.pauseMusic();
     }
 
     public boolean isMusicEnabled()

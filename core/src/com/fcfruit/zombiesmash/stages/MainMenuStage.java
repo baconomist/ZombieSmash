@@ -3,37 +3,21 @@ package com.fcfruit.zombiesmash.stages;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.physics.box2d.Body;
-import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
-import com.badlogic.gdx.scenes.scene2d.Stage;
-import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.esotericsoftware.spine.AnimationState;
-import com.esotericsoftware.spine.AnimationStateData;
-import com.esotericsoftware.spine.Skeleton;
-import com.esotericsoftware.spine.SkeletonData;
-import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.BleedBlood;
 import com.fcfruit.zombiesmash.effects.GroundBlood;
-import com.fcfruit.zombiesmash.entity.AnimatableGraphicsEntity;
-import com.fcfruit.zombiesmash.entity.OptimizableEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.OptimizableEntityInterface;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.zombies.MenuRegZombie;
-import com.fcfruit.zombiesmash.zombies.RegZombie;
-
-import org.apache.tools.ant.taskdefs.Java;
 
 
 /**
@@ -56,7 +40,7 @@ public class MainMenuStage extends RubeStage
         super(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
 
         this.music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
-        Environment.musicManager.playMusic(this.music);
+        Environment.musicManager.addMusic("main_menu", this.music);
 
         this.regZombie = new MenuRegZombie();
         this.regZombie.setup();
@@ -81,7 +65,7 @@ public class MainMenuStage extends RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                Environment.musicManager.stopMusic(music);
+                Environment.musicManager.stopMusic("main_menu");
                 Environment.game.setScreen(Environment.screens.levelmenu);
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -136,6 +120,8 @@ public class MainMenuStage extends RubeStage
     public void act(float delta)
     {
         super.act(delta);
+
+        Environment.musicManager.playMusic("main_menu");
 
         this.regZombie.update(delta);
 

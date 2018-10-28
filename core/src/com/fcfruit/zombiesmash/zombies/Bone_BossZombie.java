@@ -1,16 +1,12 @@
 package com.fcfruit.zombiesmash.zombies;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.utils.Array;
-import com.esotericsoftware.spine.AnimationState;
-import com.esotericsoftware.spine.Event;
 import com.fcfruit.zombiesmash.Environment;
-import com.fcfruit.zombiesmash.effects.BodyFire;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.zombies.parts.SpecialPart;
@@ -72,7 +68,8 @@ public class Bone_BossZombie extends Zombie
     @Override
     public void onSpawned()
     {
-        Environment.musicManager.playMusic(Environment.assets.get("zombies/bone_boss_zombie/theme.mp3", Music.class));
+        Environment.musicManager.addMusic("bone_boss", Environment.assets.get("zombies/bone_boss_zombie/theme.mp3", Music.class));
+        Environment.musicManager.playMusic("bone_boss");
     }
 
     @Override

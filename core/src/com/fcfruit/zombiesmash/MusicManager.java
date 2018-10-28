@@ -4,31 +4,49 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class MusicManager
 {
-    private ArrayList<Music> musics; // "musics" I'm funny... not...
+    private HashMap<String, Music> musics; // "musics" I'm funny... not...
     public MusicManager()
     {
-        this.musics = new ArrayList<Music>();
+        this.musics = new HashMap<String, Music>();
     }
 
     public void update()
     {
         if(!Environment.settings.isMusicEnabled())
-            for(Music music : this.musics)
+            for(Music music : this.musics.values())
                 music.setVolume(0);
         else
-            for(Music music : this.musics)
+            for(Music music : this.musics.values())
                 music.setVolume(Environment.settings.getMusicVolume());
     }
 
-    public void playMusic(Music music)
+    public void resumeMusic()
     {
-        if(!Environment.settings.isMusicEnabled())
-            music.setVolume(0);
+        for(Music music : this.musics.values())
+            music.play();
+    }
 
-        this.musics.add(music);
+    public void pauseMusic()
+    {
+        for(Music music : this.musics.values())
+        {
+            music.pause();
+        }
+    }
+
+    public void setVolume(float volume)
+    {
+        for(Music music : this.musics.values())
+            music.setVolume(music.getVolume()/volume);
+    }
+
+    public void playMusic(String musicKey)
+    {
+        Music music = this.musics.get(musicKey);
         music.play();
         music.setOnCompletionListener(new Music.OnCompletionListener()
         {
@@ -40,16 +58,25 @@ public class MusicManager
         });
     }
 
-    public void stopMusic(Music music)
+    public void addMusic(String musicKey, Music music)
     {
-        this.musics.remove(music);
-        music.stop();
-        music.dispose();
+        if(!Environment.settings.isMusicEnabled())
+            music.pause();
+
+        if(!this.musics.containsKey(musicKey))
+            this.musics.put(musicKey, music);
+    }
+
+    public void stopMusic(String musicKey)
+    {
+        this.musics.get(musicKey).stop();
+        this.musics.get(musicKey).dispose();
+        this.musics.remove(musicKey);
     }
 
     public void stopAllMusic()
     {
-        for(Music music : musics)
+        for(Music music : this.musics.values())
         {
             music.stop();
             music.dispose();
@@ -57,17 +84,19 @@ public class MusicManager
         this.musics.clear();
     }
 
-    public void pauseAllMusic()
-    {
-        for(Music music : musics)
-        {
-            music.pause();
-        }
-    }
-
     private void disposeMusic(Music music)
     {
-        this.musics.remove(music);
+        String key = "";
+        for(String k : this.musics.keySet())
+        {
+            if(this.musics.get(k).equals(music))
+                key = k;
+        }
+        if(!key.equals(""))
+            this.musics.remove(key);
+        else
+            Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
+
         music.dispose();
     }
 }
