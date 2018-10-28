@@ -12,11 +12,11 @@ import com.badlogic.gdx.utils.JsonValue;
 public class Settings
 {
 
-    private Preferences data;
+    private Preferences data = Environment.Prefs.settings;
 
     public Settings()
     {
-        this.data = Gdx.app.getPreferences("settings");
+
     }
 
     public void setMusicVolume(float volume)

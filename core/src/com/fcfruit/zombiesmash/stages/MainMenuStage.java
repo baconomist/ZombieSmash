@@ -48,9 +48,9 @@ public class MainMenuStage extends RubeStage
 
     private Array<DrawableEntityInterface> drawableEntities;
 
-    public MainMenuStage(Viewport viewport, String rubeSceneFilePath, String rootPath, boolean physics)
+    public MainMenuStage(Viewport viewport)
     {
-        super(viewport, rubeSceneFilePath, rootPath, physics);
+        super(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
 
         this.regZombie = new MenuRegZombie();
         this.regZombie.setup();
@@ -88,6 +88,24 @@ public class MainMenuStage extends RubeStage
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 Environment.screens.mainmenu.showOptionsStage();
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        this.findActor("store_button").addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                Environment.screens.mainmenu.showInGameStorePage();
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        this.findActor("premium_store_button").addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                Environment.screens.mainmenu.showInAppPurchasesStage();
                 super.touchUp(event, x, y, pointer, button);
             }
         });

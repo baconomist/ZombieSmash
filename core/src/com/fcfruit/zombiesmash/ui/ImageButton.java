@@ -20,6 +20,7 @@ public class ImageButton extends Actor
     {
         this.defaultImage = sprite;
         this.currentImage = this.defaultImage;
+        this.setSize(this.currentImage.getWidth(), this.currentImage.getHeight());
         this.onImageChange();
 
         this.addListener(new ClickListener()

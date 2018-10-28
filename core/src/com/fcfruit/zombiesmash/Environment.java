@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
@@ -242,8 +243,19 @@ public class Environment
     }
 
 
+    public static class Prefs
+    {
+        public static Preferences settings;
+        public static Preferences upgrades;
+        public static Preferences brains;
+    }
+
     public static void create()
     {
+        Prefs.upgrades = Gdx.app.getPreferences("upgrades");
+        Prefs.brains = Gdx.app.getPreferences("brains");
+        Prefs.settings = Gdx.app.getPreferences("settings");
+
         gameData = new GameData();
         settings = new Settings();
 

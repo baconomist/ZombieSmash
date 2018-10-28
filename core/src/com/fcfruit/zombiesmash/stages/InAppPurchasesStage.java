@@ -1,5 +1,6 @@
 package com.fcfruit.zombiesmash.stages;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
@@ -110,55 +111,59 @@ public class InAppPurchasesStage extends RubeStage
     private void setUpPurchaseManager()
     {
         this.purchaseManagerConfig = new PurchaseManagerConfig();
-        this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).putIdentifierForStore(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.SANDBOX));
-        this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).putIdentifierForStore(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.NO_ADS));
 
-        this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, "");
-
-        Environment.purchaseManager.install(new PurchaseObserver()
+        if(Gdx.app.getType() == Application.ApplicationType.Android)
         {
-            @Override
-            public void handleInstall()
+            this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).putIdentifierForStore(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.SANDBOX));
+            this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).putIdentifierForStore(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.NO_ADS));
+
+            this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, "");
+
+            Environment.purchaseManager.install(new PurchaseObserver()
             {
+                @Override
+                public void handleInstall()
+                {
 
-            }
+                }
 
-            @Override
-            public void handleInstallError(Throwable e)
-            {
+                @Override
+                public void handleInstallError(Throwable e)
+                {
 
-            }
+                }
 
-            @Override
-            public void handleRestore(Transaction[] transactions)
-            {
+                @Override
+                public void handleRestore(Transaction[] transactions)
+                {
 
-            }
+                }
 
-            @Override
-            public void handleRestoreError(Throwable e)
-            {
+                @Override
+                public void handleRestoreError(Throwable e)
+                {
 
-            }
+                }
 
-            @Override
-            public void handlePurchase(Transaction transaction)
-            {
+                @Override
+                public void handlePurchase(Transaction transaction)
+                {
 
-            }
+                }
 
-            @Override
-            public void handlePurchaseError(Throwable e)
-            {
+                @Override
+                public void handlePurchaseError(Throwable e)
+                {
 
-            }
+                }
 
-            @Override
-            public void handlePurchaseCanceled()
-            {
+                @Override
+                public void handlePurchaseCanceled()
+                {
 
-            }
-        }, purchaseManagerConfig, true);
+                }
+            }, purchaseManagerConfig, true);
+        }
 
     }
 

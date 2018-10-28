@@ -232,9 +232,9 @@ public class RubeStage extends Stage
 
     public Actor findActor(String name)
     {
-        for (Actor actor : this.getActors())
+        for (Actor actor : this.getActors().toArray())
         {
-            if (actor.getName().equals(name))
+            if (actor.getName() != null && actor.getName().equals(name))
                 return actor;
         }
         return null;

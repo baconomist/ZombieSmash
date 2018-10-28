@@ -17,6 +17,7 @@ import com.fcfruit.zombiesmash.physics.ContactFilter;
 import com.fcfruit.zombiesmash.physics.Physics;
 import com.fcfruit.zombiesmash.physics.PhysicsData;
 import com.fcfruit.zombiesmash.stages.InAppPurchasesStage;
+import com.fcfruit.zombiesmash.stages.InGameStoreStage;
 import com.fcfruit.zombiesmash.stages.MainMenuStage;
 import com.fcfruit.zombiesmash.stages.OptionsStage;
 import com.fcfruit.zombiesmash.zombies.Zombie;
@@ -41,6 +42,9 @@ public class MainMenu implements Screen
     private Stage options;
     private boolean show_options_stage = false;
 
+    private InGameStoreStage inGameStoreStage;
+    private boolean show_in_game_store_page = false;
+
     private InAppPurchasesStage inAppPurchasesStage;
     private boolean show_in_app_purchases_stage = false;
 
@@ -62,7 +66,7 @@ public class MainMenu implements Screen
 
         this.tempPhysicsContactFitlerSetup();
 
-        stage = new MainMenuStage(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
+        stage = new MainMenuStage(viewport);
 
         music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
 
@@ -74,6 +78,8 @@ public class MainMenu implements Screen
                 hideOptionsStage();
             }
         };
+
+        inGameStoreStage = new InGameStoreStage(viewport);
 
         inAppPurchasesStage = new InAppPurchasesStage(viewport);
 
@@ -164,6 +170,14 @@ public class MainMenu implements Screen
             options.draw();
         }
 
+
+        if(show_in_game_store_page)
+        {
+            inGameStoreStage.getViewport().apply();
+            inGameStoreStage.act();
+            inGameStoreStage.draw();
+        }
+
         if(show_in_app_purchases_stage)
         {
             inAppPurchasesStage.getViewport().apply();
@@ -188,6 +202,18 @@ public class MainMenu implements Screen
     public void hideOptionsStage()
     {
         this.show_options_stage = false;
+        Gdx.input.setInputProcessor(stage);
+    }
+
+    public void showInGameStorePage()
+    {
+        this.show_in_game_store_page = true;
+        Gdx.input.setInputProcessor(inGameStoreStage);
+    }
+
+    public void hideInGameStorePage()
+    {
+        this.show_in_game_store_page = false;
         Gdx.input.setInputProcessor(stage);
     }
 
