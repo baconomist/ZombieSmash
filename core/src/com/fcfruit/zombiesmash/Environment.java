@@ -248,6 +248,13 @@ public class Environment
         public static Preferences settings;
         public static Preferences upgrades;
         public static Preferences brains;
+
+        public static void clear()
+        {
+            settings.clear();
+            upgrades.clear();
+            brains.clear();
+        }
     }
 
     public static void create()
