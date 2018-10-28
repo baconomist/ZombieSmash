@@ -254,7 +254,7 @@ public class InGameStoreStage extends RubeStage
             this.upgradePrefs.flush();
         } else if(!hasEnoughMoney)
         {
-            this.userBrainCount.setText("You Don't Have Enough Money\nFor That!");
+            this.userBrainCount.setText("You Don't Have Enough Brains\nFor That!");
             this.userBrainCountErrorTimer = System.currentTimeMillis();
         }
     }
