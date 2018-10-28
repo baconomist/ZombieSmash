@@ -89,6 +89,7 @@ public class LevelEndStage extends RubeStage
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
 
+                Environment.musicManager.stopAllMusic();
                 /*
                  * Environment should have a destroy/dispose method!!!!! with System.gc();
                  * */
@@ -353,7 +354,8 @@ public class LevelEndStage extends RubeStage
             Environment.game.setScreen(Environment.screens.gamescreen);
         } else
         {
-            // Return to main menu
+            // Return to level select
+            Environment.musicManager.stopAllMusic();
             /*
              * Environment should have a destroy/dispose method!!!!! with System.gc();
              * */

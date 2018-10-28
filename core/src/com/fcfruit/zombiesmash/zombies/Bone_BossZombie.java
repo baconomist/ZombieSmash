@@ -1,6 +1,7 @@
 package com.fcfruit.zombiesmash.zombies;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.physics.box2d.Body;
@@ -33,7 +34,7 @@ public class Bone_BossZombie extends Zombie
 
         this.moveAnimation = "walk";
         this.setSpeed(1);
-        this.setMoveDistance(11f);
+        this.setMoveDistance(3f);
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add("torso_bottom");
@@ -69,9 +70,20 @@ public class Bone_BossZombie extends Zombie
     }
 
     @Override
+    public void onSpawned()
+    {
+        Environment.musicManager.playMusic(Environment.assets.get("zombies/bone_boss_zombie/theme.mp3", Music.class));
+    }
+
+    @Override
     protected void onAttack1()
     {
-        Environment.level.objective.takeDamage(100f);
+        Environment.level.objective.takeDamage(15f);
+    }
+    @Override
+    protected void onAttack2()
+    {
+        Environment.level.objective.takeDamage(25f);
     }
 
     @Override
@@ -101,7 +113,7 @@ public class Bone_BossZombie extends Zombie
     public void onBurned()
     {
         this.bodyFire = null;
-        this.health -= 20f;
+        this.health -= 15f;
         this.enable_physics();
         if(this.health <= 0)
         {

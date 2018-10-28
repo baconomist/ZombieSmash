@@ -37,8 +37,6 @@ public class MainMenu implements Screen
     private OrthographicCamera tempGameCamera;
     private OrthographicCamera tempPhysicsCamera;
 
-    private Music music;
-
     private Stage options;
     private boolean show_options_stage = false;
 
@@ -67,8 +65,6 @@ public class MainMenu implements Screen
         this.tempPhysicsContactFitlerSetup();
 
         stage = new MainMenuStage(viewport);
-
-        music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
 
         options = new OptionsStage(viewport)
         {
@@ -150,15 +146,6 @@ public class MainMenu implements Screen
     @Override
     public void render(float delta)
     {
-        if (Environment.settings.isMusicEnabled())
-        {
-            music.play();
-            music.setVolume(Environment.settings.getMusicVolume());
-        } else if(music.isPlaying())
-        {
-            music.stop();
-        }
-
         stage.getViewport().apply();
         stage.act();
         stage.draw();

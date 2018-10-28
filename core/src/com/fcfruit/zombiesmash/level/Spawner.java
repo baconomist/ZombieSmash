@@ -245,6 +245,7 @@ public class Spawner
             {
                 if (Environment.powerupManager.isSlowMotionEnabled)
                     ((Zombie) this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale() / TimePowerup.timeFactor);
+                ((Zombie) entity).onSpawned();
             }
             Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
         }

@@ -874,6 +874,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
 
 
+    public void onSpawned(){}
+
     @Override
     public void onBurned()
     {

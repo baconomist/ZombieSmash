@@ -134,7 +134,6 @@ public class Level
 
     private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
     {
-        Gdx.app.log("aaa", ""+drawableEntityInterface);
         Vector2 position = drawableEntityInterface.getPosition();
         Vector2 size = drawableEntityInterface.getSize();
         return position.x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - size.x

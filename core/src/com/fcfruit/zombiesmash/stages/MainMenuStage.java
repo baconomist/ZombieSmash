@@ -2,6 +2,7 @@ package com.fcfruit.zombiesmash.stages;
 
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -42,6 +43,8 @@ import org.apache.tools.ant.taskdefs.Java;
 public class MainMenuStage extends RubeStage
 {
 
+    private Music music;
+
     private MenuRegZombie regZombie;
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
@@ -51,6 +54,9 @@ public class MainMenuStage extends RubeStage
     public MainMenuStage(Viewport viewport)
     {
         super(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
+
+        this.music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
+        Environment.musicManager.playMusic(this.music);
 
         this.regZombie = new MenuRegZombie();
         this.regZombie.setup();
@@ -75,10 +81,8 @@ public class MainMenuStage extends RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
+                Environment.musicManager.stopMusic(music);
                 Environment.game.setScreen(Environment.screens.levelmenu);
-                /*Environment.setupGame(2);
-                Environment.game.setScreen(Environment.screens.gamescreen);
-                System.gc();*/
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -132,6 +136,7 @@ public class MainMenuStage extends RubeStage
     public void act(float delta)
     {
         super.act(delta);
+
         this.regZombie.update(delta);
 
         for(DrawableEntityInterface drawableEntityInterface : Environment.drawableBackgroundAddQueue)

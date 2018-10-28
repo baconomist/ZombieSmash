@@ -179,6 +179,7 @@ public class GameUIStage extends RubeStage
 
     public void showGameMenu()
     {
+        Environment.musicManager.pauseAllMusic();
         Gdx.input.setInputProcessor(this.gameMenuStage);
         this.show_game_menu = true;
         Environment.isPaused = true;
