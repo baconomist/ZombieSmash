@@ -998,12 +998,12 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
     }
 
-    private void onGetupStart()
+    protected void onGetupStart()
     {
         this.disable_optimization();
     }
 
-    private void onGetupEnd()
+    protected void onGetupEnd()
     {
         // Sync animation limbs with physics limbs
         this.detachAnimationLimbs();

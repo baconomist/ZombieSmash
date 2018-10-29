@@ -16,7 +16,7 @@ public class TimePowerup implements PowerupInterface
     private Sprite uiDrawable;
 
     private double destroyTimer;
-    private double timeBeforeDestroy = 10000;
+    private double timeBeforeDestroy = 10000*Environment.Prefs.upgrades.getInteger("time", 1);
 
     private boolean isActive;
 

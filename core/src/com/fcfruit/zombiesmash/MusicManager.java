@@ -3,7 +3,6 @@ package com.fcfruit.zombiesmash;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Music;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 public class MusicManager
@@ -47,24 +46,32 @@ public class MusicManager
     public void playMusic(String musicKey)
     {
         Music music = this.musics.get(musicKey);
-        music.play();
-        music.setOnCompletionListener(new Music.OnCompletionListener()
-        {
-            @Override
-            public void onCompletion(Music music)
-            {
-                disposeMusic(music);
-            }
-        });
+        if(music != null)
+            music.play();
+        else
+            Gdx.app.error("MusicManager::playMusic()", "Could not play music **" + musicKey + "**, NullPointerException");
     }
 
-    public void addMusic(String musicKey, Music music)
+    public void addMusic(String musicKey, Music music, boolean loop)
     {
         if(!Environment.settings.isMusicEnabled())
             music.pause();
 
         if(!this.musics.containsKey(musicKey))
             this.musics.put(musicKey, music);
+
+        music.setLooping(loop);
+        if(!loop)
+        {
+            music.setOnCompletionListener(new Music.OnCompletionListener()
+            {
+                @Override
+                public void onCompletion(Music music)
+                {
+                    removeMusic(music);
+                }
+            });
+        }
     }
 
     public void stopMusic(String musicKey)
@@ -84,7 +91,20 @@ public class MusicManager
         this.musics.clear();
     }
 
-    private void disposeMusic(Music music)
+    public void removeMusic(String key)
+    {
+
+        if(this.musics.get(key) == null)
+        {
+            Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
+            return;
+        }
+
+        this.musics.get(key).dispose();
+        this.musics.remove(key);
+    }
+
+    public void removeMusic(Music music)
     {
         String key = "";
         for(String k : this.musics.keySet())
@@ -92,7 +112,7 @@ public class MusicManager
             if(this.musics.get(k).equals(music))
                 key = k;
         }
-        if(!key.equals(""))
+        if(this.musics.get(key) != null)
             this.musics.remove(key);
         else
             Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");

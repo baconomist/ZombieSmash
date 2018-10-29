@@ -13,7 +13,7 @@ public class RocketPowerup implements PowerupInterface
 {
 
     private Sprite uiDrawable;
-    private Helicopter helicopter;
+    private BomberHelicopter helicopter;
 
     private boolean isActive = false;
 
@@ -38,7 +38,8 @@ public class RocketPowerup implements PowerupInterface
     public void activate()
     {
         this.helicopter = new BomberHelicopter();
-        helicopter.setPosition(new Vector2(40, 8));
+        this.helicopter.setPosition(new Vector2(40, 8));
+        this.helicopter.setTimeBeforeBomb(helicopter.getTimeBeforeBomb()/Environment.Prefs.upgrades.getInteger("rocket", 4));
         Environment.drawableAddQueue.add(helicopter);
         this.isActive = true;
     }

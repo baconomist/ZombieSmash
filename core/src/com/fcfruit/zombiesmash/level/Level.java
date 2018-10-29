@@ -134,12 +134,21 @@ public class Level
 
     private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
     {
-        Vector2 position = drawableEntityInterface.getPosition();
-        Vector2 size = drawableEntityInterface.getSize();
-        return position.x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - size.x
-                && position.x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + size.x
-                && position.y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - size.y
-                && position.y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + size.y;
+        try
+        {
+            Vector2 position = drawableEntityInterface.getPosition();
+            Vector2 size = drawableEntityInterface.getSize();
+            return position.x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - size.x
+                    && position.x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + size.x
+                    && position.y > Environment.physicsCamera.position.y - Environment.physicsCamera.viewportHeight / 2 - size.y
+                    && position.y < Environment.physicsCamera.position.y + Environment.physicsCamera.viewportHeight / 2 + size.y;
+        } catch (NullPointerException e)
+        {
+            Gdx.app.error("Level::isDrawableInLevel", "A nullPointerException error was encountered." +
+                    "\n Check if any zombies are failing to instantiate in spawner when loading." +
+                    "\n This is typically the cause.");
+        }
+        return false;
     }
 
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)

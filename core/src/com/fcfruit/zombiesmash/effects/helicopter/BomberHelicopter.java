@@ -15,6 +15,13 @@ public class BomberHelicopter extends Helicopter
         super();
     }
 
+    public void setTimeBeforeBomb(double time)
+    {
+        this.timeBeforeBomb = time;
+    }
+
+    public double getTimeBeforeBomb(){return this.timeBeforeBomb;}
+
     @Override
     public void update(float delta)
     {

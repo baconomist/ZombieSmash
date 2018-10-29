@@ -59,7 +59,7 @@ public class GameMenuStage extends RubeStage
                 Environment.level = null;
                 Environment.physics = null;
                 System.gc();
-                Environment.screens.mainmenu = new MainMenu();
+                Environment.create();
                 Environment.game.setScreen(Environment.screens.mainmenu);
                 super.touchUp(event, x, y, pointer, button);
             }

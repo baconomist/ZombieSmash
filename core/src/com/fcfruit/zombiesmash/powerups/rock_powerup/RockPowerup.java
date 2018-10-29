@@ -37,7 +37,7 @@ public class RockPowerup implements PowerupInterface
         this.timeBetweenRocks = 50;
 
         this.ui_image = new Sprite(new Texture(Gdx.files.internal("powerups/rock/rock_ui.png")));
-        this.rocks = new Rock[new Random().nextInt(4) + 4];
+        this.rocks = new Rock[new Random().nextInt(4+Environment.Prefs.upgrades.getInteger("rock", 1)) + 4];
 
         for(int i = 0; i < this.rocks.length; i++)
         {
