@@ -13,6 +13,7 @@ import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.entity.ContainerEntity;
 import com.fcfruit.zombiesmash.entity.DestroyableEntity;
+import com.fcfruit.zombiesmash.entity.ExplodableEntity;
 import com.fcfruit.zombiesmash.entity.InteractivePhysicsEntity;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
@@ -77,6 +78,11 @@ public class Explodable implements com.fcfruit.zombiesmash.entity.interfaces.Dra
 
         this.drawablePhysicsEntity.setAngle(-25);
 
+    }
+
+    public ExplodableEntity getExplodableEntity()
+    {
+        return explodableEntity;
     }
 
     @Override

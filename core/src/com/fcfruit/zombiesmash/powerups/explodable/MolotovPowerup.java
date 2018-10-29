@@ -46,6 +46,7 @@ public class MolotovPowerup extends ExplodablePowerup
         this.explodable = new Molotov(body, joints);
         this.explodable.getPhysicsBody().setActive(false);
         this.explodable.setPosition(new Vector2(99, 99));
+        ((Molotov)this.explodable).setNumFire(((Molotov) this.explodable).getNumFire()+Environment.Prefs.upgrades.getInteger("molotov", 1));
 
         // Make explodable easy to detach from rope
         this.explodable.setForceForDetach(20f);

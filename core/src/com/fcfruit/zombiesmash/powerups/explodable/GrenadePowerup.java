@@ -46,6 +46,8 @@ public class GrenadePowerup extends ExplodablePowerup
         this.explodable = new Grenade(body, joints);
         this.explodable.getPhysicsBody().setActive(false);
         this.explodable.setPosition(new Vector2(99, 99));
+        this.explodable.getExplodableEntity().explosionRadiusX = this.explodable.getExplodableEntity().explosionRadiusX*(Environment.Prefs.upgrades.getInteger("grenade", 1)/20f);
+        this.explodable.getExplodableEntity().explosionRadiusY = this.explodable.getExplodableEntity().explosionRadiusY*(Environment.Prefs.upgrades.getInteger("grenade", 1)/10f);
 
         // Make explodable easy to detach from rope
         this.explodable.setForceForDetach(20f);

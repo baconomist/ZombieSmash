@@ -40,6 +40,7 @@ public class MainMenuStage extends RubeStage
         super(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
 
         this.music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
+        Environment.musicManager.addMusic("main_menu", this.music, true);
 
         this.regZombie = new MenuRegZombie();
         this.regZombie.setup();
@@ -121,7 +122,6 @@ public class MainMenuStage extends RubeStage
     {
         super.act(delta);
 
-        Environment.musicManager.addMusic("main_menu", this.music, true);
         Environment.musicManager.playMusic("main_menu");
 
         this.regZombie.update(delta);

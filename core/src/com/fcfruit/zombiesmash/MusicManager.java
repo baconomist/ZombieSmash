@@ -46,7 +46,10 @@ public class MusicManager
     public void playMusic(String musicKey)
     {
         Music music = this.musics.get(musicKey);
-        music.play();
+        if(music != null)
+            music.play();
+        else
+            Gdx.app.error("MusicManager::playMusic()", "Could not play music **" + musicKey + "**, NullPointerException");
     }
 
     public void addMusic(String musicKey, Music music, boolean loop)
@@ -91,7 +94,7 @@ public class MusicManager
     public void removeMusic(String key)
     {
 
-        if(key == null)
+        if(this.musics.get(key) == null)
         {
             Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
             return;
@@ -109,7 +112,7 @@ public class MusicManager
             if(this.musics.get(k).equals(music))
                 key = k;
         }
-        if(!key.equals(""))
+        if(this.musics.get(key) != null)
             this.musics.remove(key);
         else
             Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
