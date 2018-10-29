@@ -6,12 +6,14 @@ import android.os.*;
 
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.badlogic.gdx.pay.android.googleplay.AndroidGooglePlayPurchaseManager;
 
 public class AndroidLauncher extends AndroidApplication {
 	@Override
 	protected void onCreate (Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
+		Environment.purchaseManager = new AndroidGooglePlayPurchaseManager(this, 0);
 		initialize(Environment.game, config);
 	}
 

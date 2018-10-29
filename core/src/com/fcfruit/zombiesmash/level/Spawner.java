@@ -8,7 +8,6 @@ import com.badlogic.gdx.utils.JsonValue;
 import com.fcfruit.zombiesmash.Environment;
 import com.fcfruit.zombiesmash.effects.helicopter.DeliveryHelicopter;
 import com.fcfruit.zombiesmash.entity.interfaces.DrawableEntityInterface;
-import com.fcfruit.zombiesmash.powerups.explodable.ExplodablePowerup;
 import com.fcfruit.zombiesmash.powerups.explodable.GrenadePowerup;
 import com.fcfruit.zombiesmash.powerups.explodable.MolotovPowerup;
 import com.fcfruit.zombiesmash.powerups.gun_powerup.PistolPowerup;
@@ -19,6 +18,7 @@ import com.fcfruit.zombiesmash.powerups.time.TimePowerup;
 import com.fcfruit.zombiesmash.ui.Message;
 import com.fcfruit.zombiesmash.zombies.ArmoredZombie;
 import com.fcfruit.zombiesmash.zombies.BigZombie;
+import com.fcfruit.zombiesmash.zombies.Bone_BossZombie;
 import com.fcfruit.zombiesmash.zombies.CrawlingZombie;
 import com.fcfruit.zombiesmash.zombies.GirlZombie;
 import com.fcfruit.zombiesmash.zombies.GrandmaZombie;
@@ -51,6 +51,7 @@ public class Spawner
         entityType.put("armored_zombie", ArmoredZombie.class);
         entityType.put("crawling_zombie", CrawlingZombie.class);
         entityType.put("grandma_zombie", GrandmaZombie.class);
+        entityType.put("bone_boss_zombie", Bone_BossZombie.class);
 
         entityType.put("helicopter", DeliveryHelicopter.class);
 
@@ -131,9 +132,9 @@ public class Spawner
         // x position relative to the camera
         // 0.1f on y to keep zombie out of the ground
         positions.put("left", new Vector2(pos.x + 2f, 0.1f));
-        positions.put("right", new Vector2(pos.x + 38.54f, 0.1f));
+        positions.put("right", new Vector2(pos.x + 39f, 0.1f));
         positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
-        positions.put("middle_right", new Vector2(pos.x + 32f, 0.1f));
+        positions.put("middle_right", new Vector2(pos.x + 34f, 0.1f));
     }
 
     private Zombie loadZombie()
@@ -153,7 +154,7 @@ public class Spawner
             Zombie tempZombie;
             tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1) * (this.index + 1));
             tempZombie.setup(direction);
-            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x, positions.get(data.getString("position")).y));
+            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x - tempZombie.getSize().x/2, positions.get(data.getString("position")).y));
 
             // Prevents graphic glitch at position (0, 0)
             tempZombie.update(Gdx.graphics.getDeltaTime());
@@ -244,6 +245,7 @@ public class Spawner
             {
                 if (Environment.powerupManager.isSlowMotionEnabled)
                     ((Zombie) this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale() / TimePowerup.timeFactor);
+                ((Zombie) entity).onSpawned();
             }
             Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
         }

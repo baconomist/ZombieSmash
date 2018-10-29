@@ -40,8 +40,8 @@ hat
   offset: 0, 0
   index: -1
 nose
-  rotate: true
-  xy: 1254, 840
+  rotate: false
+  xy: 1692, 1372
   size: 144, 197
   orig: 144, 197
   offset: 0, 0

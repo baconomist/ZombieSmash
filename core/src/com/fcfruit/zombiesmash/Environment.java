@@ -1,13 +1,16 @@
 package com.fcfruit.zombiesmash;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.pay.PurchaseManager;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.zombiesmash.brains.BrainPool;
 import com.fcfruit.zombiesmash.effects.BleedableBloodPool;
@@ -40,6 +43,10 @@ public class Environment
     // Or else if new instance creation goes wrong it crashes
 
     public static ZombieSmash game = new ZombieSmash();
+
+    public static PurchaseManager purchaseManager;
+
+    public static MusicManager musicManager;
 
     public static boolean isPaused = false;
 
@@ -82,7 +89,9 @@ public class Environment
         assets.load("zombies/reg_zombie/reg_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/armored_zombie/armored_zombie.atlas", TextureAtlas.class);
         assets.load("zombies/crawling_zombie/crawling_zombie.atlas", TextureAtlas.class);
+        assets.load("zombies/bone_boss_zombie/bone_boss_zombie.atlas", TextureAtlas.class);
 
+        assets.load("zombies/bone_boss_zombie/theme.mp3", Music.class);
 
         assets.load("effects/blood/flowing_blood/flowing_blood.atlas", TextureAtlas.class);
         assets.load("effects/blood/ground_blood/ground_blood.atlas", TextureAtlas.class);
@@ -159,6 +168,11 @@ public class Environment
 
     public static ArrayList<LevelEventListener> levelEventListenerAddQueue = new ArrayList<LevelEventListener>();
     public static ArrayList<LevelEventListener> levelEventListenerRemoveQueue = new ArrayList<LevelEventListener>();
+
+    public static void update()
+    {
+        musicManager.update();
+    }
 
     public static void setupGame(int levelid)
     {
@@ -239,8 +253,28 @@ public class Environment
     }
 
 
+    public static class Prefs
+    {
+        public static Preferences settings;
+        public static Preferences upgrades;
+        public static Preferences brains;
+
+        public static void clear()
+        {
+            settings.clear();
+            upgrades.clear();
+            brains.clear();
+        }
+    }
+
     public static void create()
     {
+        Prefs.upgrades = Gdx.app.getPreferences("upgrades");
+        Prefs.brains = Gdx.app.getPreferences("brains");
+        Prefs.settings = Gdx.app.getPreferences("settings");
+
+        musicManager = new MusicManager();
+
         gameData = new GameData();
         settings = new Settings();
 

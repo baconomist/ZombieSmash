@@ -42,6 +42,11 @@ public class BodyFire implements DrawableEntityInterface
         this.animatableGraphicsEntity.setAnimation("fire");
     }
 
+    public void setScale(float x, float y)
+    {
+        this.animatableGraphicsEntity.getSkeleton().getRootBone().setScale(x, y);
+    }
+
     public void enable(BurnableEntityInterface burnableEntityInterface)
     {
         this.burnableEntityInterface = burnableEntityInterface;

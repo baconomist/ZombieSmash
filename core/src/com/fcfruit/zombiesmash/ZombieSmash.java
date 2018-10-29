@@ -43,10 +43,12 @@ public class ZombieSmash extends Game
         }
 
 
-        //this.setScreen(new SplashScreen());
-
         Environment.create();
-        this.setScreen(Environment.screens.mainmenu);
+
+        //this.setScreen(Environment.screens.splashscreen);
+
+        /*Environment.create();
+        this.setScreen(Environment.screens.mainmenu);*/
 
         /*Environment.create();
         Environment.setupGame(2);
@@ -54,7 +56,8 @@ public class ZombieSmash extends Game
 
         Environment.create();
         Environment.load_assets();
-        Environment.game.setScreen(Environment.screens.levelselect);
+        Environment.setupGame(2);
+        Environment.game.setScreen(Environment.screens.gamescreen);
 
     }
 
@@ -98,8 +101,7 @@ public class ZombieSmash extends Game
     @Override
     public void render()
     {
-        // Update assetManager
-        Environment.assets.update();
+        Environment.update();
 
         // Don't put anything in here, use screens
         // Clear the screen.

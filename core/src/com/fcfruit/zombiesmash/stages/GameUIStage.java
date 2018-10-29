@@ -92,8 +92,8 @@ public class GameUIStage extends RubeStage
         skeletonRenderer = new SkeletonRenderer();
 
         brainCountbackground = new Sprite(new Texture("ui/game_ui/survival/retro_box.png"));
-        brainCountbackground.setSize(this.findActor("pause_button").getWidth(), 180);
-        brainCountbackground.setPosition(this.findActor("pause_button").getX(), this.findActor("pause_button").getY() - brainCountbackground.getHeight());
+        brainCountbackground.setSize(pause_button.getWidth()*1.25f, 180);
+        brainCountbackground.setPosition(pause_button.getX() - (brainCountbackground.getWidth() - pause_button.getWidth()), this.findActor("pause_button").getY() - brainCountbackground.getHeight());
 
         brainCountImage = new Sprite(new Texture("brains/brain1.png"));
         brainCountImage.setSize(140, 140);
@@ -179,6 +179,7 @@ public class GameUIStage extends RubeStage
 
     public void showGameMenu()
     {
+        Environment.musicManager.pauseMusic();
         Gdx.input.setInputProcessor(this.gameMenuStage);
         this.show_game_menu = true;
         Environment.isPaused = true;
@@ -186,6 +187,7 @@ public class GameUIStage extends RubeStage
 
     public void hideGameMenu()
     {
+        Environment.musicManager.resumeMusic();
         Gdx.input.setInputProcessor(Environment.screens.gamescreen.getInputMultiplexer());
         this.show_game_menu = false;
         Environment.isPaused = false;

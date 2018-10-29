@@ -1,7 +1,6 @@
 package com.fcfruit.zombiesmash.stages;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -10,6 +9,7 @@ import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.esotericsoftware.spine.AnimationState;
 import com.esotericsoftware.spine.AnimationStateData;
@@ -29,6 +29,7 @@ public class LevelEndStage extends RubeStage
     private boolean constructed = false;
 
     private static ArrayList<String> randomGameOverTips;
+
     static
     {
         randomGameOverTips = new ArrayList<String>();
@@ -39,6 +40,7 @@ public class LevelEndStage extends RubeStage
     }
 
     private static ArrayList<String> randomGameWinText;
+
     static
     {
         randomGameWinText = new ArrayList<String>();
@@ -51,33 +53,43 @@ public class LevelEndStage extends RubeStage
     private Image endStatusBounds;
     private Image levelInfoBounds;
     private Image levelRewardBounds;
+    private Image brainCounterBounds;
     private ImageButton continueButton;
 
     private FontActor endStatus;
     private double endStatusFlickerTimer;
     private double timeBetweenFlicker = 500;
-    private double timeBeforeFlicker;
 
     private FontActor levelInfo;
-    private FontActor levelRewards1;
-    private FontActor levelRewards2;
+    private FontActor levelRewards;
     private FontActor continueButtonText;
 
-    private Skeleton brainAnimSkeleton;
-    private AnimationState brainAnimState;
+    private Skeleton[] brainAnimSkeletons;
+    private ArrayList<Skeleton> brainAnimSkeletonsToDraw;
+    private AnimationState[] brainAnimStates;
+    private ArrayList<AnimationState> brainAnimStatesToUpdate;
+    private ArrayList<AnimationState> brainAnimStateAddQueue; // Need queue since listeners are called while looping through <brainAnimStatesToUpdate>
+
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
+
+    private int brainIncrementSpeedFactor = 8;
+    private int brainIncrement = this.brainIncrementSpeedFactor; // Need this as the brain increment needs to be divisible by the speed evenly
+    private double timeBetweenBrainIncrement = 50;
+    private double brainIncrementTimer;
 
     public LevelEndStage(Viewport viewport)
     {
         super(viewport, "ui/level_end/level_end.json", "ui/level_end/", false);
 
         this.mainMenuButton = (ImageButton) this.findActor("main_menu_button");
-        mainMenuButton.addListener(new ClickListener(){
+        mainMenuButton.addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
 
+                Environment.musicManager.stopAllMusic();
                 /*
                  * Environment should have a destroy/dispose method!!!!! with System.gc();
                  * */
@@ -94,9 +106,11 @@ public class LevelEndStage extends RubeStage
         this.endStatusBounds = (Image) this.findActor("end_status_bounds");
         this.levelInfoBounds = (Image) this.findActor("level_info_bounds");
         this.levelRewardBounds = (Image) this.findActor("level_reward_bounds");
+        this.brainCounterBounds = (Image) this.findActor("brain_counter_bounds");
 
         this.continueButton = (ImageButton) this.findActor("continue_button");
-        this.continueButton.addListener(new ClickListener(){
+        this.continueButton.addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -104,6 +118,10 @@ public class LevelEndStage extends RubeStage
                 super.touchUp(event, x, y, pointer, button);
             }
         });
+
+        this.brainAnimSkeletonsToDraw = new ArrayList<Skeleton>();
+        this.brainAnimStatesToUpdate = new ArrayList<AnimationState>();
+        this.brainAnimStateAddQueue = new ArrayList<AnimationState>();
 
         this.spriteBatch = new SpriteBatch();
         this.skeletonRenderer = new SkeletonRenderer();
@@ -114,11 +132,12 @@ public class LevelEndStage extends RubeStage
     {
         super.draw();
 
-        if(!(Environment.level.objective.getHealth() <= 0))
+        if (!(Environment.level.objective.getHealth() <= 0))
         {
             this.spriteBatch.setProjectionMatrix(this.getViewport().getCamera().combined);
             this.spriteBatch.begin();
-            this.skeletonRenderer.draw(this.spriteBatch, this.brainAnimSkeleton);
+            for (Skeleton skeleton : this.brainAnimSkeletonsToDraw)
+                this.skeletonRenderer.draw(this.spriteBatch, skeleton);
             this.spriteBatch.end();
         }
     }
@@ -128,13 +147,36 @@ public class LevelEndStage extends RubeStage
     {
         super.act(delta);
 
-        if(!(Environment.level.objective.getHealth() <= 0))
+        if (!(Environment.level.objective.getHealth() <= 0))
         {
-            this.brainAnimState.update(delta); // Update the animation getUpTimer.
+            this.brainAnimStatesToUpdate.addAll(this.brainAnimStateAddQueue);
+            this.brainAnimStateAddQueue.clear();
 
-            this.brainAnimState.apply(brainAnimSkeleton); // Poses skeleton using current animations. This sets the bones' local SRT.
+            int i = 0;
+            for (AnimationState animationState : this.brainAnimStatesToUpdate)
+            {
+                animationState.update(delta); // Update the animation getUpTimer.
 
-            this.brainAnimSkeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+                animationState.apply(this.brainAnimSkeletonsToDraw.get(i)); // Poses skeleton using current animations. This sets the bones' local SRT.
+
+                this.brainAnimSkeletonsToDraw.get(i).updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
+                i++;
+            }
+
+            if (this.brainIncrement < Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty)
+                    && System.currentTimeMillis() - this.brainIncrementTimer >= this.timeBetweenBrainIncrement)
+            {
+                this.brainIncrement += this.brainIncrement / this.brainIncrementSpeedFactor;
+                this.levelRewards.setText("Brains: " + brainIncrement);
+                this.timeBetweenBrainIncrement -= ((double) this.brainIncrement);
+                this.brainIncrementTimer = System.currentTimeMillis();
+            }
+
+            if (this.brainIncrement > Environment.level.brainCounter*Environment.difficulty_multipliers.get(Environment.currentDifficulty))
+            {
+                this.brainIncrement -= this.brainIncrement - Environment.level.brainCounter*Environment.difficulty_multipliers.get(Environment.currentDifficulty);
+                this.levelRewards.setText("Brains: " + brainIncrement);
+            }
         }
     }
 
@@ -142,28 +184,27 @@ public class LevelEndStage extends RubeStage
     public void act()
     {
         super.act();
-        if(System.currentTimeMillis() - this.endStatusFlickerTimer >= this.timeBeforeFlicker)
+
+        if (System.currentTimeMillis() - this.endStatusFlickerTimer >= this.timeBetweenFlicker * 2)
+        {
+            for (Actor actor : this.getActors().toArray()) if (actor == this.endStatus) return;
+            this.addActor(this.endStatus);
+            this.endStatusFlickerTimer = System.currentTimeMillis();
+        } else if (System.currentTimeMillis() - this.endStatusFlickerTimer >= this.timeBetweenFlicker)
         {
             this.endStatus.remove();
-            this.endStatusFlickerTimer = System.currentTimeMillis();
-            this.timeBeforeFlicker = Math.random()*1000 + 500;
-        }
-        else if(System.currentTimeMillis() - this.endStatusFlickerTimer >= this.timeBetweenFlicker)
-        {
-            for(Actor actor : this.getActors().toArray()) if(actor == this.endStatus) return;
-            this.addActor(this.endStatus);
         }
     }
 
     public void onLevelEnd()
     {
-        if(!this.constructed)
+        if (!this.constructed)
         {
             this.constructEndStatus();
             this.constructLevelInfo();
             this.constructContinueButton();
             this.endStatusFlickerTimer = System.currentTimeMillis();
-            this.timeBeforeFlicker = Math.random() * 1000 + 1000;
+            this.brainIncrementTimer = System.currentTimeMillis();
         }
         this.constructed = true;
     }
@@ -179,14 +220,14 @@ public class LevelEndStage extends RubeStage
 
         this.endStatus = new FontActor(bitmapFont);
 
-        if(Environment.level.objective.getHealth() <= 0)
+        if (Environment.level.objective.getHealth() <= 0)
             text = "Game Over";
         else
             text = "Level Complete";
 
         endStatus.setText(text);
         layout.setText(bitmapFont, text);
-        this.endStatus.setPosition(this.endStatusBounds.getX() + this.endStatusBounds.getWidth()/2 - layout.width/2, this.endStatusBounds.getY() + layout.height);
+        this.endStatus.setPosition(this.endStatusBounds.getX() + this.endStatusBounds.getWidth() / 2 - layout.width / 2, this.endStatusBounds.getY() + layout.height);
 
         this.addActor(endStatus);
     }
@@ -199,51 +240,82 @@ public class LevelEndStage extends RubeStage
         this.levelInfo = new FontActor(bitmapFont);
         this.levelInfo.setPosition(this.levelInfoBounds.getX(), this.levelInfoBounds.getY() + this.levelInfoBounds.getHeight() - 100);
 
-        if(Environment.level.objective.getHealth() <= 0)
+        if (Environment.level.objective.getHealth() <= 0)
         {
             this.levelInfo.setText(randomGameOverTips.get((int) Math.round(Math.random() * 3)));
             this.addActor(this.levelInfo);
             return;
-        }
-        else
+        } else
         {
             this.levelInfo.setText(randomGameWinText.get((int) Math.round(Math.random() * 2)));
             this.addActor(this.levelInfo);
         }
 
         GlyphLayout levelRewards1Layout = new GlyphLayout();
-        this.levelRewards1 = new FontActor(bitmapFont);
-        this.levelRewards1.setText("Brains: " + Environment.level.brainCounter + " x");
-        levelRewards1Layout.setText(bitmapFont, "Brains: " + Environment.level.brainCounter + " x");
-
-        GlyphLayout levelRewards2Layout = new GlyphLayout();
-        this.levelRewards2 = new FontActor(bitmapFont);
-        this.levelRewards2.setPosition(this.levelRewardBounds.getX(), this.levelRewardBounds.getY() + this.levelRewardBounds.getHeight());
-        this.levelRewards2.setText("= " + Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty));
-        levelRewards2Layout.setText(bitmapFont, "= " + Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty));
+        this.levelRewards = new FontActor(bitmapFont);
+        this.levelRewards.setText("Brains: 0");
+        levelRewards1Layout.setText(bitmapFont, "Brains: " + this.brainIncrement + " x");
 
         TextureAtlas atlas = new TextureAtlas(Gdx.files.internal("ui/level_end/brain_reward.atlas"));
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(1); // Load the skeleton at 100% the size it was in Spine.
         SkeletonData skeletonData = json.readSkeletonData(Gdx.files.internal("ui/level_end/brain_reward.json"));
-        this.brainAnimSkeleton = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
         AnimationStateData stateData = new AnimationStateData(skeletonData); // Defines mixing (crossfading) between animations.
 
-        this.brainAnimSkeleton.setSkin(Environment.currentDifficulty); // Set skin
+        int len = 1;
+        if (Environment.currentDifficulty.equals("normal"))
+            len = 2;
+        else if (Environment.currentDifficulty.equals("hard"))
+            len = 3;
 
-        this.brainAnimState = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
-        this.brainAnimState.setAnimation(0, "bounce", false);
-        this.brainAnimState.setTimeScale(0.75f);
+        String[] dif_list = new String[]{"easy", "normal", "hard"};
 
-        this.brainAnimSkeleton.getRootBone().setScale(this.levelRewardBounds.getHeight()/this.brainAnimSkeleton.getData().getHeight());
+        this.brainAnimSkeletons = new Skeleton[len];
+        this.brainAnimStates = new AnimationState[len];
+        for (int i = 0; i < len; i++)
+        {
+            this.brainAnimSkeletons[i] = new Skeleton(skeletonData); // Skeleton holds skeleton state (bone cameraPositions, slot attachments, etc).
 
-        this.levelRewards1.setPosition(this.levelRewardBounds.getX(), this.levelRewardBounds.getY() + this.levelRewardBounds.getHeight());
-        this.brainAnimSkeleton.setPosition(this.levelRewards1.getX()
-                + levelRewards1Layout.width + this.brainAnimSkeleton.getData().getWidth()/2*this.brainAnimSkeleton.getRootBone().getScaleX(), this.levelRewards1.getY() - 200);
-        this.levelRewards2.setPosition(this.brainAnimSkeleton.getX() + levelRewards2Layout.width/2, this.levelRewards1.getY());
+            this.brainAnimSkeletons[i].setSkin(dif_list[i]); // Set skin
 
-        this.addActor(this.levelRewards1);
-        this.addActor(this.levelRewards2);
+            this.brainAnimStates[i] = new AnimationState(stateData); // Holds the animation state for a skeleton (current animation, time, etc).
+            this.brainAnimStates[i].setAnimation(0, "bounce", false);
+            this.brainAnimStates[i].setTimeScale(0.75f);
+            this.brainAnimStates[i].addListener(new AnimationState.AnimationStateAdapter()
+            {
+                @Override
+                public void complete(AnimationState.TrackEntry entry)
+                {
+                    super.complete(entry);
+                    addNextBrainAnimation();
+                }
+            });
+
+            this.brainAnimSkeletons[i].getRootBone().setScale(this.levelRewardBounds.getHeight() / this.brainAnimSkeletons[i].getData().getHeight());
+        }
+
+        this.brainAnimSkeletonsToDraw.add(this.brainAnimSkeletons[0]);
+        this.brainAnimStatesToUpdate.add(this.brainAnimStates[0]);
+
+        for (int i = 0; i < len; i++)
+        {
+            this.brainAnimSkeletons[i].setPosition(50 + this.levelRewardBounds.getX() + this.brainAnimSkeletons[i].getData().getWidth() * this.brainAnimSkeletons[i].getRootBone().getScaleX() * i,
+                    this.levelRewardBounds.getY());
+        }
+
+        this.levelRewards.setPosition(this.brainCounterBounds.getX(),
+                this.brainCounterBounds.getY() + this.brainCounterBounds.getHeight()/1.5f);
+
+        this.addActor(this.levelRewards);
+    }
+
+    private void addNextBrainAnimation()
+    {
+        if (this.brainAnimSkeletonsToDraw.size() == this.brainAnimSkeletons.length)
+            return;
+
+        this.brainAnimSkeletonsToDraw.add(this.brainAnimSkeletons[this.brainAnimSkeletonsToDraw.size()]);
+        this.brainAnimStateAddQueue.add(this.brainAnimStates[this.brainAnimStatesToUpdate.size()]);
     }
 
     private void constructContinueButton()
@@ -255,19 +327,18 @@ public class LevelEndStage extends RubeStage
 
         this.continueButtonText = new FontActor(bitmapFont);
 
-        if(Environment.level.objective.getHealth() <= 0)
+        if (Environment.level.objective.getHealth() <= 0)
         {
             this.continueButtonText.setText("Retry");
             glyphLayout.setText(bitmapFont, "Retry");
-        }
-        else
+        } else
         {
             this.continueButtonText.setText("Next Level");
             glyphLayout.setText(bitmapFont, "Next level");
         }
 
-        this.continueButtonText.setPosition(this.continueButton.getX() + this.continueButton.getWidth()/2 - glyphLayout.width/2,
-                this.continueButton.getY() + this.continueButton.getHeight() - glyphLayout.height/2);
+        this.continueButtonText.setPosition(this.continueButton.getX() + this.continueButton.getWidth() / 2 - glyphLayout.width / 2,
+                this.continueButton.getY() + this.continueButton.getHeight() - glyphLayout.height / 2);
 
         this.addActor(this.continueButtonText);
 
@@ -276,15 +347,15 @@ public class LevelEndStage extends RubeStage
     private void onContinue()
     {
 
-        if(Environment.level.objective.getHealth() <= 0)
+        if (Environment.level.objective.getHealth() <= 0)
         {
             // Restart level
             Environment.setupGame(Environment.level.level_id);
             Environment.game.setScreen(Environment.screens.gamescreen);
-        }
-        else
+        } else
         {
-            // Return to main menu
+            // Return to level select
+            Environment.musicManager.stopAllMusic();
             /*
              * Environment should have a destroy/dispose method!!!!! with System.gc();
              * */

@@ -93,6 +93,8 @@ public class GameStage extends Stage
                 }
             }
             this.shapeRenderer.polygon(Environment.level.objective.polygon.getTransformedVertices());
+            for(int i = 0; i < Environment.level.objective.attack_zones.length; i++)
+                this.shapeRenderer.polygon(Environment.level.objective.attack_zones[i].getTransformedVertices());
             this.shapeRenderer.end();
         }
 

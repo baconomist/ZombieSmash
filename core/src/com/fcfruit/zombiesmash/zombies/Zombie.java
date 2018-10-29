@@ -87,15 +87,16 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     private MovableEntity movableEntity;
     private MultiGroundEntity multiGroundEntity;
     public ContainerEntity containerEntity;
-    private BodyFire bodyFire;
+    protected BodyFire bodyFire;
 
     /**
      * Zombie Specific Fields
      **/
     private HashMap<String, Array<BleedablePoint>> bleedablePoints;
-    private boolean shouldObjectiveOnce;
+    protected boolean shouldObjectiveOnce;
     private int direction;
     private float speed;
+    private float moveDistance;
     ArrayList detachableEntitiesToStayAlive;
     ArrayList<String> currentParts;
     private float animScale = 0;
@@ -133,6 +134,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         // Zombie Specific Fields
         this.shouldObjectiveOnce = true;
         this.speed = 1;
+        this.moveDistance = 0.5f;
         this.detachableEntitiesToStayAlive = new ArrayList();
         this.currentParts = new ArrayList<String>();
 
@@ -201,7 +203,6 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
                 Array<Attachment> attachments = new Array<Attachment>();
                 this.animatableGraphicsEntity.getSkeleton().getData().getDefaultSkin().findAttachmentsForSlot(this.animatableGraphicsEntity.getSkeleton().findSlot(bodyName).getData().getIndex(), attachments);
-
 
                 Array<Attachment> blood_pos_attachments = new Array<Attachment>();
                 for (int i = 0; i < attachments.size; i++)
@@ -599,7 +600,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         return this.isAnimating;
     }
 
-    private boolean hasRequiredPartsForGetup()
+    protected boolean hasRequiredPartsForGetup()
     {
         return this.getDrawableEntities().get("head") != null
                 && ((this.getDrawableEntities().get("left_leg") != null && this.getDrawableEntities().get("right_leg") != null)
@@ -716,7 +717,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 // Needs 2 bodies, first one not used, so we use an arbitrary body.
                 // http://www.binarytides.com/mouse-joint-box2d-javascript/
                 mouseJointDef.bodyA = Environment.physics.getGroundBodies().get(0);
-                mouseJointDef.bodyB = ((Part) this.getInteractiveEntities().get("head")).getPhysicsBody();
+                mouseJointDef.bodyB = ((PhysicsEntityInterface) this.getInteractiveEntities().get("head")).getPhysicsBody();
                 mouseJointDef.collideConnected = true;
                 mouseJointDef.target.set(this.getDrawableEntities().get("head").getPosition());
                 // The higher the ratio, the slower the movement of body to mousejoint
@@ -741,8 +742,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
                 this.startCrawl();
             }
 
-            // -0.3f to give it wiggle room to detect get up
-            if (this.isGettingUp() && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - 0.3f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
+            // -size.getY()/6f to give it wiggle room to detect get up
+            if (this.isGettingUp() && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - this.getSize().y/6f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
             {
                 this.onGetupEnd();
             }
@@ -777,7 +778,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
         catch (Exception e)
         {
-            Gdx.app.debug("startCrawl", "Error occurred while attempting to startCrawl()! Zombie may not have a 'crawl' animation!");
+            Gdx.app.error("startCrawl", "Error occurred while attempting to startCrawl()! Zombie may not have a 'crawl' animation!");
         }
     }
 
@@ -873,6 +874,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
 
 
+    public void onSpawned(){}
+
     @Override
     public void onBurned()
     {
@@ -897,7 +900,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         if(this.isAnimating() && event.getData().getName().equals("move") && !this.isAtObjective())
         {
             this.checkDirection();
-            this.moveBy((this.direction == 0 ? new Vector2(0.5f*this.speed, 0) : new Vector2(-0.5f*this.speed, 0)));
+            this.moveBy((this.direction == 0 ? new Vector2(this.moveDistance*this.speed, 0) : new Vector2(-this.moveDistance*this.speed, 0)));
         }
 
         if (entry.getAnimation().getName().equals("attack1"))
@@ -918,7 +921,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
-    private void onDeath()
+    protected void onDeath()
     {
         Gdx.app.debug("Zombie", "onDeath()");
 
@@ -948,12 +951,24 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     }
 
-    private void onObjectiveOnce()
+    protected void onObjectiveOnce()
     {
         this.clearMoveQueue();
         this.checkDirection();
 
-        float move = (float) Math.random() * Environment.level.objective.getWidth();
+        float move;
+
+        if(this.direction == 0)
+        {
+            move =  (Environment.level.objective.getPosition().x - Environment.level.objective.getAttackZonePosition(0).x)
+                    + Environment.level.objective.getAttackZoneSize(0).x;
+        }
+        else
+        {
+            move = Environment.level.objective.getAttackZoneSize(1).x;
+        }
+        move = move - this.getSize().x/2;
+        move = (float)Math.random()*move;
 
         // Then move zombie to a spot on the objective
         if (this.direction == 0)
@@ -1441,6 +1456,11 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.speed = speed;
     }
 
+    public void setMoveDistance(float moveDistance)
+    {
+        this.moveDistance = moveDistance;
+    }
+
     @Override
     public void clearMoveQueue()
     {
@@ -1538,6 +1558,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void attach_fire(BodyFire fire)
     {
+        fire.setScale(this.animatableGraphicsEntity.getSize().x/fire.getSize().x, this.animatableGraphicsEntity.getSize().y/fire.getSize().y);
         this.bodyFire = fire;
     }
 

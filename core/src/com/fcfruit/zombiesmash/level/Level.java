@@ -492,6 +492,11 @@ public class Level
     {
         if(!this.level_ended)
         {
+            if(this.objective.getHealth() > 0)
+            {
+                Environment.Prefs.brains.putInteger("userBrainCount", Environment.Prefs.brains.getInteger("userBrainCount", 0) + brainCounter);
+                Environment.Prefs.brains.flush();
+            }
             Environment.screens.gamescreen.get_ui_stage().onLevelEnd();
         }
         this.level_ended = true;

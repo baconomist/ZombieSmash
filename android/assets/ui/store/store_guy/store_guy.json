@@ -1,8 +1,8 @@
 {
-"skeleton": { "hash": "spjsw5PQeFnymYzAjXE+KP1ohmU", "spine": "3.6.53", "width": 1251.18, "height": 1180.92, "images": "" },
+"skeleton": { "hash": "ST/M/MpVM/K2+xBloOcU6whQrzY", "spine": "3.6.53", "width": 1251.18, "height": 1180.92, "images": "./images/storeguy/" },
 "bones": [
 	{ "name": "root" },
-	{ "name": "body", "parent": "root", "length": 848.51, "rotation": 90.44, "x": 650.55, "y": 15.89 },
+	{ "name": "body", "parent": "root", "length": 848.51, "rotation": 90.44, "x": 0.72, "y": 15.89 },
 	{ "name": "face", "parent": "body", "length": 278.72, "rotation": -0.44, "x": 549.96, "y": -17.44 },
 	{ "name": "beard", "parent": "face", "length": 279.95, "rotation": -179.7, "x": 16.24, "y": -0.7 },
 	{ "name": "gun", "parent": "body", "length": 838.06, "rotation": -54.97, "x": -95.38, "y": 269.68 },

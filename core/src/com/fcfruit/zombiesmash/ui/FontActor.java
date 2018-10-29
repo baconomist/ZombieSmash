@@ -26,4 +26,9 @@ public class FontActor extends Actor
         super.draw(batch, parentAlpha);
         this.bitmapFont.draw(batch, text, this.getX(), this.getY());
     }
+
+    public BitmapFont getBitmapFont()
+    {
+        return bitmapFont;
+    }
 }
