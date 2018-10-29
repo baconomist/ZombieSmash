@@ -14,19 +14,15 @@ import com.fcfruit.zombiesmash.Environment;
 
 public class Objective {
 
-    private Sprite sprite;
+    protected Sprite sprite;
     public Polygon polygon;
+
+    public Polygon[] attack_zones;
 
     private float health = 100.0f;
 
     float width;
     float height;
-
-    public Objective()
-    {
-        this.sprite = new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("house"));
-        this.sprite.setPosition(2496, 90f);
-    }
 
     public void draw(SpriteBatch batch)
     {
@@ -53,6 +49,22 @@ public class Objective {
             this.sprite.setSize(this.sprite.getRegionWidth(), this.sprite.getRegionHeight());
             this.sprite.setPosition(this.sprite.getX(), 30f);
         }
+    }
+
+    public Vector2 getAttackZonePosition(int attack_zone)
+    {
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(Environment.level.objective.attack_zones[attack_zone].getX(),
+                Environment.level.objective.attack_zones[attack_zone].getX(), 0)));
+        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+        return new Vector2(pos.x, pos.y);
+    }
+
+    public Vector2 getAttackZoneSize(int attack_zone)
+    {
+        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(Environment.level.objective.attack_zones[attack_zone].getVertices()[2],
+                Environment.level.objective.attack_zones[attack_zone].getVertices()[5], 0)));
+        pos.y = Environment.physicsCamera.position.y*2 - pos.y;
+        return new Vector2(pos.x, pos.y);
     }
 
     public float getHealth(){return health;}

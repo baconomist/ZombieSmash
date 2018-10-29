@@ -956,7 +956,19 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         this.clearMoveQueue();
         this.checkDirection();
 
-        float move = (float) Math.random() * Environment.level.objective.getWidth();
+        float move;
+
+        if(this.direction == 0)
+        {
+            move =  (Environment.level.objective.getPosition().x - Environment.level.objective.getAttackZonePosition(0).x)
+                    + Environment.level.objective.getAttackZoneSize(0).x;
+        }
+        else
+        {
+            move = Environment.level.objective.getAttackZoneSize(1).x;
+        }
+        move = move - this.getSize().x/2;
+        move = (float)Math.random()*move;
 
         // Then move zombie to a spot on the objective
         if (this.direction == 0)
