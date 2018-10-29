@@ -68,7 +68,7 @@ public class Bone_BossZombie extends Zombie
     @Override
     public void onSpawned()
     {
-        Environment.musicManager.addMusic("bone_boss", Environment.assets.get("zombies/bone_boss_zombie/theme.mp3", Music.class));
+        Environment.musicManager.addMusic("bone_boss", Environment.assets.get("zombies/bone_boss_zombie/theme.mp3", Music.class), true);
         Environment.musicManager.playMusic("bone_boss");
     }
 

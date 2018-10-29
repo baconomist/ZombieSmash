@@ -54,7 +54,7 @@ public class BigZombie extends Zombie
     protected void animationSetup()
     {
         super.animationSetup();
-        this.getSkeleton().setSkin("biker"+(int)Math.round(Math.random()*3));
+        this.getSkeleton().setSkin("biker"+((int)Math.round(Math.random()*2) + 1));
     }
 
     @Override
