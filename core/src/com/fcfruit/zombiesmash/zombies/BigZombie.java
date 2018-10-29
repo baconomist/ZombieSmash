@@ -22,6 +22,8 @@ public class BigZombie extends Zombie
         super(id);
 
         this.moveAnimation = "walk";
+        this.setSpeed(0.5f);
+        this.setMoveDistance(3);
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add("left_armback");
@@ -52,7 +54,13 @@ public class BigZombie extends Zombie
     protected void animationSetup()
     {
         super.animationSetup();
-        this.getSkeleton().setSkin("biker1");
+        this.getSkeleton().setSkin("biker"+(int)Math.round(Math.random()*3));
+    }
+
+    @Override
+    public void onTouchDown(float screenX, float screenY, int p)
+    {
+        // Don't pick up the zombie
     }
 
     @Override
