@@ -4,8 +4,10 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.utils.Array;
+import com.esotericsoftware.spine.AnimationState;
 import com.fcfruit.zombiesmash.entity.BleedablePoint;
 import com.fcfruit.zombiesmash.entity.interfaces.ContainerEntityInterface;
+import com.fcfruit.zombiesmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.zombiesmash.zombies.parts.SpecialPart;
 
 import java.util.ArrayList;
@@ -17,11 +19,16 @@ import java.util.ArrayList;
 public class GrandmaZombie extends Zombie
 {
 
+    private boolean downed = false;
+    private boolean end_run_completed = false;
+
     public GrandmaZombie(Integer id)
     {
         super(id);
 
         this.moveAnimation = "walk";
+        this.setSpeed(0.5f);
+        this.setMoveDistance(4f);
 
         this.detachableEntitiesToStayAlive.add("head");
         this.detachableEntitiesToStayAlive.add("left_armback");
@@ -52,6 +59,55 @@ public class GrandmaZombie extends Zombie
     public void setup(int direction)
     {
         super.setup(direction);
+        if(!downed)
+        {
+            for (DetachableEntityInterface detachableEntityInterface : this.getDetachableEntities().values())
+            {
+                detachableEntityInterface.setForceForDetach(999999); // Disable Detaching first time
+            }
+        }
+    }
+
+    @Override
+    protected void onGetupEnd()
+    {
+        super.onGetupEnd();
+        this.moveAnimation = "start_run";
+        this.setAnimation(moveAnimation);
+        for (DetachableEntityInterface detachableEntityInterface : this.getDetachableEntities().values())
+        {
+            detachableEntityInterface.setForceForDetach(100); // Enable detaching
+        }
+        this.downed = true;
+    }
+
+    @Override
+    protected void onObjective()
+    {
+        if(this.downed && this.end_run_completed) // Only attack after run ended
+            super.onObjective();
+        else if(this.downed)
+        {
+            this.setAnimation("end_run");
+            this.getState().getCurrent(0).setLoop(false); // Prevents reseting to first frame and seeing "red" glitch
+        }
+    }
+
+    @Override
+    void onAnimationComplete(AnimationState.TrackEntry entry)
+    {
+        super.onAnimationComplete(entry);
+        if(entry.getAnimation().getName().equals("start_run"))
+        {
+            this.setAnimation("run");
+            this.setSpeed(4);
+            this.setMoveDistance(8);
+            this.end_run_completed = false;
+        }
+        else if(entry.getAnimation().getName().equals("end_run"))
+        {
+            this.end_run_completed = true;
+        }
     }
 
     @Override
