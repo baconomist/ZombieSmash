@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.fcfruit.zombiesmash" >
+    package="com.fcfruit.monstersmash" >
     <uses-permission android:name="android.permission.REORDER_TASKS" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-sdk android:minSdkVersion="9" android:targetSdkVersion="25" />
@@ -12,13 +12,13 @@
 
     <application
         android:allowBackup="true"
-        android:icon="@drawable/ic_launcher"
+        android:icon="@drawable/icon"
         android:label="@string/app_name"
         android:theme="@style/GdxTheme"
         android:largeHeap="true">
 
         <activity
-            android:name="com.fcfruit.zombiesmash.AndroidLauncher"
+            android:name="com.fcfruit.monstersmash.AndroidLauncher"
             android:label="@string/app_name" 
             android:screenOrientation="userLandscape"
             android:configChanges="keyboard|keyboardHidden|orientation|screenSize">

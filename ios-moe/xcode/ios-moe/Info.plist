@@ -21,7 +21,7 @@
 	<key>LSRequiresIPhoneOS</key>
 	<true/>
 	<key>MOE.Main.Class</key>
-	<string>com.fcfruit.zombiesmash.IOSMoeLauncher</string>
+	<string>com.fcfruit.monstersmash.IOSMoeLauncher</string>
 	<key>UIApplicationExitsOnSuspend</key>
 	<false/>
 	<key>UIRequiredDeviceCapabilities</key>
