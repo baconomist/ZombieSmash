@@ -18,7 +18,7 @@ android {
         exclude 'META-INF/robovm/ios/robovm.xml'
     }
     defaultConfig {
-        applicationId "com.fcfruit.zombiesmash"
+        applicationId "com.fcfruit.monstersmash"
         minSdkVersion 21
         targetSdkVersion 26
         multiDexEnabled true
@@ -80,7 +80,7 @@ task run(type: Exec) {
     }
 
     def adb = path + "/platform-tools/adb"
-    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.fcfruit.zombiesmash/com.fcfruit.monstersmash.AndroidLauncher'
+    commandLine "$adb", 'shell', 'am', 'start', '-n', 'com.fcfruit.monstersmash/com.fcfruit.monstersmash.AndroidLauncher'
 }
 
 // sets up the Android Eclipse project, using the old Ant based build.
