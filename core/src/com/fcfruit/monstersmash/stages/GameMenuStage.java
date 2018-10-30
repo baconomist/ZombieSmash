@@ -11,7 +11,7 @@ public class GameMenuStage extends RubeStage
 {
     /*
     * Fix options stage/gameui stage size,
-    * since gameuistage is 1/2 the size of ZombieSmash.WIDTH, the volume bars only have 5 boxes instead of 10
+    * since gameuistage is 1/2 the size of MonsterSmash.WIDTH, the volume bars only have 5 boxes instead of 10
     * */
 
     private OptionsStage optionsStage;
