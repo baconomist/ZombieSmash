@@ -7,8 +7,8 @@ gwt {
     minHeapSize="1G"
 
     src = files(file("src/")) // Needs to be in front of "modules" below.
-    modules 'com.fcfruit.zombiesmash.GdxDefinition'
-    devModules 'com.fcfruit.zombiesmash.GdxDefinitionSuperdev'
+    modules 'com.fcfruit.monstersmash.GdxDefinition'
+    devModules 'com.fcfruit.monstersmash.GdxDefinitionSuperdev'
     project.webAppDirName = 'webapp'
 
     compiler {

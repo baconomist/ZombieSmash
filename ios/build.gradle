@@ -4,7 +4,7 @@ sourceCompatibility = '1.7'
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 ext {
-	mainClassName = "com.fcfruit.zombiesmash.IOSLauncher"
+	mainClassName = "com.fcfruit.monstersmash.IOSLauncher"
 }
 
 launchIPhoneSimulator.dependsOn build
