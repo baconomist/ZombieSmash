@@ -65,7 +65,10 @@ public class InGameStoreStage extends RubeStage
     private ImageButton downButton;
     private ImageButton upButton;
 
-    private ImageButton[] buttons;
+    private ImageButton upgradeButton;
+
+    private Image upgradeStatusBounds;
+    private Image[] upgradeStatusGears;
 
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
@@ -106,10 +109,28 @@ public class InGameStoreStage extends RubeStage
         this.downButton = (ImageButton) this.findActor("down_button");
         this.upButton = (ImageButton) this.findActor("up_button");
 
-        this.buttons = new ImageButton[3];
-        this.buttons[0] = (ImageButton) this.findActor("button2");
-        this.buttons[1] = (ImageButton) this.findActor("button3");
-        this.buttons[2] = (ImageButton) this.findActor("button4");
+        this.upgradeButton = (ImageButton) this.findActor("upgrade_button");
+        this.upgradeButton.setImageDown(new Sprite(new Texture("ui/store/button_down.png")));
+        this.upgradeButton.addListener(new ClickListener()
+        {
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                onUpgradeButtonClicked();
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+
+        this.upgradeStatusBounds = (Image) this.findActor("upgrade_bounds");
+
+        this.upgradeStatusGears = new Image[4];
+        for(int i = 0; i < upgradeStatusGears.length; i++)
+        {
+            this.upgradeStatusGears[i] = new Image(new Texture(Gdx.files.internal("ui/store/gear.png")));
+            this.upgradeStatusGears[i].setPosition(this.upgradeStatusBounds.getX() + this.upgradeStatusGears[i].getWidth()*i, this.upgradeStatusBounds.getY());
+            this.upgradeStatusGears[i].setVisible(false);
+            this.addActor(this.upgradeStatusGears[i]);
+        }
 
         this.brainPriceImage = new Image(new Texture(Gdx.files.internal("ui/store/brain.png")));
         this.brainPriceImage.setSize(this.brainPriceImage.getWidth() * 0.5f, this.brainPriceImage.getHeight() * 0.5f);
@@ -117,8 +138,6 @@ public class InGameStoreStage extends RubeStage
                 priceBounds.getY() + priceBounds.getHeight() / 2 - brainPriceImage.getHeight() / 2);
         this.brainPriceImage.setVisible(false);
         this.addActor(this.brainPriceImage);
-
-        this.addListenersToUpgradeButtons();
 
         this.backButton.addListener(new ClickListener()
         {
@@ -230,80 +249,55 @@ public class InGameStoreStage extends RubeStage
         this.displayPrice.setPosition(brainPriceImage.getX() + brainPriceImage.getWidth() + 10,
                 brainPriceImage.getY() + displayPriceGlyphLayout.height);
 
-        this.addActor(this.productOnDisplay);
+        this.setUpgradeStatus(this.dispalyedProductLabel);
 
-        this.resetUpgradeButtons();
-        this.manageUpgradeButtons(productLabel);
+        this.addActor(this.productOnDisplay);
     }
 
-    private void onUpgradeButtonClicked(String buttonName)
+    private void onUpgradeButtonClicked()
     {
-        int requested_upgrade_level = Integer.valueOf(buttonName.replace("button", ""));
-        boolean hasEnoughMoney = this.brainPrefs.getInteger("userBrainCount", 0) - upgradePrices.get(requested_upgrade_level) >= 0;
-
-        if (this.productOnDisplay != null && hasEnoughMoney)
+        if (this.dispalyedProductLabel != null && this.dispalyedProductLabel.currentLevel + 1 <= 4)
         {
-            if (requested_upgrade_level > this.dispalyedProductLabel.currentLevel)
-                this.dispalyedProductLabel.currentLevel=requested_upgrade_level;
+            int requested_upgrade_level = this.dispalyedProductLabel.currentLevel + 1;
+            boolean hasEnoughMoney = this.brainPrefs.getInteger("userBrainCount", 0) - upgradePrices.get(requested_upgrade_level) >= 0;
 
-            this.manageUpgradeButtons(this.dispalyedProductLabel);
-            this.displayProduct(this.dispalyedProductLabel.productName, this.dispalyedProductLabel);
+            if (hasEnoughMoney)
+            {
+                if (requested_upgrade_level > this.dispalyedProductLabel.currentLevel)
+                    this.dispalyedProductLabel.currentLevel = requested_upgrade_level;
 
-            this.brainPrefs.putInteger("userBrainCount", brainPrefs.getInteger("userBrainCount", 0) - upgradePrices.get(requested_upgrade_level));
-            this.brainPrefs.flush();
-            this.upgradePrefs.putInteger(this.dispalyedProductLabel.productName, this.dispalyedProductLabel.currentLevel);
-            this.upgradePrefs.flush();
-        } else if(!hasEnoughMoney)
+                this.setUpgradeStatus(this.dispalyedProductLabel);
+                this.displayProduct(this.dispalyedProductLabel.productName, this.dispalyedProductLabel);
+
+                this.brainPrefs.putInteger("userBrainCount", brainPrefs.getInteger("userBrainCount", 0) - upgradePrices.get(requested_upgrade_level));
+                this.brainPrefs.flush();
+                this.upgradePrefs.putInteger(this.dispalyedProductLabel.productName, this.dispalyedProductLabel.currentLevel);
+                this.upgradePrefs.flush();
+            } else
+            {
+                this.userBrainCount.setText("You Don't Have Enough Brains\nFor That!");
+                this.userBrainCountErrorTimer = System.currentTimeMillis();
+            }
+        } else if (this.dispalyedProductLabel == null)
         {
-            this.userBrainCount.setText("You Don't Have Enough Brains\nFor That!");
+            this.userBrainCount.setText("Select an Item to Upgrade.");
+            this.userBrainCountErrorTimer = System.currentTimeMillis();
+        } else if (this.dispalyedProductLabel.currentLevel + 1 <= 4)
+        {
+            this.userBrainCount.setText("Max Upgrade Level Reached \nfor This Item.");
             this.userBrainCountErrorTimer = System.currentTimeMillis();
         }
     }
 
-    private void resetUpgradeButtons()
+    private void setUpgradeStatus(ProductLabel productLabel)
     {
-        // Reset buttons
-        for (int i = 0; i < this.buttons.length; i++)
+        for(int i = 0; i < this.upgradeStatusGears.length; i++)
         {
-            ImageButton oldButton = this.buttons[i];
-            this.buttons[i].remove();
-            this.buttons[i] = new ImageButton(new Sprite(new Texture(Gdx.files.internal("ui/store/button_up.png"))));
-            this.buttons[i].setPosition(oldButton.getX(), oldButton.getY());
-            this.buttons[i].setName(oldButton.getName());
-            this.addActor(this.buttons[i]);
+            this.upgradeStatusGears[i].setVisible(false);
         }
-
-        this.addListenersToUpgradeButtons();
-    }
-
-    private void manageUpgradeButtons(ProductLabel productLabel)
-    {
-        // Press down buttons
-        for (int i = 0; i < productLabel.currentLevel - 1; i++)
+        for(int i = 0; i < productLabel.currentLevel; i++)
         {
-            ImageButton oldButton = this.buttons[i];
-            this.buttons[i].remove();
-            this.buttons[i] = new ImageButton(new Sprite(new Texture(Gdx.files.internal("ui/store/button_down.png"))));
-            this.buttons[i].setPosition(oldButton.getX(), oldButton.getY());
-            this.buttons[i].setName(oldButton.getName());
-            this.addActor(this.buttons[i]);
-        }
-    }
-
-    private void addListenersToUpgradeButtons()
-    {
-
-        for (ImageButton imageButton : this.buttons)
-        {
-            imageButton.addListener(new ClickListener()
-            {
-                @Override
-                public void touchUp(InputEvent event, float x, float y, int pointer, int button)
-                {
-                    onUpgradeButtonClicked(event.getListenerActor().getName());
-                    super.touchUp(event, x, y, pointer, button);
-                }
-            });
+            this.upgradeStatusGears[i].setVisible(true);
         }
     }
 
@@ -385,7 +379,7 @@ public class InGameStoreStage extends RubeStage
 
         this.guySkeleton.updateWorldTransform(); // Uses the bones' local SRT to compute their world SRT.
 
-        if(System.currentTimeMillis() - this.userBrainCountErrorTimer >= this.errorTime)
+        if (System.currentTimeMillis() - this.userBrainCountErrorTimer >= this.errorTime)
         {
             this.userBrainCount.setText("You have: " + brainPrefs.getInteger("userBrainCount", 0) + " Brains");
         }

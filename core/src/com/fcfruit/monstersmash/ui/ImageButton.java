@@ -56,6 +56,10 @@ public class ImageButton extends Actor
         {
             this.currentImage = this.imageUp;
             this.onImageChange();
+        } else
+        {
+            this.currentImage = this.defaultImage;
+            this.onImageChange();
         }
     }
 
@@ -73,11 +77,13 @@ public class ImageButton extends Actor
 
     public void setImageDown(Sprite sprite)
     {
+        sprite.setSize(this.getWidth(), this.getHeight());
         this.imageDown = sprite;
     }
 
     public void setImageUp(Sprite sprite)
     {
+        sprite.setSize(this.getWidth(), this.getHeight());
         this.imageUp = sprite;
     }
 
