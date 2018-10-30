@@ -395,7 +395,6 @@ public class MenuRegZombie implements DrawableEntityInterface, AnimatableEntityI
         //state.setTimeScale(0.7f); // Slow all animations down to 70% speed.
 
         this.animatableGraphicsEntity = new AnimatableGraphicsEntity(skeleton, state, atlas);
-        this.animatableGraphicsEntity.setAnimation(this.moveAnimation);
     }
 
     private void drawOrderSetup()

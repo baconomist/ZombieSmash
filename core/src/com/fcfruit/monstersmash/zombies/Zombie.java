@@ -654,7 +654,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         }
     }
 
-    private void checkDirection()
+    protected void checkDirection()
     {
 
         int previous_direction = this.direction;

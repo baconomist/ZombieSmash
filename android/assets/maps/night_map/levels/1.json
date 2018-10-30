@@ -12,12 +12,6 @@
   },
 
   "middle":{
-    "girl_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_left"
-    },
     "police_zombie": {
       "quantity": 1,
       "init_delay": 0,
