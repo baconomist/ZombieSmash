@@ -83,6 +83,11 @@ public class MusicManager
 
     public void stopMusic(String musicKey)
     {
+        if(this.musics.get(musicKey) == null)
+        {
+            Gdx.app.error("MusicManager::stopMusic()","No such music exists in music manager.");
+            return;
+        }
         this.musics.get(musicKey).stop();
         this.musics.get(musicKey).dispose();
         this.musics.remove(musicKey);
