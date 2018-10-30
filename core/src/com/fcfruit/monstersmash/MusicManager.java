@@ -16,12 +16,18 @@ public class MusicManager
 
     public void update()
     {
-        if(!com.fcfruit.monstersmash.Environment.settings.isMusicEnabled())
+        if(!Environment.settings.isMusicEnabled())
             for(Music music : this.musics.values())
-                music.setVolume(0);
+            {
+                if (music.getVolume() != 0)
+                    music.setVolume(0);
+            }
         else
             for(Music music : this.musics.values())
-                music.setVolume(com.fcfruit.monstersmash.Environment.settings.getMusicVolume());
+            {
+                if (music.getVolume() != Environment.settings.getMusicVolume())
+                    music.setVolume(Environment.settings.getMusicVolume());
+            }
     }
 
     public void resumeMusic()
