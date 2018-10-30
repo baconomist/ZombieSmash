@@ -10,7 +10,7 @@ import com.fcfruit.monstersmash.Environment;
 import com.fcfruit.monstersmash.screens.SplashScreen;
 
 
-public class ZombieSmash extends Game
+public class MonsterSmash extends Game
 {
 
     public static float WIDTH = 3840;
@@ -18,7 +18,7 @@ public class ZombieSmash extends Game
 
     FPSLogger logger = new FPSLogger();
 
-    public ZombieSmash()
+    public MonsterSmash()
     {
         //don't put anything here, may not work because game is not yet initialized
         super();

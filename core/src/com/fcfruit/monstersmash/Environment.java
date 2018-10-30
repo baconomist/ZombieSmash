@@ -4,7 +4,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
 import com.badlogic.gdx.assets.AssetManager;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -12,21 +11,10 @@ import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.pay.PurchaseManager;
 import com.badlogic.gdx.physics.box2d.Joint;
-import com.fcfruit.monstersmash.brains.BrainPool;
-import com.fcfruit.monstersmash.effects.BleedableBloodPool;
 import com.fcfruit.monstersmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface;
-import com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface;
-import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
-import com.fcfruit.monstersmash.level.Level;
-import com.fcfruit.monstersmash.level.NightLevel;
-import com.fcfruit.monstersmash.physics.Physics;
-import com.fcfruit.monstersmash.powerups.FirePool;
-import com.fcfruit.monstersmash.powerups.ParticleEntityPool;
-import com.fcfruit.monstersmash.powerups.PowerupManager;
-import com.fcfruit.monstersmash.powerups.rocket.RocketPool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -42,7 +30,7 @@ public class Environment
     // Need to create static methods which catch exceptions which may arise
     // Or else if new instance creation goes wrong it crashes
 
-    public static ZombieSmash game = new ZombieSmash();
+    public static MonsterSmash game = new MonsterSmash();
 
     public static PurchaseManager purchaseManager;
 
@@ -213,7 +201,7 @@ public class Environment
 
     private static void setupGameCamera()
     {
-        gameCamera = new OrthographicCamera(ZombieSmash.WIDTH, ZombieSmash.HEIGHT);
+        gameCamera = new OrthographicCamera(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
         gameCamera.position.set(Environment.gameCamera.viewportWidth / 2, Environment.gameCamera.viewportHeight / 2, 0);
 
         gameCamera.update();

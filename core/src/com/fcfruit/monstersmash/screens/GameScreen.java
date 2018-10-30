@@ -8,8 +8,7 @@ import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.Config;
-import com.fcfruit.monstersmash.ZombieSmash;
+import com.fcfruit.monstersmash.MonsterSmash;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.stages.GameStage;
 import com.fcfruit.monstersmash.stages.GameUIStage;
@@ -47,7 +46,7 @@ public class GameScreen implements Screen{
 
         game_stage = new GameStage(game_view);
 
-        ui_view = new StretchViewport(com.fcfruit.monstersmash.ZombieSmash.WIDTH, com.fcfruit.monstersmash.ZombieSmash.HEIGHT);
+        ui_view = new StretchViewport(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
         ui_view.apply();
         ui_stage = new GameUIStage(ui_view);
 

@@ -5,7 +5,7 @@ import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.fcfruit.monstersmash.ZombieSmash;
+import com.fcfruit.monstersmash.MonsterSmash;
 import com.fcfruit.monstersmash.stages.level_menu.LevelSelectStage;
 import com.fcfruit.monstersmash.stages.level_menu.ModeSelectStage;
 import com.fcfruit.monstersmash.stages.level_menu.SeasonSelectStage;
@@ -27,7 +27,7 @@ public class LevelMenu implements Screen
 
     public LevelMenu()
     {
-        this.viewport = new StretchViewport(com.fcfruit.monstersmash.ZombieSmash.WIDTH, com.fcfruit.monstersmash.ZombieSmash.HEIGHT);
+        this.viewport = new StretchViewport(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
 
         this.modeSelectStage = new ModeSelectStage(this.viewport);
         this.seasonSelectStage = new SeasonSelectStage(this.viewport);

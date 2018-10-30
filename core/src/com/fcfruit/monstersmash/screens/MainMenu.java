@@ -2,24 +2,19 @@ package com.fcfruit.monstersmash.screens;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
-import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.physics.box2d.Box2DDebugRenderer;
 import com.badlogic.gdx.physics.box2d.Fixture;
 import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.badlogic.gdx.utils.viewport.StretchViewport;
 import com.badlogic.gdx.utils.viewport.Viewport;
-import com.fcfruit.monstersmash.Config;
 import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.ZombieSmash;
+import com.fcfruit.monstersmash.MonsterSmash;
 import com.fcfruit.monstersmash.effects.BleedBlood;
 import com.fcfruit.monstersmash.physics.ContactFilter;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.physics.PhysicsData;
-import com.fcfruit.monstersmash.stages.InAppPurchasesStage;
-import com.fcfruit.monstersmash.stages.InGameStoreStage;
 import com.fcfruit.monstersmash.stages.MainMenuStage;
-import com.fcfruit.monstersmash.stages.OptionsStage;
 import com.fcfruit.monstersmash.zombies.Zombie;
 
 /**
@@ -51,9 +46,9 @@ public class MainMenu implements Screen
 
     public MainMenu()
     {
-        viewport = new StretchViewport(com.fcfruit.monstersmash.ZombieSmash.WIDTH, com.fcfruit.monstersmash.ZombieSmash.HEIGHT);
+        viewport = new StretchViewport(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
 
-        tempGameCamera = new OrthographicCamera(com.fcfruit.monstersmash.ZombieSmash.WIDTH, com.fcfruit.monstersmash.ZombieSmash.HEIGHT);
+        tempGameCamera = new OrthographicCamera(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
         tempGameCamera.position.set(tempGameCamera.viewportWidth / 2, tempGameCamera.viewportHeight / 2, 0);
         tempGameCamera.update();
 

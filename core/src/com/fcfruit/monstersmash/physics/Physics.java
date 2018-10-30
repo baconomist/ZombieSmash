@@ -7,15 +7,11 @@ import com.badlogic.gdx.physics.box2d.BodyDef;
 import com.badlogic.gdx.physics.box2d.FixtureDef;
 import com.badlogic.gdx.physics.box2d.Joint;
 import com.badlogic.gdx.physics.box2d.JointDef;
-import com.badlogic.gdx.physics.box2d.JointEdge;
 import com.badlogic.gdx.physics.box2d.PolygonShape;
 import com.badlogic.gdx.physics.box2d.World;
 import com.badlogic.gdx.utils.Array;
-import com.fcfruit.monstersmash.Config;
 import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.ZombieSmash;
-import com.fcfruit.monstersmash.physics.ContactFilter;
-import com.fcfruit.monstersmash.rube.RubeScene;
+import com.fcfruit.monstersmash.MonsterSmash;
 
 import java.util.ArrayList;
 
@@ -31,7 +27,7 @@ public class Physics
     public static final float WIDTH = 20f;
     public static final float HEIGHT = 11.25f;
 
-    public static final float PIXELS_PER_METER = com.fcfruit.monstersmash.ZombieSmash.WIDTH / WIDTH;
+    public static final float PIXELS_PER_METER = MonsterSmash.WIDTH / WIDTH;
     public static final float METERS_PER_PIXEL = 1 / PIXELS_PER_METER;
 
     public static float STEP_TIME = 1f / 30f; // Needs to be changed for slow motion
