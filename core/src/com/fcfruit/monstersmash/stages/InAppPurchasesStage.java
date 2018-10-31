@@ -8,6 +8,7 @@ import com.badlogic.gdx.pay.Offer;
 import com.badlogic.gdx.pay.OfferType;
 import com.badlogic.gdx.pay.PurchaseManagerConfig;
 import com.badlogic.gdx.pay.PurchaseObserver;
+import com.badlogic.gdx.pay.PurchaseSystem;
 import com.badlogic.gdx.pay.Transaction;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -24,10 +25,17 @@ public class InAppPurchasesStage extends RubeStage
 {
     private static class ProductIdentifiers
     {
-        public static final String SANDBOX = "";
-        public static final String NO_ADS = "";
+        public static String publicKey = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQ" +
+                "EAlkx9W8KLfKJE9RoU0lA0/pp72GKWIC+KhSA7IQTaOyIt0vgTRsI+oEkrrUVE7xxAOKNic+Zlc7CNy5NFK970GCQ" +
+                "qAGEauFsKVZjpk60MURj5bBeeNq34OZgJ9soH1oTvrtgVNp/ZMIGZz9vog+3YRuGhoc4sxX2JAB5Iow6hoJ4NLGzcGyGTF6rCs0" +
+                "n05jV+igrpQ3TPhGcNB0entFCEySSgKWgUIwl8DcN6eCysh4YK1toMrBgdlMVfJCYd01OpMIqeT7ZDQNuUSsieBBphcWv+VnPzkGk4Wc/91" +
+                "bVsVgwwqadXQtKdG/9c/+AhvMw0nF9+Qs3rEnL4Sc5JFV5QnwIDAQAB";
+
+        public static final String SANDBOX = "sandbox";
+        public static final String NO_ADS = "no_ads";
 
         public static HashMap<String, String> productToSku = new HashMap<String, String>();
+
         static
         {
             productToSku.put("sandbox", SANDBOX);
@@ -59,7 +67,8 @@ public class InAppPurchasesStage extends RubeStage
         this.title = (Image) this.findActor("title");
 
         this.productButton = (com.fcfruit.monstersmash.ui.ImageButton) this.findActor("product_button");
-        this.productButton.addListener(new ClickListener(){
+        this.productButton.addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -69,7 +78,8 @@ public class InAppPurchasesStage extends RubeStage
         });
 
         this.backButton = (com.fcfruit.monstersmash.ui.ImageButton) this.findActor("back_button");
-        this.backButton.addListener(new ClickListener(){
+        this.backButton.addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -81,7 +91,8 @@ public class InAppPurchasesStage extends RubeStage
         this.leftButton = (com.fcfruit.monstersmash.ui.ImageButton) this.findActor("left_button");
         this.rightButton = (com.fcfruit.monstersmash.ui.ImageButton) this.findActor("right_button");
 
-        this.leftButton.addListener(new ClickListener(){
+        this.leftButton.addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -91,7 +102,8 @@ public class InAppPurchasesStage extends RubeStage
         });
 
 
-        this.rightButton.addListener(new ClickListener(){
+        this.rightButton.addListener(new ClickListener()
+        {
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
@@ -112,12 +124,13 @@ public class InAppPurchasesStage extends RubeStage
     {
         this.purchaseManagerConfig = new PurchaseManagerConfig();
 
-        if(Gdx.app.getType() == Application.ApplicationType.Android)
+        if (Gdx.app.getType() == Application.ApplicationType.Android)
         {
-            this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).putIdentifierForStore(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.SANDBOX));
-            this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).putIdentifierForStore(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.NO_ADS));
+            this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.publicKey);
 
-            this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, "");
+            this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).setIdentifier("no_ads"));
+
+            PurchaseSystem.setManager(Environment.purchaseManager);
 
             Environment.purchaseManager.install(new PurchaseObserver()
             {
@@ -163,6 +176,10 @@ public class InAppPurchasesStage extends RubeStage
 
                 }
             }, purchaseManagerConfig, true);
+
+
+            Environment.purchaseManager.purchase("no_ads");
+
         }
 
     }
@@ -173,10 +190,10 @@ public class InAppPurchasesStage extends RubeStage
         this.products = new Image[Gdx.files.internal("ui/in_app_purchase_store/products").list().length]; // *2 to have a list of products twice the size for smooth transitions
 
         int i = 0;
-        for(FileHandle fileHandle : Gdx.files.internal("ui/in_app_purchase_store/products").list())
+        for (FileHandle fileHandle : Gdx.files.internal("ui/in_app_purchase_store/products").list())
         {
             this.products[i] = new Image(new Texture(fileHandle));
-            this.products[i].setPosition(this.productButton.getX() - this.productButton.getWidth() - i*this.products[i].getWidth() - 10, this.productButton.getY()); // hide products
+            this.products[i].setPosition(this.productButton.getX() - this.productButton.getWidth() - i * this.products[i].getWidth() - 10, this.productButton.getY()); // hide products
             this.products[i].setSize(this.productButton.getWidth(), this.productButton.getHeight());
 
             this.products[i].setName(fileHandle.nameWithoutExtension());
@@ -205,10 +222,10 @@ public class InAppPurchasesStage extends RubeStage
         this.products[current_product].setPosition(this.productButton.getX(), this.productButton.getY());
 
         int i = current_product + 1;
-        for(Image product : this.products)
+        for (Image product : this.products)
         {
-            if(product != this.products[current_product])
-                product.setPosition(this.products[current_product].getX() - product.getWidth()*i, product.getY());
+            if (product != this.products[current_product])
+                product.setPosition(this.products[current_product].getX() - product.getWidth() * i, product.getY());
             i++;
         }
     }
@@ -240,7 +257,7 @@ public class InAppPurchasesStage extends RubeStage
 
     private void manageTransitionAnimation(float dt)
     {
-        if(this.is_transitioning)
+        if (this.is_transitioning)
         {
             for (int i = 0; i < this.products.length; i++)
             {
@@ -272,7 +289,7 @@ public class InAppPurchasesStage extends RubeStage
         // Remove old product from screen
         this.products[current_product].setPosition(-9999, -9999);
 
-        if(this.current_product - 1 < 0)
+        if (this.current_product - 1 < 0)
             this.current_product = this.products.length - 1;
         else
             this.current_product -= 1;
@@ -282,6 +299,7 @@ public class InAppPurchasesStage extends RubeStage
 
         this.is_transitioning = true;
     }
+
     private void onRightClicked()
     {
         this.direction = 1;
@@ -289,7 +307,7 @@ public class InAppPurchasesStage extends RubeStage
         // Remove old product from screen
         this.products[current_product].setPosition(-9999, -9999);
 
-        if(this.current_product + 1 > this.products.length - 1)
+        if (this.current_product + 1 > this.products.length - 1)
             this.current_product = 0;
         else
             this.current_product += 1;
@@ -306,5 +324,8 @@ public class InAppPurchasesStage extends RubeStage
     }
 
     private void purchaseProduct(String sku)
-    {}
+    {
+        //Environment.purchaseManager.purchase("no_ads");
+        Gdx.app.log("aaaa", "ssss");
+    }
 }

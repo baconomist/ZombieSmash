@@ -30,7 +30,7 @@ public class Environment
     // Need to create static methods which catch exceptions which may arise
     // Or else if new instance creation goes wrong it crashes
 
-    public static MonsterSmash game = new MonsterSmash();
+    public static MonsterSmash game;
 
     public static PurchaseManager purchaseManager;
 

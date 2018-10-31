@@ -44,7 +44,7 @@ public class MonsterSmash extends Game
         }
 
 
-        com.fcfruit.monstersmash.Environment.create();
+        Environment.create();
 
         //this.setScreen(Environment.screens.splashscreen);
 
@@ -55,7 +55,9 @@ public class MonsterSmash extends Game
         Environment.setupGame(2);
         this.setScreen(Environment.screens.gamescreen);*/
 
-        com.fcfruit.monstersmash.Environment.game.setScreen(com.fcfruit.monstersmash.Environment.screens.splashscreen);
+        //Environment.setupGame(5);
+        Environment.game.setScreen(Environment.screens.mainmenu);
+        Environment.screens.mainmenu.showInGameStorePage();
 
     }
 
