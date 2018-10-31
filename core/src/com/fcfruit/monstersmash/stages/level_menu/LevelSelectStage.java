@@ -217,6 +217,9 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
                 level_int = Integer.valueOf(level_string);
             } catch (NumberFormatException e){Gdx.app.error("LevelSelectStage", "Level Button Not Created");continue;}
 
+            if(level_int > Environment.Prefs.progress.getInteger("lastCompletedLevel", 0) + 1)
+                break;
+
             sprite = new Sprite(levelButtonTexture);
 
             imageButton = new ImageButton(sprite);

@@ -247,6 +247,7 @@ public class Environment
         public static Preferences settings;
         public static Preferences upgrades;
         public static Preferences brains;
+        public static Preferences progress;
 
         public static void clear()
         {
@@ -261,6 +262,7 @@ public class Environment
         Prefs.upgrades = Gdx.app.getPreferences("upgrades");
         Prefs.brains = Gdx.app.getPreferences("brains");
         Prefs.settings = Gdx.app.getPreferences("settings");
+        Prefs.progress = Gdx.app.getPreferences("progress");
 
         musicManager = new MusicManager();
 

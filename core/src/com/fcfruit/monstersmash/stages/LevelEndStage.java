@@ -18,6 +18,7 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.monstersmash.Environment;
+import com.fcfruit.monstersmash.screens.LevelMenu;
 import com.fcfruit.monstersmash.screens.MainMenu;
 import com.fcfruit.monstersmash.ui.FontActor;
 import com.fcfruit.monstersmash.ui.ImageButton;
@@ -90,15 +91,8 @@ public class LevelEndStage extends RubeStage
             {
 
                 Environment.musicManager.stopAllMusic();
-                /*
-                 * Environment should have a destroy/dispose method!!!!! with System.gc();
-                 * */
-                Environment.isPaused = false;
-                Environment.level = null;
-                Environment.physics = null;
-                System.gc();
-                Environment.screens.mainmenu = new MainMenu();
-                Environment.game.setScreen(Environment.screens.mainmenu);
+                Environment.screens.loadingscreen.setMainMenuLoading();
+                Environment.game.setScreen(Environment.screens.loadingscreen);
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -172,9 +166,9 @@ public class LevelEndStage extends RubeStage
                 this.brainIncrementTimer = System.currentTimeMillis();
             }
 
-            if (this.brainIncrement > Environment.level.brainCounter*Environment.difficulty_multipliers.get(Environment.currentDifficulty))
+            if (this.brainIncrement > Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty))
             {
-                this.brainIncrement -= this.brainIncrement - Environment.level.brainCounter*Environment.difficulty_multipliers.get(Environment.currentDifficulty);
+                this.brainIncrement -= this.brainIncrement - Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty);
                 this.levelRewards.setText("Brains: " + brainIncrement);
             }
         }
@@ -304,7 +298,7 @@ public class LevelEndStage extends RubeStage
         }
 
         this.levelRewards.setPosition(this.brainCounterBounds.getX(),
-                this.brainCounterBounds.getY() + this.brainCounterBounds.getHeight()/1.5f);
+                this.brainCounterBounds.getY() + this.brainCounterBounds.getHeight() / 1.5f);
 
         this.addActor(this.levelRewards);
     }
@@ -346,7 +340,8 @@ public class LevelEndStage extends RubeStage
 
     private void onContinue()
     {
-
+        // Return to level select
+        Environment.musicManager.stopAllMusic();
         if (Environment.level.objective.getHealth() <= 0)
         {
             // Restart level
@@ -354,18 +349,17 @@ public class LevelEndStage extends RubeStage
             Environment.screens.loadingscreen.setLevelID(Environment.level.level_id);
         } else
         {
-            // Return to level select
-            Environment.musicManager.stopAllMusic();
-            /*
-             * Environment should have a destroy/dispose method!!!!! with System.gc();
-             * */
-            Environment.isPaused = false;
-            Environment.level = null;
-            Environment.physics = null;
-            System.gc();
-            Environment.screens.mainmenu = new MainMenu();
-            Environment.screens.levelmenu.showLevelSelect();
-            Environment.game.setScreen(Environment.screens.levelmenu);
+            if (Environment.level.level_id + 1 < 31)
+            {
+                Environment.screens.loadingscreen.setGameLoading();
+                Environment.screens.loadingscreen.setLevelID(Environment.level.level_id + 1);
+                Environment.game.setScreen(Environment.screens.loadingscreen);
+            } else
+            {
+                Environment.screens.loadingscreen.setMainMenuLoading();
+                Environment.game.setScreen(Environment.screens.mainmenu);
+            }
+
         }
 
     }

@@ -90,14 +90,14 @@ public class MainMenuStage extends RubeStage
             }
         });
 
-        this.findActor("premium_store_button").addListener(new ClickListener(){
+/*        this.findActor("premium_store_button").addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 Environment.screens.mainmenu.showInAppPurchasesStage();
                 super.touchUp(event, x, y, pointer, button);
             }
-        });
+        });*/
 
 
     }
