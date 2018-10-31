@@ -4,17 +4,25 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.monstersmash.Environment;
 import com.fcfruit.monstersmash.stages.RubeStage;
 import com.fcfruit.monstersmash.ui.CheckBox;
 import com.fcfruit.monstersmash.ui.FontActor;
 import com.fcfruit.monstersmash.ui.ImageButton;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 
 public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
 {
@@ -157,17 +165,53 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
 
         int col = 0;
         int row = 1;
-        for (FileHandle level_file : Gdx.files.internal("maps/night_map/levels").list())
+
+        Array<FileHandle> sorted_list = new Array<FileHandle>();
+        for(FileHandle fileHandle : Gdx.files.internal("maps/night_map/levels").list())
         {
-            level_string = level_file.name().replace(".json", "");
+            sorted_list.add(fileHandle);
+        }
+        sorted_list.sort(new Comparator<FileHandle>()
+        {
+            @Override
+            public int compare(FileHandle o1, FileHandle o2)
+            {
+                StringBuilder str1 = new StringBuilder();
+                for(char c : o1.name().toCharArray())
+                {
+                    if(Character.isDigit(c))
+                        str1.append(c);
+                }
+
+                StringBuilder str2 = new StringBuilder();
+                for(char c : o2.name().toCharArray())
+                {
+                    if(Character.isDigit(c))
+                        str2.append(c);
+                }
+
+                if(str1.toString().length() > 0 && str2.toString().length() > 0)
+                    return Integer.valueOf(str1.toString()) - Integer.valueOf(str2.toString());
+                else
+                    return 0;
+            }
+        });
+
+        GlyphLayout glyphLayout = new GlyphLayout();
+
+        for(FileHandle level_file : sorted_list)
+        {
             try
             {
+                StringBuilder str = new StringBuilder();
+                for(char c : level_file.name().toCharArray())
+                {
+                    if(Character.isDigit(c))
+                        str.append(c);
+                }
+                level_string = str.toString();
                 level_int = Integer.valueOf(level_string);
-            } catch (Exception e)
-            {
-                Gdx.app.error("Error in level button loading.", "The file was: " + level_file.name());
-                continue; // Don't create examples.json
-            }
+            } catch (NumberFormatException e){Gdx.app.error("Level Button Not Created", "");continue;}
 
             sprite = new Sprite(levelButtonTexture);
 
@@ -188,7 +232,8 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
 
             fontActor = new com.fcfruit.monstersmash.ui.FontActor(this.levelButtonBitmapFont);
             fontActor.setText(level_string);
-            fontActor.setPosition(imageButton.getX() + imageButton.getWidth() / 2 - 30, imageButton.getY() + imageButton.getHeight() / 2 + 40);
+            glyphLayout.setText(levelButtonBitmapFont, level_string);
+            fontActor.setPosition(imageButton.getX() + imageButton.getWidth() / 2 - 30 - glyphLayout.width/4, imageButton.getY() + imageButton.getHeight() / 2 + 40);
 
             imageButton.setName(level_string);
             fontActor.setName(level_string);
