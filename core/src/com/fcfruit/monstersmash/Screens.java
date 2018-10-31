@@ -2,6 +2,7 @@ package com.fcfruit.monstersmash;
 
 import com.fcfruit.monstersmash.screens.GameScreen;
 import com.fcfruit.monstersmash.screens.LevelMenu;
+import com.fcfruit.monstersmash.screens.LoadingScreen;
 import com.fcfruit.monstersmash.screens.MainMenu;
 import com.fcfruit.monstersmash.screens.SplashScreen;
 
@@ -15,6 +16,7 @@ public class Screens
     public MainMenu mainmenu;
     public GameScreen gamescreen;
     public LevelMenu levelmenu;
+    public LoadingScreen loadingscreen;
 
     public Screens()
     {
@@ -22,5 +24,6 @@ public class Screens
         this.mainmenu = new MainMenu();
         this.gamescreen = new GameScreen();
         this.levelmenu = new LevelMenu();
+        this.loadingscreen = new LoadingScreen();
     }
 }

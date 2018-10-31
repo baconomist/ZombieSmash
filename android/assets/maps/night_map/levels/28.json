@@ -15,7 +15,8 @@
         "grenade",
         "grenade",
         "rocket"
-    ],
+      ]
+    },
     "armored_zombie": {
       "quantity": 3,
       "init_delay": 3,
@@ -51,7 +52,7 @@
       "init_delay": 10,
       "position": "left"
     }
-  ]
+  }
 }
 
 

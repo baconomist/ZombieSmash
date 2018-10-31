@@ -13,7 +13,8 @@
         "molotov",
         "time",
         "grenade",
-        "grenade"
+        "grenade",
+        "rock"
       ]
     },
     "armored_zombie": {

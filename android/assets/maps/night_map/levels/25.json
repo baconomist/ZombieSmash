@@ -46,7 +46,8 @@
       "powerups": [
         "molotov",
         "grenade",
-        "rocket"
+        "rocket",
+        "rock"
       ]
     }
   }

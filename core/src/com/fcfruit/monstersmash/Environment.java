@@ -105,6 +105,7 @@ public class Environment
 
     public static String currentDifficulty = "normal";
     public static HashMap<String, Float> difficulty_multipliers;
+
     static
     {
         difficulty_multipliers = new HashMap<String, Float>();
@@ -177,7 +178,7 @@ public class Environment
 
         // Pools
         firePool = new com.fcfruit.monstersmash.powerups.FirePool();
-        if(Environment.settings.isGoreEnabled())
+        if (Environment.settings.isGoreEnabled())
             bleedableBloodPool = new com.fcfruit.monstersmash.effects.BleedableBloodPool();
         particleEntityPool = new com.fcfruit.monstersmash.powerups.ParticleEntityPool();
         brainPool = new com.fcfruit.monstersmash.brains.BrainPool();
@@ -267,6 +268,95 @@ public class Environment
         settings = new Settings();
 
         screens = new Screens();
+    }
+
+    private static int load_calls = 0;
+    private static ArrayList<Runnable> load_runnables = new ArrayList<Runnable>();
+    static
+    {
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                setupPhysicsCamera();
+            }
+        });
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                setupGameCamera();
+            }
+        });
+
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                physics = new com.fcfruit.monstersmash.physics.Physics();
+                screens.gamescreen.create();
+                powerupManager = new com.fcfruit.monstersmash.powerups.PowerupManager();
+            }
+        });
+
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Pools
+                firePool = new com.fcfruit.monstersmash.powerups.FirePool();
+            }
+        });
+
+
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if (Environment.settings.isGoreEnabled())
+                    bleedableBloodPool = new com.fcfruit.monstersmash.effects.BleedableBloodPool();
+            }
+        });
+
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                particleEntityPool = new com.fcfruit.monstersmash.powerups.ParticleEntityPool();
+                brainPool = new com.fcfruit.monstersmash.brains.BrainPool();
+            }
+        });
+
+        load_runnables.add(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                rocketPool = new com.fcfruit.monstersmash.powerups.rocket.RocketPool();
+                Gdx.app.log("aaa", "sssssssssssssssssstttttttttttttttttttttttttt");
+            }
+        });
+    }
+    public static boolean update_setupGameLoading(int levelid)
+    {
+        if(load_calls < load_runnables.size())
+            load_runnables.get(load_calls).run();
+        else
+        {
+            // Finish Loading
+            Environment.isPaused = false;
+            setupLevel(levelid);
+            load_calls = 0;
+            return true;
+        }
+        load_calls++;
+        return false;
     }
 
     public static void load_assets()

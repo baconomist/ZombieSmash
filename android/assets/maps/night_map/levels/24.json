@@ -42,7 +42,8 @@
         "molotov",
         "time",
         "grenade",
-        "rocket"
+        "rocket",
+        "rock"
       ]
     }
   }
