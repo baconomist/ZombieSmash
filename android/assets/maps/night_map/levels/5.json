@@ -1,25 +1,36 @@
 {
+
   "left": {
-    "bone_boss_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "position":"left"
+    "message": {
+      "content": "More crawling zombies along\n with the usual guys coming up",
+      "init_delay": 2
+    },
+    "reg_zombie": {
+      "quantity": 6,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 3,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "Looks like they're coming from both sides, watch it",
+      "init_delay": 18
     }
   },
-  "middle":{
-    "suicide_zombie": {
-      "quantity": 3,
+  "middle": {
+    "crawling_zombie": {
+      "quantity": 11,
       "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_left"
-    }
-  },
-  "right":{
-    "suicide_zombie": {
-      "quantity": 3,
+      "position": "middle_right"
+    },
+    "crawling_zombie": {
+      "quantity": 11,
       "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"right"
+      "position": "middle_left"
     }
   }
 }
+

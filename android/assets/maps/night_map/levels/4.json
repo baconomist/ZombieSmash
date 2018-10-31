@@ -1,15 +1,28 @@
 {
-
-  "left":{
+  "left": {
+    "message": {
+      "content": "The same night all over again...\n how many more days until it's over?",
+      "init_delay": 2
+    },
     "reg_zombie": {
       "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"left"
+      "init_delay": 4,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 13,
+      "init_delay": 20,
+      "position": "left"
+    },
+    "message": {
+      "content": "Wait, is that? a child? They look pretty fast, get ready",
+      "init_delay": 18
+    },
+    "crawling_zombie": {
+      "quantity": 13,
+      "init_delay": 20,
+      "position": "left"
     }
   }
-
-
-
-
 }
+

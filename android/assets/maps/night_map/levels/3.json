@@ -1,91 +1,44 @@
 {
 
   "left":{
-    "big_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"left"
-    },
-    "police_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"left"
+    "message":{
+      "content": "Another night another zombie, or zombies...\n I'll get some grenades for you",
+      "init_delay": 2
     },
     "reg_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
+      "quantity": 15,
+      "init_delay": 5,
       "position":"left"
     },
-    "suicide_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
+    "helicopter": {
+      "init_delay": 3,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade"
+        "grenade"
+        "grenade"
+        "grenade"
+      ]
+    },
+      "message":{
+        "content": "I'm not giving you anymore grenades,\n use them wisely",
+        "init_delay": 4
+      },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 20,
       "position":"left"
-    }
-  },
-  "middle":{
-    "big_zombie": {
-      "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_left"
     },
-    "police_zombie": {
-      "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_left"
+    "message":{
+      "content": "I see another group of zombies coming up... \n lets hope it's the last",
+      "init_delay": 35
     },
     "reg_zombie": {
-      "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_left"
-    },
-    "big_zombie": {
-      "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_right"
-    },
-    "police_zombie": {
-      "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_right"
-    },
-    "reg_zombie": {
-      "quantity": 3,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_right"
-    }
-  },
-  "right":{
-    "big_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"right"
-    },
-    "police_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"right"
-    },
-    "reg_zombie": {
-      "quantity": 6,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"right"
+      "quantity": 24,
+      "init_delay": 40,
+      "position":"left"
     }
   }
-
-
-
-
 }

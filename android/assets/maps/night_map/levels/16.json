@@ -1,0 +1,42 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Imma start working on some \n new items for you... watch my back",
+      "init_delay": 2
+    },
+      "message": {
+        "content": "Cover me",
+        "init_delay": 3
+      },
+    "big_zombie": {
+      "quantity": 3,
+      "init_delay": 4,
+      "spawn_delay": 0.5,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 11,
+      "init_delay": 7,
+      "position": "left"
+    },
+    "message": {
+      "content": "While you're waiting for me to \n finish up take some of the nades i made",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 6,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade",
+        "grenade",
+        "grenade"
+      ]
+    }
+  }
+}
+
+
+

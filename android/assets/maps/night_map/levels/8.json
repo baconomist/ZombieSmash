@@ -1,0 +1,26 @@
+{
+
+  "left": {
+    "message": {
+      "content": "More zombies coming in hot!",
+      "init_delay": 2
+    },
+    "crawling_zombie": {
+      "quantity": 13,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "Right off the pan coming up!",
+      "init_delay": 5
+    },
+    "reg_zombie": {
+      "quantity": 11,
+      "init_delay": 4,
+      "position": "left"
+    }
+  }
+}
+
+
+

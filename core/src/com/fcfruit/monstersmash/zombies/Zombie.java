@@ -106,6 +106,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      **/
     private double getUpTimer;
     private double timeBeforeGetup;
+    private double maxGetupTimer;
+    private double maxGetupTime;
     private boolean isGettingUp;
     private MouseJoint getUpMouseJoint;
 
@@ -140,6 +142,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
         // Getup Fields
         this.timeBeforeGetup = 5000;
+        this.maxGetupTime = 3000;
         this.isGettingUp = false;
 
         // Status fields
@@ -734,6 +737,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
                 this.isGettingUp = true;
 
+                this.maxGetupTimer = System.currentTimeMillis();
+
                 this.onGetupStart();
 
             } else if (!this.hasRequiredPartsForGetup() && this.isAlive() && System.currentTimeMillis() - getUpTimer >= timeBeforeGetup)
@@ -744,6 +749,10 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
             // -size.getY()/6f to give it wiggle room to detect get up
             if (this.isGettingUp() && this.getDrawableEntities().get("head").getPosition().y >= this.getSize().y - this.getSize().y/6f + Environment.physics.getGroundBodies().get(this.getInitialGround()).getPosition().y)
+            {
+                this.onGetupEnd();
+            }
+            else if(this.isGettingUp() && System.currentTimeMillis() - maxGetupTimer >= maxGetupTime)
             {
                 this.onGetupEnd();
             }

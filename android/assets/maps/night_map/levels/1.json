@@ -2,40 +2,47 @@
 {
 
   "left":{
-    "suicide_zombie": {
-      "quantity": 10,
-      "init_delay": 0,
-      "spawn_delay": 2,
-      "position":"left",
-      "depth": 1
-    }
-  },
-
-  "middle":{
-    "police_zombie": {
+    "message":{
+      "content": "Hold and drag the zombie to \n throw it around, try it out now!",
+      "init_delay": 2
+    },
+    "message":{
+      "content": "Make sure to grab the brains,\n they can be used to upgrade powerups",
+      "init_delay": 3
+    },
+    "reg_zombie": {
       "quantity": 1,
       "init_delay": 0,
-      "spawn_delay": 1,
-      "position":"middle_right"
-    }
-  },
-  "right":{
-    "big_zombie": {
+      "spawn_delay": 0,
+      "position":"left"
+    },
+    "message":{
+      "content": "Another zombie is approching, instead\n of throwing him, use the incoming powerup.",
+      "init_delay": 13
+    },
+    "helicopter": {
+      "init_delay": 15,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade"
+      ]
+    },
+    "reg_zombie": {
       "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 1,
-      "position": "right"
-    }
-  },
-
-  "left":{
-    "suicide_zombie": {
-      "quantity": 1,
-      "init_delay": 0,
-      "spawn_delay": 0.5,
+      "init_delay": 15,
+      "spawn_delay": 0,
+      "position":"left"
+    },
+    "message":{
+      "content": "I see a pretty big horde\n up ahead after we get\n through them I think \n we'll be done for the night.",
+      "init_delay": 30
+    },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 30,
       "position":"left"
     }
   }
-
-
 }

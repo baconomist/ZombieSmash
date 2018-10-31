@@ -24,6 +24,10 @@
         "rocket"
       ]
     },
+    "message":{
+      "content": "HI\n HI on a new line." // Message content, \n = newline
+      "init_delay": 1
+    },
     "crate": { // @debug spawns a raw crate at (x, y) -> (random x, 8) for debugging purposes only! Do not use in release, use helicopter instead!
       "init_delay": 1,
       "spawn_delay": 0,

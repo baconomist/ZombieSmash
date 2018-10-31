@@ -1,0 +1,30 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Oh shoot! I see a huge horde of\n those crawling zombo's on their way!",
+      "init_delay": 2
+    },
+    "crawling_zombie": {
+      "quantity": 25,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "Here take this creepy stop watch my\n brother gave me, see what you can do with it",
+      "init_delay": 3
+    },
+    "helicopter": {
+      "init_delay": 3,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "time"
+      ]
+    }
+  }
+}
+
+
+

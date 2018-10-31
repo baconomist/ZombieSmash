@@ -1,0 +1,41 @@
+{
+
+  "left": {
+    "message": {
+      "content": "God Da- Eughh alright;\n My Overlord Heights After \n Many Everlasting Deaths, \n WHO IS GIVING ME THESE?",
+      "init_delay": 2
+    },
+      "message": {
+        "content": "More big boys coming up",
+        "init_delay": 3
+      },
+    "big_zombie": {
+      "quantity": 3,
+      "init_delay": 4,
+      "spawn_delay": 0.5,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 13,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "need grenades again?",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 6,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade",
+        "grenade"
+      ]
+    }
+  }
+}
+
+
+

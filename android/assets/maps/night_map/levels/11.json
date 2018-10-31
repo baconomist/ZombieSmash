@@ -1,0 +1,41 @@
+{
+
+  "left": {
+    "message": {
+      "content": "What? What's this I got a letter? \n Kraken And Demons Envy Nightmares... \nsounds dark ",
+      "init_delay": 2
+    },
+    "crawling_zombie": {
+      "quantity": 9,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "I got some more items ready for use",
+      "init_delay": 15
+    },
+    "helicopter": {
+      "init_delay": 15,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "time",
+        "grenade"
+      ]
+    },
+    "crawling_zombie": {
+      "quantity": 9,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 11,
+      "init_delay": 15,
+      "position": "left"
+    }
+  }
+}
+
+
+

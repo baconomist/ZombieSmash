@@ -1,45 +1,31 @@
 {
   "left": {
-    "crawling_zombie": {
-      "quantity": 100,
-      "init_delay": 0,
-      "spawn_delay": 0.15,
+    "message": {
+      "content": "I'm going to go prepare the house,\n you're gonna be alone on this one.",
+      "init_delay": 3
+    },
+    "reg_zombie": {
+      "quantity": 16,
+      "init_delay": 5,
       "position": "left"
     },
-    "helicopter": {
-      "init_delay": 0,
-      "spawn_delay": 0,
-      "powerup_spawn_delay": 0.5,
-      "powerup_init_delay": 1,
-      "powerups": [
-        "grenade",
-        "grenade",
-        "molotov",
-        "molotov",
-        "rocket"
-      ]
+    "reg_zombie": {
+        "quantity": 15,
+        "init_delay": 30,
+        "position": "left"
+    },
+    "message":{
+      "content": "Just warning ya' there seems\n to be a pretty big horde coming up ahead.\n I'll call in a grenade for you.",
+      "init_delay": 25
     },
     "helicopter": {
-      "init_delay": 30,
+      "init_delay": 25,
       "spawn_delay": 0,
       "powerup_spawn_delay": 0.5,
       "powerup_init_delay": 1,
       "powerups": [
-        "time",
-        "rock",
-        "rock",
-        "rocket",
-        "rocket"
+        "grenade"
       ]
-    }
-  },
-  "middle": {
-    "police_zombie": {
-      "quantity": 20,
-      "init_delay": 1,
-      "spawn_delay": 0.5,
-      "position": "middle_left",
-      "depth": 1
     }
   }
 }

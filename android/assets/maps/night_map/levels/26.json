@@ -1,0 +1,52 @@
+{
+  "left": {
+    "message": {
+      "content": "YES FINALLY! THE MILITARY OH MY GOD YE- AGAIN?! im done.",
+      "init_delay": 2
+    },
+    "message": {
+      "content": "With that gear he looks a bit \n  too heavy for you to pick up...",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 5,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "molotov",
+        "time",
+        "grenade",
+        "rocket"
+      ]
+    },
+
+    "armored_zombie": {
+      "quantity": 1,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 10,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 12,
+      "init_delay": 10,
+      "position": "left"
+    },
+    "big_zombie": {
+      "quantity": 10,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "grandma_zombie": {
+      "quantity": 4,
+      "init_delay": 10,
+      "position": "left"
+    }
+  }
+}
+
+

@@ -1,0 +1,35 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Alright, no letter... off to a good start.",
+      "init_delay": 2
+    },
+      "message": {
+        "content": "huh. that zombie looks a bit big",
+        "init_delay": 3
+      },
+    "big_zombie": {
+      "quantity": 1,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "looks too heavy for you to \n lift i'll give you some grenades",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 6,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade",
+        "grenade"
+      ]
+    }
+  }
+}
+
+
+

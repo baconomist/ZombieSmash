@@ -1,0 +1,38 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Got a mix of crawling zombies\n and our regular customers",
+      "init_delay": 2
+    },
+    "crawling_zombie": {
+      "quantity": 13,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 11,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "Got a mix of zombies,\n we should have a mix of items",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 3,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "time",
+        "time",
+        "grenade",
+        "grenade"
+      ]
+    }
+  }
+}
+
+
+

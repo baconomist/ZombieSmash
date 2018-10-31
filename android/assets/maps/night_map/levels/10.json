@@ -1,0 +1,32 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Uh hu EH! im awake! im awake! \n Here take some grenades and \n leave me alone",
+      "init_delay": 2
+    },
+    "helicopter": {
+      "init_delay": 3,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade",
+        "grenade"
+      ]
+    },
+    "crawling_zombie": {
+      "quantity": 9,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 18,
+      "init_delay": 5,
+      "position": "left"
+    }
+  }
+}
+
+
+

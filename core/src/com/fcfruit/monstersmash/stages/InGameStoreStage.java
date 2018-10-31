@@ -339,10 +339,10 @@ public class InGameStoreStage extends RubeStage
         image.setScale((background.getHeight() - 100) / image.getHeight());
 
         FontActor fontActor = new FontActor(bitmapFont);
-        fontActor.setText("1/4");
+        fontActor.setText(upgradePrefs.getInteger(productName, 1)+"/4");
 
         GlyphLayout layout = new GlyphLayout();
-        layout.setText(bitmapFont, "1/4");
+        layout.setText(bitmapFont, upgradePrefs.getInteger(productName, 1)+"/4");
 
         fontActor.setPosition(background.getX() + background.getWidth() - layout.width - 100, image.getY() + layout.height);
 

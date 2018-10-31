@@ -1,0 +1,21 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Mom is that? No wait can't be...",
+      "init_delay": 2
+    },
+    "grandma_zombie": {
+      "quantity": 1,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "She seems to not really notice the house, \n throw her around.",
+      "init_delay": 7
+    }
+  }
+}
+
+
+

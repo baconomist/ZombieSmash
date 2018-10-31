@@ -1,0 +1,46 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Alright i'm almost done, \n I'll have it finished by tomorrow",
+      "init_delay": 2
+    },
+      "message": {
+        "content": "Do your thing",
+        "init_delay": 3
+      },
+    "big_zombie": {
+      "quantity": 2,
+      "init_delay": 4,
+      "spawn_delay": 0.5,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 6,
+      "init_delay": 7,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 6,
+      "init_delay": 7,
+      "position": "left"
+    },
+    "message": {
+      "content": "Take my explosives out \n for a run why don't you?",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 6,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade",
+        "grenade"
+      ]
+    }
+  }
+}
+
+
+

@@ -1,0 +1,42 @@
+{
+
+  "left": {
+    "message": {
+      "content": "I have a feeling something evil is \n coming up, it would only explain these notes;\n To Onwards My Acquaintances, Silently",
+      "init_delay": 2
+    },
+      "message": {
+        "content": "More Zed's coming up",
+        "init_delay": 3
+      },
+    "big_zombie": {
+      "quantity": 1,
+      "init_delay": 4,
+      "spawn_delay": 0.5,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 7,
+      "init_delay": 7,
+      "position": "left"
+    },
+    "message": {
+      "content": "More bombs for you my friend",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 6,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "grenade",
+        "grenade",
+        "grenade"
+      ]
+    }
+  }
+}
+
+
+

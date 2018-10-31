@@ -1,0 +1,44 @@
+{
+  "left": {
+    "message": {
+      "content": "I got it! I'll make some molotovs! \n I'll send them out when they're ready",
+      "init_delay": 2
+    },
+    "grandma_zombie": {
+      "quantity": 3,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 12,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "big_zombie": {
+      "quantity": 4,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "message": {
+      "content": "Alright i got a couple of molotov's incoming",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 6,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "molotov",
+        "molotov"
+      ]
+    }
+  }
+}
+
+

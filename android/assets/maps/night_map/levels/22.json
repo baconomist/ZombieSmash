@@ -1,0 +1,31 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Jesus, what was i doing last night? \n maybe i could use these bottles for something...",
+      "init_delay": 2
+    },
+    "grandma_zombie": {
+      "quantity": 3,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 21,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "get them my guy.",
+      "init_delay": 5
+    }
+  }
+}
+
+
+

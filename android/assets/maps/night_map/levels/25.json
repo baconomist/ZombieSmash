@@ -1,0 +1,55 @@
+{
+  "left": {
+    "message": {
+      "content": "Is that? Great a police zombie\n chasing a zombie with a bomb, how cute",
+      "init_delay": 2
+    },
+    "police_zombie": {
+      "quantity": 1,
+      "init_delay": 3.1,
+      "position": "left"
+    },
+    "suicide_zombie": {
+      "quantity": 1,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 12,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "big_zombie": {
+      "quantity": 4,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "grandma_zombie": {
+      "quantity": 4,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "message": {
+      "content": "Got cool weapons",
+      "init_delay": 15
+    },
+    "helicopter": {
+      "init_delay": 15,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "molotov",
+        "grenade",
+        "rocket"
+      ]
+    }
+  }
+}
+
+

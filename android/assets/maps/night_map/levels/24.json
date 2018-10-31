@@ -1,0 +1,51 @@
+{
+  "left": {
+    "message": {
+      "content": "OH. MY. GOD. IS THAT THE POLI- \n wait that's a zombie oh doo doo",
+      "init_delay": 2
+    },
+    "police_zombie": {
+      "quantity": 11,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 14,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 12,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "big_zombie": {
+      "quantity": 4,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "grandma_zombie": {
+      "quantity": 4,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "message": {
+      "content": "Got a box of hoarded items coming your way",
+      "init_delay": 5
+    },
+    "helicopter": {
+      "init_delay": 5,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "molotov",
+        "time",
+        "grenade",
+        "rocket"
+      ]
+    }
+  }
+}
+
+

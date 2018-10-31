@@ -1,0 +1,26 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Starting to feel a lot \n like groundhog day...",
+      "init_delay": 2
+    },
+    "crawling_zombie": {
+      "quantity": 17,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "Uhhhhh don't think i got \n enough sleep last night",
+      "init_delay": 5
+    },
+    "reg_zombie": {
+      "quantity": 16,
+      "init_delay": 4,
+      "position": "left"
+    }
+  }
+}
+
+
+

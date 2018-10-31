@@ -151,8 +151,12 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
     private void generateLevelButtons()
     {
         Texture levelButtonTexture = new Texture(Gdx.files.internal("ui/level_menu/level_select/box.png"));
-        com.fcfruit.monstersmash.ui.ImageButton imageButton;
-        com.fcfruit.monstersmash.ui.FontActor fontActor;
+
+        float width = levelButtonTexture.getWidth()*1.15f;
+        float height = levelButtonTexture.getHeight();
+
+        ImageButton imageButton;
+        FontActor fontActor;
         Sprite sprite;
         String level_string;
         int level_int;
@@ -160,8 +164,8 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
         float spacing = 10f;
 
         Image level_list_bounds = (Image) this.findActor("level_list_bounds");
-        int columns = (int) (level_list_bounds.getWidth() / (levelButtonTexture.getWidth() + spacing));
-        int rows = (int) (level_list_bounds.getHeight() / (levelButtonTexture.getHeight() + spacing));
+        int columns = (int) (level_list_bounds.getWidth() / (width + spacing));
+        int rows = (int) (level_list_bounds.getHeight() / (height + spacing));
 
         int col = 0;
         int row = 1;
@@ -169,7 +173,8 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
         Array<FileHandle> sorted_list = new Array<FileHandle>();
         for(FileHandle fileHandle : Gdx.files.internal("maps/night_map/levels").list())
         {
-            sorted_list.add(fileHandle);
+            if(fileHandle.extension().equals("json"))
+                sorted_list.add(fileHandle);
         }
         sorted_list.sort(new Comparator<FileHandle>()
         {
@@ -198,7 +203,6 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
         });
 
         GlyphLayout glyphLayout = new GlyphLayout();
-
         for(FileHandle level_file : sorted_list)
         {
             try
@@ -211,12 +215,12 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
                 }
                 level_string = str.toString();
                 level_int = Integer.valueOf(level_string);
-            } catch (NumberFormatException e){Gdx.app.error("Level Button Not Created", "");continue;}
+            } catch (NumberFormatException e){Gdx.app.error("LevelSelectStage", "Level Button Not Created");continue;}
 
             sprite = new Sprite(levelButtonTexture);
 
-            imageButton = new com.fcfruit.monstersmash.ui.ImageButton(sprite);
-            imageButton.setSize(sprite.getWidth(), sprite.getHeight());
+            imageButton = new ImageButton(sprite);
+            imageButton.setSize(width, height);
             imageButton.setPosition(level_list_bounds.getX() + imageButton.getWidth() * col, level_list_bounds.getY() + level_list_bounds.getHeight() - imageButton.getHeight() * row);
             imageButton.setPosition(imageButton.getX() + spacing * col + spacing, imageButton.getY() - spacing * row - spacing); // Add spacing between bounds/boxes
 

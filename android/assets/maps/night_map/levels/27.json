@@ -1,0 +1,47 @@
+{
+  "left": {
+    "message": {
+      "content": "Im feeling a bit sick today. \n I'll drop off what I have and leave you to it",
+      "init_delay": 2
+    },
+    "helicopter": {
+      "init_delay": 5,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "molotov",
+        "time",
+        "grenade",
+        "grenade"
+      ]
+    },
+    "armored_zombie": {
+      "quantity": 2,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 12,
+      "init_delay": 10,
+      "position": "left"
+    },
+    "crawling_zombie": {
+      "quantity": 14,
+      "init_delay": 10,
+      "position": "left"
+    },
+    "big_zombie": {
+      "quantity": 3,
+      "init_delay": 3,
+      "position": "left"
+    },
+    "grandma_zombie": {
+      "quantity": 5,
+      "init_delay": 10,
+      "position": "left"
+    }
+  }
+}
+
+

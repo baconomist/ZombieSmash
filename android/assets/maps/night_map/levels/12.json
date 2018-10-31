@@ -1,0 +1,41 @@
+{
+
+  "left": {
+    "message": {
+      "content": "Another letter? A Never Nothingness Approaches at Midnight... something seems off",
+      "init_delay": 2
+    },
+    "crawling_zombie": {
+      "quantity": 11,
+      "init_delay": 4,
+      "position": "left"
+    },
+    "message": {
+      "content": "More cursed watches coming up!",
+      "init_delay": 15
+    },
+    "helicopter": {
+      "init_delay": 15,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "time",
+        "time"
+      ]
+    },
+    "crawling_zombie": {
+      "quantity": 11,
+      "init_delay": 15,
+      "position": "left"
+    },
+    "reg_zombie": {
+      "quantity": 12,
+      "init_delay": 15,
+      "position": "left"
+    }
+  }
+}
+
+
+
