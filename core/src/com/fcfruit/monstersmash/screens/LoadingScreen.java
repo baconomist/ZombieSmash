@@ -30,6 +30,8 @@ public class LoadingScreen implements Screen
     private SpriteBatch spriteBatch;
     private float elapsed;
 
+    private boolean gameLoading = false;
+
     public LoadingScreen()
     {
         viewport = new StretchViewport(1920, 1080);
@@ -50,7 +52,7 @@ public class LoadingScreen implements Screen
 
         animation = new Animation<TextureAtlas.AtlasRegion>(frame_time, atlasRegions.toArray());
         animation.setPlayMode(Animation.PlayMode.LOOP);
-        animation.setFrameDuration(frame_time/1000);
+        animation.setFrameDuration(frame_time / 1000);
 
         bone = new Sprite();
 
@@ -61,7 +63,7 @@ public class LoadingScreen implements Screen
 
         glyphLayout.setText(bitmapFont, "Loading... Please Wait...");
 
-        text.setPosition(viewport.getWorldWidth()/2 + glyphLayout.width/2, viewport.getWorldHeight()/2 + glyphLayout.height);
+        text.setPosition(viewport.getWorldWidth() / 2 + glyphLayout.width / 2, viewport.getWorldHeight() / 2 + glyphLayout.height);
     }
 
     public void setLevelID(int id)
@@ -69,9 +71,20 @@ public class LoadingScreen implements Screen
         this.levelID = id;
     }
 
+    public void setGameLoading()
+    {
+        this.gameLoading = true;
+    }
+
+    public void setMainMenuLoading()
+    {
+        this.gameLoading = false;
+    }
+
     @Override
     public void show()
     {
+        this.elapsed = 0.0f;
     }
 
     @Override
@@ -80,12 +93,23 @@ public class LoadingScreen implements Screen
         delta = Math.min(delta, 0.1f);
         this.elapsed += delta;
 
-        if(Environment.assets.update()) // When asset loading finished
+        if (Environment.assets.update() && elapsed > 2) // When asset loading finished and at least 2 seconds have passed
         {
-            if(Environment.update_setupGameLoading(levelID)) // When game/level loading finished
+            if(gameLoading)
             {
-                Environment.game.setScreen(Environment.screens.gamescreen);
-                return;
+                if (Environment.update_setupGameLoading(levelID)) // When game/level loading finished
+                {
+                    Environment.game.setScreen(Environment.screens.gamescreen);
+                    return;
+                }
+            } else
+            {
+                Environment.isPaused = false;
+                Environment.level = null;
+                Environment.physics = null;
+                System.gc();
+                Environment.screens.mainmenu = new MainMenu();
+                Environment.game.setScreen(Environment.screens.mainmenu);
             }
         }
 
@@ -93,7 +117,7 @@ public class LoadingScreen implements Screen
 
         bone.setRegion(this.animation.getKeyFrame(this.elapsed));
         bone.setSize(bone.getRegionWidth(), bone.getRegionHeight());
-        bone.setPosition(this.viewport.getWorldWidth()/2 - bone.getWidth()/2, this.viewport.getWorldHeight()/2 - bone.getHeight()/2);
+        bone.setPosition(this.viewport.getWorldWidth() / 2 - bone.getWidth() / 2, this.viewport.getWorldHeight() / 2 - bone.getHeight() / 2);
 
         text.setPosition(500, 100);
 

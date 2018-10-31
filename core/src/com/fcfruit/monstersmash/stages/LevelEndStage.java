@@ -350,8 +350,8 @@ public class LevelEndStage extends RubeStage
         if (Environment.level.objective.getHealth() <= 0)
         {
             // Restart level
-            Environment.setupGame(Environment.level.level_id);
-            Environment.game.setScreen(Environment.screens.gamescreen);
+            Environment.game.setScreen(Environment.screens.loadingscreen);
+            Environment.screens.loadingscreen.setLevelID(Environment.level.level_id);
         } else
         {
             // Return to level select

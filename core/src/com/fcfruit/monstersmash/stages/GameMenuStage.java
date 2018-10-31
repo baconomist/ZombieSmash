@@ -55,12 +55,8 @@ public class GameMenuStage extends RubeStage
                 /*
                 * Environment should have a destroy/dispose method!!!!! with System.gc();
                 * */
-                Environment.isPaused = false;
-                Environment.level = null;
-                Environment.physics = null;
-                System.gc();
-                Environment.create();
-                Environment.game.setScreen(Environment.screens.mainmenu);
+                Environment.screens.loadingscreen.setMainMenuLoading();
+                Environment.game.setScreen(Environment.screens.loadingscreen);
                 super.touchUp(event, x, y, pointer, button);
             }
         });

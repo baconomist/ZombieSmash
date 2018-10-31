@@ -69,6 +69,7 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 Environment.screens.loadingscreen.setLevelID(selected_level);
+                Environment.screens.loadingscreen.setGameLoading();
                 Environment.game.setScreen(Environment.screens.loadingscreen);
                 super.touchUp(event, x, y, pointer, button);
             }
