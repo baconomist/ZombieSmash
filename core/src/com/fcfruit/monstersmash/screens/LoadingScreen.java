@@ -109,6 +109,7 @@ public class LoadingScreen implements Screen
                 Environment.physics = null;
                 System.gc();
                 Environment.screens.mainmenu = new MainMenu();
+                Environment.screens.levelmenu = new LevelMenu();
                 Environment.game.setScreen(Environment.screens.mainmenu);
             }
         }

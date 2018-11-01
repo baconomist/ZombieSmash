@@ -126,7 +126,7 @@ public class InAppPurchasesStage extends RubeStage
 
         if (Gdx.app.getType() == Application.ApplicationType.Android)
         {
-            this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.publicKey);
+            /*this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.publicKey);
 
             this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).setIdentifier("no_ads"));
 
@@ -178,7 +178,7 @@ public class InAppPurchasesStage extends RubeStage
             }, purchaseManagerConfig, true);
 
 
-            Environment.purchaseManager.purchase("no_ads");
+            Environment.purchaseManager.purchase("no_ads");*/
 
         }
 
