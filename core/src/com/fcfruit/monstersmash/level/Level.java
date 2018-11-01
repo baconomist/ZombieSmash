@@ -506,9 +506,11 @@ public class Level
             {
                 Environment.Prefs.brains.putInteger("userBrainCount", Environment.Prefs.brains.getInteger("userBrainCount", 0) + brainCounter);
                 Environment.Prefs.brains.flush();
-                if(Environment.Prefs.progress.getInteger("lastCompletedLevel", 1) < 31 && objective.getHealth() > 0)
+                int last_completed_level = Environment.Prefs.progress.getInteger("lastCompletedLevel", 1);
+                if(Environment.Prefs.progress.getInteger("lastCompletedLevel", 1) < 31 && objective.getHealth() > 0
+                        && last_completed_level + 1 == level_id)
                 {
-                    Environment.Prefs.progress.putInteger("lastCompletedLevel", Environment.Prefs.progress.getInteger("lastCompletedLevel", 1) + 1);
+                    Environment.Prefs.progress.putInteger("lastCompletedLevel", last_completed_level + 1);
                     Environment.Prefs.progress.flush();
                 }
             }
