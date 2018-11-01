@@ -1,5 +1,6 @@
 package com.fcfruit.monstersmash.stages;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -201,6 +202,9 @@ public class LevelEndStage extends RubeStage
             this.brainIncrementTimer = System.currentTimeMillis();
         }
         this.constructed = true;
+
+        if(Gdx.app.getType() == Application.ApplicationType.Android && Environment.adActivityInterface != null)
+            Environment.adActivityInterface.showAds();
     }
 
     private void constructEndStatus()

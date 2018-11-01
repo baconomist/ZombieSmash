@@ -32,6 +32,7 @@ public class Environment
 
     public static MonsterSmash game;
 
+    public static AdActivityInterface adActivityInterface;
     public static PurchaseManager purchaseManager;
 
     public static MusicManager musicManager;
