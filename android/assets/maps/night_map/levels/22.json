@@ -2,7 +2,7 @@
 
   "left": {
     "message": {
-      "content": "Jesus, what was i doing last night? \n maybe I could use these bottles for something...",
+      "content": "Jesus, what was i doing last night? \n maybe i could use these bottles for something...",
       "init_delay": 2
     },
     "grandma_zombie": {
@@ -21,7 +21,7 @@
       "position": "left"
     },
     "message": {
-      "content": "Get them my guy.",
+      "content": "get them my guy.",
       "init_delay": 5
     }
   }

@@ -16,7 +16,7 @@
         "grenade"
       ]
     },
-    "bone_boss_zombie": {
+    "bone_boss": {
       "quantity": 1,
       "init_delay": 3,
       "position": "left"
@@ -66,30 +66,6 @@
         "time",
         "grenade",
         "grenade"
-      ]
-    },
-    "helicopter": {
-      "init_delay": 50,
-      "spawn_delay": 0,
-      "powerup_spawn_delay": 0.5,
-      "powerup_init_delay": 1,
-      "powerups": [
-        "molotov",
-        "molotov",
-        "molotov",
-        "molotov"
-      ]
-    },
-    "helicopter": {
-      "init_delay": 50,
-      "spawn_delay": 0,
-      "powerup_spawn_delay": 0.5,
-      "powerup_init_delay": 1,
-      "powerups": [
-        "molotov",
-        "molotov",
-        "molotov",
-        "molotov"
       ]
     }
   }
