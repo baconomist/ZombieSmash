@@ -31,17 +31,6 @@
       "init_delay": 0,
       "position": "middle_left"
     }
-  },
-  "right": {
-    "message":{
-      "content": "On the right!",
-      "init_delay": 0
-    },
-    "reg_zombie": {
-      "quantity": 11,
-      "init_delay": 0,
-      "position": "middle_right"
-    }
   }
 }
 
