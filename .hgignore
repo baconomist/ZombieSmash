@@ -15,7 +15,8 @@ build/**
 *.so
 
 .idea/*
-
+raw-assets/ui/loading_screen/unprocessed_gimp_anim_images/
+raw-assets/ui/loading_screen/images/
 raw-assets/reg_zombie/reg_zombie_rube.rube-backups/
 android/assets/hs_err_pid2724.log
 android/assets/hs_err_pid12736.log
