@@ -5,6 +5,7 @@ import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.JsonValue;
+import com.fcfruit.monstersmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.monstersmash.powerups.PowerupCrate;
 import com.fcfruit.monstersmash.Environment;
 import com.fcfruit.monstersmash.effects.helicopter.DeliveryHelicopter;
@@ -37,32 +38,29 @@ import java.util.Random;
 
 public class Spawner
 {
-
-    HashMap<String, Vector2> positions = new HashMap<String, Vector2>();
-
     public static HashMap<String, Class> entityType = new HashMap<String, Class>();
 
     static
     {
-        entityType.put("reg_zombie", com.fcfruit.monstersmash.zombies.RegZombie.class);
-        entityType.put("girl_zombie", com.fcfruit.monstersmash.zombies.GirlZombie.class);
-        entityType.put("police_zombie", com.fcfruit.monstersmash.zombies.PoliceZombie.class);
-        entityType.put("big_zombie", com.fcfruit.monstersmash.zombies.BigZombie.class);
-        entityType.put("suicide_zombie", com.fcfruit.monstersmash.zombies.SuicideZombie.class);
-        entityType.put("armored_zombie", com.fcfruit.monstersmash.zombies.ArmoredZombie.class);
-        entityType.put("crawling_zombie", com.fcfruit.monstersmash.zombies.CrawlingZombie.class);
+        entityType.put("reg_zombie", RegZombie.class);
+        //entityType.put("girl_zombie", GirlZombie.class);
+        entityType.put("police_zombie", PoliceZombie.class);
+        entityType.put("big_zombie", BigZombie.class);
+        entityType.put("suicide_zombie", SuicideZombie.class);
+        entityType.put("armored_zombie", ArmoredZombie.class);
+        entityType.put("crawling_zombie", CrawlingZombie.class);
         entityType.put("grandma_zombie", GrandmaZombie.class);
-        entityType.put("bone_boss_zombie", com.fcfruit.monstersmash.zombies.Bone_BossZombie.class);
+        entityType.put("bone_boss_zombie", Bone_BossZombie.class);
 
-        entityType.put("helicopter", com.fcfruit.monstersmash.effects.helicopter.DeliveryHelicopter.class);
+        entityType.put("helicopter", DeliveryHelicopter.class);
 
-        entityType.put("rifle", com.fcfruit.monstersmash.powerups.gun_powerup.RiflePowerup.class);
-        entityType.put("rock", com.fcfruit.monstersmash.powerups.rock_powerup.RockPowerup.class);
-        entityType.put("pistol", com.fcfruit.monstersmash.powerups.gun_powerup.PistolPowerup.class);
-        entityType.put("grenade", com.fcfruit.monstersmash.powerups.explodable.GrenadePowerup.class);
-        entityType.put("molotov", com.fcfruit.monstersmash.powerups.explodable.MolotovPowerup.class);
-        entityType.put("time", com.fcfruit.monstersmash.powerups.time.TimePowerup.class);
-        entityType.put("rocket", com.fcfruit.monstersmash.powerups.rocket.RocketPowerup.class);
+        entityType.put("rifle", RiflePowerup.class);
+        entityType.put("rock", RockPowerup.class);
+        entityType.put("pistol", PistolPowerup.class);
+        entityType.put("grenade", GrenadePowerup.class);
+        entityType.put("molotov", MolotovPowerup.class);
+        entityType.put("time", TimePowerup.class);
+        entityType.put("rocket", RocketPowerup.class);
     }
 
     private int index;
@@ -113,7 +111,6 @@ public class Spawner
 
         this.spawnableEntities = new Array<DrawableEntityInterface>();
 
-        this.create_spawn_positions();
         this.load_all_entities();
 
     }
@@ -126,39 +123,23 @@ public class Spawner
         }
     }
 
-    private void create_spawn_positions()
-    {
-        Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(Environment.level.sprite.getX(), Environment.level.sprite.getY(), 0)));
-
-        // x position relative to the camera
-        // 0.1f on y to keep zombie out of the ground
-        positions.put("left", new Vector2(pos.x + 2f, 0.1f));
-        positions.put("right", new Vector2(pos.x + 39f, 0.1f));
-        positions.put("middle_left", new Vector2(pos.x + 8.59f, 0.1f));
-        positions.put("middle_right", new Vector2(pos.x + 34f, 0.1f));
-    }
-
-    private com.fcfruit.monstersmash.zombies.Zombie loadZombie()
+    private Zombie loadZombie()
     {
 
         try
         {
             int direction = 0;
-            if (data.getString("position").contains("left"))
+            if (data.getString("position").equals("left"))
             {
                 direction = 0;
-            } else if (data.getString("position").contains("right"))
+            } else if (data.getString("position").equals("right"))
             {
                 direction = 1;
             }
 
-            com.fcfruit.monstersmash.zombies.Zombie tempZombie;
-            tempZombie = (com.fcfruit.monstersmash.zombies.Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1) * (this.index + 1));
+            Zombie tempZombie;
+            tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1) * (this.index + 1));
             tempZombie.setup(direction);
-            tempZombie.setPosition(new Vector2(positions.get(data.getString("position")).x - tempZombie.getSize().x/2, positions.get(data.getString("position")).y));
-
-            // Prevents graphic glitch at position (0, 0)
-            tempZombie.update(Gdx.graphics.getDeltaTime());
 
             try
             {
@@ -183,7 +164,7 @@ public class Spawner
 
     private DrawableEntityInterface loadMessage()
     {
-        com.fcfruit.monstersmash.ui.Message tempMessage = new com.fcfruit.monstersmash.ui.Message();
+        Message tempMessage = new Message();
         tempMessage.setContent(this.data.getString("content"));
         Gdx.app.debug("Spawner", "Added Message");
         return tempMessage;
@@ -194,8 +175,8 @@ public class Spawner
         try
         {
             PowerupCrate tempCrate;
-            com.fcfruit.monstersmash.entity.interfaces.PowerupInterface tempPowerup;
-            tempPowerup = (com.fcfruit.monstersmash.entity.interfaces.PowerupInterface) entityType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
+            PowerupInterface tempPowerup;
+            tempPowerup = (PowerupInterface) entityType.get(this.data.getString("type")).getDeclaredConstructor().newInstance();
             tempCrate = new PowerupCrate(tempPowerup);
 
             tempCrate.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 + (float) new Random().nextInt(40) / 10f + 2f, 8));
@@ -215,7 +196,7 @@ public class Spawner
 
     private DrawableEntityInterface loadHelicopter()
     {
-        com.fcfruit.monstersmash.effects.helicopter.DeliveryHelicopter tempHelicopter = new com.fcfruit.monstersmash.effects.helicopter.DeliveryHelicopter(this.data);
+        DeliveryHelicopter tempHelicopter = new DeliveryHelicopter(this.data);
         tempHelicopter.setPosition(new Vector2(40, 8));
         Gdx.app.debug("Spawner", "Added Helicopter");
         return tempHelicopter;
@@ -237,20 +218,35 @@ public class Spawner
     {
         DrawableEntityInterface entity = this.spawnableEntities.get(spawnedEntities);
 
-        if (entity instanceof com.fcfruit.monstersmash.ui.Message)
+        if (entity instanceof Message)
         {
-            Environment.screens.gamescreen.get_ui_stage().setMessage((com.fcfruit.monstersmash.ui.Message) entity);
+            Environment.screens.gamescreen.get_ui_stage().setMessage((Message) entity);
         } else
         {
-            if (entity instanceof com.fcfruit.monstersmash.zombies.Zombie)
+            if (entity instanceof Zombie)
             {
                 if (Environment.powerupManager.isSlowMotionEnabled)
-                    ((com.fcfruit.monstersmash.zombies.Zombie) this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((com.fcfruit.monstersmash.zombies.Zombie) entity).getState().getTimeScale() / com.fcfruit.monstersmash.powerups.time.TimePowerup.timeFactor);
-                ((com.fcfruit.monstersmash.zombies.Zombie) entity).onSpawned();
+                    ((Zombie) this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale() / TimePowerup.timeFactor);
+                ((Zombie) entity).onSpawned();
+
+                this.setZombiePosition((Zombie) entity);
             }
+
             Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
         }
         this.spawnedEntities += 1;
+    }
+
+    private void setZombiePosition(Zombie zombie)
+    {
+        float pos_x = Environment.physicsCamera.position.x;
+        pos_x = (data.getString("position").equals("left") ? (pos_x - Environment.physicsCamera.viewportWidth/2 - 2) : (pos_x + Environment.physicsCamera.viewportWidth/2 + 2));
+        float offset = (zombie.getDirection() == 0 ? -zombie.getSize().x/2 :  zombie.getSize().x/2);
+
+        zombie.setPosition(new Vector2(pos_x + offset, 0));
+
+        // Prevents graphic glitch at position (0, 0)
+        zombie.update(Gdx.graphics.getDeltaTime());
     }
 
     public void update(float delta)
