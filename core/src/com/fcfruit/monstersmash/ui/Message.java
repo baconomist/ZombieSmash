@@ -45,7 +45,6 @@ public class Message implements DrawableEntityInterface, InputCaptureEntityInter
 
     public Message()
     {
-
         TextureAtlas atlas = Environment.assets.get("ui/game_ui/message_box/message_guy/message_guy.atlas", TextureAtlas.class);
         SkeletonJson json = new SkeletonJson(atlas); // This loads skeleton JSON data, which is stateless.
         json.setScale(0.5f); // Load the skeleton at 100% the size it was in Spine.
