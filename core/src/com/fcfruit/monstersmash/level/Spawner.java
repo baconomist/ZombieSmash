@@ -141,14 +141,6 @@ public class Spawner
             tempZombie = (Zombie) entityType.get(type).getDeclaredConstructor(Integer.class).newInstance((this.spawnableEntities.size + 1) * (this.index + 1));
             tempZombie.setup(direction);
 
-            try
-            {
-                tempZombie.setInitialGround(data.getInt("depth"));
-            } catch (Exception e)
-            {
-                tempZombie.setInitialGround(Math.round(new Random().nextFloat()));
-            }
-
             Gdx.app.debug("Spawner", "Added Zombie");
 
             return tempZombie;
@@ -225,11 +217,10 @@ public class Spawner
         {
             if (entity instanceof Zombie)
             {
+                this.setZombiePosition((Zombie) entity);
                 if (Environment.powerupManager.isSlowMotionEnabled)
                     ((Zombie) this.spawnableEntities.get(spawnedEntities)).getState().setTimeScale(((Zombie) entity).getState().getTimeScale() / TimePowerup.timeFactor);
                 ((Zombie) entity).onSpawned();
-
-                this.setZombiePosition((Zombie) entity);
             }
 
             Environment.level.addDrawableEntity(this.spawnableEntities.get(spawnedEntities));
@@ -247,6 +238,14 @@ public class Spawner
 
         // Prevents graphic glitch at position (0, 0)
         zombie.update(Gdx.graphics.getDeltaTime());
+        
+        try
+        {
+            zombie.setInitialGround(data.getInt("depth"));
+        } catch (Exception e)
+        {
+            zombie.setInitialGround(Math.round(new Random().nextFloat()));
+        }
     }
 
     public void update(float delta)
