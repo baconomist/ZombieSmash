@@ -131,7 +131,6 @@ public class SplashScreen implements Screen
     {
         if(Gdx.input.isTouched() && Environment.assets.update())
         {
-            Environment.create();
             Environment.game.setScreen(Environment.screens.mainmenu);
         }
     }
