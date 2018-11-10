@@ -52,7 +52,7 @@ public class ParticleEntity
 
         this.physicsBody = Environment.physics.createBody(bd);
 
-        //create a reference to this class in the body(this allows us to loop through the world bodies and check if the body is an Explosion particle)
+        //load a reference to this class in the body(this allows us to loop through the world bodies and check if the body is an Explosion particle)
         this.physicsBody.setUserData(new PhysicsData(this));
 
         CircleShape circleShape = new CircleShape();

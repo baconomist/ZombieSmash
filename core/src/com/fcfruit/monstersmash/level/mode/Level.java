@@ -32,108 +32,30 @@ import java.util.HashMap;
  * Created by Lucas on 2017-11-18.
  */
 
-public class Level
+public abstract class Level
 {
-
-    public HashMap<String, Vector2> cameraPositions = new HashMap<String, Vector2>();
-
-    public int level_id;
-    public boolean level_ended;
-
-    JsonReader json;
-    JsonValue data;
 
     public Sprite sprite;
 
     public Objective objective;
 
-    private ArrayList<DrawableEntityInterface> drawableEntities;
+    protected ArrayList<DrawableEntityInterface> drawableEntities;
+    protected ArrayList<UpdatableEntityInterface> updatableEntities;
+    protected ArrayList<InputCaptureEntityInterface> inputCaptureEntities;
+    protected Array<LevelEventListener> levelEventListeners;
 
-    private ArrayList<UpdatableEntityInterface> updatableEntities;
-
-    private ArrayList<InputCaptureEntityInterface> inputCaptureEntities;
-
-    private Array<LevelEventListener> levelEventListeners;
-
-    public int brainCounter = 0;
-
-    boolean levelEnd = false;
-
-    ArrayList<com.fcfruit.monstersmash.level.Spawner> loaded_spawners;
-    ArrayList<com.fcfruit.monstersmash.level.Spawner> spawners;
-
-    String currentCameraPosition;
-
-    int currentJsonItem;
-
-    boolean isCameraMoving = false;
-    boolean zombiesDead = false;
-    boolean preCleared = false;
-
-    public Level(int level_id)
+    public Level()
     {
-        this.level_id = level_id;
-        this.level_ended = false;
-        this.currentJsonItem = 0;
-
         this.drawableEntities = new ArrayList<DrawableEntityInterface>();
         this.updatableEntities = new ArrayList<UpdatableEntityInterface>();
         this.inputCaptureEntities = new ArrayList<InputCaptureEntityInterface>();
 
         this.levelEventListeners = new Array<LevelEventListener>();
-
-        this.loaded_spawners = new ArrayList<com.fcfruit.monstersmash.level.Spawner>();
-        this.spawners = new ArrayList<com.fcfruit.monstersmash.level.Spawner>();
-
-        /*Message tempMessage = new Message();
-        tempMessage.setContent("Hey There!\nNew Line!\nAnother Line!\nSo Many New Lines!\n HI\n\n\n\\n\n\n\n\n\n\n\n\n\n\naaaaaassssssssssssssssssssssssssssssssssssa");
-        Environment.drawableAddQueue.add(tempMessage);
-        this.addInputCaptureEntity(tempMessage);*/
     }
 
-    public void create()
+    public void load()
     {
-        this.json = new JsonReader();
-        this.data = json.parse(Gdx.files.internal("maps/" + this.getClass().getSimpleName().replace("Level", "").toLowerCase() + "_map/levels/" + this.level_id + ".json"));
 
-
-        Environment.physicsCamera.position.x = this.cameraPositions.get(data.get(0).name).x;
-        Environment.physicsCamera.update();
-        Environment.gameCamera.position.x = Environment.physicsCamera.position.x * com.fcfruit.monstersmash.physics.Physics.PIXELS_PER_METER;
-        Environment.gameCamera.update();
-        Environment.physics.constructPhysicsBoundaries();
-
-        this.createSpawners();
-        this.manageSpawners();
-    }
-
-    private void createSpawners()
-    {
-        int index = 0;
-        for(JsonValue jsonValue : this.data)
-        {
-            for(JsonValue spawnerValue : jsonValue)
-            {
-                this.loaded_spawners.add(new com.fcfruit.monstersmash.level.Spawner(spawnerValue, index));
-                index++;
-            }
-        }
-    }
-
-    private void manageSpawners()
-    {
-        for(JsonValue jsonValue : this.data.get(this.currentJsonItem))
-        {
-            for(com.fcfruit.monstersmash.level.Spawner spawner : this.loaded_spawners)
-            {
-                // If spawner is in current section/camera by checking data
-                if(jsonValue.equals(spawner.data))
-                {
-                    this.spawners.add(spawner);
-                    break;
-                }
-            }
-        }
     }
 
     private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
@@ -228,18 +150,6 @@ public class Level
 
     public void update(float delta)
     {
-        if(Environment.level.objective.getHealth() <= 0 || (this.data.size - 1 == this.currentJsonItem && this.isZombiesDead()))
-        {
-            for (LevelEventListener levelEventListener : this.levelEventListeners)
-                levelEventListener.onLevelEnd();
-            this.onLevelEnd();
-        }
-
-        // Can't be put in draw bcuz it takes too long
-        // When it takes too long in a spritebatch call,
-        // it doesn't draw the sprites, only the light
-        //Environment.physics.update(Gdx.graphics.getDeltaTime());
-
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             drawableEntity.update(delta);
@@ -249,64 +159,6 @@ public class Level
         {
             updatableEntity.update(delta);
         }
-
-        this.currentCameraPosition = this.data.get(this.currentJsonItem).name;
-
-        if (!this.isCameraMoving)
-        {
-
-            for (Spawner spawner : spawners)
-            {
-                if(this.data.get(this.currentJsonItem).hasChild(spawner.data.name())) // If spawner is part of our current level section
-                    spawner.update(delta);
-            }
-
-            if (this.isZombiesDead())
-            {
-                if (this.data.size - 1 == this.currentJsonItem)
-                {
-                    this.levelEnd = true;
-                } else
-                {
-                    if(!this.preCleared && !this.data.get(this.currentJsonItem + 1).name().equals(this.currentCameraPosition))
-                        this.preClear();
-
-                    for (LevelEventListener levelEventListener : this.levelEventListeners)
-                    {
-                        levelEventListener.onCameraMoved();
-                    }
-
-                    this.isCameraMoving = true;
-                }
-            }
-        } else if (Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem + 1).name).x > 0.1f || Environment.physicsCamera.position.x - cameraPositions.get(data.get(this.currentJsonItem + 1).name).x < -0.1f)
-        {
-            if (Environment.physicsCamera.position.x < cameraPositions.get(data.get(this.currentJsonItem + 1).name).x)
-            {
-                Environment.gameCamera.position.x += 5f;
-                Environment.physicsCamera.position.x += 5f / 192f;
-            } else
-            {
-                Environment.gameCamera.position.x -= 5f;
-                Environment.physicsCamera.position.x -= 5f / 192f;
-            }
-            Environment.gameCamera.update();
-            Environment.physicsCamera.update();
-        } else
-        {
-            this.preCleared = false;
-            this.isCameraMoving = false;
-
-            if(!this.data.get(this.currentJsonItem + 1).name().equals(this.currentCameraPosition))
-                this.postClear();
-
-            this.currentJsonItem += 1;
-            this.spawners = new ArrayList<com.fcfruit.monstersmash.level.Spawner>();
-            this.manageSpawners();
-
-            Environment.physics.constructPhysicsBoundaries();
-        }
-
 
         // Remove drawableEntities from level
         for (DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
@@ -348,6 +200,7 @@ public class Level
         {
             this.drawableEntities.add(0, drawableEntityInterface);
         }
+        Environment.drawableBackgroundAddQueue.clear();
 
         // Add drawableEntities to level
         for (DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
@@ -355,7 +208,7 @@ public class Level
             this.drawableEntities.add(drawableEntity);
         }
         Environment.drawableAddQueue.clear();
-        Environment.drawableBackgroundAddQueue.clear();
+
 
         // Add depth to drawableEntities
         this.sortMultiGroundEntities();
@@ -422,44 +275,10 @@ public class Level
 
     }
 
-    private boolean isZombiesDead()
-    {
-
-        boolean zombiesDead = false;
-        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
-        {
-            if (drawableEntity instanceof Zombie)
-            {
-                if (((Zombie) drawableEntity).isAlive())
-                {
-                    zombiesDead = false;
-                    break;
-                } else
-                {
-                    zombiesDead = true;
-                }
-            }
-        }
-
-        return this.allZombiesSpawned() && zombiesDead;
-
-    }
-
-    private boolean allZombiesSpawned()
-    {
-        int zombiesSpawned = 0;
-        int zombiesToSpawn = 0;
-        for (Spawner spawner : this.spawners)
-        {
-            if(spawner.data.name().contains("zombie"))
-            {
-                zombiesSpawned += spawner.spawnedEntities();
-                zombiesToSpawn += spawner.entitiesToSpawn();
-            }
-        }
-        return zombiesSpawned == zombiesToSpawn;
-    }
-
+    public abstract int getBrainCount();
+    public abstract int getLevelId();
+    public abstract boolean isCameraMoving();
+    public abstract void incrementBrainCount(int amount);
 
     public void addDrawableEntity(DrawableEntityInterface drawableEntity)
     {
@@ -489,77 +308,6 @@ public class Level
     public ArrayList<DrawableEntityInterface> getDrawableEntities()
     {
         return this.drawableEntities;
-    }
-
-    public String getCurrentCameraPosition()
-    {
-        return this.currentCameraPosition;
-    }
-
-    public boolean isCameraMoving()
-    {
-        return this.isCameraMoving;
-    }
-
-    private void onLevelEnd()
-    {
-        if(!this.level_ended)
-        {
-            if(this.objective.getHealth() > 0)
-            {
-                Environment.Prefs.brains.putInteger("userBrainCount", Environment.Prefs.brains.getInteger("userBrainCount", 0) + brainCounter);
-                Environment.Prefs.brains.flush();
-                int last_completed_level = Environment.Prefs.progress.getInteger("lastCompletedLevel", 1);
-                if(Environment.Prefs.progress.getInteger("lastCompletedLevel", 1) < 31 && objective.getHealth() > 0
-                        && last_completed_level + 1 == level_id)
-                {
-                    Environment.Prefs.progress.putInteger("lastCompletedLevel", last_completed_level + 1);
-                    Environment.Prefs.progress.flush();
-                }
-            }
-            Environment.screens.gamescreen.get_ui_stage().onLevelEnd();
-        }
-        this.level_ended = true;
-    }
-
-    private void preClear()
-    {
-        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
-        {
-            if(drawableEntityInterface instanceof PreLevelDestroyableInterface)
-                ((PreLevelDestroyableInterface) drawableEntityInterface).destroy();
-        }
-        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
-        {
-            if(updatableEntityInterface instanceof PreLevelDestroyableInterface)
-                ((PreLevelDestroyableInterface) updatableEntityInterface).destroy();
-        }
-        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
-        {
-            if(inputCaptureEntityInterface instanceof PreLevelDestroyableInterface)
-                ((PreLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
-        }
-
-        this.preCleared = true;
-    }
-
-    private void postClear()
-    {
-        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
-        {
-            if(drawableEntityInterface instanceof PostLevelDestroyableInterface)
-                ((PostLevelDestroyableInterface) drawableEntityInterface).destroy();
-        }
-        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
-        {
-            if(updatableEntityInterface instanceof PostLevelDestroyableInterface)
-                ((PostLevelDestroyableInterface) updatableEntityInterface).destroy();
-        }
-        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
-        {
-            if(inputCaptureEntityInterface instanceof PostLevelDestroyableInterface)
-                ((PostLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
-        }
     }
 
 }

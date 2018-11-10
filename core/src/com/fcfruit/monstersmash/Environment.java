@@ -20,7 +20,7 @@ import com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
 import com.fcfruit.monstersmash.level.mode.Level;
-import com.fcfruit.monstersmash.level.NightLevel;
+import com.fcfruit.monstersmash.level.mode.nightlevel.NightLevelSurvival;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.powerups.FirePool;
 import com.fcfruit.monstersmash.powerups.ParticleEntityPool;
@@ -38,7 +38,7 @@ public class Environment
 {
 
     // Class to access all important game instances
-    // Need to create static methods which catch exceptions which may arise
+    // Need to load static methods which catch exceptions which may arise
     // Or else if new instance creation goes wrong it crashes
 
     public static MonsterSmash game;
@@ -330,8 +330,8 @@ public class Environment
 
     private static void setupLevel(int levelid)
     {
-        level = new NightLevel(levelid);
-        level.create();
+        level = new NightLevelSurvival(levelid);
+        level.load();
     }
 
 

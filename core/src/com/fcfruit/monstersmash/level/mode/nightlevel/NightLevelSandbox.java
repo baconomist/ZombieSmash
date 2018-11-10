@@ -1,4 +1,4 @@
-package com.fcfruit.monstersmash.level;
+package com.fcfruit.monstersmash.level.mode.nightlevel;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -12,26 +12,21 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.level.mode.Level;
+import com.fcfruit.monstersmash.level.House;
+import com.fcfruit.monstersmash.level.mode.SandboxLevel;
+import com.fcfruit.monstersmash.level.mode.SurvivalLevel;
 
 /**
  * Created by Lucas on 2017-11-18.
  */
 
-public class NightLevel extends Level
+public class NightLevelSandbox extends SandboxLevel
 {
 
     private com.fcfruit.monstersmash.entity.AnimatableGraphicsEntity clouds;
 
-    public NightLevel(int level_id)
+    public NightLevelSandbox()
     {
-
-        super(level_id);
-
-        cameraPositions.put("left", new Vector2(8.9f, 0));
-        cameraPositions.put("right", new Vector2(22.6f, 0));
-        cameraPositions.put("middle", new Vector2(15.9f, 0));
-
         this.sprite = new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("night_map"));
         // Move to the left to show only playable map
         this.sprite.setPosition(-956, 0);

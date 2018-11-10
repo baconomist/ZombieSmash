@@ -64,7 +64,7 @@ public class BleedablePoint implements BleedableEntityInterface
     }
 
     /**
-     * General create method as to not copy and paste code
+     * General load method as to not copy and paste code
      **/
     private void create(PointAttachment physics_pos, PointAttachment blood_pos, Bone bone, Body physicsBody, float animScale)
     {

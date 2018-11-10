@@ -95,7 +95,7 @@ public class Brain implements DrawableEntityInterface, InteractiveEntityInterfac
 
     private void onTouched()
     {
-        Environment.level.brainCounter += this.value;
+        Environment.level.incrementBrainCount(this.value);
         this.disable();
         Environment.brainPool.returnBrain(this);
         Environment.drawableRemoveQueue.add(this);

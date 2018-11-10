@@ -13,7 +13,7 @@ public class House extends Objective
 {
 
 
-    House() {
+    public House() {
 
         width = 1190;
         height = 900;

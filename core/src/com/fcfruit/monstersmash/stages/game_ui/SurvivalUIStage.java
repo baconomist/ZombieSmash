@@ -47,7 +47,7 @@ public class SurvivalUIStage extends GameUIStage
     public void act(float delta)
     {
         super.act(delta);
-        this.brainCount.setText("" + Environment.level.brainCounter);
+        this.brainCount.setText("" + Environment.level.getBrainCount());
         this.healthBar.setPercent(Environment.level.objective.getHealth());
     }
 }
