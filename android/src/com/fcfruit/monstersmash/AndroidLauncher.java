@@ -2,24 +2,34 @@ package com.fcfruit.monstersmash;
 
 import android.app.ActivityManager;
 import android.content.Context;
+import android.content.Intent;
 import android.os.*;
-import android.view.View;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.util.Log;
 import android.view.Window;
 import android.view.WindowManager;
-import android.widget.RelativeLayout;
 
+
+import com.anjlab.android.iab.v3.BillingProcessor;
+import com.anjlab.android.iab.v3.TransactionDetails;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
-import com.badlogic.gdx.pay.android.googleplay.AndroidGooglePlayPurchaseManager;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.AdView;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
-public class AndroidLauncher extends AndroidApplication implements AdActivityInterface
+import static com.badlogic.gdx.net.HttpRequestBuilder.json;
+
+public class AndroidLauncher extends AndroidApplication implements AdActivityInterface, PurchaseActivityInterface
 {
+    private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlkx9W8KLfKJE9RoU0lA0/pp72GKWIC+KhSA7IQTaOyIt0vgTRsI+oEkrrUVE7xxAOKNic+Zlc7CNy5NFK970GCQqAGEauFsKVZjpk60MURj5bBeeNq34OZgJ9soH1oTvrtgVNp/ZMIGZz9vog+3YRuGhoc4sxX2JAB5Iow6hoJ4NLGzcGyGTF6rCs0n05jV+igrpQ3TPhGcNB0entFCEySSgKWgUIwl8DcN6eCysh4YK1toMrBgdlMVfJCYd01OpMIqeT7ZDQNuUSsieBBphcWv+VnPzkGk4Wc/91bVsVgwwqadXQtKdG/9c/+AhvMw0nF9+Qs3rEnL4Sc5JFV5QnwIDAQAB"; // PUT YOUR MERCHANT KEY HERE;
+    // put your Google merchant id here (as stated in public profile of your Payments Merchant Center)
+    // if filled library will provide protection against Freedom alike Play Market simulators
+    private static final String MERCHANT_ID = null;
+    private BillingProcessor bp;
 
     private InterstitialAd interstitialAd;
     private static String AD_APP_ID = "ca-app-pub-4220591610119162~6944345471";
@@ -45,29 +55,151 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
+
         AndroidApplicationConfiguration config = new AndroidApplicationConfiguration();
 
-        // Do the stuff that initialize() would do for you
-        requestWindowFeature(Window.FEATURE_NO_TITLE);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
-                WindowManager.LayoutParams.FLAG_FULLSCREEN);
-        getWindow().clearFlags(WindowManager.LayoutParams.FLAG_FORCE_NOT_FULLSCREEN);
-
-        Environment.purchaseManager = new AndroidGooglePlayPurchaseManager(this, 0);
-        Environment.game = new MonsterSmash();
         Environment.adActivityInterface = this;
+        Environment.purchaseActivityInterface = this;
+        Environment.game = new MonsterSmash();
 
         MobileAds.initialize(this, AD_APP_ID);
         interstitialAd = new InterstitialAd(this);
-        if(Config.DEBUG)
+
+        if (Config.DEBUG)
             interstitialAd.setAdUnitId(TEST_AD);
         else
             interstitialAd.setAdUnitId(REAL_AD);
+
         interstitialAd.loadAd(new AdRequest.Builder().build());
         interstitialAd.setAdListener(adListener);
 
+        this.setupIABPurchase();
+
         initialize(Environment.game, config);
 
+    }
+
+    private boolean isBpAvailable()
+    {
+        return bp.isInitialized() && BillingProcessor.isIabServiceAvailable(this);
+    }
+
+    @Override
+    public boolean purchase(String item_sku)
+    {
+
+        if (isBpAvailable() && bp.purchase(this, item_sku))
+        {
+            String[] purchased_items_old = json.fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
+            String[] purchased_items = new String[purchased_items_old.length + 1];
+
+            // Copy old list into new one
+            for(int i = 0; i < purchased_items_old.length; i++)
+            {
+                purchased_items[i] = purchased_items_old[i];
+            }
+
+            purchased_items[purchased_items.length - 1] = item_sku;
+
+            Environment.Prefs.purchases.putString("purchased_items", json.toJson(purchased_items));
+            Environment.Prefs.purchases.flush();
+        }
+
+        return false;
+    }
+
+    @Override
+    public boolean is_purchased(String item_sku)
+    {
+        return isBpAvailable() && bp.isPurchased(item_sku);
+    }
+
+    @Override
+    public boolean consume_purchase(String sku)
+    {
+        return isBpAvailable() && bp.consumePurchase(sku);
+    }
+
+    @Override
+    public boolean restore_purchases()
+    {
+        if(isBpAvailable())
+        {
+            String[] purchased_items = new String[bp.listOwnedProducts().size()];
+
+            int i = 0;
+            for (String sku : bp.listOwnedProducts())
+            {
+                purchased_items[i] = sku;
+                i++;
+            }
+
+            Environment.Prefs.purchases.putString("purchased_items", json.toJson(purchased_items));
+            Environment.Prefs.purchases.flush();
+
+            return true;
+        }
+        return false;
+    }
+
+    private void setupIABPurchase()
+    {
+        if (!BillingProcessor.isIabServiceAvailable(this))
+        {
+            Log.i("AndroidLauncher", "In-app billing service is unavailable, please upgrade Android Market/Play to version >= 3.9.16");
+        }
+
+        bp = BillingProcessor.newBillingProcessor(this, LICENSE_KEY, MERCHANT_ID, new BillingProcessor.IBillingHandler()
+        {
+            @Override
+            public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details)
+            {
+                Log.i("onProductPurchased: ", productId);
+            }
+
+            @Override
+            public void onBillingError(int errorCode, @Nullable Throwable error)
+            {
+                Log.i("ANDOIRD_PURCHASE", "onBillingError: " + Integer.toString(errorCode));
+            }
+
+            @Override
+            public void onBillingInitialized()
+            {
+                Log.i("ANDOIRD_PURCHASE", "onBillingInitialized");
+            }
+
+            @Override
+            public void onPurchaseHistoryRestored()
+            {
+                Log.i("ANDOIRD_PURCHASE", "onPurchaseHistoryRestored");
+                for (String sku : bp.listOwnedProducts())
+                    Log.d("ANDOIRD_PURCHASE", "Owned Managed Product: " + sku);
+                for (String sku : bp.listOwnedSubscriptions())
+                    Log.d("ANDOIRD_PURCHASE", "Owned Subscription: " + sku);
+            }
+        });
+
+        bp.initialize();
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data)
+    {
+        if (!bp.handleActivityResult(requestCode, resultCode, data))
+        {
+            super.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onDestroy()
+    {
+        if (bp != null)
+        {
+            bp.release();
+        }
+        super.onDestroy();
     }
 
     @Override
@@ -94,10 +226,16 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
         }
     }
 
-
     @Override
     public void showAds()
     {
+        String[] list = json.fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
+        for(String str : list)
+        {
+            if(str != null && str.equals("no_ads"))
+                return; // Don't show ads if no_ads is purchased
+        }
+
         try
         {
             runOnUiThread(new Runnable()

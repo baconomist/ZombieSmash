@@ -203,8 +203,7 @@ public class LevelEndStage extends RubeStage
         }
         this.constructed = true;
 
-        if(Gdx.app.getType() == Application.ApplicationType.Android && Environment.adActivityInterface != null)
-            Environment.adActivityInterface.showAds();
+        Environment.adActivityInterface.showAds();
     }
 
     private void constructEndStatus()

@@ -22,7 +22,6 @@ public class MonsterSmash extends Game
     {
         //don't put anything here, may not work because game is not yet initialized
         super();
-
     }
 
     @Override
@@ -57,6 +56,9 @@ public class MonsterSmash extends Game
         this.setScreen(Environment.screens.gamescreen);*/
 
         //Environment.setupGame(5);
+
+        Environment.game.setScreen(Environment.screens.mainmenu);
+        Environment.screens.mainmenu.showInAppPurchasesStage();
 
     }
 

@@ -9,8 +9,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.pay.PurchaseManager;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.utils.Json;
 import com.fcfruit.monstersmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.ExplodableEntityInterface;
@@ -33,7 +33,7 @@ public class Environment
     public static MonsterSmash game;
 
     public static AdActivityInterface adActivityInterface;
-    public static PurchaseManager purchaseManager;
+    public static PurchaseActivityInterface purchaseActivityInterface;
 
     public static MusicManager musicManager;
 
@@ -249,21 +249,33 @@ public class Environment
         public static Preferences upgrades;
         public static Preferences brains;
         public static Preferences progress;
+        public static Preferences purchases;
+
+        public static void create()
+        {
+            upgrades = Gdx.app.getPreferences("upgrades");
+            brains = Gdx.app.getPreferences("brains");
+            settings = Gdx.app.getPreferences("settings");
+            progress = Gdx.app.getPreferences("progress");
+            purchases = Gdx.app.getPreferences("purchases");
+
+            if(purchases.getString("purchased_items").equals(""))
+                purchases.putString("purchased_items", new Json().toJson(new String[1]));
+            purchases.flush();
+        }
 
         public static void clear()
         {
             settings.clear();
             upgrades.clear();
             brains.clear();
+            purchases.clear();
         }
     }
 
     public static void create()
     {
-        Prefs.upgrades = Gdx.app.getPreferences("upgrades");
-        Prefs.brains = Gdx.app.getPreferences("brains");
-        Prefs.settings = Gdx.app.getPreferences("settings");
-        Prefs.progress = Gdx.app.getPreferences("progress");
+        Prefs.create();
 
         musicManager = new MusicManager();
 

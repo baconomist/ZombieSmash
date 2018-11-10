@@ -14,6 +14,64 @@
 				
 				{
 					"name" : "name",
+					"string" : "premium_store_button"
+				}
+			],
+			"fixture" : 
+			[
+				
+				{
+					"density" : 0.007944775745272636,
+					"friction" : 0.2,
+					"name" : "fixture13",
+					"polygon" : 
+					{
+						"vertices" : 
+						{
+							"x" : 
+							[
+								3.067030429840088,
+								-3.059754848480225,
+								-3.067041397094727,
+								3.059744358062744
+							],
+							"y" : 
+							[
+								1.027196884155273,
+								1.027196884155273,
+								-1.027206420898438,
+								-1.027206420898438
+							]
+						}
+					}
+				}
+			],
+			"linearVelocity" : 0,
+			"massData-I" : 0.3479844033718109,
+			"massData-center" : 
+			{
+				"x" : -5.367640824260889e-006,
+				"y" : -4.772873126057675e-006
+			},
+			"massData-mass" : 0.1,
+			"name" : "body14",
+			"position" : 
+			{
+				"x" : 3.970495939254761,
+				"y" : 6.909713268280029
+			},
+			"type" : 2
+		},
+		
+		{
+			"angle" : 0,
+			"angularVelocity" : 0,
+			"awake" : true,
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
 					"string" : "chain"
 				}
 			],
@@ -1022,7 +1080,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 16,
+			"body" : 17,
 			"center" : 
 			{
 				"x" : -7.541459723370281e-008,
@@ -1076,7 +1134,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 15,
+			"body" : 16,
 			"center" : 
 			{
 				"x" : -9.872530348786768e-009,
@@ -1130,7 +1188,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 13,
+			"body" : 14,
 			"center" : 
 			{
 				"x" : 6.279829989352948e-008,
@@ -1184,7 +1242,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 14,
+			"body" : 15,
 			"center" : 
 			{
 				"x" : -6.237719674118125e-008,
@@ -1238,7 +1296,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 8,
+			"body" : 9,
 			"center" : 
 			{
 				"x" : 1.720430020668573e-007,
@@ -1297,7 +1355,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 12,
+			"body" : 13,
 			"center" : 
 			{
 				"x" : 1.233030011427161e-009,
@@ -1351,7 +1409,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 11,
+			"body" : 12,
 			"center" : 
 			{
 				"x" : 1.499760031720143e-007,
@@ -1405,7 +1463,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 9,
+			"body" : 10,
 			"center" : 
 			{
 				"x" : -2.341819964613023e-007,
@@ -1464,7 +1522,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 1,
+			"body" : 2,
 			"center" : 
 			{
 				"x" : 9.841319759118505e-009,
@@ -1518,7 +1576,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 0,
+			"body" : 1,
 			"center" : 
 			{
 				"x" : -3.114350022315193e-007,
@@ -1572,7 +1630,7 @@
 		
 		{
 			"aspectScale" : 1,
-			"body" : 10,
+			"body" : 11,
 			"center" : 0,
 			"corners" : 
 			{
@@ -1623,10 +1681,109 @@
 			"opacity" : 0.5,
 			"renderOrder" : 11.0,
 			"scale" : 1.997410058975220
+		},
+		
+		{
+			"aspectScale" : 1,
+			"body" : 0,
+			"center" : 
+			{
+				"x" : 4.119272034586174e-008,
+				"y" : -3.087438926741015e-008
+			},
+			"corners" : 
+			{
+				"x" : 
+				[
+					-3.201042175292969,
+					3.201042175292969,
+					3.201042175292969,
+					-3.201042175292969
+				],
+				"y" : 
+				[
+					-1.023610115051270,
+					-1.023610115051270,
+					1.023610115051270,
+					1.023610115051270
+				]
+			},
+			"customProperties" : 
+			[
+				
+				{
+					"name" : "name",
+					"string" : "premium_store_button"
+				},
+				
+				{
+					"bool" : true,
+					"name" : "button"
+				}
+			],
+			"file" : "../../../../raw-assets/ui/main_menu/images/premium_button.png",
+			"filter" : 1,
+			"glDrawElements" : [ 0, 1, 2, 2, 3, 0 ],
+			"glTexCoordPointer" : [ 0.0, 0.0, 1, 0.0, 1, 1, 0.0, 1 ],
+			"glVertexPointer" : 
+			[
+				-3.201042175292969,
+				-1.023610115051270,
+				3.201042175292969,
+				-1.023610115051270,
+				3.201042175292969,
+				1.023610115051270,
+				-3.201042175292969,
+				1.023610115051270
+			],
+			"name" : "image10",
+			"opacity" : 0.5,
+			"renderOrder" : 12.0,
+			"scale" : 2.047220230102539
 		}
 	],
 	"joint" : 
 	[
+		
+		{
+			"anchorA" : 
+			{
+				"x" : -2.904750108718872,
+				"y" : -0.9986500740051270
+			},
+			"anchorB" : 
+			{
+				"x" : -2.894540071487427,
+				"y" : 1.032330036163330
+			},
+			"bodyA" : 11,
+			"bodyB" : 0,
+			"dampingRatio" : 0,
+			"frequency" : 0,
+			"name" : "joint14",
+			"refAngle" : 0,
+			"type" : "weld"
+		},
+		
+		{
+			"anchorA" : 
+			{
+				"x" : 2.836100339889526,
+				"y" : -0.9743919372558594
+			},
+			"anchorB" : 
+			{
+				"x" : 2.846299886703491,
+				"y" : 1.056590080261231
+			},
+			"bodyA" : 11,
+			"bodyB" : 0,
+			"dampingRatio" : 0,
+			"frequency" : 0,
+			"name" : "joint15",
+			"refAngle" : 0,
+			"type" : "weld"
+		},
 		
 		{
 			"anchorA" : 
@@ -1639,8 +1796,8 @@
 				"x" : 2.881689786911011,
 				"y" : 0.9988369941711426
 			},
-			"bodyA" : 0,
-			"bodyB" : 10,
+			"bodyA" : 1,
+			"bodyB" : 11,
 			"dampingRatio" : 0,
 			"frequency" : 0,
 			"name" : "joint13",
@@ -1659,8 +1816,8 @@
 				"x" : 3.251620054244995,
 				"y" : -1.200670242309570
 			},
-			"bodyA" : 0,
-			"bodyB" : 9,
+			"bodyA" : 1,
+			"bodyB" : 10,
 			"maxLength" : 0.06,
 			"name" : "joint12",
 			"type" : "rope"
@@ -1677,8 +1834,8 @@
 				"x" : -2.976140022277832,
 				"y" : 0.9182620048522949
 			},
-			"bodyA" : 1,
-			"bodyB" : 10,
+			"bodyA" : 2,
+			"bodyB" : 11,
 			"dampingRatio" : 0,
 			"frequency" : 0,
 			"name" : "joint11",
@@ -1697,8 +1854,8 @@
 				"x" : -2.749769926071167,
 				"y" : -1.232620239257813
 			},
-			"bodyA" : 1,
-			"bodyB" : 9,
+			"bodyA" : 2,
+			"bodyB" : 10,
 			"maxLength" : 0.1,
 			"name" : "joint10",
 			"type" : "rope"
@@ -1715,8 +1872,8 @@
 				"x" : -0.03226262331008911,
 				"y" : -0.1653299331665039
 			},
-			"bodyA" : 13,
-			"bodyB" : 15,
+			"bodyA" : 14,
+			"bodyB" : 16,
 			"maxLength" : 0.2,
 			"name" : "joint1",
 			"type" : "rope"
@@ -1729,8 +1886,8 @@
 				"x" : 2.804289817810059,
 				"y" : -0.0005817413330078125
 			},
-			"bodyA" : 16,
-			"bodyB" : 7,
+			"bodyA" : 17,
+			"bodyB" : 8,
 			"maxLength" : 0.02913610078394413,
 			"name" : "joint5",
 			"type" : "rope"
@@ -1743,8 +1900,8 @@
 				"x" : -3.173360109329224,
 				"y" : -0.004667282104492188
 			},
-			"bodyA" : 15,
-			"bodyB" : 7,
+			"bodyA" : 16,
+			"bodyB" : 8,
 			"maxLength" : 0.03589199855923653,
 			"name" : "joint4",
 			"type" : "rope"
@@ -1761,8 +1918,8 @@
 				"x" : -0.006226062774658203,
 				"y" : 0.0787658691406250
 			},
-			"bodyA" : 16,
-			"bodyB" : 14,
+			"bodyA" : 17,
+			"bodyB" : 15,
 			"maxLength" : 0.05,
 			"name" : "joint0",
 			"type" : "rope"
@@ -1779,8 +1936,8 @@
 				"x" : 2.913630247116089,
 				"y" : 0.8012199401855469
 			},
-			"bodyA" : 11,
-			"bodyB" : 9,
+			"bodyA" : 12,
+			"bodyB" : 10,
 			"dampingRatio" : 0,
 			"frequency" : 0,
 			"name" : "joint9",
@@ -1799,8 +1956,8 @@
 				"x" : -2.950390100479126,
 				"y" : 1.022359848022461
 			},
-			"bodyA" : 12,
-			"bodyB" : 9,
+			"bodyA" : 13,
+			"bodyB" : 10,
 			"dampingRatio" : 0,
 			"frequency" : 0,
 			"name" : "joint8",
@@ -1819,8 +1976,8 @@
 				"x" : 2.891099691390991,
 				"y" : 1.007200241088867
 			},
-			"bodyA" : 14,
-			"bodyB" : 8,
+			"bodyA" : 15,
+			"bodyB" : 9,
 			"dampingRatio" : 0,
 			"frequency" : 0,
 			"name" : "joint3",
@@ -1839,8 +1996,8 @@
 				"x" : -2.919549942016602,
 				"y" : 0.9690723419189453
 			},
-			"bodyA" : 13,
-			"bodyB" : 8,
+			"bodyA" : 14,
+			"bodyB" : 9,
 			"dampingRatio" : 0,
 			"frequency" : 0,
 			"name" : "joint2",
@@ -1859,8 +2016,8 @@
 				"x" : 3.053769826889038,
 				"y" : -0.9021568298339844
 			},
-			"bodyA" : 11,
-			"bodyB" : 8,
+			"bodyA" : 12,
+			"bodyB" : 9,
 			"maxLength" : 0.06,
 			"name" : "joint6",
 			"type" : "rope"
@@ -1877,8 +2034,8 @@
 				"x" : -2.854969978332520,
 				"y" : -0.8138580322265625
 			},
-			"bodyA" : 12,
-			"bodyB" : 8,
+			"bodyA" : 13,
+			"bodyB" : 9,
 			"maxLength" : 0.06,
 			"name" : "joint7",
 			"type" : "rope"
