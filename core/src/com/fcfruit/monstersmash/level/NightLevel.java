@@ -1,7 +1,6 @@
 package com.fcfruit.monstersmash.level;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
@@ -13,7 +12,7 @@ import com.esotericsoftware.spine.SkeletonData;
 import com.esotericsoftware.spine.SkeletonJson;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.entity.AnimatableGraphicsEntity;
+import com.fcfruit.monstersmash.level.mode.Level;
 
 /**
  * Created by Lucas on 2017-11-18.

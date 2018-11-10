@@ -81,11 +81,11 @@
     [
       
       {
-        "aspectScale" : 1.002083301544190,
+        "aspectScale" : 0.9431347846984863,
         "center" : 
         {
           "x" : 13.07994079589844,
-          "y" : 10.65605735778809
+          "y" : 10.66897773742676
         },
         "customProperties" : 
         [
@@ -95,13 +95,13 @@
             "string" : "health_overlay"
           }
         ],
-        "file" : "../../../android/assets/ui/game_ui/survival/health_overlay.png",
+        "file" : "images/health_overlay.png",
         "filter" : 1,
         "flip" : false,
         "id" : 2,
         "name" : "image0",
         "opacity" : 0.5,
-        "scale" : 0.4104898571968079
+        "scale" : 0.4361465871334076
       },
       
       {

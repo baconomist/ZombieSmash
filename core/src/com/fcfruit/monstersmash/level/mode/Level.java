@@ -1,4 +1,4 @@
-package com.fcfruit.monstersmash.level;
+package com.fcfruit.monstersmash.level.mode;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Preferences;
@@ -10,13 +10,16 @@ import com.badlogic.gdx.utils.JsonReader;
 import com.badlogic.gdx.utils.JsonValue;
 import com.esotericsoftware.spine.SkeletonRenderer;
 import com.fcfruit.monstersmash.Environment;
+
 import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface;
+import com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.MultiGroundEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.monstersmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
+import com.fcfruit.monstersmash.level.Objective;
 import com.fcfruit.monstersmash.level.Spawner;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.zombies.Zombie;
@@ -44,13 +47,13 @@ public class Level
 
     public Objective objective;
 
-    private ArrayList<com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface> drawableEntities;
+    private ArrayList<DrawableEntityInterface> drawableEntities;
 
-    private ArrayList<com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface> updatableEntities;
+    private ArrayList<UpdatableEntityInterface> updatableEntities;
 
-    private ArrayList<com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface> inputCaptureEntities;
+    private ArrayList<InputCaptureEntityInterface> inputCaptureEntities;
 
-    private Array<com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener> levelEventListeners;
+    private Array<LevelEventListener> levelEventListeners;
 
     public int brainCounter = 0;
 
@@ -73,11 +76,11 @@ public class Level
         this.level_ended = false;
         this.currentJsonItem = 0;
 
-        this.drawableEntities = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface>();
-        this.updatableEntities = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface>();
-        this.inputCaptureEntities = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface>();
+        this.drawableEntities = new ArrayList<DrawableEntityInterface>();
+        this.updatableEntities = new ArrayList<UpdatableEntityInterface>();
+        this.inputCaptureEntities = new ArrayList<InputCaptureEntityInterface>();
 
-        this.levelEventListeners = new Array<com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener>();
+        this.levelEventListeners = new Array<LevelEventListener>();
 
         this.loaded_spawners = new ArrayList<com.fcfruit.monstersmash.level.Spawner>();
         this.spawners = new ArrayList<com.fcfruit.monstersmash.level.Spawner>();
@@ -157,7 +160,7 @@ public class Level
         this.sprite.draw(batch);
         this.objective.draw(batch);
 
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             if(this.isDrawableInLevel(drawableEntity))
             {
@@ -172,17 +175,17 @@ public class Level
 
         Collections.reverse(this.drawableEntities);
 
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
-            if (drawableEntity instanceof com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface)
+            if (drawableEntity instanceof InteractiveEntityInterface)
             {
-                ((com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface) drawableEntity).onTouchDown(screenX, screenY, pointer);
+                ((InteractiveEntityInterface) drawableEntity).onTouchDown(screenX, screenY, pointer);
             }
         }
 
         Collections.reverse(this.drawableEntities);
 
-        for (com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
+        for (InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
         {
             inputCaptureEntity.onTouchDown(screenX, screenY, pointer);
         }
@@ -191,15 +194,15 @@ public class Level
 
     public void onTouchDragged(float screenX, float screenY, int pointer)
     {
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : drawableEntities)
+        for (DrawableEntityInterface drawableEntity : drawableEntities)
         {
-            if (drawableEntity instanceof com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface)
+            if (drawableEntity instanceof InteractiveEntityInterface)
             {
-                ((com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface) drawableEntity).onTouchDragged(screenX, screenY, pointer);
+                ((InteractiveEntityInterface) drawableEntity).onTouchDragged(screenX, screenY, pointer);
             }
         }
 
-        for (com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
+        for (InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
         {
             inputCaptureEntity.onTouchDragged(screenX, screenY, pointer);
         }
@@ -208,15 +211,15 @@ public class Level
 
     public void onTouchUp(float screenX, float screenY, int pointer)
     {
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : drawableEntities)
+        for (DrawableEntityInterface drawableEntity : drawableEntities)
         {
-            if (drawableEntity instanceof com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface)
+            if (drawableEntity instanceof InteractiveEntityInterface)
             {
-                ((com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface) drawableEntity).onTouchUp(screenX, screenY, pointer);
+                ((InteractiveEntityInterface) drawableEntity).onTouchUp(screenX, screenY, pointer);
             }
         }
 
-        for (com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
+        for (InputCaptureEntityInterface inputCaptureEntity : this.inputCaptureEntities)
         {
             inputCaptureEntity.onTouchUp(screenX, screenY, pointer);
         }
@@ -237,12 +240,12 @@ public class Level
         // it doesn't draw the sprites, only the light
         //Environment.physics.update(Gdx.graphics.getDeltaTime());
 
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             drawableEntity.update(delta);
         }
 
-        for (com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface updatableEntity : this.updatableEntities)
+        for (UpdatableEntityInterface updatableEntity : this.updatableEntities)
         {
             updatableEntity.update(delta);
         }
@@ -268,7 +271,7 @@ public class Level
                     if(!this.preCleared && !this.data.get(this.currentJsonItem + 1).name().equals(this.currentCameraPosition))
                         this.preClear();
 
-                    for (com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener levelEventListener : this.levelEventListeners)
+                    for (LevelEventListener levelEventListener : this.levelEventListeners)
                     {
                         levelEventListener.onCameraMoved();
                     }
@@ -306,7 +309,7 @@ public class Level
 
 
         // Remove drawableEntities from level
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
+        for (DrawableEntityInterface drawableEntity : Environment.drawableRemoveQueue)
         {
             this.drawableEntities.remove(drawableEntity);
         }
@@ -334,7 +337,7 @@ public class Level
         Environment.levelEventListenerAddQueue.clear();
 
         // Add updatableEntities to level
-        for (com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
+        for (UpdatableEntityInterface updatableEntityInterface : Environment.updatableAddQueue)
         {
             this.updatableEntities.add(updatableEntityInterface);
         }
@@ -347,7 +350,7 @@ public class Level
         }
 
         // Add drawableEntities to level
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
+        for (DrawableEntityInterface drawableEntity : Environment.drawableAddQueue)
         {
             this.drawableEntities.add(drawableEntity);
         }
@@ -423,7 +426,7 @@ public class Level
     {
 
         boolean zombiesDead = false;
-        for (com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity : this.drawableEntities)
+        for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             if (drawableEntity instanceof Zombie)
             {
@@ -458,17 +461,17 @@ public class Level
     }
 
 
-    public void addDrawableEntity(com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface drawableEntity)
+    public void addDrawableEntity(DrawableEntityInterface drawableEntity)
     {
         this.drawableEntities.add(drawableEntity);
     }
 
-    public void addUpdatableEntity(com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface updatableEntity)
+    public void addUpdatableEntity(UpdatableEntityInterface updatableEntity)
     {
         this.updatableEntities.add(updatableEntity);
     }
 
-    public void addInputCaptureEntity(com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface inputCaptureEntity)
+    public void addInputCaptureEntity(InputCaptureEntityInterface inputCaptureEntity)
     {
         this.inputCaptureEntities.add(inputCaptureEntity);
     }
@@ -478,12 +481,12 @@ public class Level
         this.inputCaptureEntities.remove(inputCaptureEntity);
     }
 
-    public void addEventListener(com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener levelEventListener)
+    public void addEventListener(LevelEventListener levelEventListener)
     {
         this.levelEventListeners.add(levelEventListener);
     }
 
-    public ArrayList<com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface> getDrawableEntities()
+    public ArrayList<DrawableEntityInterface> getDrawableEntities()
     {
         return this.drawableEntities;
     }

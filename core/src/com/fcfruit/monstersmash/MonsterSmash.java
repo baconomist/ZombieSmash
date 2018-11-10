@@ -44,21 +44,12 @@ public class MonsterSmash extends Game
 
 
         Environment.create();
-        Environment.game.setScreen(Environment.screens.splashscreen);
+        Environment.setupGame(5);
+        this.setScreen(Environment.screens.gamescreen);
+        //Environment.game.setScreen(Environment.screens.splashscreen);
 
-        //this.setScreen(Environment.screens.splashscreen);
-
-        /*Environment.create();
-        this.setScreen(Environment.screens.mainmenu);*/
-
-        /*Environment.create();
-        Environment.setupGame(2);
-        this.setScreen(Environment.screens.gamescreen);*/
-
-        //Environment.setupGame(5);
-
-        Environment.game.setScreen(Environment.screens.mainmenu);
-        Environment.screens.mainmenu.showInAppPurchasesStage();
+        //Environment.game.setScreen(Environment.screens.mainmenu);
+        //Environment.screens.mainmenu.showInAppPurchasesStage();
 
     }
 
