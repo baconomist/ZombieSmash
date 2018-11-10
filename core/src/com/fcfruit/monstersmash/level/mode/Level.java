@@ -255,7 +255,7 @@ public class Level
         if (!this.isCameraMoving)
         {
 
-            for (com.fcfruit.monstersmash.level.Spawner spawner : spawners)
+            for (Spawner spawner : spawners)
             {
                 if(this.data.get(this.currentJsonItem).hasChild(spawner.data.name())) // If spawner is part of our current level section
                     spawner.update(delta);
