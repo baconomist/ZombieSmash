@@ -91,19 +91,19 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 15.93521404266357,
-          "y" : 10.02436542510986
+          "x" : 15.95252609252930,
+          "y" : 10.28404235839844
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "zombie_button"
+            "string" : "monster_button"
           },
           
           {
-            "bool" : true,
+            "bool" : false,
             "name" : "button"
           }
         ],
@@ -120,8 +120,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 1.051712870597839,
-          "y" : 10.18711757659912
+          "x" : 1.052475810050964,
+          "y" : 10.18200969696045
         },
         "customProperties" : 
         [
@@ -149,8 +149,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 18.97156524658203,
-          "y" : 10.06698322296143
+          "x" : 18.98887634277344,
+          "y" : 10.326660156250
         },
         "customProperties" : 
         [
@@ -178,8 +178,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 3.098604917526245,
-          "y" : 10.18751907348633
+          "x" : 3.099367856979370,
+          "y" : 10.18241119384766
         },
         "customProperties" : 
         [
@@ -207,8 +207,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 5.139456272125244,
-          "y" : 10.18633937835693
+          "x" : 5.140219211578369,
+          "y" : 10.18123149871826
         },
         "customProperties" : 
         [
@@ -236,8 +236,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 7.180449485778809,
-          "y" : 10.18457603454590
+          "x" : 7.181212425231934,
+          "y" : 10.17946815490723
         },
         "customProperties" : 
         [
@@ -262,18 +262,18 @@
       },
       
       {
-        "aspectScale" : 1.382375478744507,
+        "aspectScale" : 1.227400779724121,
         "center" : 
         {
-          "x" : 5.500387668609619,
-          "y" : 5.321865558624268
+          "x" : 4.117655754089356,
+          "y" : 6.250421047210693
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "powerup_bounds"
+            "string" : "powerup_menu_bounds"
           }
         ],
         "file" : "images/empty.png",
@@ -282,22 +282,22 @@
         "id" : 23,
         "name" : "image0",
         "opacity" : 0.5,
-        "scale" : 6.921681880950928
+        "scale" : 5.830797672271729
       },
       
       {
         "aspectScale" : 0.7419500350952148,
         "center" : 
         {
-          "x" : 15.88902759552002,
-          "y" : 5.390775680541992
+          "x" : 15.88899993896484,
+          "y" : 5.771639347076416
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "zombie_bounds"
+            "string" : "monster_menu_bounds"
           }
         ],
         "file" : "images/empty.png",
@@ -313,58 +313,24 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 14.04525470733643,
-          "y" : 1.026004791259766
+          "x" : 11.18101787567139,
+          "y" : 10.10245895385742
         },
         "customProperties" : 
         [
           
           {
             "name" : "name",
-            "string" : "left_arrow"
-          },
-          
-          {
-            "bool" : true,
-            "name" : "hidden"
+            "string" : "camera_movement_button"
           }
         ],
-        "file" : "images/arrow2.png",
+        "file" : "images/camera_movement.png",
         "filter" : 1,
         "flip" : false,
-        "id" : 26,
-        "name" : "image1",
+        "id" : 28,
+        "name" : "image3",
         "opacity" : 0.5,
-        "scale" : 1.219307303428650
-      },
-      
-      {
-        "aspectScale" : 1,
-        "center" : 
-        {
-          "x" : 17.75506210327148,
-          "y" : 1.023390769958496
-        },
-        "customProperties" : 
-        [
-          
-          {
-            "name" : "name",
-            "string" : "right_arrow"
-          },
-          
-          {
-            "bool" : true,
-            "name" : "hidden"
-          }
-        ],
-        "file" : "images/arrow1.png",
-        "filter" : 1,
-        "flip" : false,
-        "id" : 27,
-        "name" : "image2",
-        "opacity" : 0.5,
-        "scale" : 1.217296600341797
+        "scale" : 1
       }
     ],
     "positionIterations" : 3,

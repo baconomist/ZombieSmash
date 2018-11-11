@@ -49,14 +49,14 @@
     },
     
     {
-      "class" : "image",
+      "class" : "body",
       "displayName" : "name",
       "name" : "name",
       "type" : "string"
     },
     
     {
-      "class" : "body",
+      "class" : "image",
       "displayName" : "name",
       "name" : "name",
       "type" : "string"

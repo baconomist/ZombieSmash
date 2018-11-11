@@ -97,8 +97,13 @@ public class LoadingScreen implements Screen
         {
             if(gameLoading)
             {
-                if (Environment.update_setupGameLoading(levelID)) // When game/level loading finished
+                if (Environment.update_setupGameLoading()) // When game/level loading finished
                 {
+                    if(Environment.mode == Environment.Mode.SURVIVAL)
+                        Environment.finishGameLoadingSurvival(levelID);
+                    else
+                        Environment.finishGameLoadingSandbox();
+
                     Environment.game.setScreen(Environment.screens.gamescreen);
                     return;
                 }

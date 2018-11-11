@@ -20,6 +20,7 @@ import com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
 import com.fcfruit.monstersmash.level.mode.Level;
+import com.fcfruit.monstersmash.level.mode.nightlevel.NightLevelSandbox;
 import com.fcfruit.monstersmash.level.mode.nightlevel.NightLevelSurvival;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.powerups.FirePool;
@@ -131,7 +132,6 @@ public class Environment
         SURVIVAL
     }
     public static Mode mode = Mode.SURVIVAL; // Default Mode is Survival
-
     
     public static Level level;
 
@@ -254,23 +254,34 @@ public class Environment
             }
         });
     }
-    public static boolean update_setupGameLoading(int levelid)
+    public static boolean update_setupGameLoading()
     {
         if(load_calls < load_runnables.size())
             load_runnables.get(load_calls).run();
         else
         {
-            // Finish Loading
-            Environment.isPaused = false;
-            setupLevel(levelid);
             load_calls = 0;
             return true;
         }
         load_calls++;
         return false;
-    }    
-    
-    public static void setupGame(int levelid)
+    }
+
+    public static void finishGameLoadingSurvival(int levelid)
+    {
+        // Finish Loading
+        Environment.isPaused = false;
+        setupSurvivalLevel(levelid);
+    }
+
+    public static void finishGameLoadingSandbox()
+    {
+        // Finish Loading
+        Environment.isPaused = false;
+        setupSandboxLevel();
+    }
+
+    private static void setupGame()
     {
         Environment.isPaused = false;
 
@@ -290,11 +301,23 @@ public class Environment
         particleEntityPool = new ParticleEntityPool();
         brainPool = new BrainPool();
         rocketPool = new RocketPool();
-
-        setupLevel(levelid);
     }
 
-    public static void setupGame(OrthographicCamera gameCam, OrthographicCamera physicsCam)
+    public static void setupGameSurvival(int levelid)
+    {
+        Environment.mode = Mode.SURVIVAL;
+        setupGame();
+        setupSurvivalLevel(levelid);
+    }
+
+    public static void setupGameSandbox()
+    {
+        Environment.mode = Mode.SANDBOX;
+        setupGame();
+        setupSandboxLevel();
+    }
+
+    public static void setupMainMenuGame(OrthographicCamera gameCam, OrthographicCamera physicsCam)
     {
         load_assets();
 
@@ -328,12 +351,16 @@ public class Environment
         physicsCamera.update();
     }
 
-    private static void setupLevel(int levelid)
+    private static void setupSurvivalLevel(int levelid)
     {
         level = new NightLevelSurvival(levelid);
         level.load();
     }
-
+    private static void setupSandboxLevel()
+    {
+        level = new NightLevelSandbox();
+        level.load();
+    }
 
     public static void onResize()
     {

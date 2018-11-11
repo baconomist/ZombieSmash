@@ -37,14 +37,13 @@ public class GameUIStage extends RubeStage
     private ImageButton pow_btn_3;
     private ImageButton pow_btn_4;
 
-    private ImageButton[] powerUpButtons;
+    protected PowerupInterface[] powerups;
+    protected ImageButton[] powerUpButtons;
 
     protected ImageButton pause_button;
 
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
-
-    private PowerupInterface[] powerups;
 
     private Message message;
 
@@ -87,6 +86,7 @@ public class GameUIStage extends RubeStage
         for (int i = 0; i < this.powerUpButtons.length; i++)
         {
             final int finalI = i;
+            this.powerUpButtons[i].setUserObject(i);
             this.powerUpButtons[i].addListener(new ClickListener()
             {
 

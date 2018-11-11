@@ -63,5 +63,6 @@ public class NightLevelSandbox extends SandboxLevel
     {
         super.update(delta);
         this.clouds.update(delta);
+        this.objective.setHealthSandbox(100f);
     }
 }

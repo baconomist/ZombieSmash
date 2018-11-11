@@ -1177,7 +1177,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
     @Override
     public void update(float delta)
     {
-        if(this.isInPlayableRange())
+        if(this.isInPlayableRange() || Environment.mode == Environment.Mode.SANDBOX)
         {
             if (!this.isAnimating() && this.isInLevel())
             {

@@ -69,6 +69,8 @@ public class Objective {
 
     public float getHealth(){return health;}
 
+    public void setHealthSandbox(float health){this.health = health;}
+
     public float getWidth(){
         Vector3 pos = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(width, 0, 0)));
         return pos.x;

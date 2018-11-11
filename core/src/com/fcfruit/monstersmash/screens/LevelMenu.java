@@ -33,7 +33,7 @@ public class LevelMenu implements Screen
         this.seasonSelectStage = new SeasonSelectStage(this.viewport);
         this.levelSelectStage = new LevelSelectStage(this.viewport);
 
-        this.setCurrentStage(this.modeSelectStage);
+        this.setCurrentStage(this.seasonSelectStage);
     }
 
     public void showModeSelect()

@@ -32,8 +32,6 @@ public class GameScreen implements Screen{
 
     private Box2DDebugRenderer debugRenderer;
 
-
-
     public GameScreen(){
 
     }

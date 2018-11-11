@@ -16,7 +16,7 @@ public class SeasonSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                Environment.screens.levelmenu.showModeSelect();
+                Environment.game.setScreen(Environment.screens.mainmenu);
                 super.touchUp(event, x, y, pointer, button);
             }
         });
@@ -26,7 +26,7 @@ public class SeasonSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                Environment.screens.levelmenu.showLevelSelect();
+                Environment.screens.levelmenu.showModeSelect();
                 super.touchUp(event, x, y, pointer, button);
             }
         });

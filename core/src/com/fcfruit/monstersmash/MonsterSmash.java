@@ -6,8 +6,6 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Screen;
 import com.badlogic.gdx.graphics.FPSLogger;
 import com.badlogic.gdx.graphics.GL20;
-import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.screens.SplashScreen;
 
 
 public class MonsterSmash extends Game
@@ -44,10 +42,10 @@ public class MonsterSmash extends Game
 
 
         Environment.create();
-        Environment.setupGame(2);
+        Environment.setupGameSandbox();
         this.setScreen(Environment.screens.gamescreen);
 
-        //Environment.setupGame(5);
+        //Environment.setupMainMenuGame(5);
         //Environment.game.setScreen(Environment.screens.splashscreen);
 
         //Environment.game.setScreen(Environment.screens.mainmenu);

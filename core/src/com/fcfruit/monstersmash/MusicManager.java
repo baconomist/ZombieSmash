@@ -50,13 +50,17 @@ public class MusicManager
             music.setVolume(music.getVolume()/volume);
     }
 
-    public void playMusic(String musicKey)
+    public boolean playMusic(String musicKey)
     {
         Music music = this.musics.get(musicKey);
         if(music != null)
+        {
             music.play();
-        else
-            Gdx.app.error("MusicManager::playMusic()", "Could not play music **" + musicKey + "**, NullPointerException");
+            return true;
+        }
+
+        Gdx.app.error("MusicManager::playMusic()", "Could not play music **" + musicKey + "**, NullPointerException");
+        return false;
     }
 
     public void addMusic(String musicKey, Music music, boolean loop)
@@ -81,16 +85,17 @@ public class MusicManager
         }
     }
 
-    public void stopMusic(String musicKey)
+    public boolean stopMusic(String musicKey)
     {
         if(this.musics.get(musicKey) == null)
         {
             Gdx.app.error("MusicManager::stopMusic()","No such music exists in music manager.");
-            return;
+            return false;
         }
         this.musics.get(musicKey).stop();
         this.musics.get(musicKey).dispose();
         this.musics.remove(musicKey);
+        return true;
     }
 
     public void stopAllMusic()
@@ -103,20 +108,21 @@ public class MusicManager
         this.musics.clear();
     }
 
-    public void removeMusic(String key)
+    public boolean removeMusic(String key)
     {
 
         if(this.musics.get(key) == null)
         {
             Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
-            return;
+            return false;
         }
 
         this.musics.get(key).dispose();
         this.musics.remove(key);
+        return true;
     }
 
-    public void removeMusic(Music music)
+    public boolean removeMusic(Music music)
     {
         String key = "";
         for(String k : this.musics.keySet())
@@ -125,10 +131,13 @@ public class MusicManager
                 key = k;
         }
         if(this.musics.get(key) != null)
+        {
             this.musics.remove(key);
-        else
-            Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
+            music.dispose();
+            return true;
+        }
 
-        music.dispose();
+        Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
+        return false;
     }
 }

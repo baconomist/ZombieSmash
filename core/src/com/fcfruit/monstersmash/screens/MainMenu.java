@@ -55,7 +55,7 @@ public class MainMenu implements Screen
         tempPhysicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
         tempPhysicsCamera.position.set(tempPhysicsCamera.viewportWidth / 2, tempPhysicsCamera.viewportHeight / 2, 0);
         tempPhysicsCamera.update();
-        Environment.setupGame(tempGameCamera, tempPhysicsCamera);
+        Environment.setupMainMenuGame(tempGameCamera, tempPhysicsCamera);
 
         this.tempPhysicsContactFitlerSetup();
 
