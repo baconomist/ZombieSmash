@@ -275,6 +275,44 @@ public abstract class Level
 
     }
 
+    protected void preClear()
+    {
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            if(drawableEntityInterface instanceof PreLevelDestroyableInterface)
+                ((PreLevelDestroyableInterface) drawableEntityInterface).destroy();
+        }
+        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
+        {
+            if(updatableEntityInterface instanceof PreLevelDestroyableInterface)
+                ((PreLevelDestroyableInterface) updatableEntityInterface).destroy();
+        }
+        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
+        {
+            if(inputCaptureEntityInterface instanceof PreLevelDestroyableInterface)
+                ((PreLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
+        }
+    }
+
+    protected void postClear()
+    {
+        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
+        {
+            if(drawableEntityInterface instanceof PostLevelDestroyableInterface)
+                ((PostLevelDestroyableInterface) drawableEntityInterface).destroy();
+        }
+        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
+        {
+            if(updatableEntityInterface instanceof PostLevelDestroyableInterface)
+                ((PostLevelDestroyableInterface) updatableEntityInterface).destroy();
+        }
+        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
+        {
+            if(inputCaptureEntityInterface instanceof PostLevelDestroyableInterface)
+                ((PostLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
+        }
+    }
+
     public abstract int getBrainCount();
     public abstract int getLevelId();
     public abstract boolean isCameraMoving();
@@ -310,6 +348,20 @@ public abstract class Level
         return this.drawableEntities;
     }
 
+    public ArrayList<UpdatableEntityInterface> getUpdatableEntities()
+    {
+        return this.updatableEntities;
+    }
+
+    public ArrayList<InputCaptureEntityInterface> getInputCaptureEntities()
+    {
+        return inputCaptureEntities;
+    }
+
+    public Array<LevelEventListener> getLevelEventListeners()
+    {
+        return levelEventListeners;
+    }
 }
 
 

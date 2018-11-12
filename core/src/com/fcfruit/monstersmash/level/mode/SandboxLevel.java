@@ -1,5 +1,7 @@
 package com.fcfruit.monstersmash.level.mode;
 
+import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
+
 public class SandboxLevel extends Level
 {
     private boolean isCameraMoving = false;
@@ -7,6 +9,14 @@ public class SandboxLevel extends Level
     public void setCameraMoving(boolean moving)
     {
         this.isCameraMoving = moving;
+
+        if(isCameraMoving)
+        {
+            for (LevelEventListener levelEventListener : this.levelEventListeners)
+            {
+                levelEventListener.onCameraMoved();
+            }
+        }
     }
 
     @Override

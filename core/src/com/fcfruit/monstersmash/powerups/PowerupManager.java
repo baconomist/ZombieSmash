@@ -1,6 +1,7 @@
 package com.fcfruit.monstersmash.powerups;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.utils.Array;
 import com.fcfruit.monstersmash.Environment;
@@ -15,16 +16,21 @@ import com.fcfruit.monstersmash.powerups.explodable.ExplodablePowerup;
 
 public class PowerupManager implements UpdatableEntityInterface, LevelEventListener
 {
+    private Array<PowerupInterface> powerups_copy;
     private Array<PowerupInterface> powerups;
 
+    private Array<PowerupCrate> crates_copy;
     private Array<PowerupCrate> crates;
 
     public boolean isSlowMotionEnabled = false;
 
     public PowerupManager()
     {
+        this.powerups_copy = new Array<PowerupInterface>();
         this.powerups = new Array<PowerupInterface>();
+
         this.crates = new Array<PowerupCrate>();
+        this.crates_copy = new Array<PowerupCrate>();
 
         Environment.updatableAddQueue.add(this);
         Environment.levelEventListenerAddQueue.add(this);
@@ -68,27 +74,23 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
     @Override
     public void update(float delta)
     {
-        Array<PowerupInterface> copy = new Array<PowerupInterface>();
-        for (PowerupInterface powerup : this.powerups)
-        {
-            copy.add(powerup);
-        }
-        for (PowerupInterface powerup : copy)
+        powerups_copy.clear();
+        powerups_copy.addAll(this.powerups);
+
+        for (PowerupInterface powerup : powerups_copy)
         {
             if (powerup.hasCompleted())
                 this.powerups.removeValue(powerup, true);
         }
 
-        Array<PowerupCrate> copy_crates = new Array<PowerupCrate>();
-        for (PowerupCrate powerupCrate : this.crates)
-        {
-            copy_crates.add(powerupCrate);
-        }
-        for (PowerupCrate powerupCrate : copy_crates)
+        crates_copy.clear();
+        crates_copy.addAll(crates);
+        for (PowerupCrate powerupCrate : crates_copy)
         {
             if (powerupCrate.isOpen())
                 this.crates.removeValue(powerupCrate, true);
         }
+
     }
 
     @Override
@@ -104,13 +106,13 @@ public class PowerupManager implements UpdatableEntityInterface, LevelEventListe
 
     }
 
-    public Vector3 getGrenadeSpawnPosition(com.fcfruit.monstersmash.powerups.explodable.ExplodablePowerup grenadePowerup)
+    public Vector3 getExplodablePowerupSpawnPos(ExplodablePowerup explodablePowerup)
     {
         if (grenadePosition == null)
         {
             Vector3 pos;
 
-            pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(grenadePowerup.getUIDrawable().getX(), grenadePowerup.getUIDrawable().getY(), 0)));
+            pos = Environment.physicsCamera.unproject(Environment.screens.gamescreen.get_ui_stage().getViewport().project(new Vector3(explodablePowerup.getUIDrawable().getX(), explodablePowerup.getUIDrawable().getY(), 0)));
             pos.y = Environment.physicsCamera.position.y*2 - pos.y;
 
             grenadePosition = pos;

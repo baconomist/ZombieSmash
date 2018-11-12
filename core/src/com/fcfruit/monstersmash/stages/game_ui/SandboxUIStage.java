@@ -18,8 +18,10 @@ import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.monstersmash.entity.interfaces.PowerupInterface;
 import com.fcfruit.monstersmash.entity.interfaces.PreLevelDestroyableInterface;
+import com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface;
 import com.fcfruit.monstersmash.level.mode.SandboxLevel;
 import com.fcfruit.monstersmash.physics.Physics;
+import com.fcfruit.monstersmash.powerups.explodable.ExplodablePowerup;
 import com.fcfruit.monstersmash.powerups.explodable.GrenadePowerup;
 import com.fcfruit.monstersmash.powerups.explodable.MolotovPowerup;
 import com.fcfruit.monstersmash.powerups.rock_powerup.RockPowerup;
@@ -120,6 +122,7 @@ public class SandboxUIStage extends GameUIStage
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 isCameraMoving = !isCameraMoving;
+                ((SandboxLevel) Environment.level).setCameraMoving(isCameraMoving);
                 cameraMovementIndicator.setVisible(isCameraMoving);
                 super.touchUp(event, x, y, pointer, button);
             }
@@ -391,12 +394,27 @@ public class SandboxUIStage extends GameUIStage
             Environment.physicsCamera.position.x += delta / Physics.PIXELS_PER_METER;
             Environment.physicsCamera.update();
         }
+
+        this.clearExplodableHangingPowerups();
+    }
+
+    private void clearExplodableHangingPowerups()
+    {
+        for(DrawableEntityInterface drawableEntityInterface : Environment.level.getDrawableEntities())
+        {
+            if(drawableEntityInterface instanceof ExplodablePowerup)
+                ((ExplodablePowerup) drawableEntityInterface).destroy();
+        }
+        for(UpdatableEntityInterface updatableEntityInterface : Environment.level.getUpdatableEntities())
+        {
+            if(updatableEntityInterface instanceof ExplodablePowerup)
+                ((ExplodablePowerup) updatableEntityInterface).destroy();
+        }
     }
 
     @Override
     public boolean touchDragged(int screenX, int screenY, int pointer)
     {
-        ((SandboxLevel) Environment.level).setCameraMoving(isCameraMoving);
         if(isCameraMoving)
             this.moveCamera();
         return super.touchDragged(screenX, screenY, pointer);

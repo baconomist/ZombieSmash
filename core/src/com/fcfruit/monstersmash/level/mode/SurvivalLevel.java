@@ -168,46 +168,6 @@ public class SurvivalLevel extends Level
         this.level_ended = true;
     }
 
-    private void preClear()
-    {
-        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
-        {
-            if(drawableEntityInterface instanceof PreLevelDestroyableInterface)
-                ((PreLevelDestroyableInterface) drawableEntityInterface).destroy();
-        }
-        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
-        {
-            if(updatableEntityInterface instanceof PreLevelDestroyableInterface)
-                ((PreLevelDestroyableInterface) updatableEntityInterface).destroy();
-        }
-        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
-        {
-            if(inputCaptureEntityInterface instanceof PreLevelDestroyableInterface)
-                ((PreLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
-        }
-
-        this.preCleared = true;
-    }
-
-    private void postClear()
-    {
-        for(DrawableEntityInterface drawableEntityInterface : this.drawableEntities)
-        {
-            if(drawableEntityInterface instanceof PostLevelDestroyableInterface)
-                ((PostLevelDestroyableInterface) drawableEntityInterface).destroy();
-        }
-        for(UpdatableEntityInterface updatableEntityInterface : this.updatableEntities)
-        {
-            if(updatableEntityInterface instanceof PostLevelDestroyableInterface)
-                ((PostLevelDestroyableInterface) updatableEntityInterface).destroy();
-        }
-        for(InputCaptureEntityInterface inputCaptureEntityInterface : this.inputCaptureEntities)
-        {
-            if(inputCaptureEntityInterface instanceof PostLevelDestroyableInterface)
-                ((PostLevelDestroyableInterface) inputCaptureEntityInterface).destroy();
-        }
-    }
-
     @Override
     public void update(float delta)
     {
@@ -276,6 +236,13 @@ public class SurvivalLevel extends Level
         }
 
         super.update(delta);
+    }
+
+    @Override
+    public void preClear()
+    {
+        super.preClear();
+        this.preCleared = true;
     }
 
     @Override

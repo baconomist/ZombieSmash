@@ -5,18 +5,9 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.math.Vector3;
-import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.physics.box2d.BodyDef;
-import com.badlogic.gdx.physics.box2d.CircleShape;
-import com.badlogic.gdx.physics.box2d.Fixture;
-import com.badlogic.gdx.physics.box2d.FixtureDef;
-import com.badlogic.gdx.physics.box2d.Joint;
 import com.fcfruit.monstersmash.Environment;
 import com.fcfruit.monstersmash.entity.interfaces.PreLevelDestroyableInterface;
-import com.fcfruit.monstersmash.physics.PhysicsData;
-import com.fcfruit.monstersmash.powerups.explodable.Explodable;
-
-import java.util.ArrayList;
 
 /**
  * Created by Lucas on 2018-03-22.
@@ -77,7 +68,7 @@ public class ExplodablePowerup implements com.fcfruit.monstersmash.entity.interf
     @Override
     public void activate()
     {
-        Vector3 pos = Environment.powerupManager.getGrenadeSpawnPosition(this);
+        Vector3 pos = Environment.powerupManager.getExplodablePowerupSpawnPos(this);
 
         Vector3 size = Environment.physicsCamera.unproject(Environment.gameCamera.project(new Vector3(this.getUIDrawable().getWidth(), this.getUIDrawable().getHeight(), 0)));
         size.y = Environment.physicsCamera.position.y*2 - size.y;
