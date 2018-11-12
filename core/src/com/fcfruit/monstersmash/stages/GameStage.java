@@ -61,7 +61,7 @@ public class GameStage extends Stage
         float delta = Gdx.graphics.getDeltaTime();
 
         if(Environment.powerupManager.isSlowMotionEnabled)
-            delta = delta/ com.fcfruit.monstersmash.powerups.time.TimePowerup.timeFactor;
+            delta = delta/TimePowerup.timeFactor;
 
         if(!Environment.isPaused)
             Environment.level.update(delta);

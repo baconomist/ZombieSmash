@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.math.Vector3;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
@@ -31,13 +32,14 @@ import com.fcfruit.monstersmash.zombies.RegZombie;
 import com.fcfruit.monstersmash.zombies.SuicideZombie;
 import com.fcfruit.monstersmash.zombies.Zombie;
 
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Random;
 
 public class SandboxUIStage extends GameUIStage
 {
     private static int MAX_MONSTERS = 31;
+    private static float MIN_CAM_POS = 1381f;
+    private static float MAX_CAM_POS = 4814f;
 
     private Texture buttonTexture;
 
@@ -232,7 +234,7 @@ public class SandboxUIStage extends GameUIStage
                         public void touchUp(InputEvent event, float x, float y, int pointer, int button)
                         {
                             if (event.getListenerActor().getUserObject() != null)
-                                spawnMonster(((MonsterRepresentation) event.getListenerActor().getUserObject()).monsterClass);
+                                loadMonster(((MonsterRepresentation) event.getListenerActor().getUserObject()).monsterClass);
                             super.touchUp(event, x, y, pointer, button);
                         }
                     });
@@ -324,12 +326,15 @@ public class SandboxUIStage extends GameUIStage
 
     private void moveCamera()
     {
-        if(Environment.gameCamera.position.x + -Gdx.input.getDeltaX() > Environment.gameCamera.viewportWidth/2
-                && Environment.gameCamera.position.x + -Gdx.input.getDeltaX() < Environment.gameCamera.viewportWidth*(3/2))
+        float delta = -Gdx.input.getDeltaX();
+        delta = delta*2;
+
+        if(Environment.gameCamera.position.x + delta >= MIN_CAM_POS
+                && Environment.gameCamera.position.x + delta <= MAX_CAM_POS)
         {
-            Environment.gameCamera.position.x += -Gdx.input.getDeltaX();
+            Environment.gameCamera.position.x += delta;
             Environment.gameCamera.update();
-            Environment.physicsCamera.position.x += -Gdx.input.getDeltaX() / Physics.PIXELS_PER_METER;
+            Environment.physicsCamera.position.x += delta / Physics.PIXELS_PER_METER;
             Environment.physicsCamera.update();
         }
     }
@@ -386,16 +391,15 @@ public class SandboxUIStage extends GameUIStage
         }
     }
 
-    private void spawnMonster(Class monsterClass)
+    private void loadMonster(Class monsterClass)
     {
-
         try
         {
             int direction;
-            if (Environment.physicsCamera.position.x <= Environment.physicsCamera.viewportWidth / 2)
+            if (Environment.gameCamera.position.x <= (MIN_CAM_POS + MAX_CAM_POS)/3) // 3 positions, "left", "middle", "right" => /3
             {
                 direction = 0;
-            } else if (Environment.physicsCamera.position.x >= Environment.physicsCamera.viewportWidth * 1.5f)
+            } else if (Environment.gameCamera.position.x >= (MIN_CAM_POS + MAX_CAM_POS)*2/3)
             {
                 direction = 1;
             } else
@@ -428,7 +432,15 @@ public class SandboxUIStage extends GameUIStage
         {
             e.printStackTrace();
         }
+    }
 
+    private void spawnMonster(Zombie zombie)
+    {
+        Environment.drawableAddQueue.add(zombie);
+        // Apply Slow Motion
+        if (Environment.powerupManager.isSlowMotionEnabled)
+            zombie.getState().setTimeScale(zombie.getState().getTimeScale() / TimePowerup.timeFactor);
+        zombie.onSpawned();
     }
 
     private int getAliveMonsters()
@@ -453,8 +465,7 @@ public class SandboxUIStage extends GameUIStage
         {
             if (getAliveMonsters() + i < MAX_MONSTERS)
             {
-                Environment.drawableAddQueue.add(zombie);
-                zombie.onSpawned();
+               spawnMonster(zombie);
             }
             else
                 this.tempMonsterQueue.add(zombie);
