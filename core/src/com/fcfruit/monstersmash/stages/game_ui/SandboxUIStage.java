@@ -3,17 +3,21 @@ package com.fcfruit.monstersmash.stages.game_ui;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
-import com.badlogic.gdx.math.Vector3;
+import com.badlogic.gdx.scenes.scene2d.Actor;
 import com.badlogic.gdx.scenes.scene2d.Group;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.ui.Table;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.monstersmash.Environment;
 import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
+import com.fcfruit.monstersmash.entity.interfaces.PostLevelDestroyableInterface;
 import com.fcfruit.monstersmash.entity.interfaces.PowerupInterface;
+import com.fcfruit.monstersmash.entity.interfaces.PreLevelDestroyableInterface;
 import com.fcfruit.monstersmash.level.mode.SandboxLevel;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.powerups.explodable.GrenadePowerup;
@@ -42,6 +46,7 @@ public class SandboxUIStage extends GameUIStage
     private static float MAX_CAM_POS = 4814f;
 
     private Texture buttonTexture;
+    private TextureRegionDrawable buttonTextureDrawable;
 
     private MonsterMenu monsterMenu;
     private PowerupMenu powerupMenu;
@@ -58,6 +63,7 @@ public class SandboxUIStage extends GameUIStage
     private ArrayList<Zombie> tempMonsterQueue = new ArrayList<Zombie>();
 
     private Image cameraMovementButton;
+    private Image cameraMovementIndicator;
     private boolean isCameraMoving = false;
 
     private static ArrayList<MonsterRepresentation> monsterRepresentations = new ArrayList<MonsterRepresentation>();
@@ -90,6 +96,7 @@ public class SandboxUIStage extends GameUIStage
         super(v, "ui/game_ui/sandbox/sandbox_ui.json", "ui/game_ui/sandbox/", false);
 
         this.buttonTexture = new Texture("ui/game_ui/sandbox/box.png");
+        this.buttonTextureDrawable = new TextureRegionDrawable(new TextureRegion(this.buttonTexture));
 
         this.monsterMenu = new MonsterMenu();
         this.powerupMenu = new PowerupMenu();
@@ -113,9 +120,12 @@ public class SandboxUIStage extends GameUIStage
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 isCameraMoving = !isCameraMoving;
+                cameraMovementIndicator.setVisible(isCameraMoving);
                 super.touchUp(event, x, y, pointer, button);
             }
         });
+
+        this.cameraMovementIndicator = (Image) findActor("camera_image");
 
         for (ImageButton powerUpButton : powerUpButtons)
         {
@@ -207,6 +217,7 @@ public class SandboxUIStage extends GameUIStage
                 {
                     Image button_image = new Image(buttonTexture);
                     button_image.setSize(menuBounds.getWidth() / (button_image.getWidth() * columns) * button_image.getWidth(), menuBounds.getHeight() / (button_image.getHeight() * rows) * button_image.getHeight());
+                    button_image.setName("button_image");
 
                     Group menu_button = new Group();
                     menu_button.setSize(button_image.getWidth(), button_image.getHeight());
@@ -215,6 +226,7 @@ public class SandboxUIStage extends GameUIStage
                     if (i < monsterRepresentations.size())
                     {
                         Image monster_image = new Image(Environment.assets.get(monsterRepresentations.get(i).thumbnail_path, TextureAtlas.class).findRegion(monsterRepresentations.get(i).thumbnail_region_name));
+                        monster_image.setName("monster_image");
 
                         monster_image.setSize(menu_button.getWidth() / 1.35f, menu_button.getHeight() / 1.35f);
 
@@ -226,6 +238,27 @@ public class SandboxUIStage extends GameUIStage
                         menu_button.addActor(monster_image);
 
                         menu_button.setUserObject(monsterRepresentations.get(i));
+
+                        menu_button.addListener(new ClickListener(){
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+                            {
+                                Actor actor = ((Group)event.getListenerActor()).findActor("monster_image");
+                                actor.setSize(actor.getWidth()/2, actor.getHeight()/2);
+                                actor.setPosition(actor.getX() - actor.getWidth()/2, actor.getY() + actor.getHeight()/2); // Center image
+                                return super.touchDown(event, x, y, pointer, button);
+                            }
+
+                            @Override
+                            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+                            {
+                                Actor actor = ((Group)event.getListenerActor()).findActor("monster_image");
+                                actor.setPosition(actor.getX() + actor.getWidth()/2, actor.getY() - actor.getHeight()/2); // Center image
+                                actor.setSize(actor.getWidth()*2, actor.getHeight()*2);
+                                super.touchUp(event, x, y, pointer, button);
+                            }
+                        });
+
                     }
 
                     menu_button.addListener(new ClickListener()
@@ -279,6 +312,7 @@ public class SandboxUIStage extends GameUIStage
                 {
                     Image button_image = new Image(buttonTexture);
                     button_image.setSize(menuBounds.getWidth() / (button_image.getWidth() * columns) * button_image.getWidth(), menuBounds.getHeight() / (button_image.getHeight() * rows) * button_image.getHeight());
+                    button_image.setName("button_image");
 
                     Group menu_button = new Group();
                     menu_button.setSize(button_image.getWidth(), button_image.getHeight());
@@ -287,6 +321,7 @@ public class SandboxUIStage extends GameUIStage
                     if (i < powerupRepresentations.size())
                     {
                         Image powerup_image = new Image(new Texture(powerupRepresentations.get(i).thumbnail_path));
+                        powerup_image.setName("powerup_image");
 
                         float offset = 100;
                         float scale;
@@ -298,9 +333,28 @@ public class SandboxUIStage extends GameUIStage
 
                         powerup_image.setPosition(button_image.getWidth() / 2 - powerup_image.getWidth() / 2, button_image.getHeight() / 2 - powerup_image.getHeight() / 2);
 
-
                         menu_button.addActor(powerup_image);
                         menu_button.setUserObject(powerupRepresentations.get(i));
+
+                        menu_button.addListener(new ClickListener(){
+                            @Override
+                            public boolean touchDown(InputEvent event, float x, float y, int pointer, int button)
+                            {
+                                Actor actor = ((Group)event.getListenerActor()).findActor("powerup_image");
+                                actor.setSize(actor.getWidth()/2, actor.getHeight()/2);
+                                actor.setPosition(actor.getX() + actor.getWidth()/2, actor.getY() + actor.getHeight()/2); // Center image
+                                return super.touchDown(event, x, y, pointer, button);
+                            }
+
+                            @Override
+                            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+                            {
+                                Actor actor = ((Group)event.getListenerActor()).findActor("powerup_image");
+                                actor.setPosition(actor.getX() - actor.getWidth()/2, actor.getY() - actor.getHeight()/2); // Center image
+                                actor.setSize(actor.getWidth()*2, actor.getHeight()*2);
+                                super.touchUp(event, x, y, pointer, button);
+                            }
+                        });
                     }
 
                     menu_button.addListener(new ClickListener()
