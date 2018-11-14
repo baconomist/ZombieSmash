@@ -330,6 +330,6 @@ public class InAppPurchasesStage extends RubeStage
     private boolean purchaseProduct(String sku)
     {
         Gdx.app.debug("InAppPurchasesStage", "Attempting to purchase item: \"" + sku + "\"");
-        return Environment.purchaseActivityInterface.purchase("no_ads");
+        return Environment.purchaseActivityInterface.purchase(sku);
     }
 }
