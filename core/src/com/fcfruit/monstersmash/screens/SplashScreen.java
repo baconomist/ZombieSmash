@@ -73,7 +73,7 @@ public class SplashScreen implements Screen
         BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("ui/font/font.fnt"));
         messageLayout = new GlyphLayout();
         String early_access_message_text = "Hi there.\nThis is an early access game which is currently in development \nand may be unstable. If you encounter any bugs please notify \nus at fcfruitstudios@gmail.com or refer to our google play \nstore page for more contact info." +
-                " We are actively developing \nthis game. With your support we can complete this game.\nAll you have to do is share this with your friends, on \nsocial media, ect... and don't uninstall." +
+                " We are actively developing \nthis game. With your support we can complete this game.\nAll you have to do is share this with your friends, on \nsocial media, etc... and don't uninstall." +
                 "\nTap to continue...";
         messageLayout.setText(bitmapFont, early_access_message_text);
         messageFont = new FontActor(bitmapFont);
