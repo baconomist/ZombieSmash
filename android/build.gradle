@@ -16,13 +16,25 @@ android {
     }
     packagingOptions {
         exclude 'META-INF/robovm/ios/robovm.xml'
+        // Excludes duplicate files
+        // https://stackoverflow.com/questions/37586800/android-gradle-duplicate-files-copied-in-apk-meta-inf-license-txt
+        exclude 'META-INF/DEPENDENCIES.txt'
+        exclude 'META-INF/LICENSE.txt'
+        exclude 'META-INF/NOTICE.txt'
+        exclude 'META-INF/NOTICE'
+        exclude 'META-INF/LICENSE'
+        exclude 'META-INF/DEPENDENCIES'
+        exclude 'META-INF/notice.txt'
+        exclude 'META-INF/license.txt'
+        exclude 'META-INF/dependencies.txt'
+        exclude 'META-INF/LGPL2.1'
     }
     defaultConfig {
         applicationId "com.fcfruit.monstersmash"
         minSdkVersion 21
         targetSdkVersion 26
         multiDexEnabled true
-        versionCode 11
+        versionCode 13
         versionName "1.0"
     }
     signingConfigs {
