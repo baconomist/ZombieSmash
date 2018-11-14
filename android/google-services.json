@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "500615978438",
+    "firebase_url": "https://monstersmash-c696b.firebaseio.com",
+    "project_id": "monstersmash-c696b",
+    "storage_bucket": "monstersmash-c696b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:500615978438:android:0bde8c249636e491",
+        "android_client_info": {
+          "package_name": "com.fcfruit.monstersmash"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "500615978438-vig9hpb2aebdijldsvhiovkodt3p8rr9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAnYR_J7q1LvKn2nc5BKHD-KsyMGjdsTW0"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -87,25 +87,24 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
     @Override
     public boolean purchase(String item_sku)
     {
+        return isBpAvailable() && bp.purchase(this, item_sku); // This will activate the onPurchased() func if purchased
+    }
 
-        if (isBpAvailable() && bp.purchase(this, item_sku))
+    private void onPurchased(String item_sku, TransactionDetails details)
+    {
+        String[] purchased_items_old = json.fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
+        String[] purchased_items = new String[purchased_items_old.length + 1];
+
+        // Copy old list into new one
+        for(int i = 0; i < purchased_items_old.length; i++)
         {
-            String[] purchased_items_old = json.fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
-            String[] purchased_items = new String[purchased_items_old.length + 1];
-
-            // Copy old list into new one
-            for(int i = 0; i < purchased_items_old.length; i++)
-            {
-                purchased_items[i] = purchased_items_old[i];
-            }
-
-            purchased_items[purchased_items.length - 1] = item_sku;
-
-            Environment.Prefs.purchases.putString("purchased_items", json.toJson(purchased_items));
-            Environment.Prefs.purchases.flush();
+            purchased_items[i] = purchased_items_old[i];
         }
 
-        return false;
+        purchased_items[purchased_items.length - 1] = item_sku;
+
+        Environment.Prefs.purchases.putString("purchased_items", json.toJson(purchased_items));
+        Environment.Prefs.purchases.flush();
     }
 
     @Override
@@ -155,6 +154,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
             public void onProductPurchased(@NonNull String productId, @Nullable TransactionDetails details)
             {
                 Log.i("onProductPurchased: ", productId);
+                onPurchased(productId, details);
             }
 
             @Override
