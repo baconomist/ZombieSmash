@@ -152,7 +152,15 @@ public abstract class Level
     {
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
-            drawableEntity.update(delta);
+            try
+            {
+                drawableEntity.update(delta);
+            } catch(Exception e)
+            {
+                Environment.crashLoggerInterface.crash_log("Level->update()->drawableEntity.update()", "DrawableEntity: "+drawableEntity + " Entities: " + this.drawableEntities
+                + " Current Level ID: " + this.getLevelId());
+                throw new RuntimeException(e);
+            }
         }
 
         for (UpdatableEntityInterface updatableEntity : this.updatableEntities)

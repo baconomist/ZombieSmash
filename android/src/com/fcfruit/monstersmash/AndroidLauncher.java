@@ -16,6 +16,7 @@ import com.anjlab.android.iab.v3.TransactionDetails;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
+import com.crashlytics.android.Crashlytics;
 import com.google.android.gms.ads.AdListener;
 import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
@@ -23,7 +24,7 @@ import com.google.android.gms.ads.MobileAds;
 
 import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 
-public class AndroidLauncher extends AndroidApplication implements AdActivityInterface, PurchaseActivityInterface
+public class AndroidLauncher extends AndroidApplication implements AdActivityInterface, PurchaseActivityInterface, CrashLoggerInterface
 {
     private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlkx9W8KLfKJE9RoU0lA0/pp72GKWIC+KhSA7IQTaOyIt0vgTRsI+oEkrrUVE7xxAOKNic+Zlc7CNy5NFK970GCQqAGEauFsKVZjpk60MURj5bBeeNq34OZgJ9soH1oTvrtgVNp/ZMIGZz9vog+3YRuGhoc4sxX2JAB5Iow6hoJ4NLGzcGyGTF6rCs0n05jV+igrpQ3TPhGcNB0entFCEySSgKWgUIwl8DcN6eCysh4YK1toMrBgdlMVfJCYd01OpMIqeT7ZDQNuUSsieBBphcWv+VnPzkGk4Wc/91bVsVgwwqadXQtKdG/9c/+AhvMw0nF9+Qs3rEnL4Sc5JFV5QnwIDAQAB"; // PUT YOUR MERCHANT KEY HERE;
     // put your Google merchant id here (as stated in public profile of your Payments Merchant Center)
@@ -60,6 +61,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
 
         Environment.adActivityInterface = this;
         Environment.purchaseActivityInterface = this;
+        Environment.crashLoggerInterface = this;
         Environment.game = new MonsterSmash();
 
         MobileAds.initialize(this, AD_APP_ID);
@@ -77,6 +79,15 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
 
         initialize(Environment.game, config);
 
+        //Crashlytics.log("aaaaaaaaaa test log message crashlytics");
+        //Crashlytics.getInstance().crash();
+
+    }
+
+    @Override
+    public void crash_log(String tag, String message)
+    {
+        Crashlytics.log(tag + ": " + message);
     }
 
     private boolean isBpAvailable()
