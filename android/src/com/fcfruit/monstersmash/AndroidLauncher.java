@@ -79,9 +79,6 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
 
         initialize(Environment.game, config);
 
-        //Crashlytics.log("aaaaaaaaaa test log message crashlytics");
-        //Crashlytics.getInstance().crash();
-
     }
 
     @Override
