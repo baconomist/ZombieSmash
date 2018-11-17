@@ -63,7 +63,7 @@ public class LoadingScreen implements Screen
 
         glyphLayout.setText(bitmapFont, "Loading... Please Wait...");
 
-        text.setPosition(viewport.getWorldWidth() / 2 + glyphLayout.width / 2, viewport.getWorldHeight() / 2 + glyphLayout.height);
+        text.setPosition(viewport.getWorldWidth() / 2 - glyphLayout.width / 2, 100);
     }
 
     public void setLevelID(int id)
@@ -124,8 +124,6 @@ public class LoadingScreen implements Screen
         bone.setRegion(this.animation.getKeyFrame(this.elapsed));
         bone.setSize(bone.getRegionWidth(), bone.getRegionHeight());
         bone.setPosition(this.viewport.getWorldWidth() / 2 - bone.getWidth() / 2, this.viewport.getWorldHeight() / 2 - bone.getHeight() / 2);
-
-        text.setPosition(500, 100);
 
         this.spriteBatch.begin();
         bone.draw(spriteBatch);
