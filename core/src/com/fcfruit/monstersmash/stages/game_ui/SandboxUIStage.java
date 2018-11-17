@@ -150,6 +150,23 @@ public class SandboxUIStage extends GameUIStage
         this.addActor(monsterMenu);
         this.addActor(powerupMenu);
 
+        this.showTutorial();
+
+    }
+
+    private void showTutorial()
+    {
+        Image tutorialImage = new Image(new Texture(Gdx.files.internal("ui/game_ui/sandbox/tutorial.png")));
+        tutorialImage.setSize(tutorialImage.getWidth()*2, tutorialImage.getHeight()*2);
+        tutorialImage.addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                event.getListenerActor().remove();
+                super.touchUp(event, x, y, pointer, button);
+            }
+        });
+        this.addActor(tutorialImage);
     }
 
     private static class MonsterRepresentation extends Image

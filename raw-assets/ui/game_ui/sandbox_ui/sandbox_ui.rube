@@ -43,16 +43,16 @@
     
     {
       "class" : "image",
-      "displayName" : "name",
-      "name" : "name",
-      "type" : "string"
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
     },
     
     {
       "class" : "image",
-      "displayName" : "button",
-      "name" : "button",
-      "type" : "bool"
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
     },
     
     {
@@ -236,8 +236,8 @@
         "aspectScale" : 1,
         "center" : 
         {
-          "x" : 7.181212425231934,
-          "y" : 10.17946815490723
+          "x" : 7.181210041046143,
+          "y" : 10.17949962615967
         },
         "customProperties" : 
         [
