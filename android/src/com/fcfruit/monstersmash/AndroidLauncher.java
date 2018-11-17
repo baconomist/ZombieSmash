@@ -7,13 +7,10 @@ import android.os.*;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
-import android.view.Window;
-import android.view.WindowManager;
 
 
 import com.anjlab.android.iab.v3.BillingProcessor;
 import com.anjlab.android.iab.v3.TransactionDetails;
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.backends.android.AndroidApplication;
 import com.badlogic.gdx.backends.android.AndroidApplicationConfiguration;
 import com.crashlytics.android.Crashlytics;
@@ -100,19 +97,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
 
     private void onPurchased(String item_sku, TransactionDetails details)
     {
-        String[] purchased_items_old = json.fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
-        String[] purchased_items = new String[purchased_items_old.length + 1];
-
-        // Copy old list into new one
-        for(int i = 0; i < purchased_items_old.length; i++)
-        {
-            purchased_items[i] = purchased_items_old[i];
-        }
-
-        purchased_items[purchased_items.length - 1] = item_sku;
-
-        Environment.Prefs.purchases.putString("purchased_items", json.toJson(purchased_items));
-        Environment.Prefs.purchases.flush();
+        Environment.purchaseManager.save_purchase(item_sku);
     }
 
     @Override
@@ -132,18 +117,10 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
     {
         if(isBpAvailable())
         {
-            String[] purchased_items = new String[bp.listOwnedProducts().size()];
-
-            int i = 0;
             for (String sku : bp.listOwnedProducts())
             {
-                purchased_items[i] = sku;
-                i++;
+                Environment.purchaseManager.save_purchase(sku);
             }
-
-            Environment.Prefs.purchases.putString("purchased_items", json.toJson(purchased_items));
-            Environment.Prefs.purchases.flush();
-
             return true;
         }
         return false;
@@ -185,6 +162,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
                     Log.d("ANDOIRD_PURCHASE", "Owned Managed Product: " + sku);
                 for (String sku : bp.listOwnedSubscriptions())
                     Log.d("ANDOIRD_PURCHASE", "Owned Subscription: " + sku);
+                restore_purchases();
             }
         });
 

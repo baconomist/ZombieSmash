@@ -283,6 +283,29 @@ public class InAppPurchasesStage extends RubeStage
         for(Image product : this.products) if(!product.hasParent()) this.addActor(product);
     }
 
+    public void setCurrentProduct(String product_sku)
+    {
+        int i = -1;
+        int c = 0;
+        for(Image product_image : this.products)
+        {
+            if(product_image.getName().equals(product_sku))
+            {
+                i = c;
+                break;
+            }
+            c++;
+        }
+        if(i > -1)
+        {
+            this.products[current_product].setPosition(9999, 9999);
+
+            this.current_product = i;
+            this.products[current_product].setPosition(this.productButton.getX(), this.productButton.getY());
+            this.onSwitchProduct();
+        }
+    }
+
     private void onProductClicked()
     {
         String sku = ProductIdentifiers.productToSku.get(this.products[this.current_product].getName());
@@ -293,11 +316,11 @@ public class InAppPurchasesStage extends RubeStage
             {
                 Gdx.app.debug("InAppPurchaseStage", "The product \"" + sku + "\" is already purchased");
                 showAlreadyPurchasedNotification();
-                return; // Don't purchase if already purchased
+                return; // Don't save_purchase if already purchased
             }
         }
 
-        if(!this.purchaseProduct(sku)) // If purchase failed
+        if(!this.purchaseProduct(sku)) // If save_purchase failed
             showPurchaseErrorNotification();
     }
 
@@ -329,7 +352,7 @@ public class InAppPurchasesStage extends RubeStage
 
     private boolean purchaseProduct(String sku)
     {
-        Gdx.app.debug("InAppPurchasesStage", "Attempting to purchase item: \"" + sku + "\"");
+        Gdx.app.debug("InAppPurchasesStage", "Attempting to save_purchase item: \"" + sku + "\"");
         return Environment.purchaseActivityInterface.purchase(sku);
     }
 }

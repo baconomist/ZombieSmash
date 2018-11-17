@@ -14,6 +14,8 @@ import com.fcfruit.monstersmash.effects.BleedBlood;
 import com.fcfruit.monstersmash.physics.ContactFilter;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.physics.PhysicsData;
+import com.fcfruit.monstersmash.stages.InAppPurchasesStage;
+import com.fcfruit.monstersmash.stages.InGameStoreStage;
 import com.fcfruit.monstersmash.stages.MainMenuStage;
 import com.fcfruit.monstersmash.zombies.Zombie;
 
@@ -35,10 +37,10 @@ public class MainMenu implements Screen
     private Stage options;
     private boolean show_options_stage = false;
 
-    private com.fcfruit.monstersmash.stages.InGameStoreStage inGameStoreStage;
+    private InGameStoreStage inGameStoreStage;
     private boolean show_in_game_store_page = false;
 
-    private com.fcfruit.monstersmash.stages.InAppPurchasesStage inAppPurchasesStage;
+    public InAppPurchasesStage inAppPurchasesStage;
     private boolean show_in_app_purchases_stage = false;
 
     private Box2DDebugRenderer box2DDebugRenderer = new Box2DDebugRenderer();

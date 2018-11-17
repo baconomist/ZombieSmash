@@ -23,11 +23,11 @@ import android.os.Bundle;
  * This service provides the following features:
  * 1. Provides a new API to get details of in-app items published for the app including
  *    price, type, title and description.
- * 2. The purchase flow is synchronous and purchase information is available immediately
+ * 2. The save_purchase flow is synchronous and save_purchase information is available immediately
  *    after it completes.
  * 3. Purchase information of in-app purchases is maintained within the Google Play system
- *    till the purchase is consumed.
- * 4. An API to consume a purchase of an inapp item. All purchases of one-time
+ *    till the save_purchase is consumed.
+ * 4. An API to consume a save_purchase of an inapp item. All purchases of one-time
  *    in-app items are consumable and thereafter can be purchased again.
  * 5. An API to get current purchases of the user immediately. This will not contain any
  *    consumed purchases.
@@ -37,10 +37,10 @@ import android.os.Bundle;
  * RESULT_USER_CANCELED = 1 - User pressed back or canceled a dialog
  * RESULT_SERVICE_UNAVAILABLE = 2 - The network connection is down
  * RESULT_BILLING_UNAVAILABLE = 3 - This billing API version is not supported for the type requested
- * RESULT_ITEM_UNAVAILABLE = 4 - Requested SKU is not available for purchase
+ * RESULT_ITEM_UNAVAILABLE = 4 - Requested SKU is not available for save_purchase
  * RESULT_DEVELOPER_ERROR = 5 - Invalid arguments provided to the API
  * RESULT_ERROR = 6 - Fatal error during the API action
- * RESULT_ITEM_ALREADY_OWNED = 7 - Failure to purchase since item is already owned
+ * RESULT_ITEM_ALREADY_OWNED = 7 - Failure to save_purchase since item is already owned
  * RESULT_ITEM_NOT_OWNED = 8 - Failure to consume since item is not owned
  */
 interface IInAppBillingService {
@@ -68,7 +68,7 @@ interface IInAppBillingService {
      * @return Bundle containing the following key-value pairs
      *         "RESPONSE_CODE" with int value, RESULT_OK(0) if success, appropriate response codes
      *                         on failures.
-     *         "DETAILS_LIST" with a StringArrayList containing purchase information
+     *         "DETAILS_LIST" with a StringArrayList containing save_purchase information
      *                        in JSON format similar to:
      *                        '{ "productId" : "exampleSku",
      *                           "type" : "inapp",
@@ -81,22 +81,22 @@ interface IInAppBillingService {
     Bundle getSkuDetails(int apiVersion, String packageName, String type, in Bundle skusBundle);
 
     /**
-     * Returns a pending intent to launch the purchase flow for an in-app item by providing a SKU,
-     * the type, a unique purchase token and an optional developer payload.
+     * Returns a pending intent to launch the save_purchase flow for an in-app item by providing a SKU,
+     * the type, a unique save_purchase token and an optional developer payload.
      * @param apiVersion billing API version that the app is using
      * @param packageName package name of the calling app
      * @param sku the SKU of the in-app item as published in the developer console
      * @param type of the in-app item being purchased ("inapp" for one-time purchases
      *        and "subs" for subscriptions)
-     * @param developerPayload optional argument to be sent back with the purchase information
+     * @param developerPayload optional argument to be sent back with the save_purchase information
      * @return Bundle containing the following key-value pairs
      *         "RESPONSE_CODE" with int value, RESULT_OK(0) if success, appropriate response codes
      *                         on failures.
-     *         "BUY_INTENT" - PendingIntent to start the purchase flow
+     *         "BUY_INTENT" - PendingIntent to start the save_purchase flow
      *
-     * The Pending intent should be launched with startIntentSenderForResult. When purchase flow
+     * The Pending intent should be launched with startIntentSenderForResult. When save_purchase flow
      * has completed, the onActivityResult() will give a resultCode of OK or CANCELED.
-     * If the purchase is successful, the result data will contain the following key-value pairs
+     * If the save_purchase is successful, the result data will contain the following key-value pairs
      *         "RESPONSE_CODE" with int value, RESULT_OK(0) if success, appropriate response
      *                         codes on failures.
      *         "INAPP_PURCHASE_DATA" - String in JSON format similar to
@@ -106,7 +106,7 @@ interface IInAppBillingService {
      *                                   "purchaseTime":1345678900000,
      *                                   "purchaseToken" : "122333444455555",
      *                                   "developerPayload":"example developer payload" }'
-     *         "INAPP_DATA_SIGNATURE" - String containing the signature of the purchase data that
+     *         "INAPP_DATA_SIGNATURE" - String containing the signature of the save_purchase data that
      *                                  was signed with the private key of the developer
      */
     Bundle getBuyIntent(int apiVersion, String packageName, String sku, String type,
@@ -114,7 +114,7 @@ interface IInAppBillingService {
 
     /**
      * Returns the current SKUs owned by the user of the type and package name specified along with
-     * purchase information and a signature of the data to be validated.
+     * save_purchase information and a signature of the data to be validated.
      * This will return all SKUs that have been purchased in V3 and managed items purchased using
      * V1 and V2 that have not been consumed.
      * @param apiVersion billing API version that the app is using
@@ -129,9 +129,9 @@ interface IInAppBillingService {
      *         "RESPONSE_CODE" with int value, RESULT_OK(0) if success, appropriate response codes
                                on failures.
      *         "INAPP_PURCHASE_ITEM_LIST" - StringArrayList containing the list of SKUs
-     *         "INAPP_PURCHASE_DATA_LIST" - StringArrayList containing the purchase information
+     *         "INAPP_PURCHASE_DATA_LIST" - StringArrayList containing the save_purchase information
      *         "INAPP_DATA_SIGNATURE_LIST"- StringArrayList containing the signatures
-     *                                      of the purchase information
+     *                                      of the save_purchase information
      *         "INAPP_CONTINUATION_TOKEN" - String containing a continuation token for the
      *                                      next set of in-app purchases. Only set if the
      *                                      user has more owned skus than the current list.
@@ -139,11 +139,11 @@ interface IInAppBillingService {
     Bundle getPurchases(int apiVersion, String packageName, String type, String continuationToken);
 
     /**
-     * Consume the last purchase of the given SKU. This will result in this item being removed
-     * from all subsequent responses to getPurchases() and allow re-purchase of this item.
+     * Consume the last save_purchase of the given SKU. This will result in this item being removed
+     * from all subsequent responses to getPurchases() and allow re-save_purchase of this item.
      * @param apiVersion billing API version that the app is using
      * @param packageName package name of the calling app
-     * @param purchaseToken token in the purchase information JSON that identifies the purchase
+     * @param purchaseToken token in the save_purchase information JSON that identifies the save_purchase
      *        to be consumed
      * @return RESULT_OK(0) if consumption succeeded, appropriate response codes on failures.
      */
@@ -155,7 +155,7 @@ interface IInAppBillingService {
     int stub(int apiVersion, String packageName, String type);
 
     /**
-     * Returns a pending intent to launch the purchase flow for upgrading or downgrading a
+     * Returns a pending intent to launch the save_purchase flow for upgrading or downgrading a
      * subscription. The existing owned SKU(s) should be provided along with the new SKU that
      * the user is upgrading or downgrading to.
      * @param apiVersion billing API version that the app is using, must be 5 or later
@@ -164,15 +164,15 @@ interface IInAppBillingService {
      *        if null or empty this method will behave like {@link #getBuyIntent}
      * @param newSku the SKU that the user is upgrading or downgrading to
      * @param type of the item being purchased, currently must be "subs"
-     * @param developerPayload optional argument to be sent back with the purchase information
+     * @param developerPayload optional argument to be sent back with the save_purchase information
      * @return Bundle containing the following key-value pairs
      *         "RESPONSE_CODE" with int value, RESULT_OK(0) if success, appropriate response codes
      *                         on failures.
-     *         "BUY_INTENT" - PendingIntent to start the purchase flow
+     *         "BUY_INTENT" - PendingIntent to start the save_purchase flow
      *
-     * The Pending intent should be launched with startIntentSenderForResult. When purchase flow
+     * The Pending intent should be launched with startIntentSenderForResult. When save_purchase flow
      * has completed, the onActivityResult() will give a resultCode of OK or CANCELED.
-     * If the purchase is successful, the result data will contain the following key-value pairs
+     * If the save_purchase is successful, the result data will contain the following key-value pairs
      *         "RESPONSE_CODE" with int value, RESULT_OK(0) if success, appropriate response
      *                         codes on failures.
      *         "INAPP_PURCHASE_DATA" - String in JSON format similar to
@@ -182,14 +182,14 @@ interface IInAppBillingService {
      *                                   "purchaseTime":1345678900000,
      *                                   "purchaseToken" : "122333444455555",
      *                                   "developerPayload":"example developer payload" }'
-     *         "INAPP_DATA_SIGNATURE" - String containing the signature of the purchase data that
+     *         "INAPP_DATA_SIGNATURE" - String containing the signature of the save_purchase data that
      *                                  was signed with the private key of the developer
      */
     Bundle getBuyIntentToReplaceSkus(int apiVersion, String packageName,
         in List<String> oldSkus, String newSku, String type, String developerPayload);
 
     /**
-     * Returns a pending intent to launch the purchase flow for an in-app item. This method is
+     * Returns a pending intent to launch the save_purchase flow for an in-app item. This method is
      * a variant of the {@link #getBuyIntent} method and takes an additional {@code extraParams}
      * parameter. This parameter is a Bundle of optional keys and values that affect the
      * operation of the method.
@@ -198,11 +198,11 @@ interface IInAppBillingService {
      * @param sku the SKU of the in-app item as published in the developer console
      * @param type of the in-app item being purchased ("inapp" for one-time purchases
      *        and "subs" for subscriptions)
-     * @param developerPayload optional argument to be sent back with the purchase information
+     * @param developerPayload optional argument to be sent back with the save_purchase information
      * @extraParams a Bundle with the following optional keys:
      *        "skusToReplace" - List<String> - an optional list of SKUs that the user is
      *                          upgrading or downgrading from.
-     *                          Pass this field if the purchase is upgrading or downgrading
+     *                          Pass this field if the save_purchase is upgrading or downgrading
      *                          existing subscriptions.
      *                          The specified SKUs are replaced with the SKUs that the user is
      *                          purchasing. Google Play replaces the specified SKUs at the start of
@@ -230,14 +230,14 @@ interface IInAppBillingService {
      *                          We recommend that you use a one-way hash to generate a string from
      *                          the user's ID, and store the hashed string in this field.
      *                   "vr" - Boolean - an optional flag indicating whether the returned intent
-     *                          should start a VR purchase flow. The apiVersion must also be 7 or
+     *                          should start a VR save_purchase flow. The apiVersion must also be 7 or
      *                          later to use this flag.
      */
     Bundle getBuyIntentExtraParams(int apiVersion, String packageName, String sku,
         String type, String developerPayload, in Bundle extraParams);
 
     /**
-     * Returns the most recent purchase made by the user for each SKU, even if that purchase is
+     * Returns the most recent save_purchase made by the user for each SKU, even if that save_purchase is
      * expired, canceled, or consumed.
      * @param apiVersion billing API version that the app is using, must be 6 or later
      * @param packageName package name of the calling app
@@ -254,9 +254,9 @@ interface IInAppBillingService {
      *         {@link IabHelper#BILLING_RESPONSE_RESULT_*} response codes on failures.
      *
      *         "INAPP_PURCHASE_ITEM_LIST" - ArrayList<String> containing the list of SKUs
-     *         "INAPP_PURCHASE_DATA_LIST" - ArrayList<String> containing the purchase information
+     *         "INAPP_PURCHASE_DATA_LIST" - ArrayList<String> containing the save_purchase information
      *         "INAPP_DATA_SIGNATURE_LIST"- ArrayList<String> containing the signatures
-     *                                      of the purchase information
+     *                                      of the save_purchase information
      *         "INAPP_CONTINUATION_TOKEN" - String containing a continuation token for the
      *                                      next set of in-app purchases. Only set if the
      *                                      user has more owned skus than the current list.
@@ -273,7 +273,7 @@ interface IInAppBillingService {
     *        for subscriptions)
     * @param extraParams a Bundle with the following optional keys:
     *        "vr" - Boolean - an optional flag to indicate whether {link #getBuyIntentExtraParams}
-    *               supports returning a VR purchase flow.
+    *               supports returning a VR save_purchase flow.
     * @return RESULT_OK(0) on success and appropriate response code on failures.
     */
     int isBillingSupportedExtraParams(int apiVersion, String packageName, String type,

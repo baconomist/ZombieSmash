@@ -49,6 +49,7 @@ public class Environment
     public static CrashLoggerInterface crashLoggerInterface;
 
     public static MusicManager musicManager;
+    public static PurchaseManager purchaseManager;
 
     public static boolean isPaused = false;
 
@@ -412,6 +413,7 @@ public class Environment
         Prefs.create();
 
         musicManager = new MusicManager();
+        purchaseManager = new PurchaseManager();
 
         gameData = new GameData();
         settings = new Settings();
