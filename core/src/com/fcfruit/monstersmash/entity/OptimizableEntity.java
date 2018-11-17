@@ -20,6 +20,7 @@ public class OptimizableEntity implements com.fcfruit.monstersmash.entity.interf
     private InteractivePhysicsEntityInterface interactivePhysicsEntity;
     private DetachableEntityInterface detachableEntity;
     private ContainerEntityInterface containerEntity;
+    private float height = 2f;
 
     // Optimization
     private double optimizationTimer;
@@ -34,18 +35,21 @@ public class OptimizableEntity implements com.fcfruit.monstersmash.entity.interf
         this.containerEntity = containerEntity;
     }
 
+    public void setHeight(float height)
+    {
+        this.height = height;
+    }
+
     public void update(float delta)
     {
-        if(this.isTouching())
+        if (this.isTouching())
         {
             this.unoptimize();
             this.optimizationTimer = System.currentTimeMillis();
-        }
-        else if (this.isOptimizationEnabled() && this.shouldOptimize() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize)
+        } else if (this.isOptimizationEnabled() && this.shouldOptimize() && System.currentTimeMillis() - this.optimizationTimer >= this.timeBeforeOptimize)
         {
             this.optimize();
-        }
-        else if((this.isOptimizationEnabled() && !this.shouldOptimize()) || !this.isOptimizationEnabled)
+        } else if ((this.isOptimizationEnabled() && !this.shouldOptimize()) || !this.isOptimizationEnabled)
         {
             this.optimizationTimer = System.currentTimeMillis();
         }
@@ -53,14 +57,14 @@ public class OptimizableEntity implements com.fcfruit.monstersmash.entity.interf
 
     private boolean isTouching()
     {
-        if(this.containerEntity != null)
+        if (this.containerEntity != null)
         {
-            for(InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
+            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
-                if(interactiveEntityInterface instanceof PhysicsEntityInterface)
+                if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
-                    if(interactiveEntityInterface.isTouching())
+                    if (interactiveEntityInterface.isTouching())
                     {
                         return true;
                     }
@@ -73,26 +77,25 @@ public class OptimizableEntity implements com.fcfruit.monstersmash.entity.interf
 
     private boolean shouldOptimize()
     {
-        if(this.containerEntity != null)
+        if (this.containerEntity != null)
         {
-            for(InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
+            for (InteractiveEntityInterface interactiveEntityInterface : this.containerEntity.getInteractiveEntities().values())
             {
-                if(interactiveEntityInterface instanceof PhysicsEntityInterface)
+                if (interactiveEntityInterface instanceof PhysicsEntityInterface)
                 {
                     Body b = ((PhysicsEntityInterface) interactiveEntityInterface).getPhysicsBody();
-                    if(!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < 2f))
+                    if (!(!interactiveEntityInterface.isTouching() && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < height))
                     {
                         return false;
                     }
                 }
             }
             return true;
-        }
-        else if(this.detachableEntity != null)
+        } else if (this.detachableEntity != null)
         {
             Body b = this.interactivePhysicsEntity.getPhysicsBody();
             return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching()
-                    && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < 1f;
+                    && b.getLinearVelocity().x < 1f && b.getLinearVelocity().y < 1f && b.getPosition().y < height;
         }
         return !this.interactivePhysicsEntity.isTouching();
     }
