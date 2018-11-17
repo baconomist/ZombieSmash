@@ -42,8 +42,7 @@ public class MonsterSmash extends Game
 
 
         Environment.create();
-        Environment.setupGameSandbox();
-        Environment.game.setScreen(Environment.screens.gamescreen);
+        Environment.game.setScreen(Environment.screens.splashscreen);
         //Environment.setupGameSandbox();
         //this.setScreen(Environment.screens.gamescreen);
 
