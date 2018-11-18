@@ -28,7 +28,7 @@ import java.util.ArrayList;
 
 public class Bone_BossZombie extends Zombie
 {
-    private float health = -100.0f;
+    private float health = 100.0f;
     private boolean isAlive = true;
 
     private AnimatableGraphicsEntity stompSmoke;

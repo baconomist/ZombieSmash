@@ -1,7 +1,7 @@
 {
   "left": {
     "message": {
-      "content": "Ehg *cough* I hear booming in my chest, on the ground, something is coming",
+      "content": "Ehg *cough* I feel feel something. I can feel the ground shaking. Something is coming...",
       "init_delay": 2
     },
     "helicopter": {
@@ -10,16 +10,20 @@
       "powerup_spawn_delay": 0.5,
       "powerup_init_delay": 1,
       "powerups": [
-        "molotov",
+        "grenade",
         "time",
         "grenade",
         "grenade"
       ]
     },
-    "bone_boss": {
+    "bone_boss_zombie": {
       "quantity": 1,
       "init_delay": 3,
       "position": "left"
+    },
+    "message": {
+      "content": "What is that thing?!?!?!",
+      "init_delay": 10
     },
     "armored_zombie": {
       "quantity": 2,
@@ -56,6 +60,10 @@
       "init_delay": 10,
       "position": "left"
     },
+    "message": {
+      "content": "Hmmm... looks like you can't use typical methods to kill this thing.\nI did some research and it looks like you need to use fire to kill it.\nHere are some molotovs.",
+      "init_delay": 30
+    },
     "helicopter": {
       "init_delay": 30,
       "spawn_delay": 0,
@@ -64,8 +72,19 @@
       "powerups": [
         "molotov",
         "time",
-        "grenade",
-        "grenade"
+        "molotov",
+        "molotov"
+      ]
+    },
+    "helicopter": {
+      "init_delay": 60,
+      "spawn_delay": 0,
+      "powerup_spawn_delay": 0.5,
+      "powerup_init_delay": 1,
+      "powerups": [
+        "molotov",
+        "molotov",
+        "molotov"
       ]
     }
   }

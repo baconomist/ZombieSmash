@@ -63,7 +63,6 @@ public class Torso implements DrawableEntityInterface, OptimizableEntityInterfac
         this.bleedablePoints = bleedablePoints;
     }
 
-
     @Override
     public void draw(SpriteBatch batch)
     {

@@ -106,7 +106,7 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
      * Getup fields (need to make getupable entity)
      **/
     private double getUpTimer;
-    private double timeBeforeGetup;
+    protected double timeBeforeGetup;
     private double maxGetupTimer;
     private double maxGetupTime;
     private boolean isGettingUp;
@@ -477,8 +477,8 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
 
     private boolean isInPlayableRange()
     {
-        return this.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 4f
-                && this.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 4f;
+        return this.getPosition().x > Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 4f - this.getSize().x
+                && this.getPosition().x < Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 4f + this.getSize().x;
     }
 
     public boolean isInLevel()
@@ -804,9 +804,9 @@ public class Zombie implements DrawableEntityInterface, InteractiveEntityInterfa
         float x = (float) new Random().nextInt(100) / 100;
         float y = Environment.physics.getGroundBodies().get(this.getCurrentGround()).getPosition().y;
         if (this.animatableGraphicsEntity.getPosition().x < Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 1f - x, y));
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth / 2 - 1f - x - this.getSize().x/2, y));
         else if (this.animatableGraphicsEntity.getPosition().x > Environment.physicsCamera.position.x)
-            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + x, y));
+            this.setPosition(new Vector2(Environment.physicsCamera.position.x + Environment.physicsCamera.viewportWidth / 2 + 1f + x + this.getSize().x/2, y));
     }
 
     /**
