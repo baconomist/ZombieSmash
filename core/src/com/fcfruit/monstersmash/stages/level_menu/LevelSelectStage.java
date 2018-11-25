@@ -52,7 +52,7 @@ public class LevelSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
-                Environment.screens.levelmenu.showSeasonSelect();
+                Environment.screens.levelmenu.showModeSelect();
                 hideDescription();
                 super.touchUp(event, x, y, pointer, button);
             }

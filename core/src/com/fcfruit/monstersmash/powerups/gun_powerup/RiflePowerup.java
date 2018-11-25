@@ -35,7 +35,7 @@ public class RiflePowerup extends GunPowerup
 
         this.guns = new DrawableGraphicsEntity[]{tempGun_left, tempGun_right};
 
-        if(Environment.level.getCurrentCameraPosition().equals("left"))
+        /*if(Environment.level.getCurrentCameraPosition().equals("left"))
             Environment.drawableAddQueue.add(tempGun_left);
         else if(Environment.level.getCurrentCameraPosition().equals("right"))
             Environment.drawableAddQueue.add(tempGun_right);
@@ -43,7 +43,7 @@ public class RiflePowerup extends GunPowerup
         {
             Environment.drawableAddQueue.add(tempGun_left);
             Environment.drawableAddQueue.add(tempGun_right);
-        }
+        }*/
 
     }
 }

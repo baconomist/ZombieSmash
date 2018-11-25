@@ -1,0 +1,371 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "hidden",
+      "name" : "hidden",
+      "type" : "bool"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 15.95252609252930,
+          "y" : 10.28404235839844
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "monster_button"
+          },
+          
+          {
+            "bool" : false,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/zombiebutton.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 2,
+        "name" : "image5",
+        "opacity" : 0.5,
+        "scale" : 1.762022852897644
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 1.052475810050964,
+          "y" : 10.18200969696045
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_1"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "../survival_ui/images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 3,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "scale" : 1.768819332122803
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 18.98887634277344,
+          "y" : 10.326660156250
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "pause_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "../survival_ui/images/pause.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 5,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "scale" : 1.773422479629517
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 3.099367856979370,
+          "y" : 10.18241119384766
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_2"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "../survival_ui/images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 1.770544886589050
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 5.140219211578369,
+          "y" : 10.18123149871826
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_3"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "../survival_ui/images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 7,
+        "name" : "image5",
+        "opacity" : 0.5,
+        "scale" : 1.770544886589050
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 7.181210041046143,
+          "y" : 10.17949962615967
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_4"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "../survival_ui/images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 8,
+        "name" : "image6",
+        "opacity" : 0.5,
+        "scale" : 1.770544886589050
+      },
+      
+      {
+        "aspectScale" : 1.227400779724121,
+        "center" : 
+        {
+          "x" : 4.117655754089356,
+          "y" : 6.250421047210693
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_menu_bounds"
+          }
+        ],
+        "file" : "images/empty.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 23,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 5.830797672271729
+      },
+      
+      {
+        "aspectScale" : 0.7419500350952148,
+        "center" : 
+        {
+          "x" : 15.88899993896484,
+          "y" : 5.771639347076416
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "monster_menu_bounds"
+          }
+        ],
+        "file" : "images/empty.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 24,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "scale" : 6.867816448211670
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 11.18101787567139,
+          "y" : 10.10245895385742
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "camera_movement_button"
+          }
+        ],
+        "file" : "images/camera_movement.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 28,
+        "name" : "image3",
+        "opacity" : 0.5,
+        "scale" : 1
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 11.07944583892822,
+          "y" : 9.056520462036133
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "camera_image"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "hidden"
+          }
+        ],
+        "file" : "images/camera.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 29,
+        "name" : "image7",
+        "opacity" : 0.5,
+        "scale" : 1
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}

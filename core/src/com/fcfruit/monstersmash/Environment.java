@@ -9,12 +9,24 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Intersector;
 import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.pay.PurchaseManager;
 import com.badlogic.gdx.physics.box2d.Joint;
+import com.badlogic.gdx.utils.Json;
+import com.fcfruit.monstersmash.brains.BrainPool;
+import com.fcfruit.monstersmash.effects.BleedableBloodPool;
 import com.fcfruit.monstersmash.entity.interfaces.DetachableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.ExplodableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.InputCaptureEntityInterface;
+import com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface;
+import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
+import com.fcfruit.monstersmash.level.mode.Level;
+import com.fcfruit.monstersmash.level.mode.nightlevel.NightLevelSandbox;
+import com.fcfruit.monstersmash.level.mode.nightlevel.NightLevelSurvival;
+import com.fcfruit.monstersmash.physics.Physics;
+import com.fcfruit.monstersmash.powerups.FirePool;
+import com.fcfruit.monstersmash.powerups.ParticleEntityPool;
+import com.fcfruit.monstersmash.powerups.PowerupManager;
+import com.fcfruit.monstersmash.powerups.rocket.RocketPool;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -27,14 +39,17 @@ public class Environment
 {
 
     // Class to access all important game instances
-    // Need to create static methods which catch exceptions which may arise
+    // Need to load static methods which catch exceptions which may arise
     // Or else if new instance creation goes wrong it crashes
 
     public static MonsterSmash game;
 
-    public static PurchaseManager purchaseManager;
+    public static AdActivityInterface adActivityInterface;
+    public static PurchaseActivityInterface purchaseActivityInterface;
+    public static CrashLoggerInterface crashLoggerInterface;
 
     public static MusicManager musicManager;
+    public static PurchaseManager purchaseManager;
 
     public static boolean isPaused = false;
 
@@ -103,9 +118,8 @@ public class Environment
         assets.load("ui/game_ui/message_box/message_guy/message_guy.atlas", TextureAtlas.class);
     }
 
-    public static String currentDifficulty = "normal";
-    public static HashMap<String, Float> difficulty_multipliers;
-
+    public static String currentDifficulty = "normal"; // Default Difficulty is Normal
+    public static HashMap<String, Float> difficulty_multipliers; // Should do this with enums...
     static
     {
         difficulty_multipliers = new HashMap<String, Float>();
@@ -114,7 +128,14 @@ public class Environment
         difficulty_multipliers.put("hard", 1.5f);
     }
 
-    public static com.fcfruit.monstersmash.level.Level level;
+    public enum Mode
+    {
+        SANDBOX,
+        SURVIVAL
+    }
+    public static Mode mode = Mode.SURVIVAL; // Default Mode is Survival
+    
+    public static Level level;
 
     public static GameData gameData;
 
@@ -122,18 +143,18 @@ public class Environment
 
     public static OrthographicCamera gameCamera;
 
-    public static com.fcfruit.monstersmash.powerups.PowerupManager powerupManager;
+    public static PowerupManager powerupManager;
 
     public static OrthographicCamera physicsCamera;
 
-    public static com.fcfruit.monstersmash.physics.Physics physics;
+    public static Physics physics;
 
     // Pools
-    public static com.fcfruit.monstersmash.powerups.FirePool firePool;
-    public static com.fcfruit.monstersmash.effects.BleedableBloodPool bleedableBloodPool;
-    public static com.fcfruit.monstersmash.powerups.ParticleEntityPool particleEntityPool;
-    public static com.fcfruit.monstersmash.brains.BrainPool brainPool;
-    public static com.fcfruit.monstersmash.powerups.rocket.RocketPool rocketPool;
+    public static FirePool firePool;
+    public static BleedableBloodPool bleedableBloodPool;
+    public static ParticleEntityPool particleEntityPool;
+    public static BrainPool brainPool;
+    public static RocketPool rocketPool;
 
     // Add items touched down on touch_down to this list
     // Clear this at the beginning of touch_down
@@ -152,124 +173,15 @@ public class Environment
     public static ArrayList<DrawableEntityInterface> drawableAddQueue = new ArrayList<DrawableEntityInterface>();
     public static ArrayList<DrawableEntityInterface> drawableBackgroundAddQueue = new ArrayList<DrawableEntityInterface>();
 
-    public static ArrayList<com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface> updatableAddQueue = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface>();
-    public static ArrayList<com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface> updatableRemoveQueue = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.UpdatableEntityInterface>();
+    public static ArrayList<UpdatableEntityInterface> updatableAddQueue = new ArrayList<UpdatableEntityInterface>();
+    public static ArrayList<UpdatableEntityInterface> updatableRemoveQueue = new ArrayList<UpdatableEntityInterface>();
 
-    public static ArrayList<com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener> levelEventListenerAddQueue = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener>();
-    public static ArrayList<com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener> levelEventListenerRemoveQueue = new ArrayList<com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener>();
+    public static ArrayList<LevelEventListener> levelEventListenerAddQueue = new ArrayList<LevelEventListener>();
+    public static ArrayList<LevelEventListener> levelEventListenerRemoveQueue = new ArrayList<LevelEventListener>();
 
     public static void update()
     {
         musicManager.update();
-    }
-
-    public static void setupGame(int levelid)
-    {
-        Environment.isPaused = false;
-
-        load_assets();
-
-        setupPhysicsCamera();
-        setupGameCamera();
-
-        physics = new com.fcfruit.monstersmash.physics.Physics();
-        screens.gamescreen.create();
-        powerupManager = new com.fcfruit.monstersmash.powerups.PowerupManager();
-
-        // Pools
-        firePool = new com.fcfruit.monstersmash.powerups.FirePool();
-        if (Environment.settings.isGoreEnabled())
-            bleedableBloodPool = new com.fcfruit.monstersmash.effects.BleedableBloodPool();
-        particleEntityPool = new com.fcfruit.monstersmash.powerups.ParticleEntityPool();
-        brainPool = new com.fcfruit.monstersmash.brains.BrainPool();
-        rocketPool = new com.fcfruit.monstersmash.powerups.rocket.RocketPool();
-
-        setupLevel(levelid);
-    }
-
-    public static void setupGame(OrthographicCamera gameCam, OrthographicCamera physicsCam)
-    {
-        load_assets();
-
-        gameCamera = gameCam;
-        physicsCamera = physicsCam;
-
-        physics = new com.fcfruit.monstersmash.physics.Physics();
-
-        // Pools
-        bleedableBloodPool = new com.fcfruit.monstersmash.effects.BleedableBloodPool();
-    }
-
-    private static void setupGameCamera()
-    {
-        gameCamera = new OrthographicCamera(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
-        gameCamera.position.set(Environment.gameCamera.viewportWidth / 2, Environment.gameCamera.viewportHeight / 2, 0);
-
-        gameCamera.update();
-    }
-
-    private static void setupPhysicsCamera()
-    {
-        physicsCamera = new OrthographicCamera(com.fcfruit.monstersmash.physics.Physics.WIDTH, com.fcfruit.monstersmash.physics.Physics.HEIGHT);
-        // Camera position/origin is in the middle
-        // Not bottom left
-        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
-        // Also cam.project(worldpos) is x and y from bottom left corner
-        // But cam.unproject(screenpos) is x and y from top left corner
-        physicsCamera.position.set(Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight / 2, 0);
-
-        physicsCamera.update();
-    }
-
-    private static void setupLevel(int levelid)
-    {
-        level = new com.fcfruit.monstersmash.level.NightLevel(levelid);
-        level.create();
-    }
-
-
-    public static void onResize()
-    {
-        // If gamestate == game running.....
-        try
-        {
-            gameCamera.position.x = Environment.physicsCamera.position.x * com.fcfruit.monstersmash.physics.Physics.PIXELS_PER_METER;
-            gameCamera.update();
-            physics.constructPhysicsBoundaries();
-        } catch (Exception e)
-        {
-        }
-    }
-
-
-    public static class Prefs
-    {
-        public static Preferences settings;
-        public static Preferences upgrades;
-        public static Preferences brains;
-        public static Preferences progress;
-
-        public static void clear()
-        {
-            settings.clear();
-            upgrades.clear();
-            brains.clear();
-        }
-    }
-
-    public static void create()
-    {
-        Prefs.upgrades = Gdx.app.getPreferences("upgrades");
-        Prefs.brains = Gdx.app.getPreferences("brains");
-        Prefs.settings = Gdx.app.getPreferences("settings");
-        Prefs.progress = Gdx.app.getPreferences("progress");
-
-        musicManager = new MusicManager();
-
-        gameData = new GameData();
-        settings = new Settings();
-
-        screens = new Screens();
     }
 
     private static int load_calls = 0;
@@ -298,9 +210,9 @@ public class Environment
             @Override
             public void run()
             {
-                physics = new com.fcfruit.monstersmash.physics.Physics();
+                physics = new Physics();
                 screens.gamescreen.create();
-                powerupManager = new com.fcfruit.monstersmash.powerups.PowerupManager();
+                powerupManager = new PowerupManager();
             }
         });
 
@@ -310,7 +222,7 @@ public class Environment
             public void run()
             {
                 // Pools
-                firePool = new com.fcfruit.monstersmash.powerups.FirePool();
+                firePool = new FirePool();
             }
         });
 
@@ -321,7 +233,7 @@ public class Environment
             public void run()
             {
                 if (Environment.settings.isGoreEnabled())
-                    bleedableBloodPool = new com.fcfruit.monstersmash.effects.BleedableBloodPool();
+                    bleedableBloodPool = new BleedableBloodPool();
             }
         });
 
@@ -330,8 +242,8 @@ public class Environment
             @Override
             public void run()
             {
-                particleEntityPool = new com.fcfruit.monstersmash.powerups.ParticleEntityPool();
-                brainPool = new com.fcfruit.monstersmash.brains.BrainPool();
+                particleEntityPool = new ParticleEntityPool();
+                brainPool = new BrainPool();
             }
         });
 
@@ -340,25 +252,173 @@ public class Environment
             @Override
             public void run()
             {
-                rocketPool = new com.fcfruit.monstersmash.powerups.rocket.RocketPool();
-                Gdx.app.log("aaa", "sssssssssssssssssstttttttttttttttttttttttttt");
+                rocketPool = new RocketPool();
             }
         });
     }
-    public static boolean update_setupGameLoading(int levelid)
+    public static boolean update_setupGameLoading()
     {
         if(load_calls < load_runnables.size())
             load_runnables.get(load_calls).run();
         else
         {
-            // Finish Loading
-            Environment.isPaused = false;
-            setupLevel(levelid);
             load_calls = 0;
             return true;
         }
         load_calls++;
         return false;
+    }
+
+    public static void finishGameLoadingSurvival(int levelid)
+    {
+        // Finish Loading
+        Environment.isPaused = false;
+        setupSurvivalLevel(levelid);
+    }
+
+    public static void finishGameLoadingSandbox()
+    {
+        // Finish Loading
+        Environment.isPaused = false;
+        setupSandboxLevel();
+    }
+
+    private static void setupGame()
+    {
+        Environment.isPaused = false;
+
+        load_assets();
+
+        setupPhysicsCamera();
+        setupGameCamera();
+
+        physics = new Physics();
+        screens.gamescreen.create();
+        powerupManager = new PowerupManager();
+
+        // Pools
+        firePool = new FirePool();
+        if (Environment.settings.isGoreEnabled())
+            bleedableBloodPool = new BleedableBloodPool();
+        particleEntityPool = new ParticleEntityPool();
+        brainPool = new BrainPool();
+        rocketPool = new RocketPool();
+    }
+
+    public static void setupGameSurvival(int levelid)
+    {
+        Environment.mode = Mode.SURVIVAL;
+        setupGame();
+        setupSurvivalLevel(levelid);
+    }
+
+    public static void setupGameSandbox()
+    {
+        Environment.mode = Mode.SANDBOX;
+        setupGame();
+        setupSandboxLevel();
+    }
+
+    public static void setupMainMenuGame(OrthographicCamera gameCam, OrthographicCamera physicsCam)
+    {
+        load_assets();
+
+        gameCamera = gameCam;
+        physicsCamera = physicsCam;
+
+        physics = new Physics();
+
+        // Pools
+        bleedableBloodPool = new BleedableBloodPool();
+    }
+
+    private static void setupGameCamera()
+    {
+        gameCamera = new OrthographicCamera(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
+        gameCamera.position.set(Environment.gameCamera.viewportWidth / 2, Environment.gameCamera.viewportHeight / 2, 0);
+
+        gameCamera.update();
+    }
+
+    private static void setupPhysicsCamera()
+    {
+        physicsCamera = new OrthographicCamera(Physics.WIDTH, Physics.HEIGHT);
+        // Camera position/origin is in the middle
+        // Not bottom left
+        // see see https://github.com/libgdx/libgdx/wiki/Coordinate-systems
+        // Also cam.project(worldpos) is x and y from bottom left corner
+        // But cam.unproject(screenpos) is x and y from top left corner
+        physicsCamera.position.set(Environment.physicsCamera.viewportWidth / 2, Environment.physicsCamera.viewportHeight / 2, 0);
+
+        physicsCamera.update();
+    }
+
+    private static void setupSurvivalLevel(int levelid)
+    {
+        level = new NightLevelSurvival(levelid);
+        level.load();
+    }
+    private static void setupSandboxLevel()
+    {
+        level = new NightLevelSandbox();
+        level.load();
+    }
+
+    public static void onResize()
+    {
+        // If gamestate == game running.....
+        try
+        {
+            gameCamera.position.x = Environment.physicsCamera.position.x * Physics.PIXELS_PER_METER;
+            gameCamera.update();
+            physics.constructPhysicsBoundaries();
+        } catch (Exception e)
+        {
+        }
+    }
+
+
+    public static class Prefs
+    {
+        public static Preferences settings;
+        public static Preferences upgrades;
+        public static Preferences brains;
+        public static Preferences progress;
+        public static Preferences purchases;
+
+        public static void create()
+        {
+            upgrades = Gdx.app.getPreferences("upgrades");
+            brains = Gdx.app.getPreferences("brains");
+            settings = Gdx.app.getPreferences("settings");
+            progress = Gdx.app.getPreferences("progress");
+            purchases = Gdx.app.getPreferences("purchases");
+
+            if(purchases.getString("purchased_items").equals(""))
+                purchases.putString("purchased_items", new Json().toJson(new String[1]));
+            purchases.flush();
+        }
+
+        public static void clear()
+        {
+            settings.clear();
+            upgrades.clear();
+            brains.clear();
+            purchases.clear();
+        }
+    }
+
+    public static void create()
+    {
+        Prefs.create();
+
+        musicManager = new MusicManager();
+        purchaseManager = new PurchaseManager();
+
+        gameData = new GameData();
+        settings = new Settings();
+
+        screens = new Screens();
     }
 
     public static void load_assets()

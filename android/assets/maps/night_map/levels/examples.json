@@ -9,7 +9,7 @@
       "quantity": 33, // amount of zombies to be spawned by this block
       "init_delay": 0, // initial delay before starting to spawn zombies
       "spawn_delay": 1, // delay in between spawning zombies
-      "position": "middle_right", // zombie spawn position. Zombie positions = ('left', 'middle_left', 'middle_right', 'right')
+      "position": "right", // zombie spawn position. Zombie positions = ('left', 'middle_left', 'middle_right', 'right')
       "depth": 1 // zombie depth, higher depth == further away. Zombie depths = (0, 1, 2)
     },
     "helicopter": { // a helicopter which drops crates

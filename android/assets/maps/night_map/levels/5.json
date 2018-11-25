@@ -24,12 +24,12 @@
     "crawling_zombie": {
       "quantity": 11,
       "init_delay": 0,
-      "position": "middle_right"
+      "position": "right"
     },
     "crawling_zombie": {
       "quantity": 11,
       "init_delay": 0,
-      "position": "middle_left"
+      "position": "left"
     }
   }
 }

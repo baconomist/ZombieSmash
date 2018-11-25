@@ -22,6 +22,7 @@ import com.fcfruit.monstersmash.entity.BleedablePoint;
 import com.fcfruit.monstersmash.entity.interfaces.ContainerEntityInterface;
 import com.fcfruit.monstersmash.zombies.Zombie;
 import com.fcfruit.monstersmash.zombies.parts.SpecialPart;
+import com.fcfruit.monstersmash.zombies.parts.Torso;
 
 import java.util.ArrayList;
 
@@ -109,17 +110,27 @@ public class Bone_BossZombie extends Zombie
     }
 
     @Override
+    protected void isAliveCheck()
+    {
+        if(this.isAlive && this.health <= 0)
+            this.onDeath();
+        this.isAlive = this.health > 0;
+    }
+
+    @Override
     public void draw(SpriteBatch batch, SkeletonRenderer skeletonRenderer)
     {
         super.draw(batch, skeletonRenderer);
-        this.stompSmoke.draw(batch, skeletonRenderer);
+        if(this.isAnimating())
+            this.stompSmoke.draw(batch, skeletonRenderer);
     }
 
     @Override
     public void update(float delta)
     {
         super.update(delta);
-        this.stompSmoke.update(delta);
+        if(this.isAnimating())
+            this.stompSmoke.update(delta);
     }
 
     @Override
@@ -152,7 +163,7 @@ public class Bone_BossZombie extends Zombie
     void onAnimationEvent(AnimationState.TrackEntry entry, Event event)
     {
         super.onAnimationEvent(entry, event);
-        if (event.getData().getName().equals("move"))
+        if (event.getData().getName().equals("move") && this.isAnimating())
         {
             this.stompSmoke.setPosition(this.getPosition());
             this.stompSmoke.restartAnimation();
@@ -164,6 +175,15 @@ public class Bone_BossZombie extends Zombie
     protected boolean hasRequiredPartsForGetup()
     {
         return this.isAlive(); // Boss zombie will always be able to get up as he doesn't have any detachable parts
+    }
+
+    @Override
+    public void enable_physics()
+    {
+        super.enable_physics();
+        // Need to check if alive so that onDeath() can be called if not alive
+        // and for some reason hit with rocks etc... rather than flames
+        this.isAliveCheck();
     }
 
     @Override
@@ -224,14 +244,19 @@ public class Bone_BossZombie extends Zombie
     @Override
     protected void createPart(Body physicsBody, String bodyName, Sprite sprite, ArrayList<Joint> joints, ContainerEntityInterface containerEntity, Array<BleedablePoint> bleedablePoints)
     {
-       /* if(bodyName.equals("bike"))
-        {*/
-        com.fcfruit.monstersmash.zombies.parts.SpecialPart part = new com.fcfruit.monstersmash.zombies.parts.SpecialPart(bodyName, sprite, physicsBody, joints, containerEntity);
-        this.getDrawableEntities().put(bodyName, part);
-        this.getInteractiveEntities().put(bodyName, part);
-        this.getDetachableEntities().put(bodyName, part);
-        /*}
+        if(bodyName.equals("torso"))
+        {
+            Torso part = new Torso(bodyName, sprite, physicsBody, containerEntity, bleedablePoints);
+            this.getDrawableEntities().put(bodyName, part);
+            this.getInteractiveEntities().put(bodyName, part);
+        }
         else
-            super.createPart(physicsBody, bodyName, sprite, joints, containerEntity, bleedablePoints);*/
+        {
+            SpecialPart part = new SpecialPart(bodyName, sprite, physicsBody, joints, containerEntity);
+            this.getDrawableEntities().put(bodyName, part);
+            this.getInteractiveEntities().put(bodyName, part);
+            this.getDetachableEntities().put(bodyName, part);
+        }
+
     }
 }

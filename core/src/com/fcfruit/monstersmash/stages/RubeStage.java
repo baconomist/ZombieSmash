@@ -63,6 +63,7 @@ public class RubeStage extends Stage
         boolean checkbox;
         boolean vertical_slider;
         boolean horizontal_slider;
+        boolean hidden;
 
         this.rubeScene = this.rubeSceneLoader.loadScene(Gdx.files.internal(filePath));
         for (RubeImage image : this.rubeScene.getImages())
@@ -72,6 +73,7 @@ public class RubeStage extends Stage
             checkbox = (rubeScene.getCustom(image, "checkbox") != null ? (Boolean) rubeScene.getCustom(image, "checkbox") : false);
             vertical_slider = (rubeScene.getCustom(image, "vertical_slider") != null ? (Boolean) rubeScene.getCustom(image, "vertical_slider") : false);
             horizontal_slider = (rubeScene.getCustom(image, "horizontal_slider") != null ? (Boolean) rubeScene.getCustom(image, "horizontal_slider") : false);
+            hidden = (rubeScene.getCustom(image, "hidden") != null ? (Boolean) rubeScene.getCustom(image, "hidden") : false);
 
             if (name != null)
             {
@@ -96,6 +98,9 @@ public class RubeStage extends Stage
                 actor.setName(image.file.split("/")[image.file.split("/").length - 1]);
                 this.drawOrder.put(actor, image.renderOrder);
             }
+
+            actor.setVisible(!hidden);
+
         }
 
         if (this.physicsEnabled)

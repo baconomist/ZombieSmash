@@ -48,7 +48,11 @@ public class GameStage extends Stage
         this.shapeRenderer = new ShapeRenderer();
 
         this.lastScreenX = new HashMap<Integer, Integer>();
-        this.lastScreenX.put(0, 0);
+        // Add default value for pointers 0-10 to prevent nullPointerException in this.lastScreenX.get(pointer)
+        for(int i = 0; i < 10; i++)
+        {
+            this.lastScreenX.put(i, 0);
+        }
 
     }
 
@@ -61,7 +65,7 @@ public class GameStage extends Stage
         float delta = Gdx.graphics.getDeltaTime();
 
         if(Environment.powerupManager.isSlowMotionEnabled)
-            delta = delta/ com.fcfruit.monstersmash.powerups.time.TimePowerup.timeFactor;
+            delta = delta/TimePowerup.timeFactor;
 
         if(!Environment.isPaused)
             Environment.level.update(delta);

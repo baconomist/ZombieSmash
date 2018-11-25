@@ -1,0 +1,283 @@
+
+{
+  "collisionbitplanes" : 
+  {
+    "names" : 
+    [
+      "bitplane1",
+      "bitplane2",
+      "bitplane3",
+      "bitplane4",
+      "bitplane5",
+      "bitplane6",
+      "bitplane7",
+      "bitplane8",
+      "bitplane9",
+      "bitplane10",
+      "bitplane11",
+      "bitplane12",
+      "bitplane13",
+      "bitplane14",
+      "bitplane15",
+      "bitplane16",
+      "bitplane17",
+      "bitplane18",
+      "bitplane19",
+      "bitplane20",
+      "bitplane21",
+      "bitplane22",
+      "bitplane23",
+      "bitplane24",
+      "bitplane25",
+      "bitplane26",
+      "bitplane27",
+      "bitplane28",
+      "bitplane29",
+      "bitplane30",
+      "bitplane31",
+      "bitplane32"
+    ]
+  },
+  "customPropertyDefs" : 
+  [
+    
+    {
+      "class" : "image",
+      "displayName" : "button",
+      "name" : "button",
+      "type" : "bool"
+    },
+    
+    {
+      "class" : "image",
+      "displayName" : "name",
+      "name" : "name",
+      "type" : "string"
+    }
+  ],
+  "metaworld" : 
+  {
+    "allowSleep" : true,
+    "autoClearForces" : true,
+    "continuousPhysics" : true,
+    "exportOptions" : 
+    {
+      "compactCommonFloats" : true,
+      "compactZeroVecs" : true,
+      "saveFullPathForImages" : false,
+      "saveFullPathForSamplerOutput" : false,
+      "saveImagePathsRelativeToRUBEFile" : false,
+      "saveSamplerOutputPathsRelativeToRUBEFile" : false,
+      "useGsonFormat" : false,
+      "useHumanReadableFloats" : true,
+      "usePrettyPrint" : true
+    },
+    "gravity" : 
+    {
+      "x" : 0,
+      "y" : -10
+    },
+    "metaimage" : 
+    [
+      
+      {
+        "aspectScale" : 0.9431347846984863,
+        "center" : 
+        {
+          "x" : 13.07994079589844,
+          "y" : 10.66897773742676
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "health_overlay"
+          }
+        ],
+        "file" : "images/health_overlay.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 2,
+        "name" : "image0",
+        "opacity" : 0.5,
+        "renderOrder" : 1,
+        "scale" : 0.4361465871334076
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 1.051712870597839,
+          "y" : 10.18711757659912
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_1"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 3,
+        "name" : "image2",
+        "opacity" : 0.5,
+        "scale" : 1.768819332122803
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 13.07478523254395,
+          "y" : 10.65935325622559
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "health_bar"
+          }
+        ],
+        "file" : "images/health.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 4,
+        "name" : "image3",
+        "opacity" : 0.5,
+        "scale" : 0.7742451429367065
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 18.97156524658203,
+          "y" : 10.06698322296143
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "pause_button"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/pause.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 5,
+        "name" : "image4",
+        "opacity" : 0.5,
+        "scale" : 1.773422479629517
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 3.098604917526245,
+          "y" : 10.18751907348633
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_2"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 6,
+        "name" : "image1",
+        "opacity" : 0.5,
+        "scale" : 1.770544886589050
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 5.139456272125244,
+          "y" : 10.18633937835693
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_3"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 7,
+        "name" : "image5",
+        "opacity" : 0.5,
+        "scale" : 1.770544886589050
+      },
+      
+      {
+        "aspectScale" : 1,
+        "center" : 
+        {
+          "x" : 7.180449485778809,
+          "y" : 10.18457603454590
+        },
+        "customProperties" : 
+        [
+          
+          {
+            "name" : "name",
+            "string" : "powerup_button_4"
+          },
+          
+          {
+            "bool" : true,
+            "name" : "button"
+          }
+        ],
+        "file" : "images/box.png",
+        "filter" : 1,
+        "flip" : false,
+        "id" : 8,
+        "name" : "image6",
+        "opacity" : 0.5,
+        "scale" : 1.770544886589050
+      }
+    ],
+    "positionIterations" : 3,
+    "stepsPerSecond" : 60.0,
+    "subStepping" : false,
+    "velocityIterations" : 8,
+    "warmStarting" : true
+  }
+}

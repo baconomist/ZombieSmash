@@ -110,7 +110,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
     {
         if (Environment.touchedDownItems.size() < 1)
         {
-            if ((Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 4 && screenX < Gdx.graphics.getWidth() / 2 || Environment.level.getCurrentCameraPosition().equals("left") && screenX > Gdx.graphics.getWidth() / 2)
+            /*if ((Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 4 && screenX < Gdx.graphics.getWidth() / 2 || Environment.level.getCurrentCameraPosition().equals("left") && screenX > Gdx.graphics.getWidth() / 2)
                     || (Environment.level.getCurrentCameraPosition().equals("middle") && screenX > Gdx.graphics.getWidth() / 2 && screenX < Gdx.graphics.getWidth() * 3 / 4)
                     || (Environment.level.getCurrentCameraPosition().equals("right") && screenX < Gdx.graphics.getWidth() / 2))
             {
@@ -125,7 +125,7 @@ public class GunPowerup implements PowerupInterface, InputCaptureEntityInterface
                 this.currentControllingGun = 1;
             else if (Environment.level.getCurrentCameraPosition().equals("right"))
                 this.currentControllingGun = 1;
-
+            */
         }
     }
 

@@ -11,7 +11,9 @@ import com.fcfruit.monstersmash.Environment;
 import com.fcfruit.monstersmash.MonsterSmash;
 import com.fcfruit.monstersmash.physics.Physics;
 import com.fcfruit.monstersmash.stages.GameStage;
-import com.fcfruit.monstersmash.stages.GameUIStage;
+import com.fcfruit.monstersmash.stages.game_ui.GameUIStage;
+import com.fcfruit.monstersmash.stages.game_ui.SandboxUIStage;
+import com.fcfruit.monstersmash.stages.game_ui.SurvivalUIStage;
 
 /**
  * Created by Lucas on 2017-07-21.
@@ -20,7 +22,7 @@ import com.fcfruit.monstersmash.stages.GameUIStage;
 public class GameScreen implements Screen{
 
     private Stage game_stage;
-    private com.fcfruit.monstersmash.stages.GameUIStage ui_stage;
+    private GameUIStage ui_stage;
 
     private StretchViewport physics_view;
     private StretchViewport game_view;
@@ -29,8 +31,6 @@ public class GameScreen implements Screen{
     private InputMultiplexer inputMultiplexer;
 
     private Box2DDebugRenderer debugRenderer;
-
-
 
     public GameScreen(){
 
@@ -48,7 +48,11 @@ public class GameScreen implements Screen{
 
         ui_view = new StretchViewport(MonsterSmash.WIDTH, MonsterSmash.HEIGHT);
         ui_view.apply();
-        ui_stage = new GameUIStage(ui_view);
+
+        if(Environment.mode == Environment.Mode.SANDBOX)
+            ui_stage = new SandboxUIStage(ui_view);
+        else
+            ui_stage = new SurvivalUIStage(ui_view);
 
         inputMultiplexer = new InputMultiplexer();
 
@@ -146,11 +150,11 @@ public class GameScreen implements Screen{
 
     }
 
-    public void set_ui_stage(com.fcfruit.monstersmash.stages.GameUIStage s){
+    public void set_ui_stage(GameUIStage s){
         ui_stage = s;
     }
 
-    public com.fcfruit.monstersmash.stages.GameUIStage get_ui_stage(){return this.ui_stage;}
+    public GameUIStage get_ui_stage(){return this.ui_stage;}
 
     public InputMultiplexer getInputMultiplexer()
     {

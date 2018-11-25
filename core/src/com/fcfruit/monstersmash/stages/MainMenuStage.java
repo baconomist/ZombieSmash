@@ -40,7 +40,6 @@ public class MainMenuStage extends RubeStage
         super(viewport, "ui/main_menu/main_menu.json", "ui/main_menu/", true);
 
         this.music = Gdx.audio.newMusic(Gdx.files.internal("audio/theme_song.wav"));
-        Environment.musicManager.addMusic("main_menu", this.music, true);
 
         this.regZombie = new com.fcfruit.monstersmash.zombies.MenuRegZombie();
         this.regZombie.setup();
@@ -90,14 +89,14 @@ public class MainMenuStage extends RubeStage
             }
         });
 
-/*        this.findActor("premium_store_button").addListener(new ClickListener(){
+        this.findActor("premium_store_button").addListener(new ClickListener(){
             @Override
             public void touchUp(InputEvent event, float x, float y, int pointer, int button)
             {
                 Environment.screens.mainmenu.showInAppPurchasesStage();
                 super.touchUp(event, x, y, pointer, button);
             }
-        });*/
+        });
 
 
     }
@@ -122,7 +121,8 @@ public class MainMenuStage extends RubeStage
     {
         super.act(delta);
 
-        Environment.musicManager.playMusic("main_menu");
+        if(!Environment.musicManager.playMusic("main_menu"))
+            Environment.musicManager.addMusic("main_menu", this.music, true);
 
         this.regZombie.update(delta);
 

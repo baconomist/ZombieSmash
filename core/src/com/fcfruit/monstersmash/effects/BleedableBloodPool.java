@@ -19,7 +19,7 @@ public class BleedableBloodPool
     
     public BleedableBloodPool()
     {
-        // create 200 blood particles
+        // load 200 blood particles
         this.bleedBlood = new com.fcfruit.monstersmash.effects.BleedBlood[400];
         // Fill array with bodies
         for(int i = 0; i < this.bleedBlood.length; i++)

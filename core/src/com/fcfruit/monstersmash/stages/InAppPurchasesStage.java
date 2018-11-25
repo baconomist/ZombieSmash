@@ -1,25 +1,19 @@
 package com.fcfruit.monstersmash.stages;
 
-import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.pay.Offer;
-import com.badlogic.gdx.pay.OfferType;
-import com.badlogic.gdx.pay.PurchaseManagerConfig;
-import com.badlogic.gdx.pay.PurchaseObserver;
-import com.badlogic.gdx.pay.PurchaseSystem;
-import com.badlogic.gdx.pay.Transaction;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.GlyphLayout;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
 import com.badlogic.gdx.scenes.scene2d.ui.Image;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
+import com.badlogic.gdx.utils.Json;
 import com.badlogic.gdx.utils.viewport.Viewport;
 import com.fcfruit.monstersmash.Environment;
-import com.fcfruit.monstersmash.ui.ImageButton;
+import com.fcfruit.monstersmash.ui.FontActor;
 
 import java.util.HashMap;
-
-import static com.badlogic.gdx.pay.PurchaseManagerConfig.STORE_NAME_ANDROID_GOOGLE;
 
 public class InAppPurchasesStage extends RubeStage
 {
@@ -44,7 +38,6 @@ public class InAppPurchasesStage extends RubeStage
     }
 
     private Image[] products;
-    private PurchaseManagerConfig purchaseManagerConfig;
 
     private Image title;
     private com.fcfruit.monstersmash.ui.ImageButton productButton;
@@ -58,11 +51,16 @@ public class InAppPurchasesStage extends RubeStage
 
     private int current_product;
 
+    private GlyphLayout notificationMessageLayout;
+    private FontActor notificationMessage;
+    private double timeBeforeNotificationRemove = 2500;
+    private double notificationDeltaAccum;
+
     public InAppPurchasesStage(Viewport viewport)
     {
         super(viewport, "ui/in_app_purchase_store/in_app_purchase_store.json", "ui/in_app_purchase_store/", false);
 
-        this.setUpPurchaseManager();
+        //this.setUpPurchaseManager();
 
         this.title = (Image) this.findActor("title");
 
@@ -114,73 +112,14 @@ public class InAppPurchasesStage extends RubeStage
 
         this.overlay = (Image) this.findActor("overlay");
 
+        this.notificationMessageLayout = new GlyphLayout();
+        BitmapFont bitmapFont = new BitmapFont(Gdx.files.internal("ui/font/font.fnt"));
+        bitmapFont.getData().setScale(2);
+        this.notificationMessage = new FontActor(bitmapFont);
+
         this.createProducts();
         this.manageProducts();
-        this.resetOverlay();
-
-    }
-
-    private void setUpPurchaseManager()
-    {
-        this.purchaseManagerConfig = new PurchaseManagerConfig();
-
-        if (Gdx.app.getType() == Application.ApplicationType.Android)
-        {
-            /*this.purchaseManagerConfig.addStoreParam(STORE_NAME_ANDROID_GOOGLE, ProductIdentifiers.publicKey);
-
-            this.purchaseManagerConfig.addOffer(new Offer().setType(OfferType.ENTITLEMENT).setIdentifier("no_ads"));
-
-            PurchaseSystem.setManager(Environment.purchaseManager);
-
-            Environment.purchaseManager.install(new PurchaseObserver()
-            {
-                @Override
-                public void handleInstall()
-                {
-
-                }
-
-                @Override
-                public void handleInstallError(Throwable e)
-                {
-
-                }
-
-                @Override
-                public void handleRestore(Transaction[] transactions)
-                {
-
-                }
-
-                @Override
-                public void handleRestoreError(Throwable e)
-                {
-
-                }
-
-                @Override
-                public void handlePurchase(Transaction transaction)
-                {
-
-                }
-
-                @Override
-                public void handlePurchaseError(Throwable e)
-                {
-
-                }
-
-                @Override
-                public void handlePurchaseCanceled()
-                {
-
-                }
-            }, purchaseManagerConfig, true);
-
-
-            Environment.purchaseManager.purchase("no_ads");*/
-
-        }
+        //this.resetOverlay(); // for sliding animation, causes non-responsive product buttons
 
     }
 
@@ -197,6 +136,15 @@ public class InAppPurchasesStage extends RubeStage
             this.products[i].setSize(this.productButton.getWidth(), this.productButton.getHeight());
 
             this.products[i].setName(fileHandle.nameWithoutExtension());
+
+            this.products[i].addListener(new ClickListener(){
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+                {
+                    onProductClicked();
+                    super.touchUp(event, x, y, pointer, button);
+                }
+            });
 
             this.addActor(this.products[i]);
             i++;
@@ -253,6 +201,14 @@ public class InAppPurchasesStage extends RubeStage
     {
         super.act(delta);
         //this.manageTransitionAnimation(delta);
+
+        this.notificationDeltaAccum += delta;
+
+        if(this.notificationDeltaAccum >= this.timeBeforeNotificationRemove/1000 && this.notificationMessage.hasParent())
+        {
+            for (Image product : this.products) this.addActor(product);
+            this.notificationMessage.remove();
+        }
     }
 
     private void manageTransitionAnimation(float dt)
@@ -298,6 +254,8 @@ public class InAppPurchasesStage extends RubeStage
         this.products[current_product].setPosition(this.productButton.getX(), this.productButton.getY());
 
         this.is_transitioning = true;
+
+        this.onSwitchProduct();
     }
 
     private void onRightClicked()
@@ -316,16 +274,85 @@ public class InAppPurchasesStage extends RubeStage
         this.products[current_product].setPosition(this.productButton.getX(), this.productButton.getY());
 
         this.is_transitioning = true;
+
+        this.onSwitchProduct();
+    }
+
+    private void onSwitchProduct()
+    {
+        for(Image product : this.products) if(!product.hasParent()) this.addActor(product);
+    }
+
+    public void setCurrentProduct(String product_sku)
+    {
+        int i = -1;
+        int c = 0;
+        for(Image product_image : this.products)
+        {
+            if(product_image.getName().equals(product_sku))
+            {
+                i = c;
+                break;
+            }
+            c++;
+        }
+        if(i > -1)
+        {
+            this.products[current_product].setPosition(9999, 9999);
+
+            this.current_product = i;
+            this.products[current_product].setPosition(this.productButton.getX(), this.productButton.getY());
+            this.onSwitchProduct();
+        }
     }
 
     private void onProductClicked()
     {
-        this.purchaseProduct(ProductIdentifiers.productToSku.get(this.products[this.current_product].getName()));
+        String sku = ProductIdentifiers.productToSku.get(this.products[this.current_product].getName());
+        String[] list = new Json().fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
+        for (String str : list)
+        {
+            if (str != null && str.equals(sku))
+            {
+                Gdx.app.debug("InAppPurchaseStage", "The product \"" + sku + "\" is already purchased");
+                showAlreadyPurchasedNotification();
+                return; // Don't save_purchase if already purchased
+            }
+        }
+
+        if(!this.purchaseProduct(sku)) // If save_purchase failed
+            showPurchaseErrorNotification();
     }
 
-    private void purchaseProduct(String sku)
+    private void showAlreadyPurchasedNotification()
     {
-        //Environment.purchaseManager.purchase("no_ads");
-        Gdx.app.log("aaaa", "ssss");
+        String msg = "This product is already purchased.";
+        this.notificationMessage.setText(msg);
+        this.notificationMessageLayout.setText(notificationMessage.getBitmapFont(), msg);
+        this.notificationMessage.setPosition(getViewport().getWorldWidth()/2 - notificationMessageLayout.width/2, getViewport().getWorldHeight()/2 + notificationMessageLayout.height);
+        this.addActor(notificationMessage);
+
+        for (Image product : this.products) product.remove();
+
+        this.notificationDeltaAccum = 0;
+    }
+
+    private void showPurchaseErrorNotification()
+    {
+        String msg = "An error occured while purchasing the product. \n Please try again later.\nIf the problem persists contact us \nat fcfruitstudios@gmail.com";
+        this.notificationMessage.setText(msg);
+        this.notificationMessageLayout.setText(notificationMessage.getBitmapFont(), msg);
+        this.notificationMessage.setPosition(getViewport().getWorldWidth()/2 - notificationMessageLayout.width/2, getViewport().getWorldHeight()/2 + notificationMessageLayout.height);
+        this.addActor(notificationMessage);
+
+        for (Image product : this.products) product.remove();
+
+        this.notificationDeltaAccum = 0;
+    }
+
+    private boolean purchaseProduct(String sku)
+    {
+        Gdx.app.debug("InAppPurchasesStage", "Attempting to save_purchase item: \"" + sku + "\"");
+        return Environment.purchaseActivityInterface.purchase(sku);
     }
 }

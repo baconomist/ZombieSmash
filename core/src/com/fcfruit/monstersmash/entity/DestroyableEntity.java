@@ -86,8 +86,7 @@ public class DestroyableEntity implements DestroyableEntityInterface
         {
             for (com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface interactiveEntity : this.containerEntity.getInteractiveEntities().values())
             {
-                Body b = ((PhysicsEntityInterface)interactiveEntity).getPhysicsBody();
-                if(!(!interactiveEntity.isTouching() && b.getPosition().y < 2f))
+                if(interactiveEntity.isTouching())
                 {
                     return false;
                 }
@@ -97,12 +96,9 @@ public class DestroyableEntity implements DestroyableEntityInterface
         }
         else if(this.detachableEntity != null)
         {
-            Body b = this.interactivePhysicsEntity.getPhysicsBody();
-            return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching() && b.getPosition().y < 1f
-                    && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
+            return this.detachableEntity.getState().equals("detached") && !this.interactivePhysicsEntity.isTouching() && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
         }
-        return !this.interactivePhysicsEntity.isTouching() && this.interactivePhysicsEntity.getPhysicsBody().getPosition().y < 1f
-                && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
+        return !this.interactivePhysicsEntity.isTouching() && System.currentTimeMillis() - this.destroyTimer >= this.timeBeforeDestroy;
     }
     
     private boolean isInLevel(Body physicsBody)
@@ -207,7 +203,6 @@ public class DestroyableEntity implements DestroyableEntityInterface
             this.animatableGraphicsEntity.setPosition(this.interactivePhysicsEntity.getPhysicsBody().getPosition());
         else if(this.containerEntity != null)
             this.animatableGraphicsEntity.setPosition(((DrawableEntityInterface) this.containerEntity.getDrawableEntities().values().toArray()[0]).getPosition()); // Pick one item out of the container to spawn the smoke on
-
 
         Environment.drawableBackgroundAddQueue.add(this.animatableGraphicsEntity);
     }

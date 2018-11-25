@@ -1,5 +1,6 @@
 package com.fcfruit.monstersmash.stages;
 
+import com.badlogic.gdx.Application;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.GlyphLayout;
@@ -157,7 +158,7 @@ public class LevelEndStage extends RubeStage
                 i++;
             }
 
-            if (this.brainIncrement < Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty)
+            if (this.brainIncrement < Environment.level.getBrainCount() * Environment.difficulty_multipliers.get(Environment.currentDifficulty)
                     && System.currentTimeMillis() - this.brainIncrementTimer >= this.timeBetweenBrainIncrement)
             {
                 this.brainIncrement += this.brainIncrement / this.brainIncrementSpeedFactor;
@@ -166,9 +167,9 @@ public class LevelEndStage extends RubeStage
                 this.brainIncrementTimer = System.currentTimeMillis();
             }
 
-            if (this.brainIncrement > Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty))
+            if (this.brainIncrement > Environment.level.getBrainCount() * Environment.difficulty_multipliers.get(Environment.currentDifficulty))
             {
-                this.brainIncrement -= this.brainIncrement - Environment.level.brainCounter * Environment.difficulty_multipliers.get(Environment.currentDifficulty);
+                this.brainIncrement -= this.brainIncrement - Environment.level.getBrainCount() * Environment.difficulty_multipliers.get(Environment.currentDifficulty);
                 this.levelRewards.setText("Brains: " + brainIncrement);
             }
         }
@@ -201,6 +202,8 @@ public class LevelEndStage extends RubeStage
             this.brainIncrementTimer = System.currentTimeMillis();
         }
         this.constructed = true;
+
+        Environment.adActivityInterface.showAds();
     }
 
     private void constructEndStatus()
@@ -346,13 +349,13 @@ public class LevelEndStage extends RubeStage
         {
             // Restart level
             Environment.game.setScreen(Environment.screens.loadingscreen);
-            Environment.screens.loadingscreen.setLevelID(Environment.level.level_id);
+            Environment.screens.loadingscreen.setLevelID(Environment.level.getLevelId());
         } else
         {
-            if (Environment.level.level_id + 1 < 31)
+            if (Environment.level.getLevelId() + 1 < 31)
             {
                 Environment.screens.loadingscreen.setGameLoading();
-                Environment.screens.loadingscreen.setLevelID(Environment.level.level_id + 1);
+                Environment.screens.loadingscreen.setLevelID(Environment.level.getLevelId() + 1);
                 Environment.game.setScreen(Environment.screens.loadingscreen);
             } else
             {

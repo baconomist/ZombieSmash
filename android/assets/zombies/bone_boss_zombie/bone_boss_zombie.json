@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "3COV5CCcF0sg/vBU2TOmc4Blmck", "spine": "3.6.53", "width": 544.61, "height": 958.19, "images": "./images/" },
+"skeleton": { "hash": "VFcU+OR8vsaMEoq1aq3qGy4mTkM", "spine": "3.6.53", "width": 544.61, "height": 958.19, "images": "./images/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "torso", "parent": "root", "length": 408.13, "rotation": 86.7, "x": 11.87, "y": 352.65 },
@@ -44,7 +44,7 @@
 			"bounding_box": {
 				"type": "boundingbox",
 				"vertexCount": 4,
-				"vertices": [ -260.97, -2.68, 315.07, -0.32, 277.38, 972.7, -252.72, 973.88 ]
+				"vertices": [ -260.97, -2.68, 315.07, -0.32, 303.76, 975.1, -252.72, 973.88 ]
 			}
 		},
 		"head": {
