@@ -16,7 +16,7 @@
         "grenade"
       ]
     },
-    "bone_boss": {
+    "bone_boss_zombie": {
       "quantity": 1,
       "init_delay": 3,
       "position": "left"
