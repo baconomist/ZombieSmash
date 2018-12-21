@@ -40,9 +40,9 @@ public class MonsterSmash extends Game
             Gdx.input.setCatchBackKey(true);
         }
 
-
         Environment.create();
-        Environment.game.setScreen(Environment.screens.splashscreen);
+        Environment.game.setScreen(Environment.screens.levelmenu);
+        Environment.screens.levelmenu.showModeSelect();
         //Environment.setupGameSandbox();
         //this.setScreen(Environment.screens.gamescreen);
 

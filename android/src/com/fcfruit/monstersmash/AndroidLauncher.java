@@ -152,6 +152,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
             public void onBillingInitialized()
             {
                 Log.i("ANDOIRD_PURCHASE", "onBillingInitialized");
+                bp.loadOwnedPurchasesFromGoogle(); // Refresh purchase cache of bp
             }
 
             @Override

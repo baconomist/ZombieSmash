@@ -1,10 +1,25 @@
 package com.fcfruit.monstersmash.level.mode;
 
+import com.badlogic.gdx.math.Vector2;
 import com.fcfruit.monstersmash.entity.interfaces.event.LevelEventListener;
+import com.fcfruit.monstersmash.zombies.Zombie;
+
+import java.util.HashMap;
 
 public class SandboxLevel extends Level
 {
     private boolean isCameraMoving = false;
+
+    @Override
+    public void update(float delta)
+    {
+        super.update(delta);
+    }
+
+    private void updateTutorial()
+    {
+
+    }
 
     public void setCameraMoving(boolean moving)
     {
