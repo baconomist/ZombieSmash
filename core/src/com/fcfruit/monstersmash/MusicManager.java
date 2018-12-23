@@ -89,7 +89,7 @@ public class MusicManager
     {
         if(this.musics.get(musicKey) == null)
         {
-            Gdx.app.error("MusicManager::stopMusic()","No such music exists in music manager.");
+            Gdx.app.error("MusicManager::stopMusic()","No such music **" + musicKey + "** exists in music manager.");
             return false;
         }
         this.musics.get(musicKey).stop();
@@ -108,17 +108,17 @@ public class MusicManager
         this.musics.clear();
     }
 
-    public boolean removeMusic(String key)
+    public boolean removeMusic(String musicKey)
     {
 
-        if(this.musics.get(key) == null)
+        if(this.musics.get(musicKey) == null)
         {
-            Gdx.app.error("MusicManager::dispose()","No such music exists in music manager.");
+            Gdx.app.error("MusicManager::dispose()","No such music **" + musicKey +"** exists in music manager.");
             return false;
         }
 
-        this.musics.get(key).dispose();
-        this.musics.remove(key);
+        this.musics.get(musicKey).dispose();
+        this.musics.remove(musicKey);
         return true;
     }
 
