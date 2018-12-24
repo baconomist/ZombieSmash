@@ -51,7 +51,7 @@ android {
             debuggable true
         }
         release {
-            debuggable false
+            debuggable true
             signingConfig signingConfigs.release
             minifyEnabled false // This causes build error for some reason
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

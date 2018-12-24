@@ -64,24 +64,6 @@ public class ModeSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
 
         this.sandboxModeButtonSetup();
 
-        // If either actor clicked below, trigger onPurchaseButtonClicked()
-        ((Group) this.findActor("buy_popup")).findActor("purchase_button").addListener(new ClickListener(){
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
-            {
-                onPurchaseButtonClicked();
-                super.touchUp(event, x, y, pointer, button);
-            }
-        });
-        ((Group) this.findActor("buy_popup")).findActor("purchase_text").addListener(new ClickListener(){
-            @Override
-            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
-            {
-                onPurchaseButtonClicked();
-                super.touchUp(event, x, y, pointer, button);
-            }
-        });
-
     }
 
     @Override
@@ -155,6 +137,24 @@ public class ModeSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
 
             this.addActor(lock);
             this.addActor(buy_popup);
+
+            // If either actor clicked below, trigger onPurchaseButtonClicked()
+            ((Group) this.findActor("buy_popup")).findActor("purchase_button").addListener(new ClickListener(){
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+                {
+                    onPurchaseButtonClicked();
+                    super.touchUp(event, x, y, pointer, button);
+                }
+            });
+            ((Group) this.findActor("buy_popup")).findActor("purchase_text").addListener(new ClickListener(){
+                @Override
+                public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+                {
+                    onPurchaseButtonClicked();
+                    super.touchUp(event, x, y, pointer, button);
+                }
+            });
         }
     }
 
@@ -191,23 +191,31 @@ public class ModeSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button)
     {
-        Vector3 stage_pos = getViewport().unproject(new Vector3(screenX, screenY, 0));
-        Actor hit = this.hit(stage_pos.x, stage_pos.y, true);
+        if(!Environment.purchaseManager.is_cache_purchased("sandbox"))
+        {
+            Vector3 stage_pos = getViewport().unproject(new Vector3(screenX, screenY, 0));
+            Actor hit = this.hit(stage_pos.x, stage_pos.y, true);
 
-        return (!this.findActor("buy_popup").isVisible() || actorHasParent("buy_popup", hit)) && super.touchDown(screenX, screenY, pointer, button);
+            return (!this.findActor("buy_popup").isVisible() || actorHasParent("buy_popup", hit)) && super.touchDown(screenX, screenY, pointer, button);
+        }
+        else
+            return super.touchDown(screenX, screenY, pointer, button);
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button)
     {
-        Vector3 stage_pos = getViewport().unproject(new Vector3(screenX, screenY, 0));
-        Actor hit = this.hit(stage_pos.x, stage_pos.y, true);
-
-        if((hit.getParent() == null && !hit.getName().equals("buy_popup"))
-                || !actorHasParent("buy_popup", hit))
+        if(!Environment.purchaseManager.is_cache_purchased("sandbox"))
         {
-            this.popdown_action.restart();
-            this.findActor("buy_popup").addAction(popdown_action);
+            Vector3 stage_pos = getViewport().unproject(new Vector3(screenX, screenY, 0));
+            Actor hit = this.hit(stage_pos.x, stage_pos.y, true);
+
+            if ((hit.getParent() == null && !hit.getName().equals("buy_popup"))
+                    || !actorHasParent("buy_popup", hit))
+            {
+                this.popdown_action.restart();
+                this.findActor("buy_popup").addAction(popdown_action);
+            }
         }
         return super.touchUp(screenX, screenY, pointer, button);
     }
@@ -215,8 +223,11 @@ public class ModeSelectStage extends com.fcfruit.monstersmash.stages.RubeStage
     @Override
     public void act()
     {
-        if(this.findActor("buy_popup").getScaleX() == 0 && this.findActor("buy_popup").getActions().size < 1)
-            this.findActor("buy_popup").setVisible(false);
+        if(!Environment.purchaseManager.is_cache_purchased("sandbox"))
+        {
+            if (this.findActor("buy_popup").getScaleX() == 0 && this.findActor("buy_popup").getActions().size < 1)
+                this.findActor("buy_popup").setVisible(false);
+        }
         super.act();
     }
 

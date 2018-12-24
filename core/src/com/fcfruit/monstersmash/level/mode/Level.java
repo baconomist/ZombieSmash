@@ -39,6 +39,8 @@ public abstract class Level
 
     public Objective objective;
 
+    private XmasSnow xmasSnow;
+
     protected ArrayList<DrawableEntityInterface> drawableEntities;
     protected ArrayList<UpdatableEntityInterface> updatableEntities;
     protected ArrayList<InputCaptureEntityInterface> inputCaptureEntities;
@@ -46,6 +48,8 @@ public abstract class Level
 
     public Level()
     {
+        this.xmasSnow = new XmasSnow();
+
         this.drawableEntities = new ArrayList<DrawableEntityInterface>();
         this.updatableEntities = new ArrayList<UpdatableEntityInterface>();
         this.inputCaptureEntities = new ArrayList<InputCaptureEntityInterface>();
@@ -55,7 +59,7 @@ public abstract class Level
 
     public void load()
     {
-
+        xmasSnow.load();
     }
 
     private boolean isDrawableInLevel(DrawableEntityInterface drawableEntityInterface)
@@ -90,6 +94,8 @@ public abstract class Level
                 drawableEntity.draw(batch, skeletonRenderer);
             }
         }
+
+        xmasSnow.draw(batch);
     }
 
     public void onTouchDown(float screenX, float screenY, int pointer)
@@ -150,6 +156,8 @@ public abstract class Level
 
     public void update(float delta)
     {
+        xmasSnow.update(delta);
+
         for (DrawableEntityInterface drawableEntity : this.drawableEntities)
         {
             try

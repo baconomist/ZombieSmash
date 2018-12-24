@@ -6,16 +6,9 @@ filter: Linear,Linear
 repeat: none
 night_map
   rotate: false
-  xy: 2, 44
+  xy: 2, 2
   size: 2000, 2000
   orig: 2000, 2000
-  offset: 0, 0
-  index: -1
-snow_1
-  rotate: false
-  xy: 2, 2
-  size: 39, 40
-  orig: 39, 40
   offset: 0, 0
   index: -1
 
@@ -26,15 +19,15 @@ filter: Linear,Linear
 repeat: none
 house
   rotate: false
-  xy: 2, 403
-  size: 1196, 894
-  orig: 1196, 961
-  offset: 0, 67
+  xy: 2, 438
+  size: 1190, 901
+  orig: 1190, 901
+  offset: 0, 0
   index: -1
 rubble
   rotate: false
   xy: 2, 2
-  size: 1146, 399
-  orig: 1196, 961
-  offset: 38, 0
+  size: 1183, 434
+  orig: 1183, 434
+  offset: 0, 0
   index: -1
