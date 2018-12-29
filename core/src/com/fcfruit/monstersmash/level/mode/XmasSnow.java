@@ -14,6 +14,9 @@ import java.util.ArrayList;
 
 public class XmasSnow
 {
+
+    private boolean roofCheck = true;
+
     private ArrayList<DrawableGraphicsEntity> snowflakes;
 
     public XmasSnow()
@@ -52,12 +55,18 @@ public class XmasSnow
         return point.x > x && point.x < poly_bound_x && Environment.level.objective.polygon.contains(point.x, point.y);
     }
 
+    public void setRoofCheck(boolean roofCheck)
+    {
+        this.roofCheck = roofCheck;
+    }
+
     public void update(float delta)
     {
         for(DrawableGraphicsEntity drawableGraphicsEntity : this.snowflakes)
         {
 
-            if(drawableGraphicsEntity.getPosition().y < (float)(Math.random()*0.25f) || isOnRoof(drawableGraphicsEntity)) // If snowflake hits ground or hits the house roof, reset
+            if(drawableGraphicsEntity.getPosition().y < (float)(Math.random()*0.25f)
+                    || (this.roofCheck && isOnRoof(drawableGraphicsEntity))) // If snowflake hits ground or hits the house roof, reset
                 resetSnowFlake(drawableGraphicsEntity);
 
             // Update snowflake

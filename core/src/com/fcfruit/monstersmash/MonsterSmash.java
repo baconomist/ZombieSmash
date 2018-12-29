@@ -41,19 +41,7 @@ public class MonsterSmash extends Game
         }
 
         Environment.create();
-        Environment.setupGameSandbox();
-        Environment.game.setScreen(Environment.screens.gamescreen);
-        //Environment.game.setScreen(Environment.screens.levelmenu);
-        //Environment.screens.levelmenu.showModeSelect();
-        //Environment.setupGameSandbox();
-        //this.setScreen(Environment.screens.gamescreen);
-
-        //Environment.setupMainMenuGame(5);
-        //Environment.game.setScreen(Environment.screens.splashscreen);
-
-        //Environment.game.setScreen(Environment.screens.mainmenu);
-        //Environment.screens.mainmenu.showInAppPurchasesStage();
-
+        this.setScreen(Environment.screens.splashscreen);
     }
 
     @Override

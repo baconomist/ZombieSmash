@@ -16,6 +16,7 @@ import com.fcfruit.monstersmash.effects.GroundBlood;
 import com.fcfruit.monstersmash.entity.interfaces.DrawableEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.InteractiveEntityInterface;
 import com.fcfruit.monstersmash.entity.interfaces.OptimizableEntityInterface;
+import com.fcfruit.monstersmash.level.mode.XmasSnow;
 import com.fcfruit.monstersmash.physics.PhysicsData;
 import com.fcfruit.monstersmash.zombies.MenuRegZombie;
 
@@ -32,6 +33,7 @@ public class MainMenuStage extends RubeStage
     private com.fcfruit.monstersmash.zombies.MenuRegZombie regZombie;
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
+    private XmasSnow xmasSnow;
 
     private Array<DrawableEntityInterface> drawableEntities;
 
@@ -57,6 +59,9 @@ public class MainMenuStage extends RubeStage
 
         this.spriteBatch = new SpriteBatch();
         this.skeletonRenderer = new SkeletonRenderer();
+        this.xmasSnow = new XmasSnow();
+        this.xmasSnow.setRoofCheck(false);
+        this.xmasSnow.load();
 
         this.drawableEntities = new Array<DrawableEntityInterface>();
 
@@ -113,6 +118,7 @@ public class MainMenuStage extends RubeStage
                 drawableEntityInterface.draw(spriteBatch);
                 drawableEntityInterface.draw(spriteBatch, skeletonRenderer);
             }
+            this.xmasSnow.draw(spriteBatch);
         spriteBatch.end();
     }
 
@@ -125,6 +131,7 @@ public class MainMenuStage extends RubeStage
             Environment.musicManager.addMusic("main_menu", this.music, true);
 
         this.regZombie.update(delta);
+        this.xmasSnow.update(delta);
 
         for(DrawableEntityInterface drawableEntityInterface : Environment.drawableBackgroundAddQueue)
         {
