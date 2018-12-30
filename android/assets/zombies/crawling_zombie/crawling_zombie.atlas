@@ -6,63 +6,63 @@ filter: Linear,Linear
 repeat: none
 head
   rotate: false
-  xy: 2, 46
-  size: 175, 203
-  orig: 175, 203
+  xy: 2, 2
+  size: 247, 234
+  orig: 247, 234
   offset: 0, 0
   index: -1
 left_arm_back
   rotate: false
-  xy: 465, 102
+  xy: 537, 89
   size: 72, 63
   orig: 72, 63
   offset: 0, 0
   index: -1
 left_arm_front
   rotate: false
-  xy: 2, 2
+  xy: 381, 43
   size: 59, 42
   orig: 59, 42
   offset: 0, 0
   index: -1
 left_leg
   rotate: false
-  xy: 465, 167
+  xy: 537, 154
   size: 89, 82
   orig: 89, 82
   offset: 0, 0
   index: -1
 right_arm_back
   rotate: false
-  xy: 647, 186
+  xy: 719, 173
   size: 69, 63
   orig: 69, 63
   offset: 0, 0
   index: -1
 right_arm_front
   rotate: false
-  xy: 309, 56
+  xy: 611, 110
   size: 57, 42
   orig: 57, 42
   offset: 0, 0
   index: -1
 right_leg
   rotate: false
-  xy: 556, 167
+  xy: 628, 154
   size: 89, 82
   orig: 89, 82
   offset: 0, 0
   index: -1
-torso
+torso1
   rotate: false
-  xy: 179, 54
+  xy: 251, 41
   size: 128, 195
   orig: 128, 195
   offset: 0, 0
   index: -1
 torso2
   rotate: false
-  xy: 309, 100
+  xy: 381, 87
   size: 154, 149
   orig: 154, 149
   offset: 0, 0

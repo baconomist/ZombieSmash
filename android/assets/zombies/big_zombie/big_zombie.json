@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "bNyqZWFVjOP/aOvAl7S/YcA0Rho", "spine": "3.6.53", "width": 826.88, "height": 1283.14, "images": "./images/" },
+"skeleton": { "hash": "R7uoR61ZaADsZdn0GT4U5AhLAgk", "spine": "3.6.53", "width": 826.88, "height": 1283.14, "images": "./images/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "bike", "parent": "root", "length": 605.96, "rotation": 64.18, "x": -157.99, "y": 428.38 },
@@ -102,7 +102,7 @@
 	},
 	"biker1": {
 		"head": {
-			"head": { "name": "biker1/head", "x": 24.39, "y": 11.38, "rotation": -9.06, "width": 387, "height": 224 }
+			"head": { "name": "biker1/head", "x": 24.39, "y": 11.38, "rotation": -9.06, "width": 429, "height": 268 }
 		},
 		"left_armback": {
 			"left_armback": { "name": "biker1/left_armback", "x": 129.96, "y": 11.94, "rotation": -7.29, "width": 308, "height": 150 }
@@ -116,7 +116,7 @@
 	},
 	"biker2": {
 		"head": {
-			"head": { "name": "biker2/headblue", "x": -22.29, "y": 8.92, "rotation": -0.92, "width": 449, "height": 233 }
+			"head": { "name": "biker2/headblue", "x": -22.29, "y": 8.92, "rotation": -0.92, "width": 493, "height": 266 }
 		},
 		"left_armback": {
 			"left_armback": { "name": "biker2/left_armbackblue", "x": 130.63, "y": 12.09, "rotation": 2.14, "width": 309, "height": 150 }
@@ -130,7 +130,7 @@
 	},
 	"biker3": {
 		"head": {
-			"head": { "name": "biker3/headgreen", "x": 22.29, "y": 4.46, "rotation": -4.46, "width": 348, "height": 233 }
+			"head": { "name": "biker3/headgreen", "x": 22.29, "y": 4.46, "rotation": -4.46, "width": 422, "height": 249 }
 		},
 		"left_armback": {
 			"left_armback": { "name": "biker3/left_armbackgreen", "x": 127.67, "y": 12.32, "rotation": 1.64, "width": 309, "height": 150 }

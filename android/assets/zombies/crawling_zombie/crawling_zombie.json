@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "nqlP/G1zHEMG1sNAPJfshwBvfE8", "spine": "3.6.53", "width": 335.26, "height": 331.84, "images": "./images/" },
+"skeleton": { "hash": "mNVU+X+0WoPViaqHSzt/3wxNctU", "spine": "3.6.53", "width": 362.54, "height": 371, "images": "./images/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "torso", "parent": "root", "length": 215.65, "rotation": 23.43, "x": 22.49, "y": 67.29 },
@@ -15,7 +15,7 @@
 	{ "name": "left_arm_back", "bone": "left_arm_back", "attachment": "left_arm_back" },
 	{ "name": "left_arm_front", "bone": "left_arm_front", "attachment": "left_arm_front" },
 	{ "name": "left_leg", "bone": "left_leg", "attachment": "left_leg" },
-	{ "name": "torso", "bone": "torso", "attachment": "torso" },
+	{ "name": "torso", "bone": "torso", "attachment": "torso1" },
 	{ "name": "head", "bone": "head", "attachment": "head" },
 	{ "name": "right_leg", "bone": "right_leg", "attachment": "right_leg" },
 	{ "name": "right_arm_back", "bone": "right_arm_back", "attachment": "right_arm_back" },
@@ -33,7 +33,7 @@
 		},
 		"head": {
 			"blood_pos": { "type": "point", "x": 19.42, "y": 8.84, "rotation": 160.68 },
-			"head": { "x": 81.58, "y": 26.76, "rotation": -8.43, "width": 175, "height": 203 },
+			"head": { "x": 81.58, "y": 26.76, "rotation": -8.43, "width": 247, "height": 234 },
 			"physics_pos": { "type": "point", "x": 81.38, "y": 1.08 }
 		},
 		"left_arm_back": {
@@ -75,7 +75,7 @@
 			"blood_pos_right_arm_back": { "type": "point", "x": 126.44, "y": -11.76, "rotation": -85.45 },
 			"blood_pos_right_leg": { "type": "point", "x": 20.92, "y": -4.19, "rotation": -120.5 },
 			"physics_pos": { "type": "point", "x": 100.76, "y": 0.18 },
-			"torso": { "x": 99.22, "y": 1.46, "rotation": 61.1, "width": 128, "height": 195 },
+			"torso1": { "x": 99.22, "y": 1.46, "rotation": 61.1, "width": 128, "height": 195 },
 			"torso2": { "x": 107.47, "y": -1.92, "rotation": -43.13, "width": 154, "height": 149 }
 		}
 	}
@@ -196,8 +196,8 @@
 			"torso": {
 				"attachment": [
 					{ "time": 0.3333, "name": "torso2" },
-					{ "time": 0.6, "name": "torso" },
-					{ "time": 0.8333, "name": "torso" }
+					{ "time": 0.6, "name": "torso1" },
+					{ "time": 0.8333, "name": "torso1" }
 				]
 			}
 		},
@@ -550,7 +550,7 @@
 			"torso": {
 				"attachment": [
 					{ "time": 0.0667, "name": "torso2" },
-					{ "time": 0.5, "name": "torso" }
+					{ "time": 0.5, "name": "torso1" }
 				]
 			}
 		},

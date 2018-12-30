@@ -1,5 +1,5 @@
 {
-"skeleton": { "hash": "VFcU+OR8vsaMEoq1aq3qGy4mTkM", "spine": "3.6.53", "width": 544.61, "height": 958.19, "images": "./images/" },
+"skeleton": { "hash": "8ghOpkQs06GBNpNeWYHXH0fmGlA", "spine": "3.6.53", "width": 582.22, "height": 1013.91, "images": "./images/" },
 "bones": [
 	{ "name": "root" },
 	{ "name": "torso", "parent": "root", "length": 408.13, "rotation": 86.7, "x": 11.87, "y": 352.65 },
@@ -48,9 +48,9 @@
 			}
 		},
 		"head": {
-			"head": { "x": 77.14, "y": -19.23, "rotation": -4.4, "width": 313, "height": 248 },
-			"head2": { "x": 86.55, "y": -14.81, "rotation": -88.05, "width": 272, "height": 320 },
-			"head3": { "x": 58.12, "y": -62.22, "rotation": -88.05, "width": 288, "height": 396 },
+			"head": { "x": 77.14, "y": -19.23, "rotation": -4.4, "width": 418, "height": 312 },
+			"head2": { "x": 86.55, "y": -14.81, "rotation": -88.05, "width": 448, "height": 334 },
+			"head3": { "x": 58.12, "y": -62.22, "rotation": -88.05, "width": 308, "height": 501 },
 			"physics_pos": { "type": "point", "x": 101.01, "y": 0.01 }
 		},
 		"left_arm_back": {

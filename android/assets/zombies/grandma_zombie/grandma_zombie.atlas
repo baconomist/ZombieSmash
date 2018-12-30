@@ -1,166 +1,166 @@
 
 grandma_zombie.png
-size: 2048,512
+size: 2048,1024
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 head
   rotate: false
-  xy: 588, 143
-  size: 259, 286
-  orig: 259, 286
+  xy: 458, 562
+  size: 456, 443
+  orig: 456, 443
   offset: 0, 0
   index: -1
 head2
   rotate: false
-  xy: 300, 147
-  size: 286, 282
-  orig: 286, 282
+  xy: 2, 50
+  size: 443, 465
+  orig: 443, 465
   offset: 0, 0
   index: -1
 head3
   rotate: false
-  xy: 2, 137
-  size: 296, 292
-  orig: 296, 292
+  xy: 2, 517
+  size: 454, 488
+  orig: 454, 488
   offset: 0, 0
   index: -1
 left_armback
   rotate: false
-  xy: 1001, 99
+  xy: 916, 540
   size: 119, 86
   orig: 119, 86
   offset: 0, 0
   index: -1
 left_armfront
   rotate: false
-  xy: 121, 4
+  xy: 2, 2
   size: 150, 46
   orig: 150, 46
   offset: 0, 0
   index: -1
 left_armfront2
   rotate: false
-  xy: 1959, 279
+  xy: 447, 365
   size: 46, 150
   orig: 46, 150
   offset: 0, 0
   index: -1
 left_armfront3
   rotate: false
-  xy: 1246, 5
+  xy: 447, 213
   size: 46, 150
   orig: 46, 150
   offset: 0, 0
   index: -1
 left_legback
   rotate: false
-  xy: 2, 2
+  xy: 916, 628
   size: 117, 133
   orig: 117, 133
   offset: 0, 0
   index: -1
 left_legfront
   rotate: false
-  xy: 121, 52
+  xy: 1035, 678
   size: 148, 83
   orig: 148, 83
   offset: 0, 0
   index: -1
 right_legfront
   rotate: false
-  xy: 121, 52
+  xy: 1035, 678
   size: 148, 83
   orig: 148, 83
   offset: 0, 0
   index: -1
 left_legfront2
   rotate: false
-  xy: 1789, 281
+  xy: 1856, 857
   size: 83, 148
   orig: 83, 148
   offset: 0, 0
   index: -1
 right_legfront2
   rotate: false
-  xy: 1789, 281
+  xy: 1856, 857
   size: 83, 148
   orig: 83, 148
   offset: 0, 0
   index: -1
 left_legfront3
   rotate: false
-  xy: 1874, 281
+  xy: 1941, 857
   size: 83, 148
   orig: 83, 148
   offset: 0, 0
   index: -1
 right_legfront3
   rotate: false
-  xy: 1874, 281
+  xy: 1941, 857
   size: 83, 148
   orig: 83, 148
   offset: 0, 0
   index: -1
 right_armback
   rotate: false
-  xy: 1122, 67
+  xy: 1185, 643
   size: 122, 88
   orig: 122, 88
   offset: 0, 0
   index: -1
 right_armfront
   rotate: false
-  xy: 849, 139
+  xy: 154, 2
   size: 150, 46
   orig: 150, 46
   offset: 0, 0
   index: -1
 right_armfront2
   rotate: false
-  xy: 1294, 5
+  xy: 447, 61
   size: 46, 150
   orig: 46, 150
   offset: 0, 0
   index: -1
 right_armfront3
   rotate: false
-  xy: 1342, 5
+  xy: 495, 410
   size: 46, 150
   orig: 46, 150
   offset: 0, 0
   index: -1
 right_legback
   rotate: false
-  xy: 1671, 296
+  xy: 1738, 872
   size: 116, 133
   orig: 116, 133
   offset: 0, 0
   index: -1
 rollingpin
   rotate: false
-  xy: 1611, 212
+  xy: 1678, 788
   size: 58, 217
   orig: 58, 217
   offset: 0, 0
   index: -1
 torso
   rotate: false
-  xy: 849, 187
+  xy: 916, 763
   size: 272, 242
   orig: 272, 242
   offset: 0, 0
   index: -1
 torso2
   rotate: false
-  xy: 1123, 157
+  xy: 1190, 733
   size: 242, 272
   orig: 242, 272
   offset: 0, 0
   index: -1
 torso3
   rotate: false
-  xy: 1367, 157
+  xy: 1434, 733
   size: 242, 272
   orig: 242, 272
   offset: 0, 0

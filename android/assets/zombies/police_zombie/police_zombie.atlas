@@ -1,47 +1,47 @@
 
 police_zombie.png
-size: 2048,256
+size: 1024,512
 format: RGBA8888
 filter: Linear,Linear
 repeat: none
 head
   rotate: false
-  xy: 2, 2
-  size: 276, 238
-  orig: 276, 238
+  xy: 2, 183
+  size: 328, 290
+  orig: 328, 290
   offset: 0, 0
   index: -1
 left_arm
   rotate: false
-  xy: 280, 148
+  xy: 332, 381
   size: 403, 92
   orig: 405, 94
   offset: 1, 1
   index: -1
 right_arm
   rotate: false
-  xy: 280, 148
+  xy: 332, 381
   size: 403, 92
   orig: 405, 94
   offset: 1, 1
   index: -1
 left_leg
   rotate: false
-  xy: 685, 110
+  xy: 737, 343
   size: 254, 130
   orig: 254, 130
   offset: 0, 0
   index: -1
 right_leg
   rotate: false
-  xy: 280, 5
+  xy: 332, 238
   size: 276, 141
   orig: 276, 141
   offset: 0, 0
   index: -1
 torso
   rotate: false
-  xy: 941, 61
+  xy: 2, 2
   size: 249, 179
   orig: 249, 179
   offset: 0, 0

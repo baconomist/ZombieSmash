@@ -6,105 +6,105 @@ filter: Linear,Linear
 repeat: none
 biker1/bike
   rotate: false
-  xy: 2, 1574
+  xy: 2, 1607
   size: 799, 425
   orig: 799, 425
   offset: 0, 0
   index: -1
 biker1/destroyed_bike1
   rotate: false
-  xy: 2, 1126
+  xy: 2, 1159
   size: 704, 446
   orig: 704, 446
   offset: 0, 0
   index: -1
 biker1/destroyed_bike2
   rotate: false
-  xy: 2, 660
+  xy: 2, 693
   size: 619, 464
   orig: 619, 464
   offset: 0, 0
   index: -1
 biker1/head
   rotate: false
-  xy: 1353, 1358
-  size: 387, 224
-  orig: 387, 224
+  xy: 1353, 1347
+  size: 429, 268
+  orig: 429, 268
   offset: 0, 0
   index: -1
 biker1/left_armback
   rotate: false
-  xy: 1269, 1054
+  xy: 552, 187
   size: 308, 150
   orig: 308, 150
   offset: 0, 0
   index: -1
 biker1/left_armfront
   rotate: false
-  xy: 903, 812
+  xy: 1559, 1000
   size: 292, 140
   orig: 292, 140
   offset: 0, 0
   index: -1
 biker1/left_armfront2
   rotate: false
-  xy: 1742, 1442
+  xy: 863, 501
   size: 304, 140
   orig: 304, 140
   offset: 0, 0
   index: -1
 biker1/left_legback
   rotate: false
-  xy: 623, 649
+  xy: 1289, 1126
   size: 268, 219
   orig: 268, 219
   offset: 0, 0
   index: -1
 biker1/left_legfront
   rotate: false
-  xy: 623, 870
+  xy: 1009, 1128
   size: 278, 230
   orig: 278, 230
   offset: 0, 0
   index: -1
 biker1/right_armback
   rotate: false
-  xy: 552, 173
+  xy: 623, 643
   size: 311, 152
   orig: 311, 152
   offset: 0, 0
   index: -1
 biker1/right_armfront
   rotate: false
-  xy: 903, 954
+  xy: 497, 39
   size: 300, 146
   orig: 300, 146
   offset: 0, 0
   index: -1
 biker1/right_armfront2
   rotate: false
-  xy: 1742, 1306
+  xy: 863, 365
   size: 304, 134
   orig: 304, 134
   offset: 0, 0
   index: -1
 biker1/right_legback
   rotate: false
-  xy: 1009, 1138
+  xy: 1559, 1142
   size: 258, 203
   orig: 258, 203
   offset: 0, 0
   index: -1
 biker1/right_legfront
   rotate: false
-  xy: 708, 1102
+  xy: 708, 1119
   size: 299, 239
   orig: 299, 239
   offset: 0, 0
   index: -1
 biker1/torso
   rotate: false
-  xy: 1353, 1584
+  xy: 1353, 1617
   size: 541, 415
   orig: 541, 415
   offset: 0, 0
@@ -112,55 +112,55 @@ biker1/torso
 biker2/headblue
   rotate: false
   xy: 2, 2
-  size: 449, 233
-  orig: 449, 233
+  size: 493, 266
+  orig: 493, 266
   offset: 0, 0
   index: -1
 biker2/left_armbackblue
   rotate: false
-  xy: 453, 21
+  xy: 552, 491
   size: 309, 150
   orig: 309, 150
   offset: 0, 0
   index: -1
 biker2/right_armbackblue
   rotate: false
-  xy: 552, 488
+  xy: 623, 958
   size: 326, 159
   orig: 326, 159
   offset: 0, 0
   index: -1
 biker2/torsoblue
   rotate: false
-  xy: 803, 1578
+  xy: 803, 1611
   size: 548, 421
   orig: 548, 421
   offset: 0, 0
   index: -1
 biker3/headgreen
   rotate: false
-  xy: 803, 1343
-  size: 348, 233
-  orig: 348, 233
+  xy: 803, 1360
+  size: 422, 249
+  orig: 422, 249
   offset: 0, 0
   index: -1
 biker3/left_armbackgreen
   rotate: false
-  xy: 1269, 1206
+  xy: 552, 339
   size: 309, 150
   orig: 309, 150
   offset: 0, 0
   index: -1
 biker3/right_armbackgreen
   rotate: false
-  xy: 552, 327
+  xy: 623, 797
   size: 326, 159
   orig: 326, 159
   offset: 0, 0
   index: -1
 biker3/torsogreen
   rotate: false
-  xy: 2, 237
+  xy: 2, 270
   size: 548, 421
   orig: 548, 421
   offset: 0, 0

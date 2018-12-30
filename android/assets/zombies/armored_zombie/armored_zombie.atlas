@@ -6,70 +6,70 @@ filter: Linear,Linear
 repeat: none
 gun
   rotate: false
-  xy: 2, 349
+  xy: 367, 342
   size: 515, 151
   orig: 515, 151
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 2, 85
-  size: 276, 262
-  orig: 276, 262
+  xy: 2, 144
+  size: 363, 349
+  orig: 363, 349
   offset: 0, 0
   index: -1
 left_arm_back
   rotate: false
-  xy: 280, 50
+  xy: 823, 118
   size: 140, 106
   orig: 140, 106
   offset: 0, 0
   index: -1
 left_arm_front
   rotate: false
-  xy: 2, 2
+  xy: 477, 48
   size: 183, 81
   orig: 183, 81
   offset: 0, 0
   index: -1
 left_arm_gun
   rotate: false
-  xy: 819, 361
+  xy: 302, 3
   size: 173, 139
   orig: 173, 139
   offset: 0, 0
   index: -1
 left_leg
   rotate: false
-  xy: 519, 360
+  xy: 2, 2
   size: 298, 140
   orig: 298, 140
   offset: 0, 0
   index: -1
 right_arm_back
   rotate: false
-  xy: 856, 250
+  xy: 884, 384
   size: 137, 109
   orig: 137, 109
   offset: 0, 0
   index: -1
 right_arm_front
   rotate: false
-  xy: 547, 149
+  xy: 634, 131
   size: 187, 93
   orig: 187, 93
   offset: 0, 0
   index: -1
 right_leg
   rotate: false
-  xy: 547, 244
+  xy: 634, 226
   size: 307, 114
   orig: 307, 114
   offset: 0, 0
   index: -1
 torso
   rotate: false
-  xy: 280, 158
+  xy: 367, 151
   size: 265, 189
   orig: 265, 189
   offset: 0, 0
