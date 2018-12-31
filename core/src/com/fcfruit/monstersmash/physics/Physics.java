@@ -34,6 +34,8 @@ public class Physics
     private static final int VELOCITY_ITERATIONS = 6;
     private static final int POSITION_ITERATIONS = 2;
 
+    public static float GROUND_INCREMENT = 0.2f;
+
     private World world;
 
     private float accumulator = 0;
@@ -124,7 +126,7 @@ public class Physics
         planeFixture.friction = 2f;
 
         this.groundBodies = new ArrayList<Body>();
-        for (float i = 0.15f, c = 0; c < 3; i += 0.2f, c++)
+        for (float i = 0.15f, c = 0; c < 3; i += GROUND_INCREMENT, c++)
         {
             Body ground = this.world.createBody(plane);
             ground.createFixture(planeFixture);

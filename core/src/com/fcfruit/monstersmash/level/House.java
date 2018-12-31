@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Polygon;
 import com.fcfruit.monstersmash.Environment;
+import com.fcfruit.monstersmash.physics.Physics;
 
 /**
  * Created by Lucas on 2017-11-18.
@@ -19,7 +20,7 @@ public class House extends Objective
         height = 900;
 
         sprite = new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("house"));
-        sprite.setPosition(2496, 90f);
+        sprite.setPosition(2496, Physics.PIXELS_PER_METER*Physics.GROUND_INCREMENT + (90f*(Physics.GROUND_INCREMENT/0.5f)));
 
         polygon = new Polygon(new float[]{0, 0, width, 0, width, height, 0, height});
 

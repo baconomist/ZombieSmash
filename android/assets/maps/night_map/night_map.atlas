@@ -6,7 +6,7 @@ filter: Linear,Linear
 repeat: none
 night_map
   rotate: false
-  xy: 2, 44
+  xy: 2, 40
   size: 2000, 2000
   orig: 2000, 2000
   offset: 0, 0
@@ -14,9 +14,9 @@ night_map
 snow_1
   rotate: false
   xy: 2, 2
-  size: 39, 40
-  orig: 39, 40
-  offset: 0, 0
+  size: 38, 36
+  orig: 40, 40
+  offset: 1, 2
   index: -1
 
 night_map2.png

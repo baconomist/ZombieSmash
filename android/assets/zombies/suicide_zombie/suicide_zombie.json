@@ -1,11 +1,5 @@
 {
-"skeleton": {
-	"hash": "6O+QoNFoQcGNjamZb2mm4lfyHHA",
-	"spine": "3.6.53",
-	"width": 505.55,
-	"height": 699.41,
-	"images": "./season_1/zombies/suicide_zombie/images/"
-},
+"skeleton": { "hash": "0uqQysFlyWnkh/oBPuVQyZj4PEg", "spine": "3.6.53", "width": 528.11, "height": 746.1, "images": "./images/" },
 "bones": [
 	{ "name": "root", "rotation": -2.28, "x": -5.73 },
 	{ "name": "grenade", "parent": "root", "length": 174.72, "rotation": -87.4, "x": 364.76, "y": 464.99 },
@@ -13,30 +7,12 @@
 	{ "name": "head", "parent": "torso", "length": 214.57, "rotation": -3.57, "x": 189.06, "y": -2.71 },
 	{ "name": "left_shoulder", "parent": "torso", "length": 66.81, "rotation": -107.33, "x": 212.16, "y": -2.46 },
 	{ "name": "left_arm", "parent": "left_shoulder", "length": 121.77, "rotation": 8.12, "x": 19.99, "y": -34.57 },
-	{
-		"name": "left_hip",
-		"parent": "torso",
-		"length": 79.27,
-		"rotation": -87.1,
-		"x": -10.9,
-		"y": -2.26,
-		"shearX": -5.4,
-		"shearY": 2.97
-	},
+	{ "name": "left_hip", "parent": "torso", "length": 79.27, "rotation": -87.1, "x": -10.9, "y": -2.26 },
 	{ "name": "left_leg", "parent": "left_hip", "length": 255.59, "rotation": -94.48, "x": 17.48, "y": 0.64 },
 	{ "name": "right_shoulder", "parent": "torso", "length": 89.4, "rotation": 106.63, "x": 211.96, "y": 2.62 },
 	{ "name": "right_arm", "parent": "right_shoulder", "length": 192.42, "rotation": 157.99, "x": 44.56, "y": 38.4 },
-	{ "name": "right_hip", "parent": "torso", "length": 81.31, "rotation": 99.54, "x": -11.76, "y": -1.39, "shearY": 2.58 },
-	{
-		"name": "right_leg",
-		"parent": "right_hip",
-		"length": 267.94,
-		"rotation": 80,
-		"x": 50.19,
-		"y": -3.98,
-		"shearX": -6.37,
-		"shearY": 2.96
-	}
+	{ "name": "right_hip", "parent": "torso", "length": 81.31, "rotation": 99.54, "x": -11.76, "y": -1.39 },
+	{ "name": "right_leg", "parent": "right_hip", "length": 267.94, "rotation": 80, "x": 50.19, "y": -3.98 }
 ],
 "slots": [
 	{ "name": "left_arm", "bone": "left_arm", "attachment": "left_arm" },
@@ -54,7 +30,8 @@
 			"bounding_box": {
 				"type": "boundingbox",
 				"vertexCount": 4,
-				"vertices": [ -29.91, 1.18, 452.59, 16.37, 413.48, 692.38, -64.98, 677.35 ]
+				"vertices": [ -29.91, 1.18, 452.59, 16.37, 413.48, 692.38, -64.98, 677.35 ],
+				"color": "60ef00ff"
 			}
 		},
 		"grenade": {
@@ -63,7 +40,7 @@
 		},
 		"head": {
 			"blood_pos": { "type": "point", "rotation": 177.22 },
-			"head": { "x": 127.72, "y": 16.74, "rotation": -4.08, "width": 257, "height": 294 },
+			"head": { "x": 127.72, "y": 16.74, "rotation": -4.08, "width": 336, "height": 329 },
 			"physics_pos": { "type": "point", "x": 106.98 }
 		},
 		"left_arm": {

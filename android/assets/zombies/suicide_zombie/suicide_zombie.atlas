@@ -6,49 +6,49 @@ filter: Linear,Linear
 repeat: none
 grenade
   rotate: false
-  xy: 253, 57
+  xy: 579, 122
   size: 137, 117
   orig: 137, 117
   offset: 0, 0
   index: -1
 head
   rotate: false
-  xy: 2, 206
-  size: 257, 294
-  orig: 257, 294
+  xy: 2, 118
+  size: 336, 329
+  orig: 336, 329
   offset: 0, 0
   index: -1
 left_arm
   rotate: false
-  xy: 583, 395
+  xy: 591, 342
   size: 321, 105
   orig: 321, 105
   offset: 0, 0
   index: -1
 left_leg
   rotate: false
-  xy: 261, 277
+  xy: 340, 136
   size: 237, 107
   orig: 237, 108
   offset: 0, 1
   index: -1
 right_arm
   rotate: false
-  xy: 261, 386
+  xy: 2, 2
   size: 320, 114
   orig: 320, 114
   offset: 0, 0
   index: -1
 right_leg
   rotate: false
-  xy: 261, 176
+  xy: 591, 241
   size: 232, 99
   orig: 232, 99
   offset: 0, 0
   index: -1
 torso
   rotate: false
-  xy: 2, 2
+  xy: 340, 245
   size: 249, 202
   orig: 249, 202
   offset: 0, 0
