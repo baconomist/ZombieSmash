@@ -17,42 +17,41 @@ public class XmasSnow
 
     private boolean roofCheck = true;
 
-    private ArrayList<DrawableGraphicsEntity> snowflakes;
+    private ArrayList<Sprite> snowflakes;
 
     public XmasSnow()
     {
-        this.snowflakes = new ArrayList<DrawableGraphicsEntity>();
+        this.snowflakes = new ArrayList<Sprite>();
     }
 
     public void load()
     {
         for(int i = 0; i < 35; i++)
         {
-            DrawableGraphicsEntity snowFlake = new DrawableGraphicsEntity(new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("snow_1")));
+            Sprite snowFlake = new Sprite(Environment.assets.get("maps/night_map/night_map.atlas", TextureAtlas.class).findRegion("snow_1"));
+            snowFlake.setScale(1.25f);
             resetSnowFlake(snowFlake);
-            snowFlake.setPosition(new Vector2(snowFlake.getPosition().x, snowFlake.getPosition().y + 1f*i));
+            snowFlake.setPosition(snowFlake.getX(), snowFlake.getY() + 192f*i);
             this.snowflakes.add(snowFlake);
         }
     }
 
-    private void resetSnowFlake(DrawableGraphicsEntity snowFlake)
+    private void resetSnowFlake(Sprite snowFlake)
     {
-        snowFlake.setPosition(new Vector2((Environment.physicsCamera.position.x - Environment.physicsCamera.viewportWidth/2) + (float)Math.random()*Environment.physicsCamera.viewportWidth,
-                Environment.physicsCamera.viewportHeight + (float)(Math.random() * 2 + 1)));
-        snowFlake.setAngle((float)Math.random()*360);
-        snowFlake.update(Gdx.graphics.getDeltaTime());
+        snowFlake.setPosition((Environment.gameCamera.position.x - Environment.gameCamera.viewportWidth/2) + (float)Math.random()*Environment.gameCamera.viewportWidth, Environment.gameCamera.viewportHeight + (float)(Math.random() * 200 + 50));
+        snowFlake.setRotation((float)Math.random()*360);
     }
 
-    private boolean isOnRoof(DrawableGraphicsEntity snowflake)
+    private boolean isOnRoof(Sprite snowflake)
     {
-        Vector3 point = Environment.gameCamera.unproject(Environment.physicsCamera.project(new Vector3(snowflake.getPosition(), 0)));
-        point.y = Environment.gameCamera.position.y*2 - point.y;
-        point.y = point.y + 150f + (float)(Math.random()*30f); // Make snowflake disappear when it actually hits the roof rather than touches the bounding box of the house
+        float x = snowflake.getX();
+        float y = snowflake.getY();
+        y = y + 150f + (float)(Math.random()*30f); // Make snowflake disappear when it actually hits the roof rather than touches the bounding box of the house
 
-        float x = Environment.level.objective.polygon.getX() + 400f;
+        float min_x = Environment.level.objective.polygon.getX() + 400f;
         float poly_bound_x = Environment.level.objective.polygon.getX() + Environment.level.objective.polygon.getVertices()[2];
 
-        return point.x > x && point.x < poly_bound_x && Environment.level.objective.polygon.contains(point.x, point.y);
+        return x > min_x && x < poly_bound_x && Environment.level.objective.polygon.contains(x, y);
     }
 
     public void setRoofCheck(boolean roofCheck)
@@ -62,26 +61,25 @@ public class XmasSnow
 
     public void update(float delta)
     {
-        for(DrawableGraphicsEntity drawableGraphicsEntity : this.snowflakes)
+        Gdx.app.log("delta", ""+delta + " " + (3f*delta));
+        for(Sprite snowFlake : this.snowflakes)
         {
-
-            if(drawableGraphicsEntity.getPosition().y < (float)(Math.random()*0.25f)
-                    || (this.roofCheck && isOnRoof(drawableGraphicsEntity))) // If snowflake hits ground or hits the house roof, reset
-                resetSnowFlake(drawableGraphicsEntity);
+            if(snowFlake.getY() < (float)(Math.random()*48f)
+                    || (this.roofCheck && isOnRoof(snowFlake))) // If snowflake hits ground or hits the house roof, reset
+                resetSnowFlake(snowFlake);
 
             // Update snowflake
-            drawableGraphicsEntity.setPosition(new Vector2(drawableGraphicsEntity.getPosition().x, drawableGraphicsEntity.getPosition().y-(3f*delta)));
-            drawableGraphicsEntity.setAngle(drawableGraphicsEntity.getAngle() + (50f*delta*(drawableGraphicsEntity.getAngle() < 180 ? -1 : 1)));
-            drawableGraphicsEntity.update(delta);
+            snowFlake.setPosition(snowFlake.getX(), snowFlake.getY()-(300f*delta));
+            snowFlake.setRotation(snowFlake.getRotation() + (50f*delta*(snowFlake.getRotation() < 180 ? -1 : 1)));
         }
     }
 
     public void draw(SpriteBatch spriteBatch)
     {
-        for(DrawableGraphicsEntity drawableGraphicsEntity : this.snowflakes)
+        for(Sprite snowFlake : this.snowflakes)
         {
             // Draw snowflake
-            drawableGraphicsEntity.draw(spriteBatch);
+            snowFlake.draw(spriteBatch);
         }
     }
 
