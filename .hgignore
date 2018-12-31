@@ -13,6 +13,7 @@ build/**
 *.log
 *.a
 *.so
+*.apk
 
 .idea/*
 raw-assets/ui/loading_screen/unprocessed_gimp_anim_images/
