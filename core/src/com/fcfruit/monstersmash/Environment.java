@@ -47,6 +47,7 @@ public class Environment
     public static AdActivityInterface adActivityInterface;
     public static PurchaseActivityInterface purchaseActivityInterface;
     public static CrashLoggerInterface crashLoggerInterface;
+    public static PrivacyPolicyInterface privacyPolicyInterface = null;
 
     public static MusicManager musicManager;
     public static PurchaseManager purchaseManager;

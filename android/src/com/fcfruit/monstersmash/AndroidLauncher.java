@@ -7,6 +7,11 @@ import android.os.*;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+import android.webkit.WebView;
+import android.widget.Button;
+import android.widget.RelativeLayout;
 
 
 import com.anjlab.android.iab.v3.BillingProcessor;
@@ -19,9 +24,13 @@ import com.google.android.gms.ads.AdRequest;
 import com.google.android.gms.ads.InterstitialAd;
 import com.google.android.gms.ads.MobileAds;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+
 import static com.badlogic.gdx.net.HttpRequestBuilder.json;
 
-public class AndroidLauncher extends AndroidApplication implements AdActivityInterface, PurchaseActivityInterface, CrashLoggerInterface
+public class AndroidLauncher extends AndroidApplication implements AdActivityInterface, PurchaseActivityInterface, CrashLoggerInterface, PrivacyPolicyInterface
 {
     private static final String LICENSE_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAlkx9W8KLfKJE9RoU0lA0/pp72GKWIC+KhSA7IQTaOyIt0vgTRsI+oEkrrUVE7xxAOKNic+Zlc7CNy5NFK970GCQqAGEauFsKVZjpk60MURj5bBeeNq34OZgJ9soH1oTvrtgVNp/ZMIGZz9vog+3YRuGhoc4sxX2JAB5Iow6hoJ4NLGzcGyGTF6rCs0n05jV+igrpQ3TPhGcNB0entFCEySSgKWgUIwl8DcN6eCysh4YK1toMrBgdlMVfJCYd01OpMIqeT7ZDQNuUSsieBBphcWv+VnPzkGk4Wc/91bVsVgwwqadXQtKdG/9c/+AhvMw0nF9+Qs3rEnL4Sc5JFV5QnwIDAQAB"; // PUT YOUR MERCHANT KEY HERE;
     // put your Google merchant id here (as stated in public profile of your Payments Merchant Center)
@@ -49,6 +58,9 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
         }
     };
 
+    private WebView policyWebView;
+    private Button policyBackButton;
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -60,6 +72,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
         Environment.purchaseActivityInterface = this;
         Environment.crashLoggerInterface = this;
         Environment.game = new MonsterSmash();
+        Environment.privacyPolicyInterface = this;
 
         MobileAds.initialize(this, AD_APP_ID);
         interstitialAd = new InterstitialAd(this);
@@ -74,8 +87,79 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
 
         this.setupIABPurchase();
 
-        initialize(Environment.game, config);
+        this.setupPrivacyPolicy();
 
+        initialize(Environment.game, config);
+    }
+
+    private void setupPrivacyPolicy()
+    {
+        BufferedReader reader = null;
+        StringBuilder html = new StringBuilder();
+
+        try
+        {
+            reader = new BufferedReader(new InputStreamReader(getAssets().open("privacy_policy/en.html")));
+            // do reading, usually loop until end of file reading
+            String mLine;
+            while ((mLine = reader.readLine()) != null)
+            {
+                //process line
+                html.append(mLine);
+            }
+        } catch (IOException e)
+        {
+            //log the exception
+            Log.e("", e.toString());
+            e.printStackTrace();
+        } finally
+        {
+            if (reader != null)
+            {
+                try
+                {
+                    reader.close();
+                } catch (IOException e)
+                {
+                    //log the exception
+                }
+            }
+        }
+
+        RelativeLayout.LayoutParams relativeLayout = new RelativeLayout.LayoutParams(WindowManager.LayoutParams.WRAP_CONTENT, WindowManager.LayoutParams.WRAP_CONTENT);
+        // Top Left Apparently
+        relativeLayout.addRule(RelativeLayout.ALIGN_PARENT_BOTTOM);
+        relativeLayout.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
+
+        policyBackButton = new Button(this);
+        policyBackButton.setText("Back");
+        policyBackButton.setOnClickListener(new View.OnClickListener()
+        {
+            @Override
+            public void onClick(View view)
+            {
+                getWindowManager().removeView(policyWebView);
+            }
+        });
+        policyWebView = new WebView(this);
+        policyWebView.loadData(html.toString(), "text/html; charset=utf-8", "utf-8");
+        policyWebView.addView(policyBackButton);
+    }
+
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message message) {
+            // This is where you do your work in the UI thread.
+            // Your worker tells you in the message what to do.
+            getWindowManager().addView(policyWebView, new WindowManager.LayoutParams());
+        }
+    };
+    @Override
+    public void showPrivacyPolicy()
+    {
+        // And this is how you call it from the worker thread:
+        Message message = mHandler.obtainMessage();
+        message.sendToTarget();
     }
 
     @Override
@@ -115,7 +199,7 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
     @Override
     public boolean restore_purchases()
     {
-        if(isBpAvailable())
+        if (isBpAvailable())
         {
             for (String sku : bp.listOwnedProducts())
             {
@@ -217,9 +301,9 @@ public class AndroidLauncher extends AndroidApplication implements AdActivityInt
     public void showAds()
     {
         String[] list = json.fromJson(String[].class, Environment.Prefs.purchases.getString("purchased_items"));
-        for(String str : list)
+        for (String str : list)
         {
-            if(str != null && str.equals("no_ads"))
+            if (str != null && str.equals("no_ads"))
                 return; // Don't show ads if no_ads is purchased
         }
 

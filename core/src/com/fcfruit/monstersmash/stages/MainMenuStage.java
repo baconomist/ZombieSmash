@@ -6,6 +6,9 @@ import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.physics.box2d.Body;
 import com.badlogic.gdx.scenes.scene2d.InputEvent;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.Skin;
+import com.badlogic.gdx.scenes.scene2d.ui.TextButton;
 import com.badlogic.gdx.scenes.scene2d.utils.ClickListener;
 import com.badlogic.gdx.utils.Array;
 import com.badlogic.gdx.utils.viewport.Viewport;
@@ -34,6 +37,8 @@ public class MainMenuStage extends RubeStage
     private SpriteBatch spriteBatch;
     private SkeletonRenderer skeletonRenderer;
     private XmasSnow xmasSnow;
+
+    private TextButton privacyPolicyButton;
 
     private Array<DrawableEntityInterface> drawableEntities;
 
@@ -103,6 +108,19 @@ public class MainMenuStage extends RubeStage
             }
         });
 
+        this.privacyPolicyButton = new TextButton("Privacy Policy", new Skin(Gdx.files.internal("ui/defaultSkin/uiskin.json")));
+        this.privacyPolicyButton.setSize(500, 500);
+        this.privacyPolicyButton.getLabel().setFontScale(5);
+        this.privacyPolicyButton.setPosition(this.getViewport().getWorldWidth() - this.privacyPolicyButton.getWidth(), this.privacyPolicyButton.getHeight());
+        this.privacyPolicyButton.addListener(new ClickListener(){
+            @Override
+            public void touchUp(InputEvent event, float x, float y, int pointer, int button)
+            {
+                super.touchUp(event, x, y, pointer, button);
+                Environment.privacyPolicyInterface.showPrivacyPolicy();
+            }
+        });
+        this.addActor(this.privacyPolicyButton);
 
     }
 
